@@ -1,0 +1,277 @@
+<!-- SECTION -->
+
+{% include 'settings' %}
+{% if section.settings.logos_homepage and template == 'index' %}{% assign showlogos = true %}{% endif %}
+{% if section.settings.logos_pages and template != 'index' %}{% assign showlogos = true %}{% endif %}
+
+{% if showlogos %}
+{% if section.blocks.size > 0 %}
+<style>  
+#shopify-section-{{ section.id }} {
+	clear: both;
+	overflow: hidden;
+	width: 100%;
+	margin: 0;	
+	{% if section.settings.page_width == 'page' %}
+    background-color: {{ section.settings.bg_color }};
+    /* background: green; */
+	{% endif %}
+    vertical-align: middle;
+  	text-align: {{ section.settings.logo_alignment }};
+}  
+#shopify-section-{{ section.id }} .container {  
+  position: relative;  
+  vertical-align: middle;
+  text-align: {{ section.settings.logo_alignment }};
+  margin: 0 auto !important;
+  {% if section.settings.content_width == 'content' %}
+  background-color: {{ section.settings.bg_color }};  
+  /* background-color: red; */
+  {% else %}  
+  background-color: transparent;
+  {% endif %}
+}  
+#shopify-section-{{ section.id }} .container .column {  
+  width: 100%;
+  margin: -{{ font_gutter }} 0 !important;
+  {% if section.settings.line_color != '' and section.settings.line_bottom_size > 0 %}border-bottom: solid {{ section.settings.line_bottom_size }}px {{ section.settings.line_color }} !important;{% endif %}
+  {% if section.settings.line_color != '' and section.settings.line_top_size > 0 %}border-top: solid {{ section.settings.line_top_size }}px {{ section.settings.line_color }} !important;{% endif %}
+}
+#shopify-section-{{ section.id }} .logos {  
+  padding: {{ section.settings.spacing_size }}px 0;
+}
+#shopify-section-{{ section.id }} img {
+  display: inline;
+  {% if section.settings.logo_calculation == 'width' %}
+  width: {{ section.settings.logo_size }}px;
+  height: auto;
+  {% endif %}
+  {% if section.settings.logo_calculation == 'height' %}
+  height: {{ section.settings.logo_size }}px;
+  width: auto;
+  {% endif %}
+  vertical-align: middle;
+  margin: {{ section.settings.divide_size }}px {{ section.settings.divide_size | divided_by: 2 }}px;
+}
+{% if section.settings.logo_alignment != 'center' %}
+{% if section.settings.logo_alignment == 'left' %}{% assign oftype = 'first' %}{% endif %}
+{% if section.settings.logo_alignment == 'right' %}{% assign oftype = 'last' %}{% endif %}
+{% if section.settings.link %}
+#shopify-section-{{ section.id }} a:{{ oftype }}-of-type {
+  margin-{{ section.settings.logo_alignment }}: 0;
+}
+{% else %}
+#shopify-section-{{ section.id }} img:{{ oftype }}-of-type {
+  margin-{{ section.settings.logo_alignment }}: 0;
+}
+{% endif %}
+{% endif %}
+  
+{% if section.settings.logo_mobile %}
+/* Mobile */
+@media screen and (max-width: {{ grid_mobile }}) {
+  #shopify-section-{{ section.id }} img {
+    {% if section.settings.logo_calculation == 'width' %}
+    width: {{ section.settings.logo_size | divided_by: 1.5 }}px;
+    height: auto;
+    {% endif %}
+    {% if section.settings.logo_calculation == 'height' %}
+    height: {{ section.settings.logo_size | divided_by: 1.5 }}px;
+    width: auto;
+    {% endif %}
+  }
+}
+{% endif %}
+</style>
+
+
+
+
+{% if section.settings.content_width == 'content' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}"><div class="column">{% endif %}
+
+<div class="logos">
+  {%- for block in section.blocks -%}
+      {% assign imgsize = section.settings.logo_size | plus: 0 | times: 1.5 | round | append: 'x' %}
+      {% if block.settings.link %}<a href="{{ block.settings.link }}">{% endif %}<img src="{{ block.settings.image | img_url: imgsize }}" width="{{ section.settings.logo_size }}" />{% if block.settings.link %}</a>{% endif %}
+  {%- endfor %}
+</div>
+
+{% if section.settings.content_width == 'content' %}</div></div>{% endif %}
+{% endif %}
+
+
+
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "Logos",
+  "settings": [
+    {
+       "type": "checkbox",
+       "id": "logos_homepage",
+       "label": "Show on homepage",
+       "default": true
+    },
+    {
+       "type": "checkbox",
+       "id": "logos_pages",
+       "label": "Show on other pages",
+       "default": true
+    },
+    {
+      "type": "select",
+      "id": "page_width",
+      "label": "Background width",
+      "default": "page",
+      "options": [
+          {
+            "value": "page",
+            "label": "Page"
+          },
+          {
+            "value": "content",
+            "label": "Content"
+          }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content width",
+      "default": "content",
+      "options": [
+          {
+            "value": "page",
+            "label": "Page"
+          },
+          {
+            "value": "content",
+            "label": "Content"
+          }
+      ]
+    },
+    {
+       "type": "range",
+       "id": "spacing_size",
+       "min": 0,
+       "max": 100,
+       "step": 5,
+       "unit": "px",
+       "label": "Content spacing",
+       "default": 30
+    },
+    {
+        "type": "select",
+        "id": "logo_alignment",
+        "label": "Logo alignment",
+		"default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+    },
+    {
+        "type": "select",
+        "id": "logo_calculation",
+        "label": "Logo calculation",
+		"default": "width",
+        "options": [
+          {
+            "value": "width",
+            "label": "Width"
+          },
+          {
+            "value": "height",
+            "label": "Height"
+          }
+        ]
+    },
+    {
+      "type": "range",
+      "id": "logo_size",
+      "min": 30,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Logo calculation size",
+      "default": 100
+    },
+    {
+       "type": "range",
+       "id": "divide_size",
+       "min": 0,
+       "max": 100,
+       "step": 5,
+       "unit": "px",
+       "label": "Logo spacing",
+       "default": 30
+    },
+    {
+       "type": "range",
+       "id": "line_top_size",
+       "min": 0,
+       "max": 5,
+       "step": 1,
+       "unit": "px",
+       "label": "Top divide line size",
+       "default": 1
+    },
+    {
+       "type": "range",
+       "id": "line_bottom_size",
+       "min": 0,
+       "max": 5,
+       "step": 1,
+       "unit": "px",
+       "label": "Bottom divide line size",
+       "default": 1
+    },
+    {
+        "type": "checkbox",
+        "id": "logo_mobile",
+        "label": "Smaller logos on mobile"
+    },
+    {
+       "type": "color",
+       "id": "bg_color",
+       "label": "Background color"
+    },
+    {
+       "type": "color",
+       "id": "line_color",
+       "label": "Divide line color"
+    }
+  ],
+  "name": "Logos",
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "id": "link",
+          "type": "url",
+          "label": "Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

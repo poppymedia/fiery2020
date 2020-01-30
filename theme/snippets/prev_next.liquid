@@ -1,0 +1,118 @@
+{% capture thelinks %}
+<div id="prevnext" class="{% if section.settings.controls_type == 'buttons' %}icons{% endif %}{% if section.settings.controls_type == 'buttons_text' %}buttons{% endif %}">
+  
+  {% if product %}
+  
+  	{% assign foundlinks = 2 %}
+    {% assign prev = 'collections.general.prev_title' | t %}
+  	{% if section.settings.controls_type == 'buttons' %}
+      {% if section.settings.controls_type contains 'buttons' %}{% assign prev = '<span class="visually-hidden">' | append: prev | append: '</span>' %}{% endif %}
+      {% if collection.previous_product %}
+        {% assign prev_link = '<a class="prev" href' %}
+        {% assign prev_title = collection.previous_product.title %}
+        {{ prev | link_to: collection.previous_product.url, prev_title | replace: '<a href', prev_link }}
+      {% else %}
+      <span class="prev">
+        <span{% if section.settings.controls_type contains 'buttons' %} class="visually-hidden"{% endif %}>{{ prev }}</span>
+      </span>
+      {% assign foundlinks = foundlinks | minus: 1 %}
+      {% endif %} 
+    {% else %}
+      {% if collection.previous_product %}
+        <a href="{{ collection.previous_product.url }}" class="prev{% if section.settings.controls_type == 'buttons_text' %} btn{% endif %}">{{ prev }}</a>
+      {% else %}
+        <span class="prev{% if section.settings.controls_type == 'buttons_text' %} btn" disabled="disabled{% endif %}">
+          {{ prev }}
+        </span>
+        {% assign foundlinks = foundlinks | minus: 1 %}
+      {% endif%}
+    {% endif %} 
+  
+    {% assign next = 'collections.general.next_title' | t %}
+  	{% if section.settings.controls_type == 'buttons' %}
+      {% if section.settings.controls_type contains 'buttons' %}{% assign next = '<span class="visually-hidden">' | append: next | append: '</span>' %}{% endif %}
+      {% if collection.next_product %}  
+        {% assign next_link = '<a class="next" href' %}
+        {% assign next_title = collection.next_product.title %}
+        {{ next | link_to: collection.next_product.url, next_title | replace: '<a href', next_link }}
+      {% else %} 
+      <span class="next">
+        <span{% if section.settings.controls_type contains 'buttons' %} class="visually-hidden"{% endif %}>{{ next }}</span>
+      </span>
+      {% assign foundlinks = foundlinks | minus: 1 %}
+      {% endif %}  
+    {% else %}
+      {% if collection.next_product %}
+        <a href="{{ collection.next_product.url }}" class="next{% if section.settings.controls_type == 'buttons_text' %} btn{% endif %}">{{ next }}</a>
+      {% else %}
+        <span class="next{% if section.settings.controls_type == 'buttons_text' %} btn" disabled="disabled{% endif %}">
+          {{ next }}
+        </span>
+        {% assign foundlinks = foundlinks | minus: 1 %}
+      {% endif%}
+    {% endif %}
+  
+  {% endif %}
+
+  {% if article %}
+  
+  	<!-- TO DO: Prev and Next, need to be reversed for articles ordered newest to oldest -->	
+	<!-- TO DO: Add option to choose prev/next text or article title -->
+  
+  	{% assign foundlinks = 2 %}
+    {% assign prev = 'blogs.article.prev_title' | t %}
+    {% if section.settings.controls_type == 'buttons' %}
+      {% if section.settings.controls_type contains 'buttons' %}{% assign prev = '<span class="visually-hidden">' | append: prev | append: '</span>' %}{% endif %}
+      {% if blog.previous_article %}
+        {% assign prev_link = '<a class="prev" href' %}
+        {% assign prev_title = blog.previous_article.title %}
+        {{ prev | link_to: blog.previous_article.url, prev_title | replace: '<a href', prev_link }}
+      {% else %}
+      <span class="prev">
+        <span{% if section.settings.controls_type contains 'buttons' %} class="visually-hidden"{% endif %}>{{ prev }}</span>
+      </span>
+      {% assign foundlinks = foundlinks | minus: 1 %}
+      {% endif %}
+    {% else %}
+      {% if blog.previous_article %}
+        <a href="{{ blog.previous_article.url }}" class="prev{% if section.settings.controls_type == 'buttons_text' %} btn{% endif %}">{{ prev }}</a>
+      {% else %}
+        <span class="prev{% if section.settings.controls_type == 'buttons_text' %} btn" disabled="disabled{% endif %}">
+          {{ prev }}
+        </span>
+        {% assign foundlinks = foundlinks | minus: 1 %}
+      {% endif%}
+    {% endif %}
+
+    {% assign next = 'blogs.article.next_title' | t %}
+    {% if section.settings.controls_type == 'buttons' %}
+      {% if section.settings.controls_type contains 'buttons' %}{% assign next = '<span class="visually-hidden">' | append: next | append: '</span>' %}{% endif %}
+      {% if blog.next_article %}  
+        {% assign next_link = '<a class="next" href' %}
+        {% assign next_title = blog.next_article.title %}
+        {{ next | link_to: blog.next_article.url, next_title | replace: '<a href', next_link }}
+      {% else %} 
+      <span class="next">
+        <span{% if section.settings.controls_type contains 'buttons' %} class="visually-hidden"{% endif %}>{{ next }}</span>
+      </span>
+      {% assign foundlinks = foundlinks | minus: 1 %}
+      {% endif %}
+    {% else %}
+      {% if blog.next_article %}
+        <a href="{{ blog.next_article.url }}" class="next{% if section.settings.controls_type == 'buttons_text' %} btn{% endif %}">{{ next }}</a>
+      {% else %}
+        <span class="next{% if section.settings.controls_type == 'buttons_text' %} btn" disabled="disabled{% endif %}">
+          {{ next }}
+        </span>
+        {% assign foundlinks = foundlinks | minus: 1 %}
+      {% endif%}
+    {% endif %} 
+  
+  {% endif %}
+  
+</div>
+{% endcapture %}
+
+{% if foundlinks > 0 %}
+{{ thelinks }}
+{% endif %}

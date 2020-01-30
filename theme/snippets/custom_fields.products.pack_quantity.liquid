@@ -1,0 +1,13 @@
+{% comment %}
+  DO NOT MODIFY THIS FILE DIRECTLY. THIS FILE WILL BE OVERWRITTEN.
+  YOU CAN MODIFY THE LIQUID CODE FOR THIS CUSTOM FIELD HERE:
+  https://customfields.bonify.io/dashboard/blue-horizons-template-dental.myshopify.com/products/configure/121555/edit
+{% endcomment %}
+{% if product.metafields.custom_fields["pack_quantity"] != blank %}
+  <div class="custom-field custom-field__pack-quantity custom-field__type--number">
+    <h3 class="custom-field--title">Pack Quantity</h3>
+    <div class="custom-field--value">
+      {{ product.metafields.custom_fields["pack_quantity"] }}
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,231 @@
+{% assign title = article.title %}
+{% assign content = article.content %}
+{% assign url = article.url %}
+{% assign more_visibility = '' %}
+
+{% assign link_product = 'true' %}
+{% if template == 'collection.packaged' and section.settings.links == false %}
+  {% assign link_product = 'false' %}
+{% endif %}
+
+{% assign product_price = 'true' %}
+{% if template == 'collection.packaged' and section.settings.price == false %}
+  {% assign product_price = 'false' %}
+{% endif %}
+
+{% if demo_url %}{% assign url = demo_url %}{% endif %}
+{% if demo_title %}{% assign title = demo_title %}{% endif %}
+{% if demo_content %}{% assign content = demo_content %}{% endif %}
+
+  {% capture readmore -%}
+         {%- if section.settings.read_more == 'link' -%}<span class="link read_more visually-shown"{{ more_visibility }}>{%- endif -%}
+         {%- if section.settings.read_more == 'button' -%}<span class="btn read_more visually-shown"{{ more_visibility }}>{%- endif -%}<!-- {{ 'blogs.article.read_more' | t }} -->{%- if section.settings.read_more == 'button' -%}</span>{%- endif -%}
+         {% if section.settings.read_more == 'link' %}</span>{% endif -%}
+  {%- endcapture %}
+
+    <!-- TO DO: Needs to work with whole product linked -->
+    {% capture addnow %}
+
+         {% if section.settings.read_more == 'link' %}{% assign more_visibility = ' style="opacity:0"' %}{% endif %}
+
+		 {%- if section.settings.read_more != 'hidden' -%}
+		 {{ readmore }}
+		 {%- endif -%}
+
+    {% endcapture %}
+    {% assign checkaddnow = addnow | strip_newlines %}
+
+  {% assign nobuttons = 'no' %}
+  {% if section.settings.more_options and section.settings.read_more == 'hidden' %}{% assign showmoreoptions = 'yes' %}{% endif %}
+  {% if section.settings.read_more == 'hidden' %}{% assign nobuttons = 'yes' %}{% endif %}
+
+
+
+
+<!-- Force to hide read more and buttons on search results -->
+{% if search %}
+{% assign showmoreoptions = 'yes' %}
+{% assign nobuttons = 'yes' %}
+{% assign checkaddnow = '' %}
+{% assign readmore = '' %}
+{% assign addnow = '' %}
+{% endif %}
+
+
+
+
+
+  <div class="item {% if section.settings.layout_grid_prominent_feature == 'date' -%}dated {% endif %}{% if section.settings.read_more != 'hidden' or showmoreoptions == 'yes' %}{% if section.settings.read_more == 'button' %} buttons{% endif %}{% unless nobuttons == 'yes' %} hasexcerpt{% endunless %}{% if checkaddnow contains 'readmore' %} andcart{% endif %}{% else %}{% if nobuttons == 'no' %} hasexcerpt{% endif %}{% endif %}{% if settings.products_border and link_product == 'true' %} hasborder{% endif %}{% if section.settings.read_more != 'hidden' %} andmore{% endif %}">
+
+    	<!-- TO DO: Check if article has an image -->
+        {%- capture get_image -%}
+        {%- if section.settings.image -%}   
+        {%- assign pagedata = article -%}
+    	<p class="image">
+        {%- if pagedata.image.src != blank -%}
+
+            <img src="{{ article.image.src | img_url: '480x480' }}" alt="{{ article.image.src.alt | escape }}">
+
+        {%- else -%}
+
+          <!-- {{ title }} -->
+          <!-- page was empty? sure you've got the right page? -->
+    	  <img src="https:{{ settings.placeholder_image | img_url: '480x480' }}" alt="{{ title }}">
+          
+        {%- endif -%}
+          
+        </p>    
+        {%- endif -%}
+        {%- endcapture -%}      
+
+        {%- capture get_title -%}
+          {% if section.settings.title -%}
+          <h2 class="title">
+
+              {{ title }}
+
+          </h2>
+          {%- endif %} 
+        {%- endcapture -%}      
+    
+		{%- capture get_date -%}
+            {% if section.settings.postname or section.settings.postdate %}
+            {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+            <p class="subtitle">
+              {% if section.settings.postname and section.settings.postdate %}
+              {{ 'blogs.article.author_on_date_html' | t: author: article.author, date: date }}
+              {% elsif section.settings.postname %}
+              {{ 'blogs.article.author_html' | t: author: article.author }}
+              {% elsif section.settings.postdate %}
+              {{ 'blogs.article.date_html' | t: date: date }}
+              {% endif %}
+            </p>
+            {% endif %} 
+        {%- endcapture -%}    
+      
+        {% if section.settings.layout_grid_prominent_feature == 'date' -%}
+    	{{ get_date }}
+        <!-- Put image here -->{{ get_image }}
+        {%- endif %}      
+      
+        {% if section.settings.layout_grid_prominent_feature == 'image' -%}
+        <!-- Put image here -->{{ get_image }}
+    	{{ get_title }}
+        {%- endif %}
+      
+        {% if section.settings.layout_grid_prominent_feature == 'title' -%}
+        {{ get_title }}
+        <!-- Put image here -->{{ get_image }}
+        {%- endif %}
+      
+        {% if section.settings.layout_grid_prominent_feature == 'image_title' -%}
+        <!-- Put image here -->{{ get_image }}
+        {%- endif %}
+
+
+        <div class="summary">
+
+          {% if section.settings.layout_grid_prominent_feature != 'title' and section.settings.layout_grid_prominent_feature == 'image_title' -%}
+          {{ get_title }}
+          {%- endif %}
+
+          {% if section.settings.layout_grid_prominent_feature == 'date' -%}
+          {{ get_title }}
+          {%- endif %}
+          
+          {% if section.settings.vendor -%}
+          {% assign showvendor = 'true' %}{% if article.vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}
+          {% if showvendor == 'true' -%}
+          <p class="vendor">
+            
+            {% if section.settings.tags %}
+            {% if blog.comments_enabled? or article.tags.size > 0 %}
+            <p class="misc">
+              <ul class="tags">
+                {% if blog.comments_enabled? %}
+                  <li>
+
+                    {% unless section.settings.readmore %}
+                    <a href="{{ article.url }}#comments">
+                    {% endunless %}  
+
+                      {{ 'blogs.comments.with_count' | t: count: article.comments_count }}
+
+                    {% unless section.settings.readmore %}  
+                    </a>
+                    {% endunless %}
+
+                  </li>
+                {% endif %}
+
+                {% if article.tags.size > 0 %}
+                  {% for tag in article.tags %}
+                    <li>
+
+                      {% unless section.settings.readmore %}
+                      <a href="{{ blog.url }}/tagged/{{ tag | handle }}">
+                      {% endunless %}
+
+                        {{ tag }}
+
+                      {% unless section.settings.readmore %}
+                      </a>
+                      {% endunless %}
+
+                      {% comment %}{% unless forloop.last %}, {% endunless %}{% endcomment %}
+
+                    </li>
+                  {% endfor %}
+                {% endif %}
+              </ul>
+            </p>
+            {% endif %}
+            {% endif %}
+            
+          </p>
+          {%- endif %}
+          {%- endif %}
+
+          <!-- Product Reviews App -->
+          {% if section.settings.show_review_rating -%}
+          <div class="review-rating">
+          <span class="shopify-product-reviews-badge" data-id="{{ article.id }}"></span> 
+          </div>
+          {%- endif %} 
+
+          {% unless section.settings.layout_grid_prominent_feature == 'date' %}{{ get_date }}{% endunless %}   
+
+          {% if section.settings.description -%}
+          <p class="content">
+            {% comment %}{{ content | strip_html | truncatewords: 100 }}{% endcomment %}
+            {% assign content = content | strip_html %}            
+            {% if section.settings.description_paragraph %}
+                {% if content contains '.' %}
+                    {% assign firstpara = content | split: '.' %}
+                    {{ firstpara[0] }}.
+                {% else %}
+                    {{ content | truncate: 100, '' }}
+                {% endif %}
+            {% else %}
+                {{ content }}
+            {% endif %}            
+          </p>
+          {%- endif %}           
+          
+        </div>  
+             
+        <a href="{{ article.url }}"><span class="visually-hidden">{{ 'blogs.article.read_more' | t }}</span></a> 
+
+        <div class="more">
+          
+          	{% if section.settings.read_more != 'hidden' %}<form class="readmore">{% endif %}
+          
+            {{ addnow }}
+              
+          	{% if section.settings.read_more != 'hidden' %}</form>{% endif %}
+          
+        </div> 
+      
+        {%- include 'new' -%}  
+      
+    </div>

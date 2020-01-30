@@ -1,0 +1,1323 @@
+<!-- SECTION -->
+
+{% assign gutter = settings.grid_spacing | append: 'px' %}
+{% assign size = section.settings.title_size %}
+{% assign new = section.settings.new %}
+{% assign sale = section.settings.sale %}
+{% assign new_days = section.settings.new_days | plus: 0 %}
+{% assign picsize = 100 %}
+
+{%- capture title_size -%}
+{%- if size == 'h2' %}{{ settings.type_h2_size }}{% endif -%}
+{%- if size == 'h3' %}{{ settings.type_h3_size }}{% endif -%}
+{%- if size == 'h4' %}{{ settings.type_h4_size }}{% endif -%}
+{%- if size == 'p' %}{{ settings.type_base_size }}{% endif -%}
+{%- endcapture -%}
+
+<style>
+
+/* List */
+{% if template contains '.list' %}
+.products.grid {
+  display: block;
+  padding-bottom: {{ section.settings.spacing }}px; 
+}
+.products.grid .item {
+  display: block;
+  margin-bottom: {{ section.settings.spacing }}px; 
+  width: 100%;
+  {% if section.settings.image %}padding-left: {{ picsize }}px;{% endif %}
+} 
+{% if section.settings.image %}
+.products.grid .item .image {
+  width: {{ picsize }}px;
+  display: inline;
+  float: left;
+}  
+  .products.grid .item .image img {
+    float: left;
+    width: 100%;
+  }
+{% endif %}
+.products.grid .item .summary {
+  /* display: inline-block; */
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  {% if section.settings.image %}margin-left: {{ section.settings.spacing }}px;{% endif %}
+  {% if section.settings.image %}width: calc(100% - {{ picsize }}px - {{ section.settings.spacing }}px);{% endif %}
+}  
+.products.grid .item .summary .pricing p {
+  margin: 0 0 -0.15em 0;
+}
+  
+.products.grid .item .review-rating {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+}  
+.products.grid .item .btn,
+.products.grid .item .readmore .link {
+  font-size: 80%;
+}  
+.products.grid .item h2,
+.products.grid .item p {
+  margin-bottom: 0.3em;
+}  
+.products.grid .item .price {
+  font-size: 100%;
+}  
+.products.grid .item .productprice,
+.products.grid .item .small {
+  margin-top: 0;
+} 
+.products.grid .item .small {
+  display: none;
+}
+  
+
+
+
+@media only screen and (min-width: {{ settings.width_min_tablet }}) {
+  .products.collection.grid.list .item.buttons .more {
+    padding: {{ section.settings.spacing }}px !important;
+    border: none;
+  }
+  
+  .products.collection.grid.list .item.dated {
+      padding-left: 10em;
+  }
+  .products.collection.grid.list .item.dated .subtitle {
+      width: 10em;
+      padding-right: 1em;
+      position: absolute;
+  }  
+  .products.collection.grid.list .item.dated .subtitle {
+      top: {{ section.settings.text_spacing }}px;
+      left: {{ section.settings.text_spacing }}px;
+  } 
+
+}
+
+
+
+@media only screen and (max-width: {{ settings.width_max_mobile }}) {
+  .products.collection.grid .item.buttons {
+    padding-bottom: 100px;
+    padding-bottom: 60px;
+  }
+
+  .products.collection.grid .item .more .btn,
+  .products.collection.grid .item .readmore .link {
+    margin-top: {{ section.settings.text_spacing }}px;
+  }  
+  
+  .products.collection.grid.list .item.buttons .more .read_more {
+    float: left;
+    margin: 0;
+  }
+  
+  .products.collection.grid.list .item.buttons .more .add_to_cart {
+    float: right;
+    margin: 0;
+  }
+}
+
+
+
+/* 
+.products.grid .item a {
+  display: none;
+}
+*/
+  
+
+{% assign class = ' list' %}
+{% elsif template contains '.folio' %}
+
+
+/* TO DO: TESTING FOLIO OVERRIDE */
+/* Folio */
+.products.grid {  
+  display: flex;
+  flex-wrap: wrap; 
+
+  margin-left: -{{ section.settings.spacing }}px;
+  margin-bottom: -{{ section.settings.spacing }}px;
+}
+.products.grid .item {
+  flex: 1 1 {{ section.settings.product }}px;
+  margin: 0 0 {{ section.settings.spacing }}px {{ section.settings.spacing }}px; 
+  
+  {% comment %} 
+  {% if section.settings.row_justify %}  
+  flex: 1 1 {{ section.settings.product }}px;
+  margin: 0 0 {{ section.settings.spacing }}px {{ section.settings.spacing }}px;  
+  {% endif %}  
+  {% endcomment %}  
+}
+{% if section.settings.image %}
+.products.grid .item {
+  margin-bottom: {{ section.settings.spacing }}px; 
+  {% if section.settings.image %}padding-left: {{ picsize }}px;{% endif %}
+} 
+.products.grid .item .image {
+  width: {{ picsize }}px;
+  display: inline;
+  float: left;
+}  
+  .products.grid .item .image img {
+    float: left;
+    width: 100%;
+  }
+{% endif %}
+.products.grid .item .summary {
+  /* display: inline-block; */
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  margin-left: {{ section.settings.spacing }}px;
+  {% if section.settings.image %}width: calc(100% - {{ picsize }}px - {{ section.settings.spacing }}px);{% endif %}
+}  
+.products.grid .item .summary .pricing p {
+  margin: 0 0 -0.15em 0;
+}
+  
+.products.grid .item .review-rating {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+}  
+.products.grid .item .btn,
+.products.grid .item .readmore .link {
+  font-size: 80%;
+}  
+.products.grid .item h2,
+.products.grid .item p {
+  margin-bottom: 0.3em;
+}  
+.products.grid .item .price {
+  font-size: 100%;
+}  
+.products.grid .item .productprice,
+.products.grid .item .small {
+  margin-top: 0;
+} 
+.products.grid .item .small {
+  display: none;
+}
+  
+
+
+
+@media only screen and (min-width: {{ settings.width_min_tablet }}) {
+  .products.collection.grid.list .item.buttons .more {
+    padding: {{ section.settings.spacing }}px !important;
+    border: none;
+  }
+}
+
+
+
+@media only screen and (max-width: {{ settings.width_max_mobile }}) {
+  .products.collection.grid .item.buttons {
+    padding-bottom: 100px;
+    padding-bottom: 60px;
+  }
+
+  .products.collection.grid .item .more .btn,
+  .products.collection.grid .item .readmore .link {
+    margin-top: {{ section.settings.text_spacing }}px;
+  }  
+  
+  .products.collection.grid.list .item.buttons .more .read_more {
+    float: left;
+    margin: 0;
+  }
+  
+  .products.collection.grid.list .item.buttons .more .add_to_cart {
+    float: right;
+    margin: 0;
+  }
+}
+
+
+
+/* 
+.products.grid .item a {
+  display: none;
+}
+*/
+  
+
+{% assign class = ' list' %}  
+{% else %}
+  
+
+/* Grid */
+.products.grid {  
+  display: flex;
+  flex-wrap: wrap; 
+  
+  {% comment %}
+  {% if section.settings.row_justify %}  
+  display: flex;
+  flex-wrap: wrap;   
+  {% else %}    
+  display: grid;
+  grid-gap: {{ section.settings.spacing }}px;  
+  grid-template-columns: repeat(auto-fit, minmax({{ section.settings.product }}px, 1fr));  
+  {% endif %}  
+  
+  {% endcomment %}
+
+  margin-left: -{{ section.settings.spacing }}px;
+  margin-bottom: -{{ section.settings.spacing }}px;
+
+}
+.products.grid .item {
+  flex: 1 1 {{ section.settings.product }}px;
+  margin: 0 0 {{ section.settings.spacing }}px {{ section.settings.spacing }}px; 
+  
+  {% comment %} 
+  {% if section.settings.row_justify %}  
+  flex: 1 1 {{ section.settings.product }}px;
+  margin: 0 0 {{ section.settings.spacing }}px {{ section.settings.spacing }}px;  
+  {% endif %}  
+  {% endcomment %}  
+}
+.products.collection.grid .item .more form.readmore button.btn,
+.products.collection.grid .item .readmore .link {
+  float: left !important;
+  width: 48% !important;
+} 
+.products.collection.grid .item .more form.readmore span.btn,
+.products.collection.grid .item .readmore .link {
+  float: right !important;
+  width: 48% !important;
+} 
+.products.grid .item .pricing {
+  margin-top: {{ section.settings.spacing }}px;
+  margin-bottom: {{ section.settings.spacing }}px; 
+}  
+
+  
+
+.products.collection.grid .item.hasexcerpt,
+.products.collection.grid .item.andmore,
+.products.collection.grid .item.andcart {
+  padding-bottom: 60px;
+  padding-bottom: calc({{ section.settings.text_spacing | times: 2 }}px + {{ settings.button_base_size }} + 0.51em + 0.51em);
+  padding-bottom: calc({{ section.settings.text_spacing | times: 2 }}px + {{ settings.button_base_size }} + {{ settings.button_padding | divided_by: 4 | times: 0.01 | times: 2 }}em);
+}
+  
+  
+@media only screen and (max-width: {{ settings.width_max_mobile }}) {
+  .products.collection.grid .item.buttons {
+    padding-bottom: 100px;
+  }
+  .products.collection.grid .item .more .btn,
+  .products.collection.grid .item .readmore .link {
+    margin-top: {{ section.settings.text_spacing }}px;
+  }  
+}
+  
+  
+  
+/* TO DO: TESTING FOLIO OVERRIDE */
+@media only screen and (min-width: {{ settings.width_min_tablet }}) {
+  
+  {% if section.settings.layout_grid_prominent_feature == 'image_title' %}
+  
+  .products.grid .item .image {
+    position: absolute !important;
+  }  
+  {% if section.settings.image %}
+  .products.grid .item .image {    
+    width: {{ picsize }}px !important;
+  }  
+    .products.grid .item .image img {
+      float: left !important;
+      width: 100% !important;
+    }
+  {% endif %}
+  .products.grid .item .summary {
+    /* display: inline-block; */
+    display: inline-block !important;
+    position: relative !important;
+    overflow: hidden !important;
+    {% if section.settings.image %}margin-left: {{ section.settings.spacing | plus: picsize }}px !important;{% endif %}
+    {% if section.settings.image %}width: calc(100% - {{ picsize }}px - {{ section.settings.spacing }}px) !important;{% endif %}
+  }
+  
+  {% endif %}
+  
+}
+  
+
+{% assign class = '' %}
+{% endif %}
+   
+  
+  
+  
+  
+  
+/* Grid & List */
+.products.grid .item {
+  position: relative;
+  background: {{ settings.color_collection_grid_bg }}; 
+  padding: {{ section.settings.text_spacing }}px;
+} 
+  
+.products.collection.grid .item .more {
+  bottom: {{ section.settings.text_spacing }}px;
+  left: {{ section.settings.text_spacing }}px;
+  width: calc(100% - {{ section.settings.text_spacing | times: 2 }}px);
+  height: auto;
+}
+.products.collection.grid .item .more form {
+  /* border: solid 1px green; */
+  max-width: none;
+}
+.products.collection.grid .item .more .btn {
+  margin-right: {{ section.settings.text_spacing }}px;
+  margin-right: 0;
+}
+  
+.products.grid .item h2,
+.products.grid .item p,
+.products.grid .item p a {
+  color: {{ settings.color_collection_grid_text }};
+}
+.products.grid .item.fillrow {
+  background: transparent;
+  margin-top: -50px;
+} 
+.products.grid .item .image {
+}
+.products.grid .item .image a {
+}
+.products.grid .item svg,
+.products.grid .item img {
+  width: 100%;
+} 
+.products.collection.grid .item .summary {
+}
+
+.products.collection.grid .item .small{
+    font-size: 80%;
+}
+.products.collection.grid .item .title {
+  font-size: {{ title_size }}px;
+}
+
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+div.tags {
+  padding: {{ section.settings.tagspacing }}px;
+  padding: 0;
+}  
+div.tags .checkboxes {
+  {% if section.settings.tagspacing > 0 %}
+  margin-bottom: {{ section.settings.tagspacing | append: 'px' }};
+  {% else %}
+  margin-bottom: {{ settings.grid_spacing | append: 'px' }};
+  {% endif %}
+}
+  
+
+
+div.tags .group {
+  padding: {{ section.settings.tagspacing }}px;
+  margin-right: {{ section.settings.tagdivide }}px;
+}
+div.tags > div:last-of-type {
+  margin-right: 0;
+}
+
+  
+{% if section.settings.tags_style == 'dropdown' or section.settings.tags_style == 'expand' %}
+div.tags {
+  padding: 0;
+  margin-right: 0; 
+  position: relative;
+  z-index: 30;
+} 
+div.tags .group {
+  {% if section.settings.tags_position == 'HEADER' %}
+  margin-right: {{ section.settings.tagdivide }}px;
+  {% endif %}
+  padding: {{ section.settings.tagspacing }}px;
+  cursor: pointer;
+  position: relative;
+}
+div.tags .group h4 {
+  font-size: {{ settings.filter_group_heading_size }}px;
+  
+  padding: {{ section.settings.tagspacing }}px;
+  margin: -{{ section.settings.tagspacing }}px;
+} 
+div.tags .group ul {
+  padding: {{ section.settings.tagspacing }}px;
+  margin-left: -{{ section.settings.tagspacing | plus: 1 }}px; 
+  
+  {% if section.settings.tags_style == 'expand' %}
+  {% unless settings.color_collection_group_tag_border contains "rgba(0,0,0,0)" %}
+  margin-top: {{ section.settings.tagspacing }}px;
+  padding-top: 0;
+  position: relative;
+  top: {{ section.settings.tagspacing | times: 2 }}px;
+  margin-bottom: {{ section.settings.tagspacing | times: 2 }}px;
+  {% endunless %}
+  {% endif %}
+}
+.js div.tags .group ul {
+  {% if section.settings.tags_style == 'expand' %}
+  {% unless settings.color_collection_group_tag_border contains "rgba(0,0,0,0)" %}
+  border: solid 1px {{ settings.color_collection_group_tag_border }};
+  border-top: none;
+  margin-bottom: 0;
+  {% endunless %}
+  {% endif %}
+}
+{% if section.settings.tags_style == 'dropdown' %}
+.js div.tags .group ul {  
+  margin-top: -{{ section.settings.tagspacing }}px;  
+}
+{% endif %} 
+div.tags .group ul a {
+  display: block;  
+}
+div.tags > div:last-of-type {
+  margin-right: 0;
+}
+
+  
+div.tags .group.has-submenu {
+  z-index: 900;
+  position: relative;
+}
+{% if section.settings.tags_style != 'block' %}
+div.tags .group.has-submenu ul {
+  display: none;
+  {% if settings.menus_hover %}
+  display: block;  
+  position: absolute;  
+  {% unless settings.color_collection_group_tag_border contains "rgba(0,0,0,0)" %}
+  width: calc(100% + 2px);
+  {% endunless %}
+  {% if section.settings.tags_dropdown_position == 'extend' %}
+  border-top: none;
+  {% else %}  
+  margin-top: {{ section.settings.tagspacing }}px;
+  {% endif %}
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity {{ settings.transition_duration | divided_by: 10.00 }}s ease 0s;
+  {% endif %}
+  
+}   
+{% endif %}
+{% if section.settings.tags_style != 'block' %}
+div.tags .group.has-submenu:hover ul {
+  display: block;
+  {% if section.settings.tags_position == 'HEADER' %}
+  position: absolute;  
+  {% else %}
+  position: relative;
+  {% endif %}
+  {% unless settings.color_collection_group_tag_border contains "rgba(0,0,0,0)" %}
+  width: calc(100% + 2px);
+  {% endunless %}
+  {% if section.settings.tags_dropdown_position == 'extend' %}
+  border-top: none;
+  {% else %}  
+  margin-top: {{ section.settings.tagspacing }}px;
+  {% endif %}
+  {% if settings.menus_hover %}
+  opacity: 1.0;
+  pointer-events: auto;
+  transition: opacity {{ settings.transition_duration | divided_by: 10.00 }}s ease 0s;
+  {% endif %}
+}
+/* TO DO: TEST SIDEBAR EXPAND MENU WORKS */
+{% if section.settings.tags_style == 'dropdown' %}
+aside div.tags .group.has-submenu:hover ul {
+  /*
+  margin: {{ section.settings.tagspacing }}px 0 0 0;
+  padding: 0 !important;
+  border: none !important;
+  */
+}
+{% endif %}
+{% endif %}
+  
+  
+  
+
+
+  
+  
+{% assign arrowshape = section.settings.tags_dropdown_icon %}
+{% assign iconshape = 'icon-' | append: arrowshape %} 
+{% if arrowshape contains 'triangle' or arrowshape contains 'arrow' %}{% assign iconshape = iconshape | append: '-down' %}{% endif %}
+  
+{% if arrowshape != 'hidden' %}
+    .expand .icon-{{ arrowshape }}-down,
+    .has-submenu .icon-{{ arrowshape }}-down,
+    .expand .icon-{{ arrowshape }},
+    .has-submenu .icon-{{ arrowshape }} {
+      {% if arrowshape == 'triangle' %}
+      width: {{ settings.menu_font_size | divided_by: 1.3 }}px !important;
+      height: {{ settings.menu_font_size | divided_by: 1.6 }}px !important;
+      {% endif %}
+      {% if arrowshape == 'arrow' %}
+      width: {{ settings.menu_font_size }}px !important;
+      height: {{ settings.menu_font_size | divided_by: 1.2 }}px !important;
+      {% endif %}
+      {% if arrowshape == 'plus' %}
+      width: {{ settings.menu_font_size }}px !important;
+      height: {{ settings.menu_font_size | divided_by: 1.2 }}px !important;
+      {% endif %}
+      vertical-align: middle !important;
+      margin-top: 0.33em;
+      
+      {% if section.settings.tags_position != 'HEADER' %}
+      margin-top: 0.3em !important;
+      {% endif %}
+      
+      float: right;
+    }
+{% endif%}
+{% endif%}
+  
+{% unless section.settings.tags_position == 'HEADER' %}
+div.tags  .group,
+div.tags > div:last-of-type {
+  margin-right: 0;
+}
+{% endunless %}
+
+{% if section.settings.tags_position == 'TOP' %}
+aside div.tags {
+  margin-bottom: {{ settings.grid_spacing | append: 'px' }};
+}
+{% endif %}
+{% if section.settings.tags_position == 'BOTTOM' %}
+aside div.tags {
+  margin-top: {{ settings.grid_spacing | append: 'px' }};
+}
+{% endif %}
+
+{% unless template contains '.list' %}
+@supports (display: grid) {
+  .products > .item,
+  .products.grid > .item {
+    float: none;
+    width: auto;
+  }  
+} 
+{% endunless %}
+ 
+ 
+div.tags div.group ul {
+  background-color: inherit;
+  background: {{ settings.color_collection_group_tag_bg }};
+}
+
+{% if section.settings.tags_style == 'expand' %}
+aside div.tags div.group ul {
+  position: relative;
+  margin-top: {{ section.settings.tagspacing }}px;
+}
+.js aside div.tags div.group.expand.elastic ul {
+  padding-top: {{ section.settings.tagspacing }}px;
+  padding-bottom: 0;
+}
+{% if section.settings.tags_position == 'HEADER' %}
+div.tags div.group {
+  position: relative;
+  background: transparent;
+}
+div.tags div.group h4 {
+  background: {{ settings.color_collection_group_tag_bg }};
+}  
+div.tags div.group ul {
+  position: relative;
+  /* background-color: inherit; */
+  padding: {{ section.settings.tagspacing }}px;
+  margin-left: -{{ section.settings.tagspacing }}px;
+  
+  margin-top: 0;
+  padding-top: 0; 
+  /* Adjust for container borders */   
+  top: {{ section.settings.tagspacing }}px;
+  margin-left: -{{ section.settings.tagspacing | plus: 1 }}px;
+  width: calc(100% + 2px + {{ section.settings.tagspacing | times: 2 }}px);
+  /* background: {{ settings.color_collection_group_tag_bg }}; */
+  
+  {% if section.settings.tagrowsvisible > 0 %}
+  /* Prevent scrollbars getting too long */
+  max-height: 5.3em !important;  
+  max-height: {{ section.settings.tagrowsvisible | times: 1.35 }}em !important;  
+  overflow-y: auto;
+  {% endif %}
+}
+.js div.tags div.group ul {
+  margin-left: -{{ section.settings.tagspacing | plus: 1 }}px;
+}
+{% endif %}
+
+{% if section.settings.tags_position != 'HEADER' %}
+aside div.tags div.group ul {
+  margin-top: 0;
+}
+{% endif %} 
+  
+{% endif %} 
+
+  
+  
+  
+  
+
+/* TO DO: SOLD OUT MESSAGE THAT APPEARS WHEN CLICKING ADD TO CART */
+.products.collection .item .warning {
+  border: solid 1px red;
+  padding: 8px 10px;
+}  
+  
+  
+
+/* TESTING SPACING TO CUSTOMIZE FOLIO VIEW */
+.products.grid .item h2,
+.products.grid .item p,
+.products.grid .item .review-rating {
+  margin-bottom: {{ section.settings.text_margin }}px;
+}
+.products.grid .item .summary small {
+  margin-top: {{ section.settings.text_margin }}px;
+}
+.products.grid .item h2 {
+  line-height: 130% !important;
+}
+.products.grid .item .review-rating {
+  margin-bottom: 0 !important;
+  /* border: solid 1px yellow; */
+}
+.products.grid .item .pricing {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 120% !important;
+  margin-bottom: 0 !important;
+  margin-bottom: -{{ section.settings.text_margin }}px !important;
+  /* border: solid 1px orange; */
+}
+.products.grid .item .productprice {
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  line-height: 100% !important;
+  /* border: solid 1px green; */
+}
+  
+  
+
+/* Hide readmore buttons on collections, use slide on hover to display */
+{% if settings.products_hover_buttons_slide %}
+@media only screen and (min-width: {{ settings.width_min_tablet }}) {
+    .products.grid .item .more {
+      /* Set top padding to item text padding (only working correctly in list view) */
+      /*
+      padding-top: 0 !important;
+      padding-bottom: {{ section.settings.text_spacing }}px !important;
+      */
+    } 
+    .products.grid.list .item .more {
+      margin-right: {{ section.settings.text_spacing }}px !important;
+      margin-bottom: {{ section.settings.text_spacing }}px !important;
+      margin-right: 0 !important;
+      margin-bottom: 0 !important;
+    }
+  
+}
+{% endif %}
+  
+{% comment %}
+{% endcomment %}
+
+
+  
+</style>
+
+<article class="page" id="content" role="article" itemscope itemtype="http://schema.org/Article">
+  
+{% capture fillrow %}
+{% unless template contains '.list' %}
+{% unless section.settings.row_justify %} 
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+{% endunless %}
+{% endunless %}
+{% endcapture %}
+
+  {% assign collection_title = blog.title %}
+  {% assign collection_url = blog.url %}
+  {% if blog.handle == 'all' %}{% assign collection_title = 'products.general.products_title' | t %}{% assign collection_url = 'all' %}{% endif %}
+ 
+  {% capture filters %}
+    {% assign tagsactive = 0 %}
+    <div class="tags">
+      
+    <!-- TO DO: Add collection 'all' handle to URL when in all collection -->
+    Blog filters here
+
+    </div>
+  {% endcapture %}
+  {% assign filters = filters | strip_newlines | replace: '"all/', '"/collections/all/' %}
+
+  <header role="banner">
+    
+    {% if section.settings.heading %}
+    <h1>{{ collection_title }}</h1>
+    {% endif %}
+    
+    {% if blog.description != blank %}
+      <div class="rte">
+        {{ blog.description }}
+      </div>
+    {% endif %}
+    
+    {% comment %}{% include 'grid-sortbar' %}{% endcomment %}
+    
+    {% if section.settings.layout_grid_list != 'hidden' %}
+    {% assign tooltype = blog %}
+    {% include 'grid-toolbar' with tooltype %}
+    {% endif %}
+
+    {% comment %}
+    <h2>Tags in Blog</h2>
+    <ul>
+    {% for tag in blog.all_tags %}  
+    {{ tag }}
+    {% endfor %} 
+    </ul>
+    {% endcomment %} 
+    
+    {% if section.settings.tags_position == 'HEADER' %}{{ filters }}{% endif %}
+    
+  </header>
+
+{% assign perpage = section.settings.products %}
+{% paginate blog.articles by perpage %}
+
+  {% if section.settings.pagination_top %}
+  {% if paginate.pages > 1 %}
+        {% assign position = 'top' %}
+            {% include 'pagination' with position %}
+  {% endif %}
+  {% endif %}
+
+  <div class="products collection grid{{ class }}{% if section.settings.tags_position contains 'TOP' or section.settings.tags_position contains 'BOTTOM' %} sidegap{% endif %}">
+
+  {% for article in blog.articles %}
+
+      {% include 'grid-article' %}
+    
+  {% else %}
+    
+      {% if blog.handle == 'all' and blog.all_vendors.size == 0 and blog.all_types.size == 0 %}
+        {% for i in (1..8) %}
+          <a href="#">
+            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+            {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+          </a>
+
+          <p>
+            <a href="#">{{ 'homepage.onboarding.product_title' | t }}</a>
+          </p>
+
+          <p>
+            {{ 1999 | money }}
+          </p>
+        {% endfor %}
+      {% else %}
+     {% assign noproducts = true %}
+      {% endif %}
+
+  {% endfor %}
+
+  {{ fillrow }}
+
+  </div>  
+    
+  {% if section.settings.pagination_bottom %}
+  {% if paginate.pages > 1 %}
+        {% assign position = 'bottom' %}
+     <div style="clear:both;overflow:hidden;height:0;padding:0;"></div>
+            {% include 'pagination' with position %}
+  {% endif %}
+  {% endif %}
+
+{% endpaginate %}
+  
+</article>
+
+{% capture sidecontent %}{% include 'sidebars' %}{% endcapture %}
+{% if section.settings.tags_position contains 'TOP' or section.settings.tags_position contains 'BOTTOM' and settings.sidebar_size > 0 %}
+{% assign rep = '<!-- ' | append: section.settings.tags_position | append: ' -->' %}
+{{ sidecontent | replace: rep, filters }}
+{% else %}
+{{ sidecontent }}
+{% endif %}
+
+{% comment %}
+{% include 'sidebars' %}
+{% endcomment %}
+
+
+{% if section.settings.tags_style == 'expand' %}
+<script>
+//alert('TAGS');
+jQuery('.tags .group h4').css( 'cursor', 'pointer' );
+jQuery('.tags .group ul').hide();
+{% if section.settings.tagkeepopen %}jQuery('.tags .group.open ul').show();{% endif %}
+jQuery('.tags .group h4').click(function() {
+  jQuery(this).parent().children('ul').slideToggle({{ settings.transition_duration | times: 100 }});
+  return false;
+});
+</script>
+{% endif %}
+
+{% include 'check-cart' %}
+
+{% schema %}
+  {
+    "name": "Body",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "heading",
+        "label": "Show heading",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "products",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "label": "Articles per page",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "product",
+        "min": 100,
+        "max": 500,
+        "step": 10,
+        "label": "Articles width",
+        "default": 200
+      },
+      {
+        "type": "range",
+        "id": "spacing",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "label": "Articles spacing",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "text_spacing",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "label": "Articles text spacing",
+        "default": 5
+      },
+      {
+        "type": "select",
+        "id": "title_size",
+        "label": "Article title size",
+        "default": "h4",
+        "options": [
+          {
+            "value": "h2",
+            "label": "Secondary heading size"
+          },
+          {
+            "value": "h3",
+            "label": "Tertiary heading size"
+          },
+          {
+            "value": "h4",
+            "label": "Quaternary heading size"
+          },
+          {
+            "value": "p",
+            "label": "Body text size"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "layout_grid_list",
+        "label": "Layout grid / list",
+        "default": "buttons",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "links",
+            "label": "Links"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          },
+          {
+            "value": "icons",
+            "label": "Icons"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "layout_grid_prominent_feature",
+        "label": "Prominent feature",
+  		"default": "image",
+        "options": [
+          {
+            "value": "title",
+            "label": "Title"
+          },
+          {
+            "value": "image",
+            "label": "Image"
+          },
+          {
+            "value": "image_title",
+            "label": "Image & title"
+          },
+          {
+            "value": "date",
+            "label": "Date"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "row_justify",
+        "label": "Justify rows",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "sort_enable",
+        "label": "Show sort by",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "tags",
+        "label": "Show article tags",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "pagination_top",
+        "label": "Show top pagination",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "pagination_bottom",
+        "label": "Show bottom pagination",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "pagination_prev_next",
+        "label": "Show < > pagination",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "title",
+        "label": "Show article title",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "description",
+        "label": "Show article description",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "description_paragraph",
+        "label": "Show first sentence",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "image",
+        "label": "Show article image",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "image_divide",
+        "label": "Show article image spacing",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "postname",
+        "label": "Show article poster name",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "postdate",
+        "label": "Show article posted date",
+        "default": true
+      },
+      {
+           "type": "text",
+           "id": "new_days",
+           "label": "New for x days",
+           "default": "30"
+      },
+      {
+        "type": "select",
+        "id": "new",
+        "label": "New sticker label",
+        "options": [
+           {
+             "value": "hidden",
+             "label": "Hidden"
+           },
+           {
+             "value": "topleft",
+             "label": "Top left"
+           },
+           {
+             "value": "topright",
+             "label": "Top right"
+           }
+        ],
+        "default": "topleft"
+      },
+      {
+        "type": "select",
+        "id": "read_more",
+        "label": "Read more",
+        "options": [
+           {
+             "value": "hidden",
+             "label": "Hidden"
+           },
+           {
+             "value": "link",
+             "label": "Link"
+           },
+           {
+             "value": "button",
+             "label": "Button"
+           }
+        ],
+        "default": "link"
+      },
+    {
+      "type": "header",
+      "content": "Filter tags"
+    },
+      {
+        "type": "select",
+        "id": "tags_position",
+        "label": "Tags position",
+        "options": [
+           {
+             "value": "HEADER",
+             "label": "Header"
+           },
+           {
+             "value": "TOP",
+             "label": "Sidebar Top"
+           },
+           {
+             "value": "BOTTOM",
+             "label": "Sidebar Bottom"
+           }
+        ],
+        "default": "HEADER"
+      },
+      {
+        "type": "select",
+        "id": "tags_style",
+        "label": "Tags group style",
+        "options": [
+           {
+             "value": "block",
+             "label": "Block"
+           },
+           {
+             "value": "dropdown",
+             "label": "Hover"
+           },
+           {
+             "value": "expand",
+             "label": "Expand"
+           }
+        ],
+        "default": "block"
+      },
+      {
+        "type": "select",
+        "id": "tags_dropdown_position",
+        "label": "Tags group dropdown position",
+        "options": [
+          {
+            "value": "extend",
+            "label": "Extend"
+          },
+          {
+            "value": "below",
+            "label": "Below"
+          }
+        ],
+        "default": "extend"
+      },
+      {
+        "type": "select",
+        "id": "tags_dropdown_icon",
+        "label": "Tags group dropdown icon",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "arrow",
+            "label": "Arrow"
+          },
+          {
+            "value": "triangle",
+            "label": "Triangle"
+          },
+          {
+            "value": "plus",
+            "label": "Plus"
+          }
+        ],
+        "default": "arrow"
+      },
+      {
+        "type": "checkbox",
+        "id": "menus_elastic",
+        "label": "Elastic sidebar groups",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "tagspacing",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "label": "Tag group spacing",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "tagdivide",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "label": "Tag group divide",
+        "default": 5
+      },
+      {
+        "type": "range",
+        "id": "tagrowsvisible",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "label": "Tag group visible",
+        "default": 5
+      },
+      {
+        "type": "checkbox",
+        "id": "tagkeepopen",
+        "label": "Keep tag groups open",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "tagvendors",
+        "label": "Show vendor tags",
+        "default": false
+      },
+      {
+         "type": "paragraph",
+         "content": "Tags can be sorted into filter groups, if every tag is unique. View your store [product tags](/collections/all?view=tags)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Tag Group",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Group Title"
+          },
+          {
+            "type": "select",
+            "id": "type",
+            "label": "Group type",
+            "options": [
+              {
+                "value": "checkboxes",
+                "label": "Checkboxes"
+              },
+              {
+                "value": "swatches",
+                "label": "Swatches"
+              }
+            ],
+            "default": "checkboxes"
+          },
+          {
+            "id": "tags",
+            "type": "textarea",
+            "label": "Tags in group"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,167 @@
+
+  {% assign cookiefilename = 'cookie_status' %}
+  {% assign cookies_url = settings.cookie_page %}
+  {% capture cookies_link %}<a href="/pages/{{ cookies_url }}">{{ 'general.accessibility.cookie_policy' | t }}</a>{% endcapture %}
+
+  {% if cookie_status == 'head' %}  
+	<script>
+      
+    function deleteCookies() {
+        var theCookies = document.cookie.split(';');
+        for (var i = 0 ; i < theCookies.length; i++) {
+            document.cookie = theCookies[i].split('=')[0] + '=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+    }
+	function setCookie(cookieName, cookieValue) {
+
+		var cookieExp = 360;
+		var d = new Date();
+		d.setTime(d.getTime() + (cookieExp*24*60*60*1000));
+		var expires = "expires="+ d.toUTCString();
+		document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
+        var myYesCookie = document.getElementById('yescookie');
+        var myNoCookie = document.getElementById('nocookie');
+      	if(myYesCookie){ document.getElementById('yescookie').className = ''; }
+      	if(myNoCookie){ document.getElementById('nocookie').className = ''; }
+		if (cookieValue == 'true') {
+
+          	if(myYesCookie){ document.getElementById('yescookie').className = 'active'; }    
+            var intromessage = "{{ 'general.accessibility.cookie_intro_html' | t }}";
+            var intro = document.getElementById('cookie-intro');
+            if(intro){
+                intro.innerHTML = intromessage;
+            }      
+            {% comment %}
+            var cartmessage = "{{ 'cart.general.empty' | t }}";
+            var cartcookie = document.getElementById('cookie-cart');
+            if(cartcookie){
+                cartcookie.innerHTML = cartmessage;
+            }   
+            {% endcomment %}        
+		}
+		if (cookieValue == 'false') { 
+
+            /* COOKIES SUPPORTED BUT DISABLED */
+            /* TO DO: Store needs cookie support to function, so display message */
+          
+          	if(myNoCookie){ document.getElementById('nocookie').className = 'active';  }                   
+            var intromessage = "{{ 'general.accessibility.cookie_intro_disabled_html' | t }}";
+            var intro = document.getElementById('cookie-intro');
+            if(intro){
+                intro.innerHTML = intromessage;
+            }
+          
+            var cartmessage = "{{ 'cart.general.cookies_required' | t }}";
+            var cartcookie = document.getElementById('cookie-cart');
+            if(cartcookie){
+                cartcookie.innerHTML = cartmessage;
+            }  
+            {% comment %}
+            {% endcomment %}  
+          
+          	{% comment %}
+            var jsmessage = "{{ 'cart.general.cookies_required' | t }}";
+            var jscookie = document.getElementById('jscookies');
+            if(jscookie){
+                jscookie.innerHTML = jsmessage;
+            }
+          	{% endcomment %} 
+          
+			document.cookie = cookieName + "; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+         
+		}
+	}
+	function getCookie(cookieName) {
+		var name = cookieName + "=";
+		var ca = document.cookie.split(';');
+		for(var i = 0; i < ca.length; i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') {
+				c = c.substring(1);
+			}
+			if (c.indexOf(name) == 0) {
+				return c.substring(name.length,c.length);
+			}
+		}
+		return "";
+	}
+	function checkCookie(cookieName, cookieValue) {
+        var myYesCookie = document.getElementById('yescookie');
+        var myNoCookie = document.getElementById('nocookie');
+      	if (navigator.cookieEnabled) {
+          var name = getCookie(cookieName);      
+          /* TO DO: SET COOKIE IF DEFAULT AND NO MANUAL COOKIE SETTING SET */
+          {% if settings.cookie_consent_is_default %}
+          {% endif %}      
+     
+          if (name != "") { 
+              setCookie(cookieName, name);
+          } else {          	
+              {% if settings.cookie_consent_is_default %}
+              if(myYesCookie){ document.getElementById('yescookie').className = 'active'; }
+              setCookie(cookieName, "true");
+              {% else %}
+              if(myNoCookie){ document.getElementById('nocookie').className = 'active'; }
+              {% endif %}
+          }
+
+        } else {
+          /* NO COOKIE SUPPORT */
+            var intromessage = "{{ 'general.accessibility.cookie_intro_disabled_html' | t }}";
+            var intro = document.getElementById('cookie-intro');
+            if(intro){
+                intro.innerHTML = intromessage;
+            }
+        }
+	}
+	function acceptsCookies() {     
+      var name = getCookie("{{ cookiefilename }}");
+		if (name == 'true') {
+			return true;    
+		}
+		if (name == 'false') {
+			return false;    
+		}	
+	}      
+      
+    checkCookie("{{ cookiefilename }}", "false");           
+    
+	</script>
+
+  {% endif %}
+
+  {% if cookie_status == 'foot' %}  
+	<script>
+	var cookiemessage = "{{ 'general.accessibility.cookie_notice_html' | t: cookies: cookies_link | replace: '"', "'" }} <a href='' id='yescookie' onclick='setCookie(\"{{ cookiefilename }}\", \"true\")'>{{ 'general.legal.yes' | t }}</a> <a href='' id='nocookie' onclick='setCookie(\"{{ cookiefilename }}\", \"false\")'>{{ 'general.legal.no' | t }}</a> <span class='div'></span> <a href='/pages/{{ cookies_url }}' id='changecookie'>{{ 'general.legal.settings' | t }}</a>";
+	var notice = document.getElementById('cookie-notice');
+    if(notice){
+    	notice.innerHTML = cookiemessage;
+    }
+    {% if settings.cookie_consent_is_default %}
+    var intromessage = "{{ 'general.accessibility.cookie_intro_html' | t }}";
+    {% else %}
+	var intromessage = "{{ 'general.accessibility.no_cookie_intro_html' | t }}";
+    {% endif %}
+	var intro = document.getElementById('cookie-intro');
+    if(intro){
+    	intro.innerHTML = intromessage;
+    }
+      
+    {% if settings.cookie_consent_is_default %}
+    var cartmessage = "&nbsp;";
+    {% else %}
+	var cartmessage = "{{ 'cart.general.cookies_required' | t }}";
+    {% endif %}
+	var cartcookie = document.getElementById('cookie-cart');
+    if(cartcookie){
+    	cartcookie.innerHTML = cartmessage;
+    } 
+      
+    window.onload = function() { 
+      	checkCookie("{{ cookiefilename }}", "false");
+	};
+	</script>
+  {% endif %}
+
+  {% comment %}GDPR Notes: https://thrivethemes.com/gdpr-for-email-marketing/{% endcomment %}
+

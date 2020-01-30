@@ -1,0 +1,66 @@
+{% if settings.newsletter_form == 'shopify' %}
+{% if settings.forms_placeholders or placeholders == 'yes' %}{% assign showplaceholders = 'yes' %}{% endif %}
+
+{% form 'customer' %}
+
+  {% if heading != 'hidden' %}
+  {% capture heading %}{{ 'newsletter.titles.heading' | t }}{% endcapture %} 
+  {% if heading != blank %}<h2>{{ heading }}</h2>{% endif %}
+  {% endif %}
+
+  {% if labels == 'hidden' %}{% assign class = ' class="label-hidden"' %}{% endif %}
+
+  {% if form.posted_successfully? %}
+  <p class="note form-success">
+  {{ 'newsletter.form.post_success' | t }}
+  </p>
+  {% else %}
+
+  {{ form.errors | default_errors }}
+
+  <input type="hidden" name="contact[tags]" value="newsletter">
+
+  {% if settings.newsletter_form_name %}
+  <p class="text">
+  <label for="{% if where == 'footer' %}footer-{% endif %}name"{{ class }}>{{ 'newsletter.form.name' | t }}</label>
+  <input type="text" id="{% if where == 'footer' %}footer-{% endif %}name" name="contact[name]" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}"{% if showplaceholders == 'yes' %} placeholder="{% if labels == 'hidden' %}{{ 'newsletter.form.name' | t }}{% else %}{{ 'newsletter.form.name_placeholder' | t }}{% endif %}"{% endif %}>
+  </p>
+  {% endif %}
+
+  <p class="text">
+  <label for="{% if where == 'footer' %}footer-{% endif %}email"{{ class }}>{{ 'newsletter.form.email' | t }}</label>
+  <input type="email" id="{% if where == 'footer' %}footer-{% endif %}email" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"{% if showplaceholders == 'yes' %} placeholder="{% if labels == 'hidden' %}{{ 'newsletter.form.email' | t }}{% else %}{{ 'newsletter.form.email_placeholder' | t }}{% endif %}"{% endif %}>
+  </p>
+
+  <p class="actions">
+  <label{{ class }}>&nbsp;</label>
+  <button type="submit" class="btn">
+  {% if settings.newsletter_form_consent %}
+  {{ 'general.legal.newsletter_button' | t }}
+  {% else %}
+  {{ 'newsletter.form.submit' | t }}
+  {% endif %}
+  </button>
+  </p>
+
+
+  {% if settings.newsletter_form_consent %}
+  {% assign formtype = 'customer' %}
+  {% include 'accepts-marketing' with formtype %} 
+  {% endif %}
+
+{% comment %}
+{% endcomment %}
+
+
+
+  {% endif %}
+
+{% endform %}
+
+{% else %}
+
+{{ settings.newsletter_form_code }}
+
+{% endif %}
+

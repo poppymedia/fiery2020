@@ -1,0 +1,62 @@
+{% if settings.contact_form == 'shopify' %}
+{% if settings.forms_placeholders or placeholders == 'yes' %}{% assign showplaceholders = 'yes' %}{% endif %}
+
+{% form 'contact' %}
+
+  {% if heading != 'hidden' %}
+  {% capture heading %}{{ 'contact.titles.heading' | t }}{% endcapture %} 
+  {% if heading != blank %}<h2>{{ heading }}</h2>{% endif %}
+  {% endif %}
+
+  {% if labels == 'hidden' %}{% assign class = ' class="label-hidden"' %}{% endif %}
+
+  {% if form.posted_successfully? %}
+  <p class="note form-success">
+  {{ 'contact.form.post_success' | t }}
+  </p>
+  {% else %}
+
+  {{ form.errors | default_errors }}
+
+  <p class="text">
+  <label for="{% if where == 'footer' %}footer-{% endif %}name"{{ class }}>{{ 'contact.form.name' | t }}</label>
+  <input type="text" id="{% if where == 'footer' %}footer-{% endif %}name" name="contact[name]" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}"{% if showplaceholders == 'yes' %} placeholder="{% if labels == 'hidden' %}{{ 'contact.form.name' | t }}{% else %}{{ 'contact.form.name_placeholder' | t }}{% endif %}"{% endif %}>
+  </p>
+
+  <p class="text">
+  <label for="{% if where == 'footer' %}footer-{% endif %}phone"{{ class }}>{{ 'contact.form.phone' | t }}</label>
+  <input type="tel" id="{% if where == 'footer' %}footer-{% endif %}phone" name="contact[phone]" pattern="[0-9\-]*" value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}"{% if showplaceholders == 'yes' %} placeholder="{% if labels == 'hidden' %}{{ 'contact.form.phone' | t }}{% else %}{{ 'contact.form.phone_placeholder' | t }}{% endif %}"{% endif %}>
+  </p>
+  
+  <p class="textarea">
+  <label for="{% if where == 'footer' %}footer-{% endif %}email"{{ class }}>{{ 'contact.form.email' | t }}</label>
+  <input type="email" id="{% if where == 'footer' %}footer-{% endif %}email" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"{% if showplaceholders == 'yes' %} placeholder="{% if labels == 'hidden' %}{{ 'contact.form.email' | t }}{% else %}{{ 'contact.form.email_placeholder' | t }}{% endif %}"{% endif %}>
+  </p>
+
+  <p class="textarea">
+  <label for="{% if where == 'footer' %}footer-{% endif %}message"{{ class }}>{{ 'contact.form.message' | t }}</label>
+  <textarea rows="{% if labels == 'hidden' %}3{% else %}5{% endif %}" id="{% if where == 'footer' %}footer-{% endif %}message" name="contact[body]"{% if showplaceholders == 'yes' %} placeholder="{% if labels == 'hidden' %}{{ 'contact.form.message' | t }}{% else %}{{ 'contact.form.message_placeholder' | t }}{% endif %}"{% endif %}>{% if form.body %}{{ form.body }}{% endif %}</textarea>
+  </p>
+
+  {% if settings.contact_form_consent %}
+  {% assign formtype = 'contact' %}
+  {% include 'accepts-marketing' with formtype %} 
+  {% endif %}
+
+  <button type="submit" class="btn">
+  {% if settings.contact_form_consent %}
+  {{ 'contact.form.submit' | t }}
+  {% else %}
+  {{ 'contact.form.submit' | t }}
+  {% endif %}
+  </button>
+
+  {% endif %}
+
+{% endform %}
+
+{% else %}
+
+{{ settings.contact_form_code }}
+
+{% endif %}

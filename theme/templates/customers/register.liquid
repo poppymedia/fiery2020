@@ -1,0 +1,80 @@
+{% comment %}
+  This page includes a form for visitors to create a customer account.
+{% endcomment %}
+
+{% capture header %}
+{% section 'header' %}
+{% endcapture %}
+{% assign get_header = header | strip_newlines %}
+
+{% if get_header contains '<!-- Breadcrumb: above slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+{% section 'slideshow-page' %}
+
+{% if get_header contains '<!-- Breadcrumb: below slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+{% capture sidebar %}{% section 'sidebar' %}{% endcapture %}
+
+<div id="content">
+  
+<h1>{{ 'customer.register.title' | t }}</h1>
+
+{% form 'create_customer' %}
+  {{ form.errors | default_errors }}
+
+  <label for="FirstName" class="label-hidden">
+    {{ 'customer.register.first_name' | t }}
+  </label>
+  <input type="text"
+    name="customer[first_name]"
+    id="FirstName"
+    placeholder="{{ 'customer.register.first_name' | t }}"
+    autofocus
+    {% if form.first_name %}value="{{ form.first_name }}"{% endif %}>
+
+  <label for="LastName" class="label-hidden">
+    {{ 'customer.register.last_name' | t }}
+  </label>
+  <input type="text"
+    name="customer[last_name]"
+    id="LastName"
+    placeholder="{{ 'customer.register.last_name' | t }}"
+    {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+
+  <label for="Email" class="label-hidden">
+    {{ 'customer.register.email' | t }}
+  </label>
+  <input type="email"
+    name="customer[email]"
+    id="Email"
+    class="{% if form.errors contains 'email' %}input-error{% endif %}"
+    placeholder="{{ 'customer.register.email' | t }}"
+    value="{% if form.email %}{{ form.email }}{% endif %}"
+    spellcheck="false"
+    autocomplete="off"
+    autocapitalize="off">
+
+  <label for="CreatePassword" class="label-hidden">
+    {{ 'customer.register.password' | t }}
+  </label>
+  <input type="password"
+    name="customer[password]"
+    id="CreatePassword"
+    class="{% if form.errors contains 'password' %}input-error{% endif %}"
+    placeholder="{{ 'customer.register.password' | t }}">
+
+  {% assign formtype = 'customer' %}
+  {% include 'accepts-marketing' with formtype %}   
+  
+  <p>
+    <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn">
+  </p>
+  <a href="{{ shop.url }}">{{ 'customer.register.cancel' | t }}</a>
+{% endform %}
+  
+</div>
+{{ sidebar }}

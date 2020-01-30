@@ -1,0 +1,79 @@
+
+{%- if settings.cart_enable %}
+<!-- IN PROGRESS | To Do: Get working on product pages and update cart widget -->
+<script>
+$(function() {
+  {% if settings.cart_action == 'update' or settings.cart_action == 'drawer' %}
+    $(".product_form").submit(function(e) {
+      e.preventDefault();
+      var $addToCartForm = $(this);  
+      var $addToCartBtn = $addToCartForm.find('.add_to_cart');
+
+      $.ajax({
+        url: '/cart/add.js',
+        dataType: 'json',
+        type: 'post',
+        data: $addToCartForm.serialize(),
+        beforeSend: function() {
+          $addToCartBtn.attr('disabled', 'disabled').addClass('disabled');
+          $addToCartBtn.find('span').removeClass("zoomIn").addClass('animated zoomOut');
+        },
+        success: function(itemData) {
+
+          $.getJSON("/cart.js", function(cart) {
+            if($('#carthold #cart span').length){
+              $('#carthold #cart span').text(cart.item_count);
+            } else {
+              $('#carthold #cart').append('<span>'+cart.item_count+'</span>');
+            }
+          });
+          
+          {% if settings.cart_box_enable %}
+          $('#cartbox').load('/cart #content form');
+          //$('#cartbox').css('opacity', '1.0');
+          {% endif %}
+          
+          if(cart.item_count <= {{ settings.cart_box_limit }}){
+            $('#cartbox form.overflow').css('padding-top', '0');
+          };
+          
+          /*
+          {% assign minimumspend = settings.cart_minimum_spend_amount | remove: '.' | plus: 0 %}
+          {% if minimumspend > 0 and settings.cart_minimum_spend_text %}
+          alert(cart.total_price);
+          if(cart.total_price > {{ minimumspend }}){
+            $('#cartbox form .minspend ').css('display', 'none');
+          };
+          {% endif %}
+          */
+          
+          $addToCartBtn.find('span').text({{ 'products.general.add_to_cart_success' | t | json }}).removeClass('zoomOut').addClass('fadeIn');
+
+          window.setTimeout(function(){
+            $addToCartBtn.removeAttr('disabled').removeClass('disabled');
+            $addToCartBtn.find('span').addClass("fadeOut").text($addToCartBtn.data('label')).removeClass('fadeIn').removeClass("fadeOut").addClass('zoomIn');
+          }, 2000);
+
+          $.getJSON("/cart.js", function(cart) {
+            refreshCart(cart);
+            window.setTimeout(function(){ $.fancybox.close(); $('.cart-button').click(); }, {{ settings.transition_duration | times: 100 }});
+          });    
+        },
+        error: function(XMLHttpRequest) {
+          var response = eval('(' + XMLHttpRequest.responseText + ')');
+          response = response.description;
+          $('.warning').remove();
+
+          var warning = '<p class="warning animated bounceIn">' + response.replace('All 1 ', 'All ') + '</p>';
+          $addToCartBtn.after(warning);
+          $addToCartBtn.removeAttr('disabled').removeClass('disabled');
+          $addToCartBtn.find('span').text({{ 'products.general.add_to_cart' | t | json }}).removeClass('zoomOut').addClass('zoomIn');
+        }
+      });
+
+      return false;
+    });
+  {% endif %}
+});
+</script>
+{% endif %}

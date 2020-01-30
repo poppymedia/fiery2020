@@ -1,0 +1,136 @@
+
+<!-- parenturl: {{ parenturl }} -->
+<!-- activetitle: {{ activetitle }} -->
+<!-- /snippets/breadcrumb.liquid -->
+
+{% if template == 'cart' or template contains 'cart.' %}   
+
+  <div class="container breadcrumb{% if settings.width_bleed_to_edge %} bleed{% endif %}">
+
+      <nav role="navigation" aria-label="breadcrumbs">
+        
+        {% if section.settings.main_breadcrumb_cart_progress %}
+
+          {% capture divider %}
+          <svg class="icon-svg icon-svg--size-10 breadcrumb__chevron-icon" aria-hidden="true" focusable="false"> <path d="M2 1l1-1 4 4 1 1-1 1-4 4-1-1 4-4"/> </svg>
+          {% endcapture %}
+
+          {% include 'checkout-progress' %}
+        
+        {% else %}
+        
+      	  {% assign divider = '<span aria-hidden="true">/</span>' %}
+
+      	  <a href="/">{{ 'general.site.home_label' | t }}</a>
+      	  {{ divider }}
+      	  <span>{{ 'cart.checkout_breadcrumb.cart' | t }}</span>
+        
+        {% endif %}
+        
+      {% comment %}
+
+      	  {% assign divider = '<span aria-hidden="true">/</span>' %}
+
+      	  <a href="/">{{ 'general.site.home_label' | t }}</a>
+      	  {{ divider }}
+      	  <span>{{ 'cart.checkout_breadcrumb.cart' | t }}</span>
+
+      {% endcomment %}
+
+      </nav>
+
+  </div>
+
+{% else %}
+
+  {% assign divider = '<span aria-hidden="true">/</span>' %}
+  <div class="container breadcrumb{% if settings.width_bleed_to_edge %} bleed{% endif %}">
+
+      <nav role="navigation" aria-label="breadcrumbs">
+        <a href="/">{{ 'general.site.home_label' | t }}</a>
+        
+        {% if template contains 'product' or collection %}
+        {{ divider }}
+        <a href="/collections">{{ 'collections.general.collections_title' | t }}</a>
+        {% endif%}
+
+        {% if template contains 'search' %}
+          {{ divider }}
+          {% if page_title != 'Search' %}
+          <a href="/search">{{ 'search.titles.heading' | t }}</a>
+          {{ divider }}
+          {% endif %}
+          <span>{{ page_title }}</span>
+        
+        {% elsif template contains 'product' %}
+
+          {% if collection %}
+            {{ divider }}
+            {% if collection.handle %}
+              {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+              {{ collection.title | link_to: url }}
+            {% endif %}
+          {% endif %}
+          {{ divider }}
+          <span>{{ product.title }}</span>
+
+        {% elsif template contains 'collection' and template contains collection.handle %}
+
+          {{ divider }}
+          {% if current_tags %}
+            {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+            {{ collection.title | link_to: url }}
+            {{ divider }}
+            <span>{{ current_tags | join: " + " }}</span>
+          {% else %}
+            <span>{{ collection.title }}</span>
+          {% endif %}
+
+        {% elsif template == 'blog' %}
+
+          {{ divider }}
+          {% if current_tags %}
+            {{ blog.title | link_to: blog.url }}
+            {{ divider }}
+            <span>{{ current_tags | join: " + " }}</span>
+          {% else %}
+          <span>{{ blog.title }}</span>
+          {% endif %}
+
+        {% elsif template == 'article' %}
+
+          {{ divider }}
+          {{ blog.title | link_to: blog.url }}
+          {{ divider }}
+          <span>{{ article.title }}</span>
+
+        {% elsif template contains 'page' %}
+
+        <!-- Find parent page (use link title and URL, as cannot get actual page title or handle) -->
+        <!-- page.handle: {{ page.handle }} -->
+        {% unless parenturl contains page.handle %}
+        {% if parenturl and activetitle %}
+        {{ divider }}
+        <a href="{{ parenturl }}">{{ activetitle }}</a>
+        {% endif %} 
+        {% endunless %}
+
+        {{ divider }}
+        <span>{{ page.title }}</span>
+
+        {% elsif template == 'index' %}
+
+         <span>{{ page.title }}</span>
+
+        {% else %}
+
+        {{ divider }}
+        <span>{{ page_title }}</span>
+
+        {% endif %}
+      </nav>
+
+  </div>
+
+{% endif %}
+

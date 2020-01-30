@@ -1,0 +1,63 @@
+{% if settings.sidebar_size > 0 %}
+<aside>
+
+  <!-- TOP -->
+  {% assign data = settings.sidebar_content %}
+  
+  {% if data contains '/pages/' %}
+  	 {% assign data_var = data | remove: '/pages/' %}
+  	 {% capture output %}{{ pages[data_var].content }}{% endcapture %}
+  {% endif %}
+
+  {% if data == '/collections' %}  	 
+     {% capture output %}
+     {% for collection in collections %}
+        {% include 'grid-collection' %}
+     {% endfor %}
+     {% endcapture %}
+  {% endif %}
+
+  {% if data contains '/collections/' %}  	 
+     {% assign data_var = data | remove: '/collections/' %}
+     {% capture output %}
+ 	 {% for product in collections[data_var].products %}
+     	{% include 'grid-product' %}
+ 	 {% endfor %}
+     {% endcapture %}
+  {% endif %}
+
+  {% if data contains '/products/' %}
+     {% assign data_var = data | remove: '/products/' %}
+     {% capture output %}{{ products[data_var].content }}{% endcapture %}
+  {% endif %}
+
+  {% if data contains '/blogs/' %}
+  	 {% assign data_var = data | remove: '/blogs/' %}
+  	 {% if data_var contains '/' %}  	
+        <!-- post -->
+  		{% assign article = data | split: '/' | last %}
+        {% capture output %}{{ articles[data_var].content }}{% endcapture %}
+  	 {% else %}  	
+        <!-- blog -->
+        {% capture output %}
+        {% for article in blogs[data_var].articles %}
+              {% include 'grid-article' %}  
+        {% endfor %}
+        {% endcapture %}
+  	 {% endif %}
+  {% endif %}
+
+  {{ output }}
+  
+  {% if settings.sidesbar_sidepages %}
+  {% assign sidebar_page = 'sidebar-' | append: page.handle %}
+  {% if sidebar_page %}
+  	{{ pages[sidebar_page].content }}
+  	{% comment %}{% section '{{ sidebar_section }}' %}{% endcomment %}
+  {% endif %}
+  {% endif %}
+
+  <!-- BOTTOM -->
+
+</aside>
+{% endif%}

@@ -1,0 +1,133 @@
+<!-- SECTION -->
+
+{% assign font_gutter = 30 %}
+
+{% capture stylesheet %}
+
+{% if section.settings.share_buttons != 'hidden' %}
+.social-sharing {
+	margin-bottom: {{ font_gutter }}px;
+	margin-bottom: 0;
+}
+{% endif %}
+
+{% endcapture %}
+
+<style>
+{{ stylesheet }}
+</style>
+
+<article class="page" id="content" role="article" itemscope itemtype="http://schema.org/Article">
+
+  <main>
+  
+  <header role="banner">
+    <h1>{{ page.title }}</h1>
+  </header>
+
+  <div class="rte" itemprop="articleBody">
+    {{ page.content }}
+  
+  {% if settings.cookie_enable %}
+    
+      {% assign storetype = 'general.site.shop_ref' | t %}
+
+      {% if template contains 'cookie.consent' %}  
+
+    	<div class="supports-cookies">          
+
+    	</div>  
+
+          <!-- Cookieconsent -->
+
+    	<div class="supports-cookies" id="settings">
+          <h3>{{ 'general.accessibility.no_cookie_policy_title' | t }}</h3>
+          <!-- <p>{{ 'general.accessibility.no_cookie_intro_html' | t | replace: 'store', storetype }}</p> -->
+          <p id="cookie-intro"></p>
+          <p id="cookie-notice">
+            {{ 'general.accessibility.no_cookie_policy_settings_html' | t | replace: 'store', storetype }}
+          </p>
+          {{ 'general.accessibility.cookie_settings_html' | t }}
+    	</div>  
+   
+      {% endif %}  
+
+      {% if template contains 'cookie.consent' %}
+
+          {% comment %}
+          <h2>Contact us</h2>
+          <p>{{ shop.name }} <br />
+          {{ shop.address.street }} <br />
+          {{ shop.address.city }} <br />
+          {{ shop.address.zip }}</p>
+          {% endcomment %}
+
+          {% if settings.cookie_enable %}
+          {% assign cookie_status = 'foot' %}
+          {% endif %}
+
+          {% include 'cookie-js' with cookie_status %}  
+
+      {% endif %}
+
+  {% else %}
+
+  		{% if template contains 'cookie.consent' %}
+
+    	<p>{{ 'general.accessibility.no_cookies' | t }}</p>
+
+    	{% else %}
+
+      	<p>{{ 'general.accessibility.no_cookies' | t }}</p>
+
+  		{% endif %}
+
+  {% endif %}
+    
+  </div> 
+
+  </main>
+
+  {% if section.settings.share_buttons != 'hidden' %}
+    {% include 'social-sharing', share_title: page.title, share_permalink: page.url, share_image: page, share_status: section.settings.share_buttons %}
+  {% endif %}
+  
+</article>
+
+{% include 'sidebars' %}
+
+{% schema %}
+{
+    "name": "Body",
+    "settings": [
+      {
+        "type": "select",
+        "id": "share_buttons",
+        "label": "Social sharing",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "icons",
+            "label": "Icons"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          },
+          {
+            "value": "rich",
+            "label": "Rich"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          }
+        ],
+        "default": "rich"
+      }
+    ]
+}
+{% endschema %}

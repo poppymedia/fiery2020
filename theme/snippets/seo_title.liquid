@@ -1,0 +1,35 @@
+{%- assign affix = " &ndash; " | append: shop.name -%}
+{%- capture seo_title -%}
+
+    {% if search.performed %}
+
+      {{ 'search.titles.results_title' | t: terms: search.terms }}
+      {% comment %}
+      {% if search.results_count == 0 %}
+        {{ 'search.titles.no_results_title_html' | t: terms: search.terms }}
+      {% else %}
+        {{ 'search.titles.results_title_html' | t: terms: search.terms, count: search.results_count }}
+      {% endif %}
+      {% endcomment %}
+
+	{% else %}
+
+      {%- if collection or product -%}
+        {%- if collection and collection.url == blank -%}
+            {{- 'collections.general.collections_title' | t -}}
+        {%- else -%}
+            {{- page_title -}}
+        {%- endif -%}
+      {%- else -%}
+          {{- page_title -}}
+      {%- endif -%}
+      {%- if current_tags -%}{%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}} {%- endif -%}
+      {%- if current_page != 1 -%} &ndash; {{ 'general.meta.page' | t: page: current_page -}} {%- endif -%}
+
+	{% endif %}
+
+    {%- unless page_title contains shop.name -%}
+        {{- affix -}}
+    {%- endunless -%}
+
+{%- endcapture -%}

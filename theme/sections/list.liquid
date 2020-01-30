@@ -1,0 +1,312 @@
+<!-- SECTION -->
+
+{% assign font_gutter = 30 %}
+
+{% capture stylesheet %}
+
+{% if section.settings.share_buttons != 'hidden' %}
+.social-sharing {
+	margin-bottom: {{ font_gutter }}px;
+	margin-bottom: 0;
+}
+{% endif %}
+
+{% endcapture %}
+
+<style>
+{{ stylesheet }}
+</style>
+
+<article class="page" id="content" role="article" itemscope itemtype="http://schema.org/Article">
+
+  <main>
+  
+  <header role="banner">
+    <h1>{{ page.title }}</h1>
+  </header>
+
+  <div class="rte" itemprop="articleBody">
+    {{ page.content }}
+    
+    
+    {% for block in section.blocks %}
+    {% if block.settings.title != blank %}<h3>{% if block.settings.link != blank %}<a href="{{ block.settings.link }}">{% endif %}{{ block.settings.title }}{% if block.settings.link != blank %}</a>{% endif %}</h3>{% endif %}
+  
+	{% if block.type == 'list' %}
+        {% if linklists[block.settings.list].links.size > 0 %}
+        <ul>
+        {% for link in linklists[block.settings.list].links %}
+        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endif %}  
+    
+	{% if block.type == 'collection' %} 
+    	{% if block.settings.collection == '/collections/all' %}
+            {% paginate collections.all.products by 1000 %}    
+            <ul{% if block.settings.prices %} class="pricelist"{% endif %}>
+            {% for product in collections.all.products %}
+              	{%- capture product_price -%}              
+              	{%- assign showprice = false -%}
+              	{%- if block.settings.variants and product.variants.size < 2 -%}
+              	{%- assign showprice = true -%}
+              	{%- endif -%}
+              	{%- unless block.settings.variants and product.variants.size > 1 -%}
+              	{%- assign showprice = true -%}
+              	{%- endunless -%}              
+              	{%- if showprice == true -%}              
+              	{%- if block.settings.prices -%}
+              	<em><span class="price">
+                    {%- if product.price_varies -%}
+                      {%- assign showsale = 'yes' -%}
+                      {%- assign sale_price = product.price | money -%}
+                      {%- capture sale_title -%}<em>{{ 'products.general.on_sale' | t }}</em>{%- endcapture -%}
+                      {{ 'products.general.on_sale_from_html' | t: price: sale_price, sale: sale_title }}
+                    {%- else -%}
+                      {%- assign showsale = 'yes' -%}
+                  		{% if product.price == 0 %}
+                  			{{ 'products.general.price_none' | t }}
+                  		{% else %}
+                      		{{ product.price | money }}
+                  		{% endif %}
+                    {%- endif -%}
+              	</span></em>{%- endif -%}              
+              	{%- endif -%}              
+              	{%- unless product.variants.size > 1 -%}
+              	{%- endunless -%}
+              	{%- endcapture -%}
+              	{%- capture productvariants -%}
+              	{%- if block.settings.variants -%}
+              	{%- if product.variants.size > 1 -%}
+              	<ul>
+                    {% for variant in product.variants %}
+                  		{%- capture variant_price -%}
+                  		<em><span class="price">{{ variant.price | money }}</span></em>
+                        {%- endcapture -%}
+                        <li>{{ variant.title }} {{ variant_price | strip_newlines  }}</li>
+                    {% endfor %}
+              	</ul>
+              	{%- endif -%}
+              	{%- endif -%}
+              	{%- endcapture -%}
+              	<li><a href="{{ product.url }}">{{ product.title }}</a> {{ product_price | strip_newlines  }}{{ productvariants }}</li>
+            {% endfor %} 
+            {% endpaginate %}
+            </ul>
+    	{% else %}
+    		{% assign collection = block.settings.collection | remove: '/collections/' %}
+            {% paginate collections[collection].products by 1000 %}
+            <ul{% if block.settings.prices %} class="pricelist"{% endif %}>
+            {% for product in collections[collection].products %}
+              	{%- capture product_price -%}              
+              	{%- assign showprice = false -%}
+              	{%- if block.settings.variants and product.variants.size < 2 -%}
+              	{%- assign showprice = true -%}
+              	{%- endif -%}
+              	{%- unless block.settings.variants and product.variants.size > 1 -%}
+              	{%- assign showprice = true -%}
+              	{%- endunless -%}              
+              	{%- if showprice == true -%}              
+              	{%- if block.settings.prices -%}
+              	<em><span class="price">
+                    {%- if product.price_varies -%}
+                      {%- assign showsale = 'yes' -%}
+                      {%- assign sale_price = product.price | money -%}
+                      {%- capture sale_title -%}<em>{{ 'products.general.on_sale' | t }}</em>{%- endcapture -%}
+                      {{ 'products.general.on_sale_from_html' | t: price: sale_price, sale: sale_title }}
+                    {%- else -%}
+                      {%- assign showsale = 'yes' -%}
+                  		{% if product.price == 0 %}
+                  			{{ 'products.general.price_none' | t }}
+                  		{% else %}
+                      		{{ product.price | money }}
+                  		{% endif %}
+                    {%- endif -%}
+              	</span></em>{%- endif -%}              
+              	{%- endif -%}              
+              	{%- unless product.variants.size > 1 -%}
+              	{%- endunless -%}
+              	{%- endcapture -%}
+              	{%- capture productvariants -%}
+              	{%- if block.settings.variants -%}
+              	{%- if product.variants.size > 1 -%}
+              	<ul>
+                    {% for variant in product.variants %}
+                  		{%- capture variant_price -%}
+                  		<em><span class="price">{{ variant.price | money }}</span></em>
+                        {%- endcapture -%}
+                        <li>{{ variant.title }} {{ variant_price | strip_newlines  }}</li>
+                    {% endfor %}
+              	</ul>
+              	{%- endif -%}
+              	{%- endif -%}
+              	{%- endcapture -%}
+              	<li><a href="{{ product.url }}">{{ product.title }}</a> {{ product_price | strip_newlines  }}{{ productvariants }}</li>
+            {% endfor %} 
+            </ul>
+            {% endpaginate %}
+    	{% endif %}  
+
+    {% endif %}
+    
+
+    {% endfor %}
+
+  
+  {% if settings.cookie_enable %}
+
+      {% if template contains 'cookie.consent' %}  
+
+    	<div class="supports-cookies">
+          <p id="cookie-intro"></p>
+
+          <h2>{{ 'general.accessibility.no_cookie_policy_title' | t }}</h2>
+          <p id="cookie-notice">
+
+            {{ 'general.accessibility.no_cookie_policy_settings_html' | t }}
+
+          </p>
+    	</div>  
+
+          <!-- Cookieconsent -->
+   
+      {% endif %}  
+
+      {% if template contains 'cookie.consent' %}
+
+          {% comment %}
+          <h2>Contact us</h2>
+          <p>{{ shop.name }} <br />
+          {{ shop.address.street }} <br />
+          {{ shop.address.city }} <br />
+          {{ shop.address.zip }}</p>
+          {% endcomment %}
+
+          {% if settings.cookie_enable %}
+          {% assign cookie_status = 'foot' %}
+          {% endif %}
+
+          {% include 'cookie-js' with cookie_status %}  
+
+      {% endif %}
+
+  {% else %}
+
+  		{% if template contains 'cookie.consent' %}
+
+    	<p>{{ 'general.accessibility.no_cookies' | t }}</p>
+
+    	{% else %}
+
+      	<p>{{ 'general.accessibility.no_cookies' | t }}</p>
+
+  		{% endif %}
+
+  {% endif %}
+    
+  </div> 
+
+  </main>
+
+  {% if section.settings.share_buttons != 'hidden' %}
+    {% include 'social-sharing', share_title: page.title, share_permalink: page.url, share_image: page, share_status: section.settings.share_buttons %}
+  {% endif %}
+  
+</article>
+
+{% include 'sidebars' %}
+
+{% schema %}
+{
+    "name": "Body",
+    "settings": [
+      {
+        "type": "select",
+        "id": "share_buttons",
+        "label": "Social sharing",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "icons",
+            "label": "Icons"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          },
+          {
+            "value": "rich",
+            "label": "Rich"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          }
+        ],
+        "default": "rich"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "list",
+        "name": "List",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "id": "link",
+            "type": "url",
+            "label": "Title URL"
+          },
+          {
+            "type": "link_list",
+            "id": "list",
+            "label": "List",
+            "default": "footer"
+          }
+        ]
+      },
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "id": "link",
+            "type": "url",
+            "label": "Title URL"
+          },
+          {
+            "id": "collection",
+            "type": "url",
+            "label": "Collection",
+			"default": "/collections/all"
+          },
+          {
+            "type": "checkbox",
+            "id": "prices",
+            "label": "Show prices",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "variants",
+            "label": "Show variants",
+            "default": false
+          }
+        ]
+      }
+    ]
+}
+{% endschema %}

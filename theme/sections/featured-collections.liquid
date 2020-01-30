@@ -1,0 +1,584 @@
+<!-- SECTION -->
+
+{% assign gutter = settings.grid_spacing | append: 'px' %}
+{% comment %}{% assign gutter = 0 %}{% endcomment %}
+
+{% capture fillrow %}
+{% unless section.settings.row_justify %} 
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+<div class="item fillrow"></div>
+{% endunless %}
+{% endcapture %}
+
+{% if section.settings.onerow and settings.width_override %}
+{% assign fillrow = '' %}
+{% endif %}
+
+{% assign size = section.settings.collections_title_size %}
+{%- capture title_size -%}
+{%- if size == 'h2' %}{{ settings.type_h2_size }}{% endif -%}
+{%- if size == 'h3' %}{{ settings.type_h3_size }}{% endif -%}
+{%- if size == 'h4' %}{{ settings.type_h4_size }}{% endif -%}
+{%- if size == 'p' %}{{ settings.type_base_size }}{% endif -%}
+{%- endcapture -%}
+
+<style>
+.products.collections.grid {  
+  display: flex;
+  flex-wrap: wrap; 
+  position: relative;
+}
+#shopify-section-{{ section.id }} {
+  padding-bottom: {{ gutter }};
+  margin-top: -{{ gutter }}; /* */
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  /*
+  position: relative;
+  overflow: hidden;
+  */
+}
+#shopify-section-{{ section.id }} .container {
+  padding-top: 0;
+  margin-top: 0;
+  position: relative;
+  overflow: hidden;
+  {% if section.settings.feature_width == 'container' %}
+  padding: 0;
+  {% endif %}
+} 
+#shopify-section-{{ section.id }} .products.collections.grid {
+  margin-left: -{{ section.settings.spacing }}px;
+}
+#shopify-section-{{ section.id }} .products.collections.grid .item {
+  background: {{ settings.color_collection_grid_bg }};   
+  flex: 1 1 {{ section.settings.product }}px;
+  margin: 0 0 {{ section.settings.spacing }}px {{ section.settings.spacing }}px; 
+  
+  /* help keep equal height summary captions from overflowing */
+  {% unless settings.color_collections_overlay_title_bg == 'rgba(0,0,0,0)' or settings.color_collections_overlay_title_bg == '' %}
+  position: relative;
+  overflow: hidden;
+  {% endunless %}
+}  
+#shopify-section-{{ section.id }} .products.collections.grid .item.fillrow {
+  background: transparent;
+  margin-top: -{{ section.settings.spacing }}px;
+}
+.products.collections.grid .item h2,
+.products.collections.grid .item p,
+.products.collections.grid .item p a {
+  color: {{ settings.color_collection_grid_text }};
+}
+
+{% assign class = 'grid' %}
+  
+.products.collections.grid .item .image {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+.products.collections.grid .item .image a {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  float: left;
+  width: 100%;
+}
+.products.collections.grid .item svg,
+.products.collections.grid .item img {
+  width: 100%;
+} 
+#shopify-section-{{ section.id }} .products.collections.grid .item .summary {
+  position: relative;
+  overflow: hidden;
+  clear: both;
+  padding: {% if section.settings.text_spacing == 0 %}0 0 0 0 !important{% else %}0 {{ section.settings.text_spacing }}% !important{% endif %};
+  background: {{ settings.color_collections_overlay_title_bg }}; 
+  
+  /* keep captions equal height (if they have background color) */
+  {% if settings.color_collections_overlay_title_bg == 'rgba(0,0,0,0)' or settings.color_collections_overlay_title_bg == '' %}
+  padding-top: {{ title_size | minus: 3 }}px !important;
+  {% else %}
+  height: 100%;
+  {% endif %}
+}
+#shopify-section-{{ section.id }} .products.collections.grid .item .summary .title {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: left;
+  font-size: {{ title_size }}px;
+}
+  
+{% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' %}
+#shopify-section-{{ section.id }} .products.collections.grid .item .image .title {
+  display: table;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 2000px;
+  margin-top: -1000px;  
+  left: 0;
+  top: 50%;
+  padding: 0 10%;
+  {% assign opacity = section.settings.overlay_opacity | divided_by: 100.00 | round: 2 %}
+  background: {{ settings.color_collections_overlay_bg | color_modify: 'alpha', opacity }};
+  font-size: {{ title_size }}px;
+}
+#shopify-section-{{ section.id }} .products.collections.grid .item .image .title span {
+  text-align: center; 
+  display: table-cell;
+  vertical-align: middle;
+  font-weight: normal;
+  color: {{ settings.color_collections_overlay_text }};
+}
+  {% if section.settings.image %}
+  {% endif %}
+{% endif %}
+
+.products.collections.grid .item .image .title span b {
+  display: block;
+  color: {{ settings.color_collections_overlay_title }};
+}
+#shopify-section-{{ section.id }} .template-collection #content .shopify-section > header > .rte {
+  margin-bottom: {{ section.settings.spacing }}px;
+}
+  
+#shopify-section-{{ section.id }} .expand {
+  {% if section.settings.feature_width == 'content' or section.settings.feature_width == 'page' %}margin-right: {{ gutter }};{% endif %}
+}
+  
+/* TO DO: Superficially restrict to one row using alternative method */
+{% assign onerow = section.settings.onerow %}
+{% comment %}{% assign onerow = false %}{% endcomment %}
+  
+  
+  
+  
+{% comment %}
+@supports (display: grid) {
+  .products.collections > .item,
+  .products.collections.grid > .item {
+    float: none;
+    width: auto;
+  } 
+
+  @media only screen and (max-width: {{ settings.width_max_mobile }}) {
+    #content .products.collections.grid {
+      padding: 0 !important;
+      {% if settings.mobile_2_columns %}
+      {% else %}
+      margin: 0 !important;
+      {% endif %}
+    }
+    #shopify-section-{{ section.id }} .products.collections.grid > .item {
+      padding: 0 !important;    
+      
+      
+ 
+      
+      
+
+      <!-- TO DO: Allow forced two column on mobile -->
+      {% comment %}
+      {% if settings.mobile_2_columns %}
+      /* Force two items to display on mobile */
+      flex: 1 1 50% !important;
+      {% else %}
+      /* Force one row items to display on mobile */
+      display: block !important;
+      margin: 0 0 {{ section.settings.spacing }}px 0 !important;  
+      {% endif %}
+      {% endcomment %}
+
+
+      
+      
+      
+
+    }
+
+    
+    
+    #shopify-section-{{ section.id }} .expand {
+      display: none;
+    }
+    
+  }
+  
+  
+}
+{% endcomment %}  
+  
+</style>
+
+{% capture expand %}
+{% if section.settings.type != 'hidden' %}
+<span class="expand" data-url="/collections"></span>
+{% endif %}
+{% endcapture %}
+
+{% if section.settings.feature_width == 'container' or section.settings.feature_width == 'content' %}
+<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">
+{% else %}
+<div class="fullwidth">
+{% endif %}
+  
+{% if section.settings.heading != blank %}
+  <h2>{{ section.settings.heading | escape }}{{ expand }}</h2>
+{% endif %}
+
+{%- assign collection = collections[section.settings.collection] -%}
+
+{% comment %}{% if section.settings.onerow %}<div class="singlerow">{% endif %}{% endcomment %}
+
+<div class="products collections {{ class }}">
+
+{% for block in section.blocks %}
+
+  {% assign collection = collections[block.settings.feature_collection] %}
+  {% include 'grid-collection' %}
+  
+{% else %}
+
+  {% for i in (1..6) %}
+  
+  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+  {% assign demo_title = 'homepage.onboarding.collection_title' | t %}
+  {% assign demo_description = 'homepage.onboarding.collection_description' | t %}
+  {% assign demo_img = 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' %}
+  {% include 'grid-collection', demo_title: demo_title, demo_description: demo_description, demo_img: demo_img %}
+  
+  {% endfor %}
+
+{% endfor %}
+  
+{{ fillrow }}
+  
+</div> 
+
+{% if section.settings.feature_width == 'container' or section.settings.feature_width == 'content' %}</div>{% else %}
+</div>
+{% endif %}
+  
+{% comment %}{% if section.settings.onerow %}</div>{% endif %}{% endcomment %}
+
+{% if onerow %}
+<script>
+<!-- TO DO: If collection items greater than can fit on screen, hide fillrow items -->
+(function() {
+  var collections_top;
+  collections_markrow = function(){
+
+    
+    <!-- TO DO: Do not support one row on mobile if forced two column (open) -->
+    {% unless section.settings.product_mobile %}if(screen.width > {{ settings.width_max_mobile | remove: 'px' | minus: 1 }}) { {% endunless %}
+                                                   
+    <!-- TO DO: Do not support one row on mobile if forced two column (close) -->
+    {% unless section.settings.product_mobile %} } {% endunless %}
+                                                   
+                                                   
+    $('#shopify-section-{{ section.id }} .grid .item').each(function(i){
+      $(this).css('display', 'block');
+      var collections_thistop = $(this).position().top;
+      if (i == 0){
+          collections_top = collections_thistop;
+      }      
+      if (collections_top == collections_thistop){      
+      } else {
+          $(this).removeClass('firstrow');
+          $(this).css('display', 'none');
+      }
+    });
+
+
+  
+  };
+  collections_markrow();  
+})();
+$(document).ready(function(){
+  var resizeId;
+  
+  {% if settings.sidesbar_home %}
+  /* TESTING page load of homepage collections with sidebar */
+  collections_markrow();
+  {% endif %}
+  
+  $('#shopify-section-{{ section.id }} .expand').html('<a href="#"{% if section.settings.expand == 'button' %} class="btn"{% endif %}>{{ 'collections.general.show_link' | t }}</a>');
+  $(window).resize(function() {
+      if (window.section{{ section.id | remove: '-' }} != 'open'){
+        collections_markrow();
+      };
+  });  
+  $('#shopify-section-{{ section.id }} .expand a').click(function(e){
+    
+    {% if section.settings.type == 'collection' %}
+    e.preventDefault();
+	location.href = $(this).parent().data('url');
+    {% else %}
+    e.preventDefault();
+  	if (window.section{{ section.id | remove: '-' }} != 'open'){
+    	window.section{{ section.id | remove: '-' }} = 'open';  
+    	$('#shopify-section-{{ section.id }} .grid .item').removeClass('firstrow');
+    	$('#shopify-section-{{ section.id }} .grid .item').css('display', 'block');
+    	$('#shopify-section-{{ section.id }} .expand a').html('{{ 'collections.general.hide_link' | t }}');
+    } else {
+    	$('#shopify-section-{{ section.id }} .expand a').html('{{ 'collections.general.show_link' | t }}');
+        window.section{{ section.id | remove: '-' }} = 'close';
+    	collections_markrow();
+    };
+  	{% endif %}
+  
+  }); 
+
+  
+});
+</script>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "List of collections",
+    "settings": [
+      {
+        "type": "select",
+        "id": "feature_width",
+        "label": "Width",
+        "options": [
+          {
+            "value": "page",
+            "label": "Page"
+          },
+          {
+            "value": "container",
+            "label": "Content Container"
+          },
+          {
+            "value": "content",
+            "label": "Content Text"
+          }
+        ],
+        "default": "content"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "List of collections"
+      },
+      {
+        "type": "range",
+        "id": "products",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "label": "Collections to show",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "product",
+        "min": 100,
+        "max": 500,
+        "step": 10,
+        "label": "Collections width",
+        "default": 200
+      },
+      {
+        "type": "range",
+        "id": "spacing",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "label": "Collections spacing",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "text_spacing",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "label": "Collections text spacing",
+        "default": 5
+      },
+      {
+        "type": "select",
+        "id": "collections_title",
+        "label": "Collections title",
+		"default": "below",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "below",
+            "label": "Below"
+          },
+          {
+            "value": "overlay",
+            "label": "Overlay"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "collections_title_size",
+        "label": "Collections title size",
+		"default": "h4",
+        "options": [
+          {
+            "value": "h2",
+            "label": "Secondary heading size"
+          },
+          {
+            "value": "h3",
+            "label": "Tertiary heading size"
+          },
+          {
+            "value": "h4",
+            "label": "Quaternary heading size"
+          },
+          {
+            "value": "p",
+            "label": "Body text size"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "collections_description",
+        "label": "Collections description",
+		"default": "below",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "below",
+            "label": "Below"
+          },
+          {
+            "value": "overlay",
+            "label": "Overlay"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "label": "Overlay opacity",
+        "default": 20
+      },
+      {
+        "type": "checkbox",
+        "id": "image",
+        "label": "Show collection image",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "row_justify",
+        "label": "Justify rows",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Overflow Options"
+      },
+      {
+        "type": "checkbox",
+        "id": "onerow",
+        "label": "One row",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "type",
+        "label": "See more type",
+        "options": [
+           {
+             "value": "hidden",
+             "label": "Hidden"
+           },
+           {
+             "value": "expand",
+             "label": "Expand"
+           },
+           {
+             "value": "collection",
+             "label": "Go to collection"
+           }
+        ],
+        "default": "expand"
+      },
+      {
+        "type": "select",
+        "id": "expand",
+        "label": "See more style",
+        "options": [
+           {
+             "value": "link",
+             "label": "Link"
+           },
+           {
+             "value": "button",
+             "label": "Button"
+           }
+        ],
+        "default": "link"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "feature_collection",
+            "label": "Collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "List of collections",
+      "category": "Collection",
+      "settings": {
+
+      },
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }]
+  }
+
+{% endschema %}

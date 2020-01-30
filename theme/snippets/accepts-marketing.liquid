@@ -1,0 +1,22 @@
+
+  
+    
+    {% if formtype == 'customer' and settings.newsletter_form_checkbox %}
+    <div class="acceptance">
+
+      <input type="checkbox" name="{{ formtype }}[accepts_marketing]" checked="checked" value="true" id="Marketing" />
+      <label for="Marketing"><small>{{ 'general.legal.accept_marketing' | t }}</small></label>
+
+    </div>
+    {% else %}
+	<div class="acceptance">
+
+      {% assign privacyurl_link = pages[settings.privacy_page].url %}
+      <small>{{ 'general.legal.accept_marketing_html' | t: privacyurl: privacyurl_link }}</small>
+    
+    </div>
+    {% endif %}
+    
+
+  
+

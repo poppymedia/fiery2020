@@ -1,0 +1,58 @@
+<!-- SECTION -->
+
+{% assign font_gutter = 30 %}
+
+{% capture stylesheet %}
+
+{% if section.settings.share_buttons != 'hidden' %}
+.social-sharing {
+	margin-bottom: {{ font_gutter }}px;
+	margin-bottom: 0;
+}
+{% endif %}
+
+{% endcapture %}
+
+<style>
+{{ stylesheet }}
+</style>
+
+<article class="page" id="content" role="article" itemscope itemtype="http://schema.org/Article">
+
+  <main>
+  
+  <header role="banner">
+    <h1>{{ 'general.404.title' | t }}</h1>
+  </header>
+
+  <div class="rte" itemprop="articleBody">
+    <p>{{ 'general.404.subtext_html' | t }}</p>
+    
+    {% assign heading = 'hidden' %}
+    {% if section.settings.show_searchbox %}
+      {% include 'form-search' with heading, labels: 'hidden' %}
+    {% endif %} 
+    
+    <p>{{ 'general.404.continue_html' | t }}</p>
+    
+  </div> 
+    
+  </main>
+  
+</article>
+
+{% include 'sidebars' %}
+
+{% schema %}
+{
+    "name": "Body",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_searchbox",
+        "label": "Show search box",
+        "default": true
+      }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,25 @@
+{% comment %}
+  This is a default page.
+{% endcomment %}
+
+{% capture header %}
+{% section 'header' %}
+{% endcapture %}
+{% assign get_header = header | strip_newlines %}
+
+{% if get_header contains '<!-- Breadcrumb: above slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+{% section 'slideshow-page' %}
+
+{% if get_header contains '<!-- Breadcrumb: below slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
+
+{% section 'page' %}
+
+</div>
+

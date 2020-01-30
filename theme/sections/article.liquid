@@ -1,0 +1,432 @@
+<!-- SECTION -->
+
+{% assign font_gutter = 30 %}
+{% assign pagination = 'below' %}
+
+{% capture stylesheet %}
+{% if pagination == 'below' %}
+#main .container {
+  padding-bottom: {{ font_gutter | times: 2 | plus: section.settings.controls_size }}px !important;
+}
+{% endif %}
+#prevnext.icons {
+  left: 0;
+  width: 100%;
+  position: relative;
+  overflow: visible;
+}
+#prevnext {
+  {% if pagination == 'below' %}
+  position: absolute !important;
+  bottom: 0;
+  left: 0;
+  width: calc(100% - {{ font_gutter | times: 2 }}px) !important;
+  margin: 0 {{ font_gutter }}px {{ font_gutter }}px {{ font_gutter }}px
+  {% endif %}
+}
+#prevnext .prev {
+  float: left;
+}
+#prevnext .next {
+  float: right;
+}
+
+{% if section.settings.controls_type contains 'buttons' %}
+#prevnext.icons .prev,
+#prevnext.icons .next {
+  /*
+  line-height: 80px;
+  height: 80px;
+  width: 80px;
+  font-size: 80%;
+  */
+      
+  line-height: 75%;
+  height: {{ section.settings.controls_size }}px;
+  width: {{ section.settings.controls_size }}px;
+  font-size: {{ section.settings.controls_size }}px;
+  text-align: center;
+  vertical-align: middle;
+
+  text-align: center;
+} 
+#prevnext.icons .prev:before {
+  content: '\2039';
+}
+#prevnext.icons .next:after {
+  content: '\203A';
+}
+{% if section.settings.controls_distance == 'outside' %}
+#prevnext.icons .prev {
+  margin-left: -{{ section.settings.controls_size | plus: font_gutter }}px;
+}
+#prevnext.icons .next {
+  margin-right: -{{ section.settings.controls_size | plus: font_gutter }}px;
+}
+{% endif %}
+{% if section.settings.controls_distance == 'overlap' %}
+#prevnext.icons .prev {
+  margin-left: -{{ section.settings.controls_size | divided_by: 2 | plus: font_gutter }}px;
+}
+#prevnext.icons .next {
+  margin-right: -{{ section.settings.controls_size | divided_by: 2 | plus: font_gutter }}px;
+}
+{% endif %}
+{% if section.settings.controls_distance == 'inside' %}
+#prevnext.icons .prev {
+  margin-left: -{{ font_gutter }}px;
+}
+#prevnext.icons .next {
+  margin-right: -{{ font_gutter }}px;
+}
+{% endif %}
+{% if section.settings.controls_distance == 'nudged' %}
+#prevnext.icons .prev {
+  margin-left: 0;
+}
+#prevnext.icons .next {
+  margin-right: 0;
+}
+{% endif %}
+
+{% endif %}
+
+{% if section.settings.share_buttons != 'hidden' %}
+.social-sharing {
+	margin-bottom: {{ font_gutter }}px;
+}
+.social-sharing a {
+	margin-right: 0.75em;
+}
+.social-sharing .icon {
+	margin-top: -0.2em;
+}
+{% endif %}
+
+{% endcapture %}
+
+<style>
+{{ stylesheet }}
+</style>
+
+{% if comment and comment.status != 'published' %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+
+  {% capture filters %}
+  {% if article.tags.size > 0 %}
+    <ul class="tags">
+      {% for tag in article.tags %}
+        <li>
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %} {% endunless %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  {% endcapture %}
+
+<article class="article" id="content" role="article" itemscope itemtype="http://schema.org/Article">
+
+  {% if article.image %}
+    {{ article | img_url: '1024x1024' | img_tag: article.title }}
+  {% endif %}
+
+  <header role="banner">
+    <h1>{{ article.title }}</h1>
+
+      	{% if section.settings.postname or section.settings.postdate %}
+        {% capture date %}{{ article.published_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+        <p class="subtitle">
+          {% if section.settings.postname and section.settings.postdate %}
+          {{ 'blogs.article.author_on_date_html' | t: author: article.author, date: date }}
+          {% elsif section.settings.postname %}
+          {{ 'blogs.article.author_html' | t: author: article.author }}
+          {% elsif section.settings.postdate %}
+          {{ 'blogs.article.date_html' | t: date: date }}
+          {% endif %}
+        </p>
+      	{% endif %}  
+    
+    	{% if section.settings.tags_position == 'HEADER' %}{{ filters }}{% endif %}
+    
+  </header>
+
+  <div class="rte" itemprop="articleBody">
+    {{ article.content }}
+  </div>
+
+  {% if section.settings.tags_position == 'FOOTNOTE' %}{{ filters }}{% endif %}
+
+  {% if section.settings.share_buttons != 'hidden' %}
+    {% include 'social-sharing', share_title: article.title, share_permalink: article.url, share_image: article, share_status: section.settings.share_buttons %}
+  {% endif %}
+
+  {% if blog.comments_enabled? %}
+  	{% if section.settings.comments %}    
+    <h3>{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h3>
+
+    {% paginate article.comments by 5 %}
+
+    <div id="comments">
+      {% if comment and comment.status and paginate.current_page == 1 %}
+        <p class="form-success">
+          {% if blog.moderated? and comment.status != 'published' %}
+            {{ 'blogs.comments.success_moderated' | t }}
+          {% else %}
+            {{ 'blogs.comments.success' | t }}
+          {% endif %}
+        </p>
+      {% endif %}
+
+      {% if number_of_comments > 0 %}
+        <ul>
+          {% comment %}
+            Display comment from URL parameters if it is waiting moderation
+          {% endcomment %}
+          {% if comment and comment.status != 'published' %}
+            <li id="{{ comment.id }}">
+              <div class="rte">
+                {{ comment.content }}
+              </div>
+              {% capture date %}{{ comment.created_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+              <p>{{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: date }}</p>
+            </li>
+          {% endif %}
+
+          {% for comment in article.comments %}
+            <li id="{{ comment.id }}">
+              <div class="rte">
+                {{ comment.content }}
+              </div>
+              {% capture date %}{{ comment.created_at | time_tag: format: 'month_day_year' }}{% endcapture %}
+              <p>{{ 'blogs.article.comment_meta_html' | t: author: comment.author, date: date }}</p>
+            </li>
+
+          {% endfor %}
+        </ul>
+
+        {% if paginate.pages > 1 %}
+          {% include 'pagination' %}
+        {% endif %}
+      {% endif %}
+    </div>
+
+    {% endpaginate %}
+
+  	{% form 'new_comment', article %}
+      <h3>{{ 'blogs.comments.title' | t }}</h3>
+
+      {{ form.errors | default_errors }}
+
+      <label for="CommentAuthor" class="label-hidden">
+        {{ 'blogs.comments.name' | t }}
+      </label>
+      <input type="text"
+             name="comment[author]"
+             id="CommentAuthor"
+             class="{% if form.errors contains 'author' %}input-error{% endif %}"
+             placeholder="{{ 'blogs.comments.name' | t }}"
+             value="{{ form.author }}"
+             autocapitalize="words">
+
+      <label for="CommentEmail" class="label-hidden">
+        {{ 'blogs.comments.email' | t }}
+      </label>
+      <input type="email"
+             name="comment[email]"
+             id="CommentEmail"
+             class="{% if form.errors contains 'email' %}input-error{% endif %}"
+             placeholder="{{ 'blogs.comments.email' | t }}"
+             value="{{ form.email }}"
+             spellcheck="false"
+             autocomplete="off"
+             autocapitalize="off">
+
+      <label for="CommentBody" class="label-hidden">
+        {{ 'blogs.comments.message' | t }}
+      </label>
+      <textarea
+        name="comment[body]"
+        id="CommentBody"
+        class="{% if form.errors contains 'body' %}input-error{% endif %}"
+        placeholder="{{ 'blogs.comments.message' | t }}">
+        {{ form.body }}
+      </textarea>
+
+      {% if blog.moderated? %}
+        <p>{{ 'blogs.comments.moderated' | t }}</p>
+      {% endif %}
+
+      <input type="submit" class="btn" value="{{ 'blogs.comments.post' | t }}">
+    {% endform %}
+  	{% endif %}
+
+  {% endif %}
+
+  {% if pagination != 'below' %}
+  {% if section.settings.controls_distance != 'hidden' %}
+  {% include 'prev_next' %}
+  {% endif %}
+  {% endif %}
+
+</article>
+
+{% capture sidecontent %}{% include 'sidebars' %}{% endcapture %}
+{% if section.settings.tags_position contains 'TOP' or section.settings.tags_position contains 'BOTTOM' and settings.sidebar_size > 0 %}
+{% assign rep = '<!-- ' | append: section.settings.tags_position | append: ' -->' %}
+{{ sidecontent | replace: rep, filters }}
+{% else %}
+{{ sidecontent }}
+{% endif %}
+
+{% comment %}
+{% include 'sidebars' %}
+{% endcomment %}
+
+{% if pagination == 'below' %}
+{% if section.settings.controls_distance != 'hidden' %}
+{% include 'prev_next' %}
+{% endif %}
+{% endif %}
+
+{% schema %}
+{
+    "name": "Body",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "postname",
+        "label": "Show poster name",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "postdate",
+        "label": "Show posted date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "tags",
+        "label": "Show tags",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "tags_position",
+        "label": "Tags position",
+        "options": [
+           {
+             "value": "HEADER",
+             "label": "Header"
+           },
+           {
+             "value": "FOOTNOTE",
+             "label": "Footer"
+           },
+           {
+             "value": "TOP",
+             "label": "Sidebar Top"
+           },
+           {
+             "value": "BOTTOM",
+             "label": "Sidebar Bottom"
+           }
+        ],
+        "default": "HEADER"
+      },
+      {
+        "type": "select",
+        "id": "share_buttons",
+        "label": "Social sharing",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "icons",
+            "label": "Icons"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          },
+          {
+            "value": "rich",
+            "label": "Rich"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          }
+        ],
+        "default": "rich"
+      },
+      {
+         "type": "range",
+         "id": "controls_size",
+         "min": 0,
+         "max": 100,
+         "step": 1,
+         "unit": "px",
+         "label": "Prev/Next size",
+         "default": 30
+      },
+      {
+        "type": "select",
+        "id": "controls_distance",
+        "label": "Prev/Next position",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "outside",
+            "label": "Outside"
+          },
+          {
+            "value": "overlap",
+            "label": "Overlap"
+          },
+          {
+            "value": "inside",
+            "label": "Inside"
+          },
+          {
+            "value": "nudged",
+            "label": "Nudged"
+          }
+        ],
+        "default": "inside"
+      },
+      {
+        "type": "select",
+        "id": "controls_type",
+        "label": "Prev/Next type",
+        "options": [
+          {
+            "value": "buttons",
+            "label": "Icon"
+          },
+          {
+            "value": "buttons_text",
+            "label": "Button"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ],
+        "default": "buttons"
+      },
+      {
+        "type": "checkbox",
+        "id": "comments",
+        "label": "Show comments",
+        "default": true
+      }
+    ]
+}
+{% endschema %}

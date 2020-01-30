@@ -1,0 +1,494 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies" lang="{{ shop.locale }}"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="theme-color" content="{{ settings.color_primary }}">
+	<link rel="canonical" href="{{ canonical_url }}">
+	  
+	{%- if settings.favicon != blank %}
+	<link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+	{%- endif -%}
+	  
+	{%- include 'seo_title' %}	  
+	<title>{{ seo_title | strip_html | strip_newlines }}</title>
+	  
+	{%- if page_description %}
+	<meta name="description" content="{{ page_description | escape }}">
+	{%- endif -%}
+	  
+	{%- include 'social-meta-tags' -%}
+
+	{%- capture header_content %}
+	{{ content_for_header }}	  
+	{% endcapture -%}
+
+	{%- capture check_header_content %}
+	{{ header_content | strip_newlines }}	  
+	{% endcapture -%}
+	  
+	{% if settings.nav_font contains 'Google' or settings.type_font contains 'Google' or settings.type_h1_font contains 'Google' or settings.type_h2_font contains 'Google' or settings.slideshow_subtitle_font contains 'Google' %}
+	<!-- Custom Fonts -->
+	<link href="//fonts.googleapis.com/css?family=.|{% if settings.nav_font contains 'Google' %}{{ settings.nav_font | replace: 'Google_', '' | replace: "'", "" }}:light,normal,bold|{% endif %}{% if settings.type_h1_font contains 'Google' %}{{ settings.type_h1_font | replace: 'Google_', '' | replace: "'", "" }}:light,normal,bold|{% endif %}{% if settings.type_h2_font contains 'Google' %}{{ settings.type_h2_font | replace: 'Google_', '' | replace: "'", "" }}:light,normal,bold|{% endif %}{% if settings.type_font contains 'Google' %}{{ settings.type_font | replace: 'Google_', '' | replace: "'", "" }}:light,normal,bold|{% endif %}" rel="stylesheet" type="text/css" />
+	{% endif %}
+	  
+	{{ 'theme.scss.css' | asset_url | stylesheet_tag }}	  
+	{%- if settings.image_popup_library == 'featherlight' %}
+	{{ 'featherlight.css' | asset_url | stylesheet_tag }}
+	{% endif -%}	  
+	{%- capture animate_check -%}
+	{%- include 'animate-check' -%}
+	{%- endcapture -%}
+	{%- if animate_check contains 'animate_loaded' -%}  
+	{{ 'animate.scss.css' | asset_url | stylesheet_tag }}
+	{%- capture stylesheet -%}
+	<style>	  
+	  .template-giftcard #gift-card-actions .btn:hover,
+	  input.btn:not([disabled]):hover,
+	  input.btn:not([disabled]) span:hover,
+	  button.btn:not([disabled]):hover,
+	  button.btn:not([disabled]) span:hover,
+	  a.btn:not([disabled]):hover,
+	  a.btn span:hover,
+	  a.prev:hover,
+	  a.next:hover,
+	  .bx-prev:hover,
+	  .bx-next:hover,
+	  .bx-pager-link:hover,
+	  #slideshow li:hover .btn,
+	  .sy-controls li a:hover:after {
+	  	  {% if settings.button_animation == 'expand' %}	  	  
+	  	  /*
+	  	padding: 0.51em 0.9em !important;
+	  	padding: 0.80em 1.2em !important;
+	  	margin: -0.29em -0.21em !important;
+	  	  */
+	  	  {% else %}
+	  	  -webkit-animation: {{ settings.button_animation }} {{ settings.transition_duration | divided_by: 10.00 }}s;
+	  	  animation: {{ settings.button_animation }} {{ settings.transition_duration | divided_by: 10.00 }}s;
+	  	  {% endif %}
+	  }
+	  .products.collections.grid .item {
+	  	  z-index: 1;
+	  }
+	  .products.collections.grid .item:hover {
+	  	  -webkit-animation: {{ settings.collection_animation }} {{ settings.transition_duration | divided_by: 10.00 }}s;
+	  	  animation: {{ settings.collection_animation }} {{ settings.transition_duration | divided_by: 10.00 }}s;
+	  	  z-index: +10;
+	  }
+	  .products.collection.grid .item {
+	  	  z-index: 1;
+	  }
+	  .products.collection.grid .item:hover {
+	  	  -webkit-animation: {{ settings.product_animation }} {{ settings.transition_duration | divided_by: 10.00 }}s;
+	  	  animation: {{ settings.product_animation }} {{ settings.transition_duration | divided_by: 10.00 }}s;
+	  	  z-index: +10;
+	  }
+	  .products.collection.grid .item:hover .more span.btn,
+	  .products.collection.grid .item .more span.btn:hover {
+	  	  {% if settings.button_animation == 'expand' %}
+	  	  {% else %}
+	  	  -webkit-animation: {{ settings.button_animation }} {{ settings.transition_duration | divided_by: 10.00 }}s;
+	  	  animation: {{ settings.button_animation }} {{ settings.transition_duration | divided_by: 10.00 }}s;
+	  	  z-index: +10;
+	  	  {% endif %}
+	  }
+	</style>
+	{%- endcapture -%}
+	{%- endif %}
+	{{ stylesheet | strip_newlines | remove: '	' | replace: '  ', ' ' }}
+ 
+	{%- comment %}
+	<!-- Commercial license required for sale -->
+	<!-- http://ianlunn.github.io/Hover/#licenses -->
+	{{ 'hover.scss.css' | asset_url | stylesheet_tag }}
+	{% endcomment -%}
+	  
+	{%- capture scripts %}
+	<script>
+	  	  document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+	  	  window.theme = {
+	  	  	  strings: {
+	  	  	  	  shippingCalcSubmitButton: {{ 'cart.shipping_calculator.calculate' | t | json }},
+	  	  	  	  shippingCalcSubmitButtonDisabled: {{ 'cart.shipping_calculator.calculating' | t | json }},
+	  	  	  	  {%- if customer %}shippingCalcCustomerIsLoggedIn: true,{% endif %}
+	  	  	  	  shippingCalcMoneyFormat: {{ shop.money_format | json }}
+	  	  	  }
+	  	  };	  	   
+	</script>
+	{%- endcapture %}
+	{{- scripts | strip_newlines | remove: '	' | replace: '  ', ' ' -}}
+	  
+	{%- comment -%}
+	{% if settings.shipping_calculator == 'Enabled' -%}
+	<script>window.moneyFormat = {{ shop.money_format | json }};</script>
+	{%- endif %}
+	{%- endcomment -%}
+
+	{%- if settings.cookie_enable %}
+	{%- assign cookie_status = 'head' -%}
+	{%- capture cookie_js -%}
+	{%- include 'cookie-js' with cookie_status -%}	  
+	{%- endcapture -%}
+	{{- cookie_js | strip_newlines | remove: '	' | replace: '  ', ' ' -}}
+	{% endif -%}
+
+	{%- if template.directory == 'customers' %}
+	<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script><!--<![endif]-->
+	<!--[if lte IE 9]><script src="{{ 'shopify_common.js' | shopify_asset_url }}"></script><![endif]-->
+	{%- else -%}	  
+	<!-- <script src="{{ 'shopify_common.js' | shopify_asset_url }}"></script> -->
+	{% endif -%}
+	  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	  
+	<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+	<!--[if lt IE 9]><script src="{{ 'vendor.js' | asset_url }}"></script><![endif]-->
+	<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'theme.js' | asset_url }}" defer="defer"></script><!--<![endif]-->
+	<!--[if lt IE 9]><script src="{{ 'theme.js' | asset_url }}"></script><![endif]-->
+	  
+  	{%- capture check_scripts -%}
+	{%- include 'check-scripts' -%} 
+  	{%- endcapture %}
+
+  	{{ check_scripts | strip_newlines | remove: '	' | replace: '  ', ' ' }}
+	 
+	{%- comment %}{{ 'jquery.cart.min.js' | asset_url | script_tag }}{% endcomment -%}	   
+	{{- 'api.jquery.js' | shopify_asset_url | script_tag -}}
+	 
+	{%- if template == 'index' -%}
+	{%- if settings.sidesbar_home %}{%- assign sidebars = true -%}{% endif -%}
+	{%- else -%}
+	{%- if settings.sidesbar_pages %}{%- assign sidebars = true -%}{% endif -%}	  
+	{%- endif -%}
+	  
+</head>
+
+<body id="page-{{ page_title | handle }}" class="template-{{ template.name | handle }}{% if sidebars %} sidebars{% endif %}">
+
+	  {% if settings.bg_image != empty %}<img src="{{ settings.bg_image | img_url: '4000x' }}" alt="" style="position:absolute;width:10px;height:10px;overflow:hidden;opacity:0;" aria-hidden="true" />{% endif %} 
+	  {% comment %}{% if template contains 'product' %}<img src="{{ featured_image | img_url: '480x480' }}" alt="" style="position:absolute;width:10px;height:10px;overflow:hidden;opacity:0;" aria-hidden="true" />{% endif %}{% endcomment %}
+	  <div class="parallaxholder">
+	  	  
+	  	  	  {% if settings.bg_image_shadow > 0 %}<div class="bd"><div class="container"></div></div>{% endif %}
+
+	  	  	  <a class="in-page-link visually-hidden skip-link" href="#content">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+	  	  	  {% capture header %}
+	  	  	  {% section 'header' %}
+	  	  	  {% endcapture %}
+
+	  	  	  {{ header }}	  
+
+	  	  	  {%- comment %}
+	  	  	  {% section 'promotions' %}	  
+	  	  	  {% endcomment -%}
+
+	  	  	  {% capture content %}
+	  	  	  {{ content_for_layout }}
+	  	  	  {% endcapture %}
+
+	  	  	  <div id="main" class="{% if settings.width_bleed_to_edge %}bleed{% endif %}">
+
+	  	  	  	  {% if settings.cookie_enable %}
+	  	  	  	  {{ content | replace: '<!-- Cookieconsent -->', get_cookie_body }}
+	  	  	  	  {% else %}
+	  	  	  	  {{ content }}
+	  	  	  	  {% endif %}
+
+	  	  	  </div>	  
+
+	  	  	  {% capture logos %}
+	  	  	  {% section 'logos' %}
+	  	  	  {% endcapture %}
+	  	  	  {% assign footer_content = logos | strip_newlines %}
+
+	  	  	  {% capture newsletter %}
+	  	  	  {% section 'newsletter' %}
+	  	  	  {% endcapture %}
+
+	  	  	  {% capture footer %}
+	  	  	  {% section 'footer' %}
+	  	  	  {% endcapture %}
+	  	  	  {% assign footer_logos = footer | strip_newlines %}
+
+	  	  	  {% assign header_content = header | strip_newlines %}	  
+
+	  	  	  {{ logos }}
+
+	  	  	  {{ newsletter }}
+
+	  	  	  {{ footer }}	  
+	  	  
+	  </div>
+	  
+	  {% if header_content contains '<!-- Autocomplete -->' %}{% include 'form-search-autocomplete' %}{% endif %}
+	  
+	  {%- comment %}
+	  <!-- Commercial license required for sale -->
+	  <!-- http://ianlunn.github.io/Hover/#licenses -->
+	  <script>
+	  var btns = document.querySelectorAll('.btn'), i;
+	  for (i = 0; i < btns.length; ++i) {
+	  	  btns[i].classList.add('hvr-buzz');
+	  }
+	  </script>	  
+	  {% endcomment -%}
+	  
+	  <!-- TESTING PARALLAX -->
+	  <!--
+	  <script>
+	  const parallaxElements = [...document.getElementsByClassName('container')];
+	  const parallax = function(img) {
+	  	  	  const speed = 6;
+	  	  	  let pos = '-' + (window.pageYOffset / speed) + "px";
+	  	  	  //img.style.backgroundSize = '125%';
+	  	  	  img.style.backgroundPosition = `center ${ pos }`;
+	  }
+	  window.addEventListener('scroll', function(e) {
+	  	  	  parallaxElements.forEach( (img) => {
+	  	  	  	  	  parallax(img);
+	  	  	  });
+	  });
+	  </script>
+	  -->
+
+{{ 'jarallax.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'jarallax.min.js' | asset_url }}"></script>
+<script src="{{ 'jarallax-element.min.js' | asset_url }}"></script>
+<script>
+{%- capture jarallax -%}
+$('.parallax').each(function(index) {
+	var yPos = $(this).css('backgroundPositionY');
+	if(yPos == '-1px'){
+		$(this).addClass("istrue");
+		$(this).css('background-position','center -2px');	  	  	   
+	}
+}); 
+/* init Jarallax with jQuery */
+$('.parallax .istrue').jarallax({
+	speed: 0.5,
+	disableParallax: /iPad|iPhone|iPod|Android/
+});	 
+{%- endcapture -%}
+
+{%- capture select_js -%}
+{% if settings.dropdowns_style %}
+/*
+Reference: http://jsfiddle.net/BB3JK/47/
+*/
+$('select').each(function(){	  
+	  	//alert('SELECT');
+	  	  var showSelect = true;
+	  	  var $this = $(this), numberOfOptions = $(this).children('option').length;
+	  
+	  	var selectedText = $(this).find('option:selected').html();	  
+	  	var selectedValue = $(this).find('option:selected').val(); 
+	  	
+	  	  if (typeof $(this).data('product-select') !== 'undefined'){
+	  	  	  showSelect = false;
+	  	  }
+	  	  /* Do not apply to shipping calculator, list is too long */
+	  	if ($('select').parents("#shipping-calculator").length == 1 ) {
+	  	  	  showSelect = false;
+	  	  }
+	  
+	  	if(showSelect == true){
+	  	  	  $this.addClass('select-hidden'); 
+	  	  	  $this.wrap('<div class="select"></div>');
+	  	  	  $this.after('<div class="select-styled"></div>');
+
+	  	  	  var $styledSelect = $this.next('div.select-styled');
+
+	  	  	  /* Display first option by default */
+
+	  	  	  /* Display selected option by default */
+	  	  	  $styledSelect.text(selectedText);
+
+	  	  	  /* TO FIX - Bug causes dropdown to sometimes not work, must be validation error
+	  	  	  var gridbutton = $('.gridlist .grid a');
+	  	  	  var gridbuttonhref = gridbutton.attr('href');
+	  	  	  if (gridbuttonhref.indexOf('sort_by') > -1 ) {
+	  	  	  } else {
+	  	  	  	  	  var gridURL = gridbuttonhref + '&sort_by=' + selectedValue;
+	  	  	  	  	  gridbutton.attr('href', gridURL);
+	  	  	  }
+
+	  	  	  var listbutton = $('.gridlist .list a');
+	  	  	  var listbuttonhref = listbutton.attr('href');
+	  	  	  if (listbuttonhref.indexOf('sort_by') > -1 ) {
+	  	  	  } else {
+	  	  	  	  	  var listURL = listbuttonhref + '&sort_by=' + selectedValue;
+	  	  	  	  	  listbutton.attr('href', listURL);
+	  	  	  }
+	  	  	  */
+
+	  	  	  var $list = $('<ul />', {
+	  	  	  	  	  'class': 'select-options'
+	  	  	  }).insertAfter($styledSelect);
+
+	  	  	  for (var i = 0; i < numberOfOptions; i++) {
+	  	  	  	  	  $('<li />', {
+	  	  	  	  	  	  	  text: $this.children('option').eq(i).text(),
+	  	  	  	  	  	  	  class: $this.attr('id'),
+	  	  	  	  	  	  	  rel: $this.children('option').eq(i).val()
+	  	  	  	  	  }).appendTo($list);
+	  	  	  }
+
+	  	  	  var $listItems = $list.children('li');
+
+	  	  	  $styledSelect.click(function(e) {
+	  	  	  	  
+	  	  	  	  {% if settings.menus_dropdown == 'slide' %}
+	  	  	  	  	  if($(this).hasClass('active')){
+	  	  	  	  	  } else {
+	  	  	  	  	  	  var autoHeight = $list.css('height', 'auto').height();
+	  	  	  	  	  	  $list.css({ height: '0px' });
+	  	  	  	  	  	  $list.animate({
+	  	  	  	  	  	  	  height: autoHeight
+	  	  	  	  	  	  }, {{ settings.transition_duration | times: 100 }});
+	  	  	  	  	  }
+	  	  	  	  {% endif %}
+	  	  	  	  
+	  	  	  	  	  e.stopPropagation();
+	  	  	  	  	  $('div.select-styled.active').not(this).each(function(){
+	  	  	  	  	  	  	  $(this).removeClass('active').next('ul.select-options').hide();
+	  	  	  	  	  });
+	  	  	  	  	  $(this).toggleClass('active').next('ul.select-options').toggle();
+	  	  	  });
+
+	  	  	  $listItems.click(function(e) {
+	  	  	  	  	  e.stopPropagation();
+	  	  	  	  	  $styledSelect.text($(this).text()).removeClass('active');
+	  	  	  	  	  $this.val($(this).attr('rel'));
+	  	  	  	  
+	  	  	  	  {% if settings.menus_dropdown == 'slide' %}
+	  	  	  	  	  closeList($list);
+	  	  	  	  {% else %}
+	  	  	  	  	  $list.hide();	  	   
+	  	  	  	  {% endif %}
+
+	  	  	  	  	  /* Support for sort collection - no current support for retaining view or page using params (TO FIX) */
+	  	  	  	  	  var selectParent = $(this).attr('class');
+	  	  	  	  	  if(selectParent == 'sort-by'){
+	  	  	  	  	  	  var currentURL = new URL(window.location);
+	  	  	  	  	  	  var currentDOMAIN = new URL(window.location.href.split('?')[0]);
+	  	  	  	  	  	  var currentParams = currentURL.searchParams.get('sort_by');
+	  	  	  	  	  	  var currentSortURL = 'sort_by=' + currentParams;
+	  	  	  	  	  	  var urlSearchParams = new URLSearchParams(
+	  	  	  	  	  	  	  window.location.search.indexOf("sort_by") > -1
+	  	  	  	  	  	  	  ? window.location.search.replace(/sort_by/gi,"")
+	  	  	  	  	  	  	  : window.location.search
+	  	  	  	  	  	  );
+	  	  	  	  	  	  urlSearchParams.set($(this).attr('name'), $(this).attr('rel'));
+	  	  	  	  	  	  window.location = currentDOMAIN + '?sort_by=' + $(this).attr('rel');
+	  	  	  	  	  };
+
+	  	  	  });
+
+	  	  	  $(document).click(function() {	  	  	  	  
+	  	  	  	  	  {% if settings.menus_dropdown == 'slide' %}
+	  	  	  	  	closeList($list);
+	  	  	  	  	  {% else %}
+	  	  	  	  	  	$styledSelect.removeClass('active');
+	  	  	  	  	  	$list.hide();
+	  	  	  	  	  {% endif %}
+	  	  	  });
+	  	  	  
+	  	  	  {% if settings.menus_dropdown == 'slide' %}
+	  	  	  closeList = function($list) {
+	  	  	  	  if($styledSelect.hasClass('active')){
+	  	  	  	  	  $styledSelect.removeClass('active');
+	  	  	  	  	  $list.animate({
+	  	  	  	  	  	  height: '0px'},{
+	  	  	  	  	  	  complete: function () {
+	  	  	  	  	  	  	  	  /* Do hide here */
+	  	  	  	  	  	  	  	$list.hide();
+	  	  	  	  	  	  }
+	  	  	  	  	  });
+	  	  	  	  }
+	  	  	  };
+	  	  	  {% endif %}
+	  	  	  
+	  	  };
+
+});	  
+{% endif %}
+{%- endcapture -%}
+          
+{{ jarallax | strip_newlines | remove: '	' | replace: '  ', ' ' }}
+{{ select_js | strip_newlines | remove: '	' | replace: '  ', ' ' }}
+
+</script>
+
+{%- comment %}
+<script>
+$(document).ready(function(){
+
+	  /*
+      Populate images from data attributes.
+	  var scrolled = $(window).scrollTop();
+	  $('.parallax').each(function(index) {
+	  	  	  var imageSrc = $(this).data('image-src')
+	  	  	  var imageHeight = $(this).data('height')
+	  	  	  $(this).css('background-image','url(' + imageSrc + ')')
+	  	  	  $(this).css('height', imageHeight)
+
+	  	  	  var initY = $(this).offset().top
+	  	  	  var height = $(this).height()
+	  	  	  var diff = scrolled - initY
+	  	  	  var ratio = Math.round((diff / height) * 100)
+	  	  	  $(this).css('background-position','center ' + parseInt(-(ratio * 1.5)) + 'px')
+	  })
+	  */
+	  	  
+	  var scrolled = $(window).scrollTop();
+	  $('.parallax').each(function(index) {
+	  	  	var yPos = $(this).css('backgroundPositionY');
+	  	  	//alert(yPos);
+	  	  	  	  if(yPos == '-1px'){
+	  	  	  	  	  	$(this).addClass("istrue");
+	  	  	  	  	  	  $(this).css('background-position','center -2px');	  	  	  	  	  
+	  	  	  	  }
+	  })
+
+	  $(window).scroll(function() {
+	  	  var scrolled = $(window).scrollTop();
+	  	  $('.parallax .istrue').each(function(index, element) {
+
+	  	  	  	  var initY = $(this).offset().top;
+	  	  	  	  var height = $(this).height();
+	  	  	  	  var endY	  = initY + $(this).height();
+
+	  	  	  	  var visible = isInViewport(this);
+	  	  	  	  if(visible) {
+	  	  	  	  	  var diff = scrolled - initY;
+	  	  	  	  	  var ratio = Math.round((diff / height) * 100);
+	  	  	  	  	  var newY = parseInt(-ratio);
+
+	  	  	  	  	  if(newY > height){
+	  	  	  	  	  	  $(this).css('background-position','center ' + newY + 'px');
+	  	  	  	  	  }
+	  	  	  	  }
+
+	  	  })
+	  })
+})
+
+function isInViewport(node) {
+	  var rect = node.getBoundingClientRect()
+	  return (
+	  	  (rect.height > 0 || rect.width > 0) &&
+	  	  rect.bottom >= 0 &&
+	  	  rect.right >= 0 &&
+	  	  rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+	  	  rect.left <= (window.innerWidth || document.documentElement.clientWidth)
+	  )
+}
+</script>
+{% endcomment -%}
+
+</body>
+</html>

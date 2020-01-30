@@ -1,0 +1,199 @@
+{% capture newLine %}
+{% endcapture %}
+{% assign parts = check_header_content | split: '</script>' %}{% assign p = 1 %}{% assign parts_array = parts | size %}
+{% assign new_script = newLine | append: '<!-- SCRIPT -->' | append: newLine %}
+{% assign new_script = '' %}
+{%- for part in parts %}{% if p == parts_array %}{% assign thispart = part %}{% else %}{% assign thispart = part | append: '</script>' %}{% endif %}{% assign scriptpref = new_script | append: '	<script' %}
+
+{%- if part contains 'UA-' %}
+{% comment %}<!-- Google Analytics -->{% endcomment %}
+    {% if part contains "ga('create'" %}
+    {%- assign subparts = part | split: "'" -%}
+  	{% else %}
+    {%- assign subparts = part | split: '"' -%}
+  	{% endif %}
+    {% for subpart in subparts -%}
+    {%- if subpart contains 'UA-' %}{%- assign ga_id = subpart -%}{% endif -%}
+    {%- endfor %}
+	{%- comment -%}
+	<script>
+    //document.gastatus = "disable";
+	</script>
+	{%- endcomment -%}
+{% endif -%}
+
+{%- if part contains '<script' %} 
+
+	{%- comment %}
+	{%- assign subparts = part | split: '<script' -%}	
+	{% for subpart in subparts -%}
+      {%- assign firstpart = subpart | split: '>' | first -%}            
+      {% if firstpart contains 'type="' -%}          
+          {% if firstpart contains 'type="text/javascript"' -%}
+          {%- assign scriptpref = scriptpref | replace: 'type="text/javascript"', 'type="text/plain"' -%}
+          {%- endif %}  
+      {%- else -%}
+          {%- assign scriptpref = scriptpref | append: ' type="text/plain" data-cookiescript="accepted"' -%}
+      {%- endif %} 
+      {% unless scriptpref contains 'data-cookiescript="accepted"' -%}
+			{%- assign scriptpref = scriptpref | append: ' data-cookiescript="accepted"' -%}
+      {%- endunless %}
+	{%- endfor %}
+    {% endcomment -%}
+
+	{%- comment %}<!-- Setup cookie defer for script tags -->{% endcomment -%}	
+	{%- assign checkascookie = false -%}
+	{% if part contains 'type="' %}          
+          {% if part contains 'type="text/javascript"' -%}
+			{%- assign checkascookie = true -%}
+          	{%- comment %}{% assign scriptpref = scriptpref | replace: 'type="text/javascript"', 'type="text/plain"' %}{% endcomment -%}
+          {%- endif %}  
+    {% else %}          
+          {%- comment %}{% assign scriptpref = scriptpref | replace: '<script', '<script type="text/plain" data-cookiescript="accepted"' %}{% endcomment -%}
+		  {%- assign checkascookie = true -%}
+    {% endif %}	
+	{%- comment %}
+	{% endcomment -%}
+
+	{%- assign opentag = thispart | split: '>' | first | append: '>' -%}
+	{%- if opentag contains '<script' and checkascookie %}
+        {%- assign newopentag = '' -%}
+
+		{%- comment %}<!-- DISALLOW ALL ANALYTICS SCRIPTS -->{% endcomment -%}
+		{%- assign allowed = 'yes' -%}
+		{%- comment %}<!-- Disallow previewBarInjector to fix admin previewBar conflcit with cookie script -->{% endcomment -%}
+		{%- assign disallowed_list = "analytics,Analytics,'ga,ga_,'UA" -%}
+		{%- assign disallowed_array = disallowed_list | split: ',' -%}
+		{%- for checkifallowed in disallowed_array -%}
+			{%- if thispart contains checkifallowed %}
+				{%- assign allowed = 'no' -%}
+			{% endif -%}
+		{%- endfor %}
+		{%- comment %}<!-- TO DO: Consider changing to making all non-necessary scripts not allowed -->{% endcomment -%}
+		{% if allowed == 'no' -%}
+            {% if thispart contains 'src=' -%}
+                    {%- assign newopentag = opentag | append: '<!-- cookie check on tag -->' -%}
+                    {%- assign thispart = thispart | replace: opentag, newopentag -%}
+                    {%- assign thispart = thispart | replace: '      ', '' | replace: '    ', ' ' -%}
+					{%- assign scriptparts = opentag | split: 'src=' | last | remove: '>' | remove: '"' -%}
+					{%- assign thissrc = scriptparts -%}
+					{%- comment %}{% assign thispart = thispart | append: '<!-- SRC: ' | append: thissrc | append: ' -->' %}{% endcomment -%}
+
+					{%- capture scriptcheck -%}
+                   	if (acceptsCookies() == true){ var script = document.createElement('script'); script.src = '{{ thissrc }}'; var ref = document.querySelector('script'); ref.parentNode.insertBefore(script, ref); };
+					{%- endcapture -%}
+
+					{%- assign thispart = '<script>' | append: scriptcheck | append: '</script>' -%}  
+
+            {%- else -%}
+                    {%- comment %}<!-- Add cookie consent check to script -->{% endcomment -%}
+                    {%- assign newopentag = opentag | append: 'if (acceptsCookies() == true){ ' -%}
+
+					{%- comment %}<!-- Fix missing ; before Shopify statements -->{% endcomment -%}
+                    {%- assign thispart = thispart | replace: '}  var setCookieIfThankYouPage', '};  var setCookieIfThankYouPage' | replace: '}  var trekkie', '};  var trekkie' -%}
+                    {%- assign thispart = thispart | replace: opentag, newopentag -%}
+                    {%- assign thispart = thispart | replace: '      ', '' | replace: '    ', ' ' -%}   
+                    {%- assign thispart = thispart | replace: '</script>', ' }</script>' -%}            
+            {%- endif %}
+		{%- endif %}
+
+	{% endif -%}
+
+{% endif -%}
+
+{%- if settings.cookie_enable %}{{ thispart | replace: '<script', scriptpref }}{%- assign p = p | plus: 1 -%}{% endif -%}
+
+{%- assign thispart = thispart | replace: '      ', '' | replace: '    ', ' ' -%}
+
+{% endfor -%}
+
+{%- comment %}
+{{ header_content }}
+{% endcomment -%}
+
+{% capture get_cookie_body %}
+{% if settings.cookie_enable %}
+{% if template contains 'cookie.consent' %}
+
+{% if check_header_content contains 'Shopify' -%} 
+
+{%- capture r %}
+{% endcapture -%}
+{%- capture rr %}
+
+{% endcapture -%}
+
+{% if settings.cookie_necessary_cookies != '' -%}
+{% capture necessary_cookies -%}
+<li><em>{{ settings.cookie_necessary_cookies | replace: rr, '.</li><li><em>' | replace: r, '</em>' }}.</li>
+{%- endcapture %}
+{%- endif %}
+
+{% if settings.cookie_not_necessary_cookies != '' -%}
+{% capture not_necessary_cookies -%}
+<li><em>{{ settings.cookie_not_necessary_cookies | replace: rr, '.</li><li><em>' | replace: r, '</em>' }}.</li>
+{%- endcapture %}
+{%- endif %}
+
+{% if settings.cookie_third_party_cookies != '' -%}
+{% capture third_party_cookies -%}
+<h3>Third Party</h3>
+<p>These cookies are set by another website domain by technology partners or external web services. Please visit respective domains for further details.</p>
+<ul>
+<li><em>{{ settings.cookie_third_party_cookies | replace: rr, '.</li><li><em>' | replace: r, '</em>' }}.</li>
+</ul>
+{%- endcapture %}
+{%- endif %}
+
+<div class="cookies-list">
+ 
+{% if settings.cart_enable -%}
+<h3>Necessary for the {{ 'general.site.shop_ref' | t }} to function</h3>
+<p>These cookies are necessary for the {{ 'general.site.shop_ref' | t }} {{ 'cart.general.shop_ref' | t }} and checkout services to function. They do not store any personally identifiable information.</p>
+<ul>
+<li><em>Name</em>						Function</li>
+<li><em>_ab</em>					 	Used in connection with access to admin.</li>
+<li><em>_orig_referrer</em>			 	Used in connection with shopping cart.</li>
+<li><em>_secure_session_id</em>		 	Used in connection with navigation through a storefront.</li>
+<li><em>Cart</em>					 	Used in connection with shopping cart.</li>
+<li><em>cart_sig</em>				 	Used in connection with checkout.</li>
+<li><em>cart_ts</em>				 	Used in connection with checkout.</li>
+<li><em>checkout_token</em>			 	Used in connection with checkout.</li>
+<li><em>Secret</em>					 	Used in connection with checkout.</li>
+<li><em>Secure_customer_sig</em>	 	Used in connection with customer login.</li>
+<li><em>storefront_digest</em> 			Used in connection with customer login.</li>
+{{ necessary_cookies }}
+</ul>
+{%- endif %}
+
+<h3>Reporting and Analytics</h3>
+<p>These cookies allow measurement and tracking of visitors to help improve services and performance of the {{ 'general.site.shop_ref' | t }}. All information they collect is anonymized.</p>
+<ul>
+<li><em>Name</em>			 			Function</li>
+<li><em>_landing_page</em> 				Tracks landing pages.</li>
+<li><em>_orig_referrer</em> 			Tracks landing pages.</li>
+<li><em>_s</em> 						Shopify analytics.</li>
+<li><em>_shopify_fs</em> 				Shopify analytics.</li>
+<li><em>_shopify_s</em> 				Shopify analytics.</li>
+<li><em>_shopify_sa_p</em> 				Shopify analytics relating to marketing & referrals.</li>
+<li><em>_shopify_sa_t</em> 				Shopify analytics relating to marketing & referrals.</li>
+<li><em>_shopify_uniq</em> 				Shopify analytics.</li>
+<li><em>_shopify_visit</em> 			Shopify analytics.</li>
+<li><em>_shopify_y</em> 				Shopify analytics.</li>
+<li><em>_y</em> 	 					Shopify analytics.</li>
+<li><em>tracked_start_checkout</em> 	Shopify analytics relating to checkout.</li>
+<li><em>{{ cookiefilename }}</em> 		Used to manage customer cookies preference.</li>
+{{ not_necessary_cookies }}
+</ul>
+  
+{{ third_party_cookies }}
+  
+{% if settings.cookie_necessary_cookies == '' and settings.cookie_not_necessary_cookies == '' and settings.cookie_third_party_cookies == '' -%}
+<p>{{ 'general.accessibility.cookie_source_html' | t }}</p>  
+{%- endif %}
+  
+{%- endif %}
+</div>
+{% endif %}
+{% endif %}
+{% endcapture %}

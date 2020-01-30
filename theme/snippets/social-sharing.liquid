@@ -1,0 +1,28 @@
+<!-- /snippets/social-sharing.liquid -->
+<p class="social-sharing">
+
+  {% if settings.share_facebook %}
+    <a target="_blank" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}"{% if share_status == 'buttons' %} class="btn"{% endif %}>
+      {% if share_status == 'icons' or share_status == 'rich' %}{% include 'icon-facebook' %}{% endif %}
+      {% if share_status == 'text' or share_status == 'rich' or share_status == 'buttons' %}<span aria-hidden="true">{{ 'general.social.share_on_facebook' | t }}</span>{% endif %}
+      <span class="visually-hidden">{{ 'general.social.alt_text.share_on_facebook' | t }}</span>
+    </a>
+  {% endif %}
+
+  {% if settings.share_twitter %}
+    <a target="_blank" href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}"{% if share_status == 'buttons' %} class="btn"{% endif %}>
+      {% if share_status == 'icons' or share_status == 'rich' %}{% include 'icon-twitter' %}{% endif %}
+      {% if share_status == 'text' or share_status == 'rich' or share_status == 'buttons' %}<span aria-hidden="true">{{ 'general.social.share_on_twitter' | t }}</span>{% endif %}
+      <span class="visually-hidden">{{ 'general.social.alt_text.share_on_twitter' | t }}</span>
+    </a>
+  {% endif %}
+
+  {% if settings.share_pinterest %}
+    <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | img_url: '1024x1024' }}&amp;description={{ share_title | url_param_escape }}"{% if share_status == 'buttons' %} class="btn"{% endif %}>
+      {% if share_status == 'icons' or share_status == 'rich' %}{% include 'icon-pinterest' %}{% endif %}
+      {% if share_status == 'text' or share_status == 'rich' or share_status == 'buttons' %}<span aria-hidden="true">{{ 'general.social.share_on_pinterest' | t }}</span>{% endif %}
+      <span class="visually-hidden">{{ 'general.social.alt_text.share_on_pinterest' | t }}</span>
+    </a>
+  {% endif %}
+
+</p>

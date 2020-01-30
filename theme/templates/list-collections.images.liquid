@@ -1,0 +1,14 @@
+{% comment %}
+  This page represents the /products?view=images page.
+  It displays all product images on the store.
+{% endcomment %}
+
+{%- layout none %}  
+
+{% for product in collections['all'].products %}
+
+    {% for image in product.images %} 
+  		<img src="{{ image.src | product_img_url: 'master' }}" />
+    {% endfor %}
+
+{% endfor %}

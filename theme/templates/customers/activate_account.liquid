@@ -1,0 +1,55 @@
+{% comment %}
+  This page displays a form for activating visitor's customer account.
+{% endcomment %}
+
+{% capture header %}
+{% section 'header' %}
+{% endcapture %}
+{% assign get_header = header | strip_newlines %}
+
+{% if get_header contains '<!-- Breadcrumb: above slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+{% section 'slideshow-page' %}
+
+{% if get_header contains '<!-- Breadcrumb: below slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+{% capture sidebar %}{% section 'sidebar' %}{% endcapture %}
+
+<div id="content">
+  
+<h1>{{ 'customer.activate_account.title' | t }}</h1>
+<p>{{ 'customer.activate_account.subtext' | t }}</p>
+
+{% form 'activate_customer_password' %}
+  {{ form.errors | default_errors }}
+
+  <p>
+    <label for="CustomerPassword" class="label-hidden">
+      {{ 'customer.activate_account.password' | t }}
+    </label>
+    <input type="password"
+      name="customer[password]"
+      id="CustomerPassword"
+      placeholder="{{ 'customer.activate_account.password' | t }}">
+  </p>
+
+  <p>
+    <label for="CustomerPasswordConfirmation" class="label-hidden">
+      {{ 'customer.activate_account.password_confirm' | t }}
+    </label>
+    <input type="password"
+      name="customer[password_confirmation]"
+      id="CustomerPasswordConfirmation"
+      placeholder="{{ 'customer.activate_account.password_confirm' | t }}">
+  </p>
+
+  <input type="submit" class="btn" value="{{ 'customer.activate_account.submit' | t }}">
+  <input type="submit" class="btn btn--secondary" name="decline" value="{{ 'customer.activate_account.cancel' | t }}">
+{% endform %}
+  
+</div>
+{{ sidebar }}

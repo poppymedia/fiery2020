@@ -1,0 +1,20 @@
+{% comment %}
+  This page represents the /collections/all?view=images page.
+  It displays all collection images on the store.
+{% endcomment %}
+
+{%- layout none %}  
+
+{% for collection in collections %} 
+
+    {% unless collection.handle == 'frontpage' %}
+
+        {% if collection.image != blank %}
+            <img src="{{ collection | img_url: 'master' }}" />
+        {% endif %}
+
+    {% endunless %}
+
+{% endfor %}
+
+

@@ -1,0 +1,60 @@
+
+
+	{%- if position == 'menu' -%}
+
+		{%- capture currencylist -%}
+      	{% assign selectedcurrency = shop.currency %}
+		{%- for currency in shop.enabled_currencies -%}
+      
+      {%- if currency == cart.currency -%}
+      		{% assign selectedcurrency = currency.iso_code %}
+      		{% capture selecteditem %}
+			<li class="currency site-nav--active">
+			<a href="?currency={{ currency.iso_code }}" data-currency="{{ currency.iso_code }}">{{ currency.iso_code }}</a>
+			</li>
+      		{% endcapture %}
+      {%- else -%}
+			<li class="currency">
+			<a href="?currency={{ currency.iso_code }}" data-currency="{{ currency.iso_code }}">{{ currency.iso_code }}</a>
+			</li>
+      {%- endif -%}
+      
+		{%- endfor -%}
+		{%- endcapture -%}
+		<li class="site-nav--has-submenu">
+          <a href="">{{ selectedcurrency }}</a>
+          <ul>{% if position == 'header' %}{{ selecteditem }}{% endif %}{{ currencylist }}{% if position == 'footer' %}{{ selecteditem }}{% endif %}</ul>
+      	</li>
+
+	{%- else -%}
+
+    <div class="currencymenu">
+	<ul>
+		{%- capture currencylist -%}
+      	{% assign selectedcurrency = shop.currency %}
+		{%- for currency in shop.enabled_currencies -%}
+      
+      {%- if currency == cart.currency -%}
+      		{% assign selectedcurrency = currency.iso_code %}
+      		{% capture selecteditem %}
+			<li class="currency selected">
+			<a href="?currency={{ currency.iso_code }}" data-currency="{{ currency.iso_code }}">{{ currency.iso_code }}</a>
+			</li>
+      		{% endcapture %}
+      {%- else -%}
+			<li class="currency">
+			<a href="?currency={{ currency.iso_code }}" data-currency="{{ currency.iso_code }}">{{ currency.iso_code }}</a>
+			</li>
+      {%- endif -%}
+      
+		{%- endfor -%}
+		{% endcapture %}
+		<li>
+          {{ selectedcurrency }}
+          <ul class="currencies">{% if position == 'header' %}{{ selecteditem }}{% endif %}{{ currencylist }}{% if position == 'footer' %}{{ selecteditem }}{% endif %}</ul>
+      	</li>
+	</ul>
+	</div>
+
+	{%- endif -%}
+

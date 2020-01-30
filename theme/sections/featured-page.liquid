@@ -1,0 +1,132 @@
+<!-- SECTION -->
+
+{% if section.blocks.size > 0 %}
+<style>  
+#shopify-section-{{ section.id }} {
+	clear: both;
+	overflow: hidden;
+	width: 100%;
+	margin: 0;	
+	{% if section.settings.page_width == 'page' %}
+    background-color: {{ section.settings.bg_color }};
+    /* background: green; */
+	{% endif %}
+    vertical-align: middle;
+  	text-align: {{ section.settings.logo_alignment }};
+}  
+#shopify-section-{{ section.id }} .container {  
+  position: relative;  
+  vertical-align: middle;
+  text-align: {{ section.settings.logo_alignment }};
+  margin: 0 auto !important;
+  {% if section.settings.content_width == 'content' %}
+  background-color: {{ section.settings.bg_color }};  
+  /* background-color: red; */
+  {% else %}  
+  background-color: transparent;
+  {% endif %}
+}
+</style>
+{% endif %}
+
+{% if section.settings.content_width == 'content' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}"><div class="column">{% endif %}
+
+{% unless section.settings.home_page_head == 'hidden' %}
+<{{ section.settings.home_page_head }}>{{ pages[section.settings.home_page_content].title }}</{{ section.settings.home_page_head }}>
+{% endunless %}
+
+{% if section.settings.home_page_content %}
+<div>
+{{ pages[section.settings.home_page_content].content }}
+</div>
+{% endif %}
+
+{% if section.settings.content_width == 'content' %}</div></div>{% endif %}
+
+{% schema %}
+{
+  "name": "Page content",
+  "class": "page-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "home_page_heading",
+      "label": "Show heading",
+      "default": false
+    },
+    {
+        "type": "select",
+        "id": "home_page_head",
+        "label": "Show heading",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "h1",
+            "label": "Heading 1"
+          },
+          {
+            "value": "h2",
+            "label": "Heading 2"
+          },
+          {
+            "value": "h3",
+            "label": "Heading 3"
+          },
+          {
+            "value": "h4",
+            "label": "Heading 4"
+          }
+        ],
+        "default": "h1"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content width",
+      "default": "content",
+      "options": [
+          {
+            "value": "page",
+            "label": "Page"
+          },
+          {
+            "value": "content",
+            "label": "Content"
+          }
+      ]
+    },
+    {
+        "type": "select",
+        "id": "logo_alignment",
+        "label": "Content alignment",
+		"default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+    },
+    {
+      "type": "page",
+      "id": "home_page_content",
+      "label": "Page content"
+    } 
+  ],
+  "presets": [{
+    "name": "Featured page",
+    "category": "Content"
+  }]
+}
+{% endschema %}

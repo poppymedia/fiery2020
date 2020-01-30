@@ -1,0 +1,103 @@
+{% comment %}
+  This is the home page, containing the following sections:
+  * featured-page.liquid
+  * featured-collection.liquid
+  * featured-products.liquid
+{% endcomment %}
+
+{% capture header %}
+{% section 'header' %}
+{% endcapture %}
+{% assign get_header = header | strip_newlines %}
+
+
+{% comment %}
+{% if get_header contains '<!-- Breadcrumb: above slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+{% endcomment %}
+
+
+{% section 'slideshow-homepage' %}
+{% comment %}{% section 'slideshow-inprogress' %}{% endcomment %}
+
+
+{% comment %}
+{% if get_header contains '<!-- Breadcrumb: below slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+{% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="content">
+
+  {% if template == 'index' and settings.sidesbar_home %}
+
+  <div class="shopify-section">
+
+    <article>
+      
+    {{ content_for_index }}
+      
+    </article>
+
+    {% include 'sidebars' %}
+ 
+  </div>
+
+  {% else %}
+
+  {{ content_for_index }}
+
+  {% endif %}
+
+</div>
+
+
+
+
+
+
+
+
+{% comment %}
+<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
+
+<div id="content">
+
+  {% if template == 'index' and settings.sidesbar_home %}
+
+  <div class="shopify-section">
+
+    <article>
+      
+    {{ content_for_index }}
+      
+    </article>
+
+    {% include 'sidebars' %}
+ 
+  </div>
+
+  {% else %}
+
+  {{ content_for_index }}
+
+  {% endif %}
+
+</div>
+
+</div>
+{% endcomment %}

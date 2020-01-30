@@ -1,0 +1,31 @@
+{% if settings.search_form == 'shopify' %}
+{% if settings.forms_placeholders or placeholders == 'yes' %}{% assign showplaceholders = 'yes' %}{% endif %}
+
+<form method="get" action="/search" role="search" class="search-box">
+  <!-- Search everything possible -->
+  <input type="hidden" name="type" value="product,page,article">
+ 
+  {% if heading != 'hidden' %}
+  {% capture heading %}{{ 'search.titles.heading' | t }}{% endcapture %} 
+  {% if heading != blank %}<h2>{{ heading }}</h2>{% endif %}
+  {% endif %}
+
+  {% if labels == 'hidden' %}{% assign labelclass = ' class="label-hidden"' %}{% endif %}  
+  
+  <p>
+  <label for="{% if where == 'footer' %}footer-{% endif %}search"{{ labelclass }}>{{ 'search.form.search' | t }}</label>
+  <input type="text" id="{% if where == 'footer' %}footer-{% endif %}search" name="q" value="{{ search.terms | escape }}"{% if showplaceholders == 'yes' %} placeholder="{% if labels == 'hidden' %}{{ 'search.form.search' | t }}{% else %}{{ 'search.form.search_placeholder' | t }}{% endif %}"{% endif %} {% if settings.search_form_focus and position == 'body' %}autofocus{% endif %}>
+  </p>
+
+  <button type="submit" class="btn">
+  {% include 'icon-search' %}
+  <span class="icon-fallback-text">{{ 'search.form.submit' | t }}</span>
+  </button>
+  
+</form>
+
+{% else %}
+
+{{ settings.search_form_code }}
+
+{% endif %}

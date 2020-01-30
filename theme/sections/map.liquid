@@ -1,0 +1,111 @@
+{% if section.blocks.size > 0 %}
+
+{% assign font_gutter = settings.grid_spacing | append: 'px' %}
+{% assign grid_gutter = font_gutter | remove: 'px' | plus: 0 %}
+
+{%- for block in section.blocks -%}
+<div class="map">
+  {% if block.settings.embed != empty %}
+  {{ block.settings.embed }}
+  {% else %}
+  <iframe width="{{ section.settings.width }}%" height="{{ section.settings.height }}" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="//maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q={% if block.settings.address != blank %}{{ block.settings.address | replace: ' ', '+' }}{% else %}{{ shop.address.street }}{% endif %}&amp;z={{ block.settings.zoom }}&amp;output=embed"></iframe>
+  {% endif %}
+</div>
+{%- endfor %}
+
+<style>
+  .map-section .map {
+      margin-top: {{ grid_gutter }}px;
+  }
+  .map-section > div:first-of-type {
+      margin-top: 0;
+  }
+  .map-section .map iframe {
+      height: {{ section.settings.height }}px;
+  }
+  @media only screen and (max-width: 767px) {
+      .map-section .map iframe {
+            height: {{ section.settings.mobile_height }}px;
+      }
+  }
+  /*
+  */
+</style>
+
+{% endif %}
+
+{% schema %}
+
+{
+  "name": "Google Map",
+  "class": "map-section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "width",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Width",
+      "default": 100
+    },
+	{
+      "type": "range",
+      "id": "height",
+      "min": 250,
+      "max": 500,
+      "step": 50,
+      "unit": "px",
+      "label": "Height",
+      "default": 500
+    },
+	{
+      "type": "range",
+      "id": "mobile_height",
+      "min": 250,
+      "max": 500,
+      "step": 50,
+      "unit": "px",
+      "label": "Height (mobile)",
+      "default": 400
+    }
+  ],
+  "name": "Maps",
+  "blocks": [
+    {
+      "type": "Location",
+      "name": "Location",
+      "settings": [
+        {
+          "type": "text",
+          "id": "address",
+          "label": "Address",
+          "info": "The full address that will be placed on the map."
+        },
+        {
+          "type": "textarea",
+          "id": "embed",
+          "label": "Embed code"
+        },
+        {
+          "type": "range",
+          "id": "zoom",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "label": "Zoom",
+          "default": 12
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Map",
+      "category": "Content"
+    }
+  ]
+}
+
+{% endschema %}

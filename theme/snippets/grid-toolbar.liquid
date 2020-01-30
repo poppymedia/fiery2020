@@ -1,0 +1,82 @@
+<style>
+.gridlist {
+  list-style: none;
+  margin: 0 0 30px 0;
+  padding: 0;
+}
+.gridlist > li {
+  display: inline-block;
+  margin: 0 0.5em 0 0;
+}
+.gridlist > li a {
+  color: {{ settings.color_btn_tool_text }};
+  {% if section.settings.layout_grid_list == 'links' %}
+  color: {{ settings.color_btn_tool_bg }};
+  {% else %}
+  {% unless section.settings.layout_grid_list == 'icons' %}
+  background: {{ settings.color_btn_tool_bg }};
+  border: solid 1px {{ settings.color_btn_tool_border }};
+  {% endunless %}
+  {% endif %}
+}
+.gridlist > li.active span {
+  {% if section.settings.layout_grid_list == 'links' %}
+  color: {{ settings.color_btn_tool_active_bg }};
+  {% else %}
+  {% unless section.settings.layout_grid_list == 'icons' %}
+  background: {{ settings.color_btn_tool_active_bg }} !important;
+  {% endunless %}
+  {% endif %}
+  cursor: default !important;
+}
+.gridlist > li.active,
+.gridlist > li.active span {
+  {% if section.settings.layout_grid_list == 'links' %}
+  color: {{ settings.color_btn_tool_active_text }};
+  {% else %}
+  color: {{ settings.color_btn_tool_active_text }} !important;
+  {% unless section.settings.layout_grid_list == 'icons' %}
+  border-color: {{ settings.color_btn_tool_active_border }} !important;
+  {% endunless %}
+  {% endif %}
+}
+</style>
+
+<ul class="gridlist">  
+  {% if tooltype == collection %}
+  {% assign href = '/collections/' %}
+  {% assign view = '?view=list' %}
+  {% endif %}
+  
+  {% if tooltype == blog %}
+  {% assign href = '/blogs/' %}
+  {% assign view = '?view=list' %}
+  {% endif %}
+  
+  {% if tooltype == search %}
+  {% assign href = '/search?q=' | append: search.terms %}
+  {% assign view = '&view=list' %}
+  {% endif %}
+  
+  {% if current_page %}
+  {% assign pagenum = '?page=' | append: current_page %}
+  {% assign view = view | replace: '?', '&' %}
+  {% endif %}
+  
+  {% if tooltype == search %}
+  {% assign pagenum = pagenum | replace: '?page', '&page' %}
+  {% endif %}
+  
+  <!-- TO DO: Needs to work with collections default set to list layout -->
+  
+  {% if template contains '.list' %}
+  <li class="grid"><a href="{{ href }}{{ tooltype.handle | remove: view }}{{ pagenum }}" class="{% if section.settings.layout_grid_list == 'buttons' %}btn{% endif %}">{% if section.settings.layout_grid_list == 'icons' %}{% include 'icon-grid' %}{% else %}{{ 'layout.features.titles.grid' | t }}{% endif %}</a></li>
+  <li class="list active"><span class="{% if section.settings.layout_grid_list == 'buttons' %}btn{% endif %}">{% if section.settings.layout_grid_list == 'icons' %}{% include 'icon-list' %}{% else %}{{ 'layout.features.titles.list' | t }}{% endif %}</span></li>
+  {% else %}
+  <li class="grid active"><span class="{% if section.settings.layout_grid_list == 'buttons' %}btn{% endif %}">{% if section.settings.layout_grid_list == 'icons' %}{% include 'icon-grid' %}{% else %}{{ 'layout.features.titles.grid' | t }}{% endif %}</span></li>
+  <li class="list"><a href="{{ href }}{{ tooltype.handle }}{{ pagenum }}{{ view }}" class="{% if section.settings.layout_grid_list == 'buttons' %}btn{% endif %}">{% if section.settings.layout_grid_list == 'icons' %}{% include 'icon-list' %}{% else %}{{ 'layout.features.titles.list' | t }}{% endif %}</a></li>
+  {% endif %}
+</ul>
+
+
+

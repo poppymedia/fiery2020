@@ -1,0 +1,552 @@
+<!-- SECTION -->
+
+{% include 'settings' %}
+{% assign mobile_width = grid_mobile %}
+{% if section.settings.newsletter_homepage and template == 'index' %}{% assign shownewsletter = true %}{% endif %}
+{% if section.settings.newsletter_pages and template != 'index' %}{% assign shownewsletter = true %}{% endif %}
+
+{% if shownewsletter %}
+{% capture newsletter %}
+<style>  
+#shopify-section-{{ section.id }} {
+  	position: relative;
+	clear: both;
+	overflow: hidden;
+	width: 100%;
+	margin: 0;  
+    vertical-align: middle;
+  	text-align: {{ section.settings.logo_alignment }};
+}   
+  
+{% if section.settings.page_width == 'overflow' or section.settings.page_width == 'page' %}
+#shopify-section-{{ section.id }} {
+    {% if section.settings.image_position != 'hidden' %}
+    {% assign bgsize = 1000 | append: 'x' %}
+    background-image: url('{{ section.settings.image | img_url: bgsize }}');
+      
+    {% if section.settings.image_parallax %}
+    background-position: center -1px; 
+      
+    {% if section.settings.image_position == 'center' %}    
+    background-repeat: no-repeat;
+    {% endif %}
+    {% if section.settings.image_position == 'tile' %}
+    background-repeat: repeat;
+    {% endif %}
+    {% if section.settings.image_position == 'fill' %}   
+    background-size: cover;
+    {% endif %}        
+      
+    {% else %}
+      
+    {% if section.settings.image_position == 'center' %}    
+    background-position: center center; 
+    background-repeat: no-repeat;
+    {% endif %}
+    {% if section.settings.image_position == 'tile' %}
+    background-position: center center; 
+    background-repeat: repeat;
+    {% endif %}
+    {% if section.settings.image_position == 'fill' %}   
+    background-position: center center; 
+    background-size: cover;
+    {% endif %}
+      
+    {% endif %}
+      
+    {% endif %}    
+}
+#shopify-section-{{ section.id }}:before {
+  	content: '';
+  	position: absolute;
+	width: 100%;
+  	height: 100%;
+  	top: 0;
+  	left: 0;  
+  	background-color: {{ section.settings.bg_color }};  
+    opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
+}
+{% endif %} 
+  
+{% if section.settings.page_width == 'container' %}
+#shopify-section-{{ section.id }} .container {
+    {% if section.settings.image_position != 'hidden' %}
+    {% assign bgsize = 1000 | append: 'x' %}
+    background-image: url('{{ section.settings.image | img_url: bgsize }}');
+      
+    {% if section.settings.image_parallax %}
+    background-position: center -1px; 
+      
+    {% if section.settings.image_position == 'center' %}    
+    background-repeat: no-repeat;
+    {% endif %}
+    {% if section.settings.image_position == 'tile' %}
+    background-repeat: repeat;
+    {% endif %}
+    {% if section.settings.image_position == 'fill' %}   
+    background-size: cover;
+    {% endif %}      
+      
+    {% else %}  
+      
+    {% if section.settings.image_position == 'center' %}    
+    background-position: center center; 
+    background-repeat: no-repeat;
+    {% endif %}
+    {% if section.settings.image_position == 'tile' %}
+    background-position: center center; 
+    background-repeat: repeat;
+    {% endif %}
+    {% if section.settings.image_position == 'fill' %}   
+    background-position: center center; 
+    background-size: cover;
+    {% endif %}
+      
+    {% endif %}      
+      
+    {% endif %}
+}
+#shopify-section-{{ section.id }} .container:before {
+  	content: '';
+  	position: absolute;
+	width: 100%;
+  	height: 100%;
+  	top: 0;
+  	left: 0;
+  	background-color: {{ section.settings.bg_color }};
+    opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
+}
+{% endif %} 
+
+#shopify-section-{{ section.id }} .container {  
+    position: relative;  
+    vertical-align: middle;
+    text-align: {{ section.settings.logo_alignment }};
+}
+@media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
+#shopify-section-{{ section.id }} .container {  
+    margin: 0 auto !important;    
+  	{% if section.settings.page_width == 'container' %}
+  	padding: 0;
+  	{% endif %}
+}  
+}
+  
+{% if section.settings.page_width == 'page' or section.settings.page_width == 'overflow' %}
+#shopify-section-{{ section.id }} .container {    
+    background: transparent;
+}
+@media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
+  #shopify-section-{{ section.id }} .container {    
+      padding: 0 !important;
+  } 
+}
+{% endif %}    
+
+{% if section.settings.page_width == 'overflow' or section.settings.page_width == 'page' %}
+#shopify-section-{{ section.id }} { 
+  	background-color: {{ section.settings.bg_color }}; 
+}
+{% endif %}
+  
+{% if section.settings.page_width == 'container' %}
+#shopify-section-{{ section.id }} .container { 
+  	background-color: {{ section.settings.bg_color }}; 
+}
+{% endif %}
+  
+  
+{% if section.settings.image %}
+{% endif %}
+  
+
+
+#shopify-section-{{ section.id }} .container .column {  
+  width: 100%;
+  margin: -{{ font_gutter }} 0 !important;
+  {% if section.settings.line_color != '' and section.settings.line_bottom_size > 0 %}border-bottom: solid {{ section.settings.line_bottom_size }}px {{ section.settings.line_color }} !important;{% endif %}
+  {% if section.settings.line_color != '' and section.settings.line_top_size > 0 %}border-top: solid {{ section.settings.line_top_size }}px {{ section.settings.line_color }} !important;{% endif %}
+}
+#shopify-section-{{ section.id }} .newsletter {  
+  padding: {{ section.settings.spacing_size }}px 0;
+  text-align: {{ section.settings.content_align }}; 
+  position: relative;
+  z-index: 2;
+}
+#shopify-section-{{ section.id }} .newsletter form {  
+  position: relative;
+  overflow: hidden;
+  clear: both;
+  padding: 0 0 1em 0;
+  margin: 0 auto;
+  max-width: 40em;
+  {% if section.settings.content_align == 'left' %}margin-left: 0;{% endif %}
+  {% if section.settings.content_align == 'right' %}margin-right: 0;{% endif %}
+}
+  
+#shopify-section-{{ section.id }} .newsletter form .text *,
+#shopify-section-{{ section.id }} .newsletter form .actions * { 
+  position: relative;
+  margin: 0;
+  padding: 0;
+  display: block;
+  width: 100%;
+  vertical-align: top;
+  top: auto;
+  bottom: auto;
+}
+
+
+{% if section.settings.form_type == 'form-newsletter' %}
+{% if section.settings.form_slim %}
+#shopify-section-{{ section.id }} .newsletter form {  
+  position: relative;
+  overflow: hidden;
+}
+#shopify-section-{{ section.id }} .newsletter form:after {  
+  content: '';
+  display: block;
+  clear: both;
+  overflow: hidden;
+}
+{% if settings.newsletter_form_name %}
+#shopify-section-{{ section.id }} .newsletter form .text {  
+  width: 37%;
+  margin-right: 2%;
+}
+#shopify-section-{{ section.id }} .newsletter form p:nth-of-type(2n) {
+  float: left;
+}
+#shopify-section-{{ section.id }} .newsletter form .actions {  
+  width: 22%;
+  float: right;
+  margin-left: 0;
+}
+#shopify-section-{{ section.id }} .newsletter form .actions button {  
+  width: 100%;
+}
+{% else %}
+#shopify-section-{{ section.id }} .newsletter form .text {  
+  width: 74%;
+  margin-right: 2%;
+}
+#shopify-section-{{ section.id }} .newsletter form .actions {  
+  width: 24%;
+  float: right;
+  margin-left: 0;
+}
+#shopify-section-{{ section.id }} .newsletter form .actions button {  
+  width: 100%;
+}
+{% endif %}
+#shopify-section-{{ section.id }} .newsletter form .text label {  
+  padding: 0;
+  margin: -0.2em 0 0 0;
+}
+#shopify-section-{{ section.id }} .newsletter form .text input {  
+  width: 100%;
+  text-align: {{ section.settings.content_align }};
+}
+{% else %}
+{% if settings.newsletter_form_name %}
+{% else %}
+#shopify-section-{{ section.id }} .newsletter {
+  clear: both;
+  overflow: hidden;
+}
+#shopify-section-{{ section.id }} .newsletter form .text {  
+  width: 85%;
+  margin-right: 0;
+}
+{% endif %}
+{% endif %}
+{% endif %}
+  
+
+
+{% if section.settings.form_type == 'form-contact' %}
+#shopify-section-{{ section.id }} .newsletter form .text {
+  position: relative;
+  margin: 0 0 0.5em 0;
+}
+
+/*
+#shopify-section-{{ section.id }} .newsletter form .acceptance {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  padding: 0 0 0 1.5em;
+}
+#shopify-section-{{ section.id }} .newsletter form.contact-form .acceptance input#Marketing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: -0.45em 0 0 0;
+  width: auto;
+  height: auto;
+}
+*/
+  
+{% endif %}
+
+  
+{% comment %}
+#shopify-section-{{ section.id }} .newsletter form input,
+#shopify-section-{{ section.id }} .newsletter form label,
+#shopify-section-{{ section.id }} .newsletter form button {  
+  position: relative;
+  display: none;
+  display: block;
+  width: 100%;
+  margin: 0;
+  float: none;
+}
+
+/* Ensure all form elements are the same height */
+#shopify-section-{{ section.id }} .newsletter form input,
+#shopify-section-{{ section.id }} .newsletter form select,
+#shopify-section-{{ section.id }} .newsletter form button {
+  padding: 0.5em 0.8em !important;
+  font-size: inherit !important;
+  line-height: 1em !important;
+  height: 2.4em !important;
+}  
+{% endcomment %}  
+  
+#shopify-section-{{ section.id }} .newsletter form button {  
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  float: none;
+}
+
+
+
+#shopify-section-{{ section.id }} {  
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+</style>
+{% endcapture %}
+{{ newsletter | strip_newlines | remove: '	' | replace: '  ', ' ' }}
+
+
+
+{% if section.settings.content_width == 'container' or section.settings.content_width == 'content' or section.settings.content_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}{% if section.settings.image_parallax %} parallax{% endif %}"><div class="column">{% endif %}
+
+<div class="newsletter">
+  {% assign heading = 'hidden' %}
+  {% if section.settings.form_heading %}{% assign heading = 'visible' %}{% endif %}
+  {% assign labels = 'hidden' %}
+  {% if section.settings.form_labels %}{% assign labels = 'visible' %}{% endif %}
+  {% include section.settings.form_type, placeholders: 'yes' %}
+</div>
+
+{% if section.settings.content_width == 'container' or section.settings.content_width == 'content' or section.settings.content_width == 'overflow' %}</div></div>{% endif %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Newsletter",
+	"class": "parallax",
+    "settings": [
+      {
+         "type": "checkbox",
+         "id": "newsletter_homepage",
+         "label": "Show on homepage",
+         "default": true
+      },
+      {
+         "type": "checkbox",
+         "id": "newsletter_pages",
+         "label": "Show on other pages",
+         "default": true
+      },
+      {
+        "type": "select",
+        "id": "page_width",
+        "label": "Background width",
+        "default": "page",
+        "options": [
+          {
+            "value": "page",
+            "label": "Page"
+          },
+          {
+            "value": "overflow",
+            "label": "Content Overflow"
+          },
+          {
+            "value": "container",
+            "label": "Content Container"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "content_width",
+        "label": "Content width",
+        "default": "content",
+        "options": [
+            {
+              "value": "page",
+              "label": "Page"
+            },
+            {
+              "value": "content",
+              "label": "Content"
+            }
+        ]
+      },
+      {
+         "type": "range",
+         "id": "spacing_size",
+         "min": 0,
+         "max": 100,
+         "step": 5,
+         "unit": "px",
+         "label": "Content spacing",
+         "default": 30
+      },
+      {
+         "type": "range",
+         "id": "line_top_size",
+         "min": 0,
+         "max": 5,
+         "step": 1,
+         "unit": "px",
+         "label": "Top divide line size",
+         "default": 0
+      },
+      {
+         "type": "range",
+         "id": "line_bottom_size",
+         "min": 0,
+         "max": 5,
+         "step": 1,
+         "unit": "px",
+         "label": "Bottom divide line size",
+         "default": 0
+      },
+      {
+        "type": "select",
+        "id": "content_align",
+        "label": "Content align",
+        "default": "center",
+        "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "form_type",
+        "label": "Form type",
+        "default": "form-newsletter",
+        "options": [
+            {
+              "value": "form-newsletter",
+              "label": "Newsletter"
+            },
+            {
+              "value": "form-contact",
+              "label": "Contact"
+            }
+        ]
+      },
+      {
+         "type": "checkbox",
+         "id": "form_slim",
+         "label": "Enable slim newsletter",
+         "default": false
+      },
+      {
+         "type": "checkbox",
+         "id": "form_heading",
+         "label": "Show form heading",
+         "default": true
+      },
+      {
+         "type": "checkbox",
+         "id": "form_labels",
+         "label": "Show form labels",
+         "default": true
+      },
+      {
+         "type": "color",
+         "id": "line_color",
+         "label": "Divide line color"
+      },
+      {
+         "type": "color",
+         "id": "bg_color",
+         "label": "Background and overlay color"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background image",
+        "info":"1600 x 300px recommended"
+      },
+      {
+            "type": "select",
+            "id": "image_position",
+            "label": "Background position",
+            "options": [
+              {
+                "value": "hidden",
+                "label": "Hidden"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "tile",
+                "label": "Tile"
+              },
+              {
+                "value": "fill",
+                "label": "Fill"
+              }
+            ],
+            "default": "fill"
+      },
+      {
+        "type": "range",
+        "id": "image_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "label": "Background overlay visibility",
+        "default": 50
+      },
+      {
+         "type": "checkbox",
+         "id": "image_parallax",
+         "label": "Show parallax",
+         "default": true
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,52 @@
+{% comment %}
+  This page represents the /collections/all?view=tags page.
+{% endcomment %}
+
+{% capture header %}
+{% section 'header' %}
+{% endcapture %}
+{% assign get_header = header | strip_newlines %}
+
+{% if get_header contains '<!-- Breadcrumb: above slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+{% section 'slideshow-page' %}
+
+{% if get_header contains '<!-- Breadcrumb: below slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
+
+<div id="content" class="products">
+  
+  <header role="banner">
+    {% assign collection_title = 'products.general.tags_title' | t %}
+    {% assign collection_description = 'products.general.tags_description' | t %}
+    {% if section.settings.heading %}{% endif %}
+    <h1>{{ collection_title }}</h1> 
+    <p>{{ collection_description }}</p>
+    
+    {% if collection.all_tags.size > 0 %}
+<div>
+{% for tag in collection.all_tags %}
+    {% assign products_count = 0 %}
+    {% for product in collection.products %}
+        {% if product.tags contains tag %}
+            {% assign products_count = products_count | plus: 1 %}
+        {% endif %}
+    {% endfor %}
+
+  	<span data-count="{{ products_count }}">{{ tag }}</span>
+
+  <br />
+{% endfor %}
+</div>
+    {% endif %}    
+    
+  </header>
+  
+</div>
+
+</div>

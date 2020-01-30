@@ -1,0 +1,72 @@
+
+        {% capture results %}
+
+          {% for item in search.results %}
+    
+    		{% comment %}
+    		Shopify does not support partial search matches, such as underscore prefixes in tags
+    		{% endcomment %}
+    		
+    		{% if section.settings.search_products %}
+    
+    			{% assign mytype = 'product' %}
+                {% if section.settings.search_tags %}{% assign type = mytype | append: ',tag' %}{% endif %}
+    
+                {% if item.object_type == mytype %}  
+                {% assign product = item %}          
+                {% include 'grid-product' %}  
+    			{% assign result_count = result_count | plus: 1 %}
+                {% endif %}
+
+    		{% endif %}
+    
+    		{% if section.settings.search_articles %}
+
+                {% assign mytype = 'article' %}
+                {% if section.settings.search_tags %}{% assign type = mytype | append: ',tag' %}{% endif %}
+    
+                {% if item.object_type == mytype %}
+                {% assign article = item %}
+                {% include 'grid-article' %} 
+    			{% assign result_count = result_count | plus: 1 %}
+                {% endif %}
+
+    		{% endif %}
+
+    		{% if section.settings.search_pages %}
+    
+                {% assign mytype = 'page' %}
+    
+                {% if item.object_type == mytype %}
+                {% assign page = item %}
+
+
+
+                {% include 'grid-page' %}
+    			{% assign result_count = result_count | plus: 1 %}
+
+				<!-- NOTE: Filtering shopify results should not be used with pagination (uneven pages likely) -->
+				{% comment %}
+    			{% unless page.template_suffix contains 'snippet' %}
+                {% include 'grid-page' %}
+    			{% assign result_count = result_count | plus: 1 %}
+    			{% endunless %}
+				{% endcomment %}
+
+
+
+                {% endif %}
+
+    		{% endif %}
+    
+    
+    		{% comment %}
+    		<p>Result: {{ item.object_type }}</p> 
+    		{% endcomment %}
+
+    
+          {% endfor %}
+
+		
+
+        {% endcapture %}

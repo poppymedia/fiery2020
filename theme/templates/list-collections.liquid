@@ -1,0 +1,50 @@
+{% comment %}
+  This page represents the /collections page and /products page.
+{% endcomment %}
+
+{% capture header %}
+{% section 'header' %}
+{% endcapture %}
+{% assign get_header = header | strip_newlines %}
+
+{% if get_header contains '<!-- Breadcrumb: above slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+{% section 'slideshow-page' %}
+
+{% if get_header contains '<!-- Breadcrumb: below slideshow -->' %}
+{% include 'breadcrumb' %}
+{% endif %}
+
+<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
+
+<div id="content">
+    
+  {% section 'collections' %}
+    
+  {% comment %}  
+  {% for collection in collections %}
+    {% unless collection.handle == 'frontpage' %}
+      <a href="{{ collection.url }}" title="{{ 'collections.general.link_title' | t: title: title }}">
+        {% if collection.image != blank %}
+          {{ collection | img_url: '480x480' | img_tag: collection.title }}
+        {% elsif collection.products.first != blank %}
+          {{ collection.products.first | img_url: '480x480' | img_tag: collection.title }}
+        {% else %}
+          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+        {% endif %}
+      </a>
+
+      <p>
+        <a href="{{ collection.url }}" title="{{ 'collections.general.link_title' | t: title: title }}">{{ collection.title }}</a>
+      </p>
+    {% endunless %}
+  {% endfor %}
+  {% endcomment %}
+
+  
+</div>
+
+</div>

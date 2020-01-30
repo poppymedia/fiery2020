@@ -1,0 +1,91 @@
+
+
+{% if product.options.size > 0 %}
+
+<form action="/cart" method="post">
+  
+    <table id="variants">
+      <tbody>
+
+        {% if product.available %}
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              <tr>
+                <td class="image">
+                  {% comment %}<a href="{{ variant.url | collection }}"></a>{% endcomment %}
+                  <img src="{{ variant.image | default: product.featured_image | img_url: '40x' }}" alt="{{ variant.title | escape }}" />                  
+                </td>
+                <td class="title">
+                  {% comment %}<a href="{{ variant.url | collection }}"></a>{% endcomment %}
+                  {% unless variant.title contains 'Default' %}{{ variant.title }}{% endunless %}
+                  {% if section.settings.show_sku %}{% unless variant.sku == blank %}<span class="sku">{{ variant.sku }}</span>{% endunless %}{% endif %}
+                </td>
+                <td class="price">
+                  {{ variant.price | money }}
+                  
+                  {{ show_price_tax }}
+                  
+                </td>
+                
+                {% if settings.cart_enable %}
+                
+                {% if section.settings.show_qty %}
+                <td style="text-align:right;">
+                <div class="action quantity{% unless settings.quantity_style == 'minimal' %} buttons {{ settings.quantity_style }}{% endunless %} supports-cookies">
+                <input title="{{ 'products.general.quantity' | t }}" type="number" id="Quantity" name="updates[{{ variant.id }}]" value="0" min="0" {% unless variant.inventory_management == blank or variant.inventory_policy == 'continue' %} max="{{ variant.inventory_quantity }}"{% endunless %} onfocus="this.select()">
+                </div>
+                </td>
+                {% endif %} 
+                
+                {% comment %}
+                <td style="text-align:right;">
+                  <input name="updates[{{ variant.id }}]" onfocus="this.select()" class="quantity field" min="0" {% unless variant.inventory_management == blank or variant.inventory_policy == 'continue' %} max="{{ variant.inventory_quantity }}" {% endunless %} type="text" value="0" tabindex="1" />
+                </td>
+                {% endcomment %}
+                
+                {% endif %}
+                
+              </tr>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+
+      </tbody>
+    </table>
+
+  	{% if settings.cart_enable %}
+
+  
+    <div class="supports-no-cookies">
+      <p class="notice">{{ 'cart.general.cookies_required' | t }}</p>
+    </div>    
+  
+
+        <div>
+          {{ add_to_cart }}
+          {{ add_more_buttons }}     
+        </div>  
+  
+  	{% endif %}
+
+</form>
+
+{% if settings.cart_enable %}
+
+<script>
+jQuery(function($) {
+  $('table .quantity:first').focus();
+  $('[max]').change(function() {
+    var max = parseInt($(this).attr('max'), 10);
+    var value = parseInt($(this).val(), 10) || 0;
+    if (value > max) { 
+      alert('We only have ' + max + ' of this item in stock');
+      $(this).val(max); 
+    }    
+  });
+});
+</script>
+
+{% endif %}
+  
+{% endif %}

@@ -1,0 +1,229 @@
+{% comment %}
+  This page is used as the gift card issued to a customer upon purchase. 
+  The URL to this gift card is emailed to a customer when purchased.
+{% endcomment %}
+
+{% comment %}
+  QR code is rendered in `#QrCode`
+
+  `gift_card.pass_url` is true if apple wallet is enabled for the shop
+{% endcomment %}
+
+{% layout 'gift_card' %}
+
+<style>
+body {
+    padding: 5%;
+ 	background-color: {{ section.settings.bg }};
+  	color: {{ section.settings.text }};
+}
+
+body a,
+.action-link,
+.action-link:hover,
+#footer-links li a,
+#footer-links li a:hover {
+  	color: {{ section.settings.link }};
+  	opacity: 1;
+}
+.action-link {
+  	text-transform: none;
+  	letter-spacing: 0;
+}
+.btn,
+.btn:hover {
+  	background: {{ section.settings.btn_bg }} !important;
+  	color: {{ section.settings.btn_text }} !important;
+  	opacity: 1 !important;
+}
+.intro {
+  	margin-bottom: 2em;
+  	text-align: center;
+}
+main {
+    padding: 5%;
+ 	background-color: {{ section.settings.voucher_bg }};
+  	color: {{ section.settings.voucher_text }};
+}
+main a {
+  	color: {{ section.settings.voucher_link }};
+  	opacity: 1;
+}
+.btn {
+  	background: {{ section.settings.btn_bg }};
+  	color: {{ section.settings.btn_text }};
+}
+header {
+  display: block;
+  text-align: center;
+}
+.site-logo {
+  text-align: center;
+  margin: 0 auto;
+}
+.site-logo img {
+  max-width: {{ section.settings.logo_size }}px;
+  margin: 0 auto;
+}
+</style>
+    
+  <h2 class="intro">{{ 'gift_cards.issued.subtext' | t }}</h2>    
+
+  <div class="wrap">
+
+    <main role="main">
+
+          <header id="gift-card-header">            
+
+            <a href="/" itemprop="url" class="site-logo{% if section.settings.logo != blank %} site-header__logo-image{% endif %}">
+            {% if section.settings.logo and section.settings.logo_size > 0 %}
+              	{% assign image = section.settings.logo_size | times: 2 | append: 'x' %}
+                <img src="{{ section.settings.logo | img_url: image }}" itemprop="logo"} alt="{{ shop.name }}" />
+            {% else %}
+                {{ shop.name }}
+            {% endif %}
+            </a>
+            
+            {% unless gift_card.enabled %}
+              <span class="tag">{{ 'gift_cards.issued.disabled' | t }}</span>
+            {% endunless %}
+            {% assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" %}
+            {% if gift_card.expired and gift_card.enabled %}
+               <span class="tag">{{ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date }}</span>
+            {% endif %}
+            {% if gift_card.expired != true and gift_card.expires_on and gift_card.enabled %}
+              <span class="tag light">{{ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date }}</span>
+            {% endif %}
+          </header>
+
+          <div id="gift-card-holder">
+            <div class="corner top-left"></div>
+            <div class="corner bottom-right"></div>
+            <div class="corner top-right"></div>
+            <div class="corner bottom-left"></div>
+            <div id="gift-card">
+              <img src="{{ 'giftcard.jpg' | asset_url }}" alt="{{ 'gift_cards.issued.subtext' | t }}">
+              {% assign initial_value_size = formatted_initial_value | size %}
+              <div id="gift-card-amount" class="{% if initial_value_size > 6 %}medium{% endif %}">
+                {% if gift_card.balance != gift_card.initial_value %}
+                  <span class="tooltip-container"><span class="tooltip-label">{{ gift_card.balance | money }} <small>left</small></span><span class="tooltip-triangle"></span></span>
+                {% endif %}
+                <strong>{{ formatted_initial_value }}</strong>
+              </div>
+              {% assign code_size = gift_card.code | format_code | size %}
+              <div id="gift-card-code-outer" class="{% if code_size <= 25 %}large{% elsif code_size > 25 and code_size <= 30 %}medium{% else %}small{% endif %}" onclick="selectText('gift-card-code-digits');">
+                <div id="gift-card-code-inner">
+                  <strong id="gift-card-code-digits">{{ gift_card.code | format_code }}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="gift-card-instructions">
+            <p>{{ 'gift_cards.issued.redeem' | t }}</p>
+          </div>
+      
+          <div id="gift-card-actions">
+            <a href="{{ shop.url }}" class="btn" target="_blank">{{ 'gift_cards.issued.shop_link' | t }}</a>
+            <a href="#" class="action-link left" onclick="window.print();">{{ 'gift_cards.issued.print' | t }}</a>
+          </div>
+
+    </main>
+
+    <footer role="contentinfo">
+
+          <img src="{{ 'gift-card/icon-bug.png' | shopify_asset_url }}" class="gift-card-icon" alt="{{ 'gift_cards.issued.subtext' | t }}">
+
+    </footer>
+
+  </div>
+
+
+{% schema %}
+  {
+    "name": "Gift card",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Page"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_size",
+        "min": 0,
+        "max": 500,
+        "step": 10,
+        "label": "Logo width",
+        "default": 150
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "text",
+        "label": "Text",
+        "default": "#767676"
+      },
+      {
+        "type": "color",
+        "id": "link",
+        "label": "Link",
+        "default": "#4a8393"
+      },
+      {
+        "type": "header",
+        "content": "Voucher"
+      },
+      {
+        "type": "color",
+        "id": "voucher_bg",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "voucher_text",
+        "label": "Text",
+        "default": "#767676"
+      },
+      {
+        "type": "color",
+        "id": "voucher_link",
+        "label": "Link",
+        "default": "#4a8393"
+      },
+      {
+        "type": "header",
+        "content": "Button"
+      },
+      {
+        "type": "color",
+        "id": "btn_bg",
+        "label": "Background",
+        "default": "#767676"
+      },
+      {
+        "type": "color",
+        "id": "btn_text",
+        "label": "Text",
+        "default": "#ffffff"
+      }
+		
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

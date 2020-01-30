@@ -1,0 +1,119 @@
+{% if section.settings.sort_enable %}
+
+<style>
+#sortlist {
+  display: inline-block;
+  margin: 0 0.5em 0 0;
+  margin: -0.3em 0 0 0;
+  float: right;
+}
+#sortlist select {
+  padding-right: 2em;
+}
+#sortlist label {
+  display: none;
+}
+</style>
+
+
+
+<div id="sortlist"></div>
+<script>
+  var currentURL = new URL(window.location);
+  var currentDOMAIN = new URL(window.location.href.split('?')[0]);
+  var currentParams = currentURL.searchParams.get('sort_by');
+  var currentSortURL = 'sort_by=' + currentParams;
+  var urlSearchParams = new URLSearchParams(
+    window.location.search.indexOf("sort_by") > -1
+    ? window.location.search.replace(/sort_by/gi,"")
+    : window.location.search
+  );
+
+  var render = function (template, node) {
+    node.innerHTML = template;
+    node.querySelector('#sort-by').addEventListener('change', function() {
+      urlSearchParams.set(this.name, this.value);
+      window.location = currentDOMAIN + '?sort_by=' + this.value;
+    });
+  };
+
+  var SortOptions = [{
+    label: '{{ 'collections.sorting.featured' | t }}',
+    value: 'manual'
+  }, {
+    label: '{{ 'collections.sorting.price_ascending' | t }}',
+    value: 'price-ascending'
+  }, {
+    label: '{{ 'collections.sorting.price_descending' | t }}',
+    value: 'price-descending'
+  }, {
+    label: '{{ 'collections.sorting.az' | t }}',
+    value: 'title-ascending'
+  }, {
+    label: '{{ 'collections.sorting.za' | t }}',
+    value: 'title-descending'
+  }, {
+    label: '{{ 'collections.sorting.date_ascending' | t }}',
+    value: 'created-ascending'
+  }, {
+    label: '{{ 'collections.sorting.date_descending' | t }}',
+    value: 'created-descending'
+  }, {
+    label: '{{ 'collections.sorting.best_selling' | t }}',
+    value: 'best-selling'
+  }];
+
+  var template = `
+      <label for="sort-by">Sort by</label> 
+      <select id="sort-by">
+        ${SortOptions.map((item) =>
+          `<option value="${item.value}" ${currentParams === item.value ? 'selected' : ''}>${item.label}</option>`
+        ).join('')}
+      </select>
+  `;
+
+  render(template, document.querySelector('#sortlist'));
+  
+  /*
+  //alert(currentSortURL);
+  $('.pagination a').each(function(){
+      var href = $(this).attr('href');
+      alert(href);
+
+      if (href.indexOf('?') !== -1){
+          // Query string exists, append current query string
+          href += '&' + currentSortURL;
+      } else {
+          // No query string yet, add it
+          href += currentSortURL;
+      }
+
+      $(this).attr('href', href);
+  });
+  */
+  
+</script>
+
+{% endif %}
+
+
+
+
+
+{% comment %}
+<!-- TO DO: Add support for product type filter -->
+{% capture types -%}
+{%- for product_type in collection.all_types -%}
+{%- assign typelink = product_type | link_to_type -%}
+{%- unless typelink == 'Unknown Type' %}<li>{{ typelink }}</li>{% endunless -%}
+{%- endfor -%}
+{%- endcapture %}
+
+{% if types contains '</li>' %}
+<label for="gridtypes">Sort by</label> 
+<ul id="gridtypes">  
+{{ types }}
+</ul>
+{% endif %}
+
+{% endcomment %}

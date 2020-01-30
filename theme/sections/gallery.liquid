@@ -1,0 +1,197 @@
+<!-- SECTION -->
+
+
+{% assign font_gutter = 30 %}
+
+{% if settings.image_popup_library == 'featherlight' %}
+{% capture popupeffect %} data-featherlight="image"{% endcapture %}
+{% endif %}
+
+{% capture stylesheet %}
+{% if section.blocks.size > 0 %}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: -{{ section.settings.spacing }}px;
+} 
+.gallery span {
+  display: inline-block;
+  margin-bottom: {{ section.settings.spacing }}px;
+  {% if section.settings.columns > 2 or section.settings.mobile_2_per_row %}
+  width: calc(50% - {{ section.settings.spacing | divided_by: 2 }}px);
+  {% else %}
+  width: 100%;
+  {% endif %}
+  padding: 0;
+  {% if section.settings.border_color != empty %}border: solid 1px {{ section.settings.border_color }};{% endif %}
+  {% unless section.settings.image_link %}cursor: default;{% endunless %}
+}
+.gallery span figure,
+.gallery span img {
+  padding: 0;
+  margin: 0;
+}
+.gallery span img {
+  width: 100%;
+}
+@media screen and (min-width: 50em) {
+  .gallery span {
+    {% if section.settings.columns == 2 %}
+    width: calc(50% - {{ section.settings.spacing }}px);
+    {% endif %}
+    {% if section.settings.columns == 3 %}
+    width: calc(33.33% - {{ section.settings.spacing }}px);
+    {% endif %}
+    {% if section.settings.columns == 4 %}
+    width: calc(25% - {{ section.settings.spacing }}px);
+    {% endif %}
+    {% if section.settings.columns == 5 %}
+    width: calc(20% - {{ section.settings.spacing }}px);
+    {% endif %}
+    {% if section.settings.columns == 6 %}
+    width: calc(16.66% - {{ section.settings.spacing }}px);
+    {% endif %}
+  }
+}
+{% endif %}
+{% if section.settings.share_buttons != 'hidden' %}
+.social-sharing {
+	margin-bottom: {{ font_gutter }}px;
+	margin-bottom: 0;
+}
+{% endif %}
+
+{% endcapture %}
+
+<style>
+{{ stylesheet }}
+</style>
+
+<article class="page" id="content" role="article" itemscope itemtype="http://schema.org/Article">
+
+  <main>
+  
+  <header role="banner">
+    <h1>{{ page.title }}</h1>
+  </header>
+
+  <div class="rte" itemprop="articleBody">
+    {{ page.content }}
+  </div> 
+  
+  {% if section.blocks.size > 0 %}
+  <div class="gallery">
+  {%- for block in section.blocks -%}
+      {% assign imgsize = 400 | append: 'x' %}
+      {% assign imgenlarge = 2000 | append: 'x' %}
+      <span>
+      {% if section.settings.image_link %}<a href="{{ block.settings.image | img_url: imgenlarge }}"{{ popupeffect }}>{% endif %}
+        <figure>
+          <img src="{{ block.settings.image | img_url: imgsize }}" />
+          {% if block.settings.title %}<figcaption>{{ block.settings.title }}</figcaption>{% endif %}
+        </figure>
+      {% if section.settings.image_link %}</a>{% endif %}
+      </span>
+  {%- endfor %}
+  </div>
+  {% endif %}
+    
+  </main>
+
+  {% if section.settings.share_buttons != 'hidden' %}
+    {% include 'social-sharing', share_title: page.title, share_permalink: page.url, share_image: page, share_status: section.settings.share_buttons %}
+  {% endif %}
+  
+</article>
+
+{% include 'sidebars' %}
+
+{% schema %}
+{
+  "name": "Gallery",
+  "settings": [
+    {
+       "type": "range",
+       "id": "spacing",
+       "min": 0,
+       "max": 50,
+       "step": 1,
+       "unit": "px",
+       "label": "Image spacing",
+       "default": 10
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Images per row",
+      "default": 2
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_2_per_row",
+      "label": "2 per row on mobile"
+    },
+    {
+      "type": "checkbox",
+      "id": "image_link",
+      "label": "Link images"
+    },
+    {
+       "type": "color",
+       "id": "border_color",
+       "label": "Image border colour"
+    },
+    {
+        "type": "select",
+        "id": "share_buttons",
+        "label": "Social sharing",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "icons",
+            "label": "Icons"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          },
+          {
+            "value": "rich",
+            "label": "Rich"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          }
+        ],
+        "default": "rich"
+    }
+  ],
+  "name": "Gallery",
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

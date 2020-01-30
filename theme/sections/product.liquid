@@ -1,0 +1,1207 @@
+<!-- SECTION -->
+
+<!-- TO DO: If vendor equal to store name (as Shopify does by default) then allow vendor to be hidden -->
+
+{% assign font_gutter = 30 %}
+{% assign pagination = 'below' %}
+
+{% capture stylesheet %}
+{% if pagination == 'below' %}
+#main .container {
+  padding-bottom: {{ font_gutter | times: 2 | plus: section.settings.controls_size }}px !important;
+}
+{% endif %}
+#prevnext.icons {
+  left: 0;
+  width: 100%;
+  position: relative;
+  overflow: visible;
+}
+#prevnext {
+  {% if pagination == 'below' %}
+  position: absolute !important;
+  bottom: 0;
+  left: 0;
+  width: calc(100% - {{ font_gutter | times: 2 }}px) !important;
+  margin: 0 {{ font_gutter }}px {{ font_gutter }}px {{ font_gutter }}px
+  {% endif %}
+}
+
+#prevnext .prev {
+  float: left;
+}
+#prevnext .next {
+  float: right;
+}
+
+#prevnext.icons .prev,
+#prevnext.icons .next {
+  line-height: 75%;
+  font-size: {{ section.settings.controls_size }}px;
+  {% if section.settings.controls_type == 'buttons' %}
+  height: {{ section.settings.controls_size }}px;
+  width: {{ section.settings.controls_size }}px;
+  text-align: center;
+  vertical-align: middle;
+  text-align: center;
+  {% endif %}
+}
+  
+{% if section.settings.controls_type == 'buttons' %}
+#prevnext.icons .prev:before {
+  content: '\2039';
+}
+#prevnext.icons .next:after {
+  content: '\203A';
+}
+{% endif %}
+
+{% if section.settings.controls_distance == 'outside' %}
+#prevnext.icons .prev {
+  margin-left: -{{ section.settings.controls_size | plus: font_gutter }}px;
+}
+#prevnext.icons .next {
+  margin-right: -{{ section.settings.controls_size | plus: font_gutter }}px;
+}
+{% endif %}
+{% if section.settings.controls_distance == 'overlap' %}
+#prevnext.icons .prev {
+  margin-left: -{{ section.settings.controls_size | divided_by: 2 | plus: font_gutter }}px;
+}
+#prevnext.icons .next {
+  margin-right: -{{ section.settings.controls_size | divided_by: 2 | plus: font_gutter }}px;
+}
+{% endif %}
+{% if section.settings.controls_distance == 'inside' %}
+#prevnext.icons .prev {
+  margin-left: -{{ font_gutter }}px;
+}
+#prevnext.icons .next {
+  margin-right: -{{ font_gutter }}px;
+}
+{% endif %}
+{% if section.settings.controls_distance == 'nudged' %}
+#prevnext.icons .prev {
+  margin-left: 0;
+}
+#prevnext.icons .next {
+  margin-right: 0;
+}
+{% endif %}
+
+{% if section.settings.share_buttons != 'hidden' %}
+.social-sharing {
+	margin-bottom: {{ font_gutter }}px;
+}
+.social-sharing a {
+	margin-right: 0.75em;
+}
+.social-sharing .icon {
+	margin-top: -0.2em;
+}
+{% endif %}
+
+/* Product thumbnails */
+#productshots li {
+	display: inline;
+}
+
+/* Product Reviews App */
+.spr-badge {
+	font-size: 60%;
+} 
+{% if section.settings.review_rating == 'right' %}
+h1.badge {
+	padding-right: 5em;
+	position: relative;
+}
+.spr-badge {
+	position: absolute;
+	right: 0;
+	top: 0;
+} 
+{% else %}
+.product .spr-badge {
+  margin-top: -0.5em;
+  margin-bottom: 0.5em;
+}
+{% endif %}
+
+
+main > div {
+	/* border: solid 1px green; */
+}
+
+.half.img {
+	width: 60%;
+}
+
+{% if section.settings.layout_grid_prominent_feature == 'title_image' %}
+.half.desc {
+	width: calc(40% - {{ font_gutter }}px);
+	margin-right: {{ font_gutter }}px;
+}
+{% else %}
+.half.desc {
+	width: calc(40% - {{ font_gutter }}px);
+	margin-left: {{ font_gutter }}px;
+}
+{% endif %}
+
+{% endcapture %}
+
+<style>
+{{ stylesheet }}
+</style>
+
+{% assign productavailable = 'true' %}
+{% if section.settings.show_availability_from %}
+{% unless product.available %}
+{% assign productavailable = 'false' %}
+{% capture notifyform %}
+<div id="sold-out">
+  {% form 'contact' %}
+    {% if form.posted_successfully? %}
+    <p class="accent-text">{{ 'products.general.notify_response_html' | t }}</p>
+    {% else %}
+    <p>{{ 'products.general.notify_message_html' | t: title: product.title }}</p>
+    {% endif %}
+    {% if form.errors %}
+    <div class="error feedback accent-text">
+      <p>{{ 'products.general.notify_error_html' | t }}</p>
+    </div>
+    {% endif %}
+    {% unless form.posted_successfully? %}
+    <div id="notify-me-wrapper" class="clearfix" style="display:none">
+      <span class="text">
+      {% if customer %}
+      <input type="hidden" name="contact[email]" value="{{ customer.email }}" />
+      {% else %}
+      <input type="email" name="contact[email]" placeholder="your@email.com" class="{% if form.errors contains 'email' %}error{% endif %}" value="{{ contact.fields.email }}" required="required" />
+      {% endif %}
+      </span>
+      <span class="action">
+      <input type="hidden" name="contact[body]" value="{% assign esctitle = product.title | escape %}{{ 'products.general.notify_success_html' | t: title: esctitle }}" />   
+      <button type="submit" class="btn"><span>{{ 'products.general.notify_button' | t }}</span></button>    
+      </span>
+    </div>
+    {% endunless %}
+  {% endform %}
+</div>
+{% endcapture %}
+{% endunless %}
+{% endif %}
+
+<article class="product" id="content" data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true" itemscope itemtype="http://schema.org/Product">
+
+  {%- assign current_variant = product.selected_or_first_available_variant -%} 
+  {% if product.template_suffix contains 'orderform' %}
+  {%- assign featured_image = product.featured_image -%}
+  {%- else -%}
+  {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+  {%- endif -%}
+  {%- assign thumbsize = '160x' -%}
+  
+  {%- assign thumb_src_1 = featured_image | img_url: '480x480' -%}
+  {%- assign thumblist = thumb_src_1 -%}
+  
+  {%- assign slide_src_1 = featured_image | img_url: '480x480' -%}
+  {%- assign slidelist = slide_src_1 -%}
+
+    {% capture variants %}
+        {%- assign variant_imgs = '' -%}
+        {%- assign variant_id_list = '' -%}
+    
+        <select name="id" class="no-js{% unless product.options.size > 1 %} visually-hidden{% endunless %} supports-cookies" data-product-select>        
+          {% for variant in product.variants %}
+
+            {% capture variant_img %}{{ variant | img_url: thumbsize }}{% endcapture %}
+            {%- assign variant_img = variant_img | split: "?" -%}
+            {%- assign variant_img = variant_img[0] -%}
+            {%- unless variant_imgs == '' %}{% assign variant_imgs = variant_imgs | append: ', ' %}{% endunless -%}
+            {%- assign variant_imgs = variant_imgs | append: variant_img -%}
+
+            <option
+              {% if variant == current_variant %}selected="selected"{% endif %}
+              {% unless variant.available %}disabled="disabled"{% endunless %}
+              value="{{ variant.id }}">
+                {{ variant.title }}
+            </option>
+
+          	{% unless variant_id_list == '' %}{% assign variant_id_list = variant_id_list | append: ', ' %}{% endunless %}
+          	{%- assign variant_id_list = variant_id_list | append: variant.title | append: '__' | append: variant.id -%}
+
+          {% endfor %}
+
+        </select>
+    {% endcapture %}
+
+    {%- assign main_src = featured_image | img_url: thumbsize -%}
+    {%- assign main_src = main_src | split: "?" -%}
+    {%- assign main_src = main_src[0] -%}    
+
+    {%- comment %}
+    <p>Main Src: <br />{{ main_src }}</p>
+    {% capture variant_imgs_list %}
+    {%- assign variant_imgs_split = variant_imgs | split: ', ' -%}
+    {% for img in variant_imgs_split %}
+          {{ img }}<br />
+    {% endfor %}
+    {% endcapture %}
+    <p>Variant Src: <br />{{ variant_imgs_list }}</p>
+    {% endcomment -%}    
+    
+    {%- assign tag_group_names = '' -%}
+    {%- assign tag_group_num = 0 -%}
+    {% for option in product.options_with_values %}
+    	{% assign tag_group_names = tag_group_names | append: option.name %}
+    	{% if tag_group_num == 0 %}{% assign tag_group_names = tag_group_names | append: ', ' %}{% endif %}
+    	{% assign tag_group_num = tag_group_num | plus: 1 %}
+    {% endfor %}
+    {%- assign firstgroup = tag_group_names | split: ', ' | first | downcase -%} 
+
+    {% capture thumbnails %}
+    {% if product.images.size > 1 %}
+    
+		{%- assign img_num = 2 -%}
+        {% for image in product.images %} 
+
+            {%- assign showimg = 'yes' -%}
+            {% capture thumbsrc %}{{ image.src | img_url: thumbsize }}{% endcapture %}
+            {%- assign check_imgs = variant_img -%}
+            {%- assign check_img = thumbsrc | split: "?" -%}
+            {%- assign check_img = check_img[0] -%}  
+  		    {%- assign slide_src = image.src | img_url: '480x480' -%}	
+
+            {% if firstgroup contains 'colour' or firstgroup contains 'color' %}
+              {% if section.settings.show_variant_duplicates %}     			
+                    {% if check_imgs contains check_img or main_src contains check_img or variant_imgs contains check_img %}                  
+                        {% assign showimg = 'no' %}
+                    {% endif %}
+              {% endif %}
+            {% endif %}
+  
+			{%- comment %} Check that slide hasn't already been shown -->{% endcomment -%}
+  		    {% if slidelist contains slide_src %}{% assign showimg = 'no' %}{% endif %}
+            {% if showimg == 'yes' %}
+            <li>
+              {%- comment %}
+              {{ check_img }}
+              {% endcomment -%}
+
+              {%- assign alt = '' -%}
+              {%- if section.settings.show_gallery_captions %}
+              {% capture alt %} alt="{{ image.alt | escape }}"{% endcapture %}
+              {% endif -%}            
+
+              {% comment %}<a href="{{ image.src | img_url: '480x480' }}" data-product-single-thumbnail>{% endcomment %}
+              <img src="{{ image.src | img_url: '480x480' }}"{{ alt }}>{% comment %}<a href="#slide{{ img_num }}"></a>{% endcomment %}
+             {% comment %}</a>{% endcomment %}
+            </li>
+            {%- assign img_num = img_num | plus: 1 -%}
+  		  	{%- assign slidelist = slidelist | append: ',' | append: slide_src -%}
+            {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+    {% endcapture %}
+
+    {% capture thumbs %}
+    {% if product.images.size > 1 %}
+		{%- assign thumb_num = 2 -%}
+        {% for image in product.images %} 
+
+          {%- assign showimg = 'yes' -%}
+          {% capture thumbsrc %}{{ image.src | img_url: thumbsize }}{% endcapture %}
+          {%- assign check_imgs = variant_img -%}
+          {%- assign check_img = thumbsrc | split: "?" -%}
+          {%- assign check_img = check_img[0] -%}  
+  		  {%- assign thumb_src = image.src | img_url: '480x480' -%}
+
+          {%- if firstgroup contains 'colour' or firstgroup contains 'color' %}
+            {% if section.settings.show_variant_duplicates %}     			
+                  {% if check_imgs contains check_img or main_src contains check_img or variant_imgs contains check_img %}                  
+                      {%- assign showimg = 'no' -%}
+                  {% endif %}
+            {% endif %}
+          {% endif -%}
+  
+  		  {%- comment %} Check that thumbnail hasn't already been shown -->{% endcomment -%}
+  		  {% if thumblist contains thumb_src %}{% assign showimg = 'no' %}{% endif %}
+          {% if showimg == 'yes' %}
+          <li>
+            {%- comment %}
+            {{ check_img }}
+            {% endcomment -%}
+            
+            {%- assign alt = '' -%}
+            {%- if section.settings.show_gallery_captions %}
+            {% capture alt %} alt="{{ image.alt | escape }}"{% endcapture %}
+            {% endif -%}
+
+            <a href="#{{ thumb_num }}" data-slide="{{ thumb_num }}"><img src="{{ thumb_src }}"{{ alt }}></a>
+          </li>
+          {%- assign thumb_num = thumb_num | plus: 1 -%}  
+  		  {%- assign thumblist = thumblist | append: ',' | append: thumb_src -%}
+          {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+    {% endcapture %}
+
+  <meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}">
+  <meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}">
+  <meta itemprop="brand" content="{{ product.vendor }}">
+  <meta itemprop="image" content="{{ featured_image | img_url: thumbsize }}">
+  <meta itemprop="description" content="{% assign desc = product.description | default: shop.name | strip_html | newline_to_br | split: '<br />' %}{{ desc[0] }}">  
+
+  <main>
+   
+    {% capture get_h1 %}
+    <!-- Title -->
+    <h1{% if section.settings.review_rating == 'right' %} class="badge"{% endif %}>{{ product.title }}
+    <!-- Product Reviews App -->
+    {% if section.settings.review_rating == 'right' %}
+    <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span> 
+    {% endif %}    
+    </h1>
+    {% endcapture %}
+    
+    {% capture get_vendor %}
+    <!-- Vendor -->
+    {% if section.settings.show_vendor %}
+          {% assign showvendor = 'true' %}{% if product.vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}
+          {% if showvendor == 'true' %}
+          <p class="subtitle vendor">
+            
+            {{ product.vendor }}
+            
+          </p>
+          {% endif %}
+    {% endif %}
+    {% endcapture %}
+    
+    {% capture get_sku %}
+    <!-- Vendor -->
+    {% if section.settings.show_sku %}
+          <p class="subtitle vendor">
+            
+            {{ product.sku }}
+            
+          </p>
+    {% endif %}
+    {% endcapture %}
+        
+    {% capture get_rating %}
+    <!-- Product Reviews App -->
+    {% if section.settings.review_rating == 'title' %}
+    <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span> 
+    {% endif %}
+    {% endcapture %}
+    
+    {% capture get_images %}
+    <!-- Thumbnails -->
+    {{ 'slippry.scss.css' | asset_url | stylesheet_tag }}
+    
+    {% assign alt = '' %}
+    {% if section.settings.show_gallery_captions %}
+    {% capture alt %} alt="{{ featured_image.alt | escape }}"{% endcapture %}
+    {% endif %}
+      
+    {% if section.settings.enable_slides and thumb_num > 1 %}
+    <ul id="thumbnails" class="slides">
+      <li>
+        <img src="{{ slide_src_1 }}"{{ alt }} data-product-featured-image>{% comment %}<a href="#slide1"></a>{% endcomment %}
+      </li>
+      {% unless section.settings.show_variant_always and thumb_num < 2 %}
+      {{ thumbnails }}
+      {% endunless %}
+    </ul>
+    {% capture get_thumbs %}
+    {% unless section.settings.show_variant_always and thumb_num < 2 %}
+    <div class="thumb-box">
+      <ul class="thumbs">
+        <li>
+          <a href="#1" data-slide="1"><img src="{{ thumb_src_1 }}"{{ alt }}></a>
+        </li>
+        {{ thumbs }}
+      </ul>
+    </div>
+    {% endunless %}
+    {% endcapture %}
+    {% else %}
+    <ul class="slides">
+      <li>
+        <img src="{{ featured_image | img_url: '480x480' }}"{{ alt }} data-product-featured-image>
+      </li>
+      {% unless section.settings.show_variant_always and thumb_num < 2 %}
+      {{ thumbnails }}
+      {% endunless %}
+    </ul>
+    {% endif %}
+    {% endcapture %}
+
+    {% capture get_variants %}
+    <!-- Variants -->    
+    <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+      <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+      <meta itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+      <link itemprop="availability" href="http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}">
+
+      {% if productavailable == 'true' %}
+      <form action="/cart/add" method="post" enctype="multipart/form-data" class="product_form">
+      {% endif %}   
+          
+<!-- TO DO: Enable inc and exc prices to be ordered -->
+          
+          {% assign showprice = 'true' %}
+          {% assign show_tax = '' %}
+          {% assign show_price_tax = '' %}
+          
+          {% if product.price == 0 -%}
+          		{% assign showprice = 'false' %}
+          {%- endif %}
+
+          {% if showprice == 'false' -%}
+          		{% assign show_tax = '<p></p>' %}
+          {% else %}   
+        
+                {% if settings.tax_inc_and_exc -%}
+                  {%- assign taxes_rate = settings.taxes_rate -%}
+                  {%- assign tax_diff = 100 | minus: taxes_rate -%}
+                  {%- assign tax_rate_add = "1." | append: taxes_rate | plus: 0 -%}
+                  {%- assign tax_rate_exc = "0." | append: tax_diff | plus: 0 -%}          
+                  {% if shop.taxes_included -%}
+                    {% comment %}Taxes included{% endcomment %}
+                    {% capture show_price_tax %} <sup>{{ 'products.general.tax_inc' | t }}</sup>{% endcapture %}
+                    {% capture show_tax -%}
+                        <p class="taxprice"><small><span class="price">{{ product.price | times: tax_rate_exc | money }}</span> <sup>{{ 'products.general.tax_exc' | t }}</sup></small></p> 
+                    {%- endcapture %}
+                  {% else %}
+                    {% comment %}Excluding taxes{% endcomment %}
+                    {% capture show_price_tax %} <sup>{{ 'products.general.tax_exc' | t }}</sup>{% endcapture %}
+                    {% capture show_tax -%}
+                        <p class="taxprice"><small><span class="price">{{ product.price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></small></p> 
+                    {%- endcapture %}
+                  {%- endif %}
+                {%- endif %}  
+        
+          {% endif %}
+         
+        {% capture variant_groups %}
+        {% unless product.has_only_default_variant %}
+
+        {% assign options_current = '' %}
+
+          {% assign opt_i = 0 %}
+          {% assign tag_group_num = 0 %}
+
+          {% capture variant_items %}
+          {% for option in product.options_with_values %}
+            <div class="selector-wrapper js">
+              
+              {% unless template contains 'giftcard' %} 
+              <label for="SingleOptionSelector-{{ forloop.index0 }}">
+                {{ option.name }}
+                {% assign tag_group_num = tag_group_num | plus: 1 %}
+              </label>
+              {% endunless %}
+
+              {% if section.settings.variant_style == 'dropdowns' %}
+              <select
+                id="SingleOptionSelector-{{ forloop.index0 }}"
+                data-single-option-selector
+                data-index="option{{ option.position }}">
+                {% for value in option.values %}
+                  <option
+                    value="{{ value | escape }}"
+                    {% if option.selected_value == value %}selected="selected"{% endif %}>
+                      {{ value }}
+                  </option>
+                {% endfor %}
+              </select>
+              {% endif %}
+
+              {% comment %}ID List: {{ variant_id_list }}<br />{% endcomment %}
+              {% if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' %} 
+                  {% assign option_name = option.name | downcase %}
+                  {% assign current_option = "option" | append: option.position %}
+                  {% assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " %}
+                  {% for value in option.values %}
+
+                        {% assign available = false %}
+                        {% for variant in product.variants %}
+              				{% assign showthumb = false %}
+              				{% if section.settings.variant_style == 'thumbnails' %}
+                                {% comment %}
+                                <!-- NOTE: Color option needs to be positioned as first option -->
+                                {% endcomment %}                                
+              					{% if firstgroup contains 'colour' or firstgroup contains 'color' %}
+              						{% assign showthumb = true %}
+              					{% endif %}
+              				{% endif %}
+                            {% capture id %}{{ variant.id }}{% endcapture %}
+                            {% unless variant.available %}
+                              {% continue %}
+                            {% endunless %}
+                            {% unless variant[current_option] == value %}
+                              {% continue %}
+                            {% endunless %}
+                            {% unless variant[other_options[0]] == current_variant[other_options[0]] %}
+                              {% continue %}
+                            {% endunless %}
+                            {% unless variant[other_options[1]] == current_variant[other_options[1]] %}
+                              {% continue %}
+                            {% endunless %}
+                            {% assign available = true %}
+                            {% assign uri = variant.id %}
+                            {% capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture %} 
+             				
+              				{% unless option_name contains 'colour' or option_name contains 'color' %}
+                               {% comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment %}
+                               {% if section.settings.show_color_thumbnails %}
+                                    {% assign showthumb = false %}
+                               {% endif %}
+              				{% endunless %}			
+              
+                            {% capture text %}{% if showthumb == true %}<img src="{{ variant | img_url: '60x' }}" />{% else %}{{ value }}{% assign class=' class="btn"' %}{% endif %}{% endcapture %}              
+              				{% assign opt_i = opt_i | plus: 1 %}
+              				{% endfor %}
+                        {% assign checked = "" %}
+                        {% if current_variant[current_option] == value %}
+                          	{% assign checked = ' disabled' %}
+                        {% endif %}             
+
+                        <a href="{{ url }}"{{ class }}{{ checked }} />{{ text }}</a>
+
+                  {% endfor %}
+        
+        			{% if template contains 'giftcard' %}   			
+        			{% if shop.taxes_included %}
+        			{% else %}
+        			{% if settings.gift_card_redemption == 'single' %}<p class="notice">{{ 'gift_cards.general.gift_cards_priced' | t }} {{ 'products.general.tax_inc' | t }}</p>{% endif %}
+        			{% endif %}    
+                    {% endif %}
+
+              {% endif %}
+
+            </div>
+          {% endfor %}  
+      	  {% endcapture %}
+      
+        {% endunless %}
+
+      	<div id="variations">{{ variant_items }}</div>
+
+      	{% if product.variants.size > 1 %}
+        {% unless section.settings.show_variant_always and product.options.size < 2 %}
+        {{ variants }} 
+      	{% endunless %}
+      	{% else %}
+      	<input type="hidden" name="id" value="{{ product.variants.first.id }}"/>
+      	{% endif %}
+
+      	{% comment %}
+        {% unless section.settings.show_variant_always and product.options.size < 2 %}
+        {{ variants }} 
+      	{% endunless %}
+      	{% endcomment %}
+
+      	{% if opt_i > 1%}
+        {% endif %}     
+      
+  {% if template == 'product.no.cart' %}
+  <!-- Product without add to cart -->
+      <div id="pricedata">
+
+        <div data-price-wrapper>
+          <span data-product-price>
+            {{ current_variant.price | money }}
+          </span>
+
+          {% if product.compare_at_price_max > product.price %}
+            <span class="visually-hidden" data-compare-text>{{ 'products.general.regular_price' | t }}</span>
+            <s data-compare-price>
+              {% if current_variant.compare_at_price > current_variant.price %}
+                {{ current_variant.compare_at_price | money }}
+              {% endif %}
+            </s>
+          {% endif %}
+          
+          {{ show_price_tax }}
+          
+        </div>
+      
+          {% if showprice != 'false' -%}
+          {{ show_tax }} 
+          {%- endif %}
+        
+      	</div>
+
+  {% else %}
+
+      {% capture get_price %}      	
+        <!-- Product with add to cart -->
+        {% unless template contains 'giftcard' %}
+      		{% unless product.template_suffix contains 'orderform' %}
+            <div id="pricedata">
+
+              <div data-price-wrapper>
+                <span data-product-price>
+
+                  {% if product.price == 0 -%}
+
+                  {{ 'products.general.price_none' | t }}
+
+                  {%- else -%}
+
+                  {{ current_variant.price | money }}
+
+                  {%- endif %}
+
+                </span>
+
+                {% if product.compare_at_price_max > product.price and section.settings.show_compare_price %}
+                  <span class="visually-hidden" data-compare-text>{{ 'products.general.regular_price' | t }}</span>
+                  <s data-compare-price>
+                    {% if current_variant.compare_at_price > current_variant.price %}
+                      {{ current_variant.compare_at_price | money }}
+                    {% endif %}
+                  </s>
+                {% endif %}
+
+                {{ show_price_tax }}
+
+              </div>
+
+              {% comment %}
+              <div data-price-wrapper>
+                <span data-product-inventory>
+                {% if product.variants.first.inventory_management == 'shopify' %}
+                    {% if product.variants.first.inventory_quantity > 0 %}
+                       {% assign stock = product.variants.first.inventory_quantity %}
+                       {% comment %}{{ product.variants.first.inventory_quantity }} in stock{% endcomment %}
+                       {{ 'products.general.in_stock' | t: stock }}
+                    {% else %}
+                       {% comment %}Out of stock{% endcomment %}
+                       {{ 'products.general.no_stock' | t }}
+                    {% endif %}
+                 {% else %}
+                    In stock
+                 {% endif %}
+                </span>
+              </div>  
+              {% endcomment %}
+
+              {% if section.settings.show_saving %}
+              {% if current_variant.compare_at_price > current_variant.price %}
+              <div data-price-wrapper>
+                 <span data-product-save>
+                 {% assign diff = current_variant.compare_at_price | minus: current_variant.price | money %}
+                 {{ 'products.general.save_html' | t: amount: diff }}
+                 </span>
+              </div>
+              {% endif %}      	
+              {% endif %}    
+
+                {% if showprice != 'false' -%}
+                {{ show_tax }} 
+                {%- endif %} 
+
+            </div>  
+      		{% endunless %}
+        {% endunless %}
+      {% endcapture %}
+
+        {% if settings.cart_enable %}
+      
+          <div class="supports-no-cookies">
+            <p class="notice">{{ 'cart.general.cookies_required' | t }}</p>
+          </div>
+
+          <!-- supports-cookies ensures only cookie enabled browsers can add to cart -->
+          {% if section.settings.show_qty %}
+          <div class="action quantity{% unless settings.quantity_style == 'minimal' %} buttons {{ settings.quantity_style }}{% endunless %} supports-cookies">
+          <span class="label visually-hidden">{{ 'products.general.quantity' | t }}</span>
+          <input type="number" id="Quantity" name="quantity" value="1" min="1">
+          </div>
+          {% endif %}      
+
+          {% if section.settings.show_addtocart_button %}
+
+              {% if settings.cart_action == 'update' %}
+                <input type="hidden" name="return_to" value="back" />
+              {% elsif settings.cart_action == 'checkout' %}
+                <input type="hidden" name="return_to" value="/checkout" />
+              {% endif %}
+
+              {% capture add_to_cart %}
+
+                <!-- supports-cookies ensures only cookie enabled browsers can add to cart -->
+                <div class="action supports-cookies">
+                <span class="label">&nbsp;</span>
+                <button
+                  type="submit"
+                  name="add"
+                  data-add-to-cart
+                  class="btn add_to_cart"
+                  {%- unless current_variant.available %}disabled="disabled"{% endunless -%}>        
+                    <span data-add-to-cart-text>
+                      {%- if current_variant.available -%}
+                        {{ 'products.general.add_to_cart' | t }}
+                      {%- else -%}
+                        {{ 'products.general.sold_out' | t }}
+                      {%- endif -%}
+                    </span>
+                </button>
+                </div>
+      
+      			{% endcapture %}  
+
+          {% endif %}
+
+        {% endif %}
+
+  {% endif %}
+ 
+        {% capture add_more_buttons %}
+          {%- if section.settings.show_enquiry_button -%} 
+          <div class="action"><span class="label">&nbsp;</span><a class="btn" href="{{ section.settings.show_enquiry_url }}">{{ 'products.general.enquiry_link' | t }}</a></div>
+          {%- else -%} 
+          <div class="action supports-no-cookies"><a class="btn" href="{{ section.settings.show_enquiry_url }}">{{ 'products.general.enquiry_link' | t }}</a></div>
+          {%- endif -%}
+        {% endcapture %}      
+      
+      
+        <div>
+          {{ add_to_cart }}
+          {{ add_more_buttons }}     
+        </div>
+
+
+      {% endcapture %}
+      
+      {{ variant_groups }}
+
+      {% if productavailable == 'true' %}
+      </form>
+      {% endif %}    
+    
+      {{ notifyform }}    
+
+    </div>
+    {% endcapture %}  
+  
+    {% capture get_description %}
+    <div class="rte">
+      {{ product.description }}
+    </div>
+    {% endcapture %}
+
+    {% capture get_reviews %}
+    <!-- Product Reviews App -->
+    {% if section.settings.show_review_comments %}
+  	<div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
+  	{% endif %}
+    {% endcapture %}
+
+    {% capture get_share %}
+    {% if section.settings.share_buttons != 'hidden' %}
+      {% assign producturl = product.url | within: collection %}
+      {% include 'social-sharing', share_title: product.title, share_permalink: producturl, share_image: product, share_status: section.settings.share_buttons %}
+    {% endif %}
+    {% endcapture %} 
+  
+  	{% if product.template_suffix contains 'orderform' %}
+  	{% capture get_variants %}{% include 'variants-list' %}{% endcapture %}
+  	{% endif %}
+  
+    	{% if section.settings.layout_grid_prominent_feature == 'image_title' %}  
+  		<div class="half img">
+        	{{ get_images }}
+          	{{ get_thumbs }}
+  		</div>
+        <div class="half desc">
+            {{ get_h1 }}
+            {{ get_vendor }}
+            {{ get_sku }}
+        	{{ get_rating }}
+          	{{ get_price }}
+            {{ get_variants }}
+            {{ get_description }}
+            {{ get_reviews }}          
+            {{ get_share }}
+        </div>  
+    	{% endif %}
+  
+    	{% if section.settings.layout_grid_prominent_feature == 'title_image' %} 
+        <div class="half desc">
+            {{ get_h1 }}
+            {{ get_vendor }}
+            {{ get_sku }}
+        	{{ get_rating }}
+          	{{ get_price }}
+            {{ get_variants }}
+            {{ get_description }}
+            {{ get_reviews }}          
+            {{ get_share }}
+        </div>   
+  		<div class="half img">
+        	{{ get_images }}
+          	{{ get_thumbs }}
+  		</div>
+    	{% endif %}
+
+        {% if section.settings.layout_grid_prominent_feature == 'title' %}
+        <div class="full">
+            {{ get_h1 }}
+            {{ get_vendor }}
+            {{ get_sku }}
+            {{ get_rating }}
+        </div>
+        <div class="half img">
+            {{ get_images }}
+          	{{ get_thumbs }}
+        </div>
+        <div class="half desc">
+          	{{ get_price }}
+            {{ get_variants }}
+            {{ get_description }}
+            {{ get_reviews }}
+          	{{ get_share }}
+        </div> 
+        {% endif %}
+  
+        {% if section.settings.layout_grid_prominent_feature == 'image' %}
+        <div>
+            {{ get_images }}
+        </div>
+        <div class="half">
+            {{ get_h1 }}
+            {{ get_vendor }}
+            {{ get_sku }}
+            {{ get_rating }}
+          	{{ get_thumbs }}
+        </div>
+        <div class="half desc">
+          	{{ get_price }}
+            {{ get_variants }}
+            {{ get_description }}
+            {{ get_reviews }}
+          	{{ get_share }}
+        </div>  
+        {% endif %}
+
+
+  </main>
+
+  {% unless product == empty %}
+    <script type="application/json" data-product-json>
+      {{ product | json }}
+    </script>
+  {% endunless %}
+
+  {% if pagination != 'below' %}
+  {% if section.settings.controls_distance != 'hidden' %}
+  {% include 'prev_next' %}
+  {% endif %}
+  {% endif %}
+
+</article>
+
+{% include 'sidebars' %}
+
+{% include 'check-cart' %}
+
+{% if pagination == 'below' %}
+{% if section.settings.controls_distance != 'hidden' %}
+{% include 'prev_next' %}
+{% endif %}
+{% endif %}
+
+{% schema %}
+{
+    "name": "Body",
+    "settings": [
+      {
+        "type": "select",
+        "id": "layout_grid_prominent_feature",
+        "label": "Prominent feature",
+  		"default": "title",
+        "options": [
+          {
+            "value": "title",
+            "label": "Title"
+          },
+          {
+            "value": "image",
+            "label": "Image"
+          },
+          {
+            "value": "title_image",
+            "label": "Title & image"
+          },
+          {
+            "value": "image_title",
+            "label": "Image & title"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show vendor",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sku",
+        "label": "Show SKU",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_saving",
+        "label": "Show saving",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_compare_price",
+        "label": "Show compare price",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sidebar",
+        "label": "Show sidebar",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_qty",
+        "label": "Show quantity",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_availability_from",
+        "label": "Show availability form",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_addtocart_button",
+        "label": "Show add to cart button",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_enquiry_button",
+        "label": "Show enquiry button",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_slides",
+        "label": "Enable gallery slides",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_gallery_captions",
+        "label": "Show slide captions",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_color_thumbnails",
+        "label": "Show just color thumbnails",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_variant_duplicates",
+        "label": "Show just variant thumbnail",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_variant_always",
+        "label": "Always show a variant",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "variant_style",
+        "label": "Variant style",
+        "options": [
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          },
+          {
+            "value": "dropdowns",
+            "label": "Dropdowns"
+          },
+          {
+            "value": "thumbnails",
+            "label": "Thumbnails"
+          }
+        ],
+        "default": "dropdowns"
+      },
+      {
+        "type": "select",
+        "id": "share_buttons",
+        "label": "Social sharing",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "icons",
+            "label": "Icons"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          },
+          {
+            "value": "rich",
+            "label": "Rich"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          }
+        ],
+        "default": "rich"
+      },
+      {
+        "type": "select",
+        "id": "cart_action",
+        "label": "Add to cart behaviour",
+        "options": [
+          {
+            "value": "cart",
+            "label": "Go to Cart"
+          },
+          {
+            "value": "checkout",
+            "label": "Go to Checkout"
+          },
+          {
+            "value": "update",
+            "label": "Update Page"
+          },
+          {
+            "value": "drawer",
+            "label": "Update Drawer"
+          }
+        ],
+        "default": "cart"
+      },
+      {
+          "type": "url",
+          "id": "show_enquiry_url",
+          "label": "Enquiry button URL"
+      },
+      {
+         "type": "range",
+         "id": "controls_size",
+         "min": 0,
+         "max": 100,
+         "step": 1,
+         "unit": "px",
+         "label": "Prev/Next size",
+         "default": 30
+      },
+      {
+        "type": "select",
+        "id": "controls_distance",
+        "label": "Prev/Next position",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "outside",
+            "label": "Outside"
+          },
+          {
+            "value": "overlap",
+            "label": "Overlap"
+          },
+          {
+            "value": "inside",
+            "label": "Inside"
+          },
+          {
+            "value": "nudged",
+            "label": "Nudged"
+          }
+        ],
+        "default": "inside"
+      },
+      {
+        "type": "select",
+        "id": "controls_type",
+        "label": "Prev/Next type",
+        "options": [
+          {
+            "value": "buttons",
+            "label": "Icon"
+          },
+          {
+            "value": "buttons_text",
+            "label": "Button"
+          },
+          {
+            "value": "text",
+            "label": "Text"
+          }
+        ],
+        "default": "buttons"
+      },
+      {
+        "type": "header",
+        "content": "Reviews"
+      },
+      {
+         "type": "paragraph",
+         "content": "Available if [app](https:\/\/apps.shopify.com\/product-reviews) is intalled. [Check](\/admin\/apps\/product-reviews)"
+      },
+      {
+        "type": "select",
+        "id": "review_rating",
+        "label": "Show review rating",
+        "options": [
+          {
+            "value": "title",
+            "label": "Below product title"
+          },
+          {
+            "value": "right",
+            "label": "Right of product title"
+          },
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          }
+        ],
+        "default": "title"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_review_comments",
+        "label": "Show review comments",
+        "default": true
+      }
+    ]
+}
+{% endschema %}

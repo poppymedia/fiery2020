@@ -57,9 +57,11 @@
   margin-left: -{{ section.settings.spacing }}px;
 }
 #shopify-section-{{ section.id }} .products.collections.grid .item {
-  background: {{ settings.color_collection_grid_bg }};   
+  background: {{ settings.color_collections_grid_bg }};  
+  border-color: {{ settings.color_collections_grid_border }};   
   flex: 1 1 {{ section.settings.product }}px;
   margin: 0 0 {{ section.settings.spacing }}px {{ section.settings.spacing }}px; 
+  padding: {{ section.settings.text_spacing }}px;
   
   /* help keep equal height summary captions from overflowing */
   {% unless settings.color_collections_overlay_title_bg == 'rgba(0,0,0,0)' or settings.color_collections_overlay_title_bg == '' %}
@@ -94,6 +96,7 @@
 .products.collections.grid .item svg,
 .products.collections.grid .item img {
   width: 100%;
+  float:  left;
 } 
 #shopify-section-{{ section.id }} .products.collections.grid .item .summary {
   position: relative;
@@ -310,7 +313,7 @@ $(document).ready(function(){
   collections_markrow();
   {% endif %}
   
-  $('#shopify-section-{{ section.id }} .expand').html('<a href="#"{% if section.settings.expand == 'button' %} class="btn"{% endif %}>{{ 'collections.general.show_link' | t }}</a>');
+  $('#shopify-section-{{ section.id }} .expand').html('<a href="#"{% if section.settings.expand == 'button' %} class="btn"{% endif %}>{% if section.settings.type == 'expand' %}{{ 'collections.general.expand_link' | t }}{% else %}{{ 'collections.general.show_link' | t }}{% endif %}</a>');
   $(window).resize(function() {
       if (window.section{{ section.id | remove: '-' }} != 'open'){
         collections_markrow();
@@ -329,7 +332,7 @@ $(document).ready(function(){
     	$('#shopify-section-{{ section.id }} .grid .item').css('display', 'block');
     	$('#shopify-section-{{ section.id }} .expand a').html('{{ 'collections.general.hide_link' | t }}');
     } else {
-    	$('#shopify-section-{{ section.id }} .expand a').html('{{ 'collections.general.show_link' | t }}');
+    	$('#shopify-section-{{ section.id }} .expand a').html('{% if section.settings.type == 'expand' %}{{ 'collections.general.expand_link' | t }}{% else %}{{ 'collections.general.show_link' | t }}{% endif %}');
         window.section{{ section.id | remove: '-' }} = 'close';
     	collections_markrow();
     };

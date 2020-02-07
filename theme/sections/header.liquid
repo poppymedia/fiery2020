@@ -264,7 +264,12 @@
     padding: 0;
     margin: 0;
   }
+
+{% assign promotion_font = settings.promotions_h_font %}
+{{ promotion_font | font_face }}
+
   .promotions h2 {
+    font-family: {{ promotion_font.family }}, {{ promotion_font.fallback_families }};
     font-size: {{ settings.promotions_heading_size }}px;
   }
   .promotions p {
@@ -407,6 +412,7 @@
   margin-top: {{ grid_gutter }}px;
   padding-top: 0;
   font-size: {{ settings.menu_font_size }}px;
+  letter-spacing: {{ settings.menu_font_kerning | times: 0.10 | divided_by: 4 }}em;
 }
 @supports (display: grid) {
   #{{ nav }} {

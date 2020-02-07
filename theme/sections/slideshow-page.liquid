@@ -261,8 +261,6 @@ ul.bxslider {
 
 
 
-
-
 {% if section.settings.controls_distance == 'outside' or section.settings.controls_distance == 'overlap' %}
 {% assign max_width_adj = section.settings.controls_size | divided_by: 4 | plus: section.settings.controls_size | times: 2 %}
 /* TO DO: Get max width, plus width of prev/next button */
@@ -275,10 +273,6 @@ ul.bxslider {
 	}
 }
 {% endif %}
-
-
-
-
 
 
 
@@ -368,26 +362,26 @@ ul.bxslider {
 .bxslider .videoWrapper {
 		overflow: hidden;
 		/* padding-bottom: 56.25%; */
+		padding-top: 0 !important;
 		position: relative;
 		height: 0;
-	vertical-align: top;
-	/* border: solid 1px green; */
+		vertical-align: top;
+		/* border: solid 1px green; */
 }
 .bxslider .videoWrapper iframe,
 .bxslider .videoWrapper video {
+		position: absolute;
 		left: 0;
 		top: 0;
 		width: 100%;
 		height: 100%;
 		/* height: 400px; */
-	/*
-	height: 50%;
-	height: 75%;
-	*/
-		position: absolute;
-	/* border: solid 1px red; */
+		/*
+		height: 50%;
+		height: 75%;
+		*/			
+		/* border: solid 1px red; */
 }
-
 
 {% assign slide_num = 0 %}
 {% for block in section.blocks %}
@@ -452,6 +446,8 @@ ul.bxslider {
 	{% if section.settings.slideshow_text_to_content %}
 	/* Slide Text */
 	.bxslider .container .textWrapper .container .text {
+
+	/*
 			padding: {{ settings.grid_spacing | append: 'px' }};
 			{% if section.settings.controls_distance == 'overlap' or section.settings.controls_distance == 'inside' or section.settings.controls_distance == 'nudged' %}
 
@@ -467,6 +463,9 @@ ul.bxslider {
 			{% endcomment %}
 
 			{% endif %}
+
+	*/
+
 	}
 	{% endif %}
 
@@ -511,15 +510,17 @@ ul.bxslider {
 				{%- endcomment -%} 
 
 				{%- assign showslide = true -%}
-		{%- assign hasvideos = false -%}
+				{%- assign hasvideos = false -%}
+
 				{% if section.settings.slideshow_type == 'banner' %}
 				{% unless canonical_url contains block.settings.banner_page %}{%- assign showslide = false -%}{% endunless %}
 				{% endif %}
-				{% if showslide == true %}
+
+				{% if showslide == true -%}
 
 						{% if block.settings.video_url contains 'youtube' or block.settings.video_url contains 'vimeo' or block.settings.video_url contains '.mp4' %}{% assign type = 'video' %}{% else %}{% assign type = '' %}{% endif %}
 						<li{% if type != '' %} class="{{ type }}"{% endif %} id="slide{{ slide_num }}">
-							
+
 								{% if section.settings.slideshow_width == 'overflow' or section.settings.slideshow_width == 'container' or section.settings.slideshow_width == 'content' -%}
 								<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">
 								{%- endif -%}
@@ -538,7 +539,7 @@ ul.bxslider {
 													{% if section.settings.slideshow_video_auto %}{% assign src = src | append: '&autoplay=1' %}{% endif %}
 													{% if section.settings.slideshow_video_loop %}{% assign src = src | append: '&loop=1' %}{% endif %}
 													{%- assign src = src | append: '&controls=0&disablekb=1&fs=0&showinfo=0&enablejsapi=1' -%}
-											{%- endif -%} 
+											{%- endif -%}
 
 											{%- if block.settings.video_url contains 'vimeo.com' -%}
 													{%- assign find = 'vimeo.com/' %}{% assign replace = 'player.vimeo.com/video/' -%}
@@ -580,7 +581,7 @@ ul.bxslider {
 									{% if block.settings.image != nil %}
 										<img src="{{ block.settings.image | img_url: '2000x' }}" alt="" title="{{ block.settings.image.alt | escape }}" role="presentation" />
 									{% endif %}
-								{% endif %}			
+								{% endif %}
 
 								{%- assign slide_text = block.settings.title -%}	 
 								{%- assign slide_subtext = block.settings.subtitle -%} 
@@ -590,14 +591,17 @@ ul.bxslider {
 								{%- assign slide_button_1_link = block.settings.button_1_link -%}
 								{%- assign slide_button_2_link = block.settings.button_2_link -%}
 									
-								{% capture style %}
+								{% capture style -%}
 								/* These styles apply to non-mobile only */
-								.bxslider .textClass{{ slide_num }} { 
+								.bxslider .textClass{{ slide_num }} {
+									box-sizing:border-box;
 									{% assign assign text_width = block.settings.text_width | plus: 0 %}
 									width:calc({{ text_width }}%);
 									text-align:{{ block.settings.text_align }};
 									padding:{{ block.settings.text_spacing }}%;
-									{% unless block.settings.text_position == 'center' %}{{ block.settings.text_position }}:0;{% endunless %}				
+									/*
+									{% unless block.settings.text_position == 'center' %}{{ block.settings.text_position }}:0;{% endunless %}
+									*/
 									{% if block.settings.text_position == 'center' and text_width < 100 %}left:50%;margin-left:-{{ text_width | divided_by: 2 }}%;{% endif%}
 									{% if block.settings.text_position == 'right' and text_width < 100 %}left:calc({{ 100 | minus: text_width }}%);{% endif%}
 									/* background:{% assign a = block.settings.text_background_opacity | divided_by: 100.00 %}{{ block.settings.text_background_color | hex_to_rgba: a }}; */
@@ -611,7 +615,7 @@ ul.bxslider {
 									background-color:{{ block.settings.color_background }};
 								}
 								{% endif %}
-									
+
 								{% if section.settings.slideshow_width == 'content' %}
 								#shopify-section-{{ section.id }} > .container {
 									margin-bottom: -{{ font_gutter }};
@@ -619,8 +623,14 @@ ul.bxslider {
 								{% endif%}
 								{%- endcapture %}
 
-								{% capture nonmobile_style %}			
+								{% capture nonmobile_style %}		
+								.bxslider .textClass{{ slide_num }} { 
+								}
+								.bxslider .textClass{{ slide_num }} .text { 
+									/* border: solid 1px #000000; */
+								}
 								.bxslider #slide{{ slide_num }} .textWrapper { 
+									/* border: solid 1px green; */
 									{% if block.settings.text_background_style == 'gradient' %}
 									{% capture grad_orient -%}
 									{%- assign orient = block.settings.text_position -%}
@@ -636,9 +646,8 @@ ul.bxslider {
 									background: -webkit-radial-gradient(center, ellipse closest-side, {{ block.settings.text_background_color | hex_to_rgba: a }} 0%, {{ block.settings.text_background_color | hex_to_rgba: 0 }} 100%);
 									background: radial-gradient(ellipse closest-side, {{ block.settings.text_background_color | hex_to_rgba: a }} 0%, {{ block.settings.text_background_color | hex_to_rgba: 0 }} 100%);
 									{% endif %}
-								}	
+								}
 
-								
 								{%- comment -%}
 								/* TO DO: Test for triangle setting */
 								.bxslider #slide{{ slide_num }} .textWrapper > span {							
@@ -660,10 +669,10 @@ ul.bxslider {
 									
 								}
 								{% capture shape %}<span></span>{% endcapture %}
-				{%- endcomment -%}	
+								{%- endcomment -%}
 									
-								{%- endcapture %}	
-													
+								{%- endcapture %}
+
 								{% capture mobile_style %}	
 								/* TO DO: Create styles to apply to mobile only */ 
 								/* Only alter mobile slide images if resize setting enabled */
@@ -674,6 +683,13 @@ ul.bxslider {
 										left: auto; margin-left: 0;
 									}
 									{% endif %}									
+
+									{% if block.settings.text_position != 'center' %}
+									.bxslider .textClass{{ slide_num }} { 
+										width: 100%;
+										text-align: center;
+									}
+									{% endif %}
 
 									{% if section.settings.slideshow_image_position_mobile %}
 									.bxslider #slide{{ slide_num }} { 
@@ -733,26 +749,26 @@ ul.bxslider {
 									{% endif %}
 									
 								{% endcapture %}
-		
+
 								{%- assign slide_styles = slide_styles | append: style -%}
 								{%- assign nonmobile_styles = nonmobile_styles | append: nonmobile_style -%}
-								{%- assign mobile_slide_styles = mobile_slide_styles | append: mobile_style -%}	 
+								{%- assign mobile_slide_styles = mobile_slide_styles | append: mobile_style -%}
 									
-								<!-- TO DO: Create link overlay -->
 								{%- assign overlay_link = '' -%}
 								{%- comment -%}
+								<!-- TO DO: Create link overlay -->
 								{% if block.settings.button_1_label == blank and block.settings.button_1_link != blank %}{% capture overlay_link -%}<a href="{{ slide_button_1_link }}" class="linkwrap">{{ slide_button_1_label }}</a>{%- endcapture %}{% endif %}
 								{% if block.settings.button_2_label == blank and block.settings.button_2_link != blank %}{% capture overlay_link -%}<a href="{{ slide_button_2_link }}" class="linkwrap">{{ slide_button_2_label }}</a>{%- endcapture %}{% endif %}
 								{%- endcomment -%}
 									
-								{% if block.settings.button_overlay_link -%}
-								{% if block.settings.button_1_link != blank %}{% capture overlay_link -%}<a href="{{ slide_button_1_link }}" class="linkwrap"></a>{%- endcapture %}{% endif %}
-								{% if block.settings.button_2_link != blank %}{% capture overlay_link -%}<a href="{{ slide_button_2_link }}" class="linkwrap"></a>{%- endcapture %}{% endif %}
+								{%- if block.settings.button_overlay_link -%}
+								{%- if block.settings.button_1_link != blank %}{% capture overlay_link -%}<a href="{{ slide_button_1_link }}" class="linkwrap"></a>{%- endcapture %}{% endif -%}
+								{%- if block.settings.button_2_link != blank %}{% capture overlay_link -%}<a href="{{ slide_button_2_link }}" class="linkwrap"></a>{%- endcapture %}{% endif -%}
 								{%- endif %}
 
-								{% if block.settings.title != blank or block.settings.subtitle != blank or block.settings.paragraph != blank -%}
+								{%- if block.settings.title != blank or block.settings.subtitle != blank or block.settings.paragraph != blank -%}
 									{% if section.settings.slideshow_text_to_content -%}					
-											<div class="textWrapper textClass{{ slide_num }}"><div class="container"><div class="text">
+											<div class="textWrapper textClass{{ slide_num }}">{{ shape }}<div class="container"><div class="text">
 												{% if block.settings.title != blank %}<h1>{{ slide_text }}</h1>{% endif %}
 												{% if block.settings.subtitle != blank %}<h2>{{ slide_subtext }}</h2>{% endif %}
 												{% if block.settings.paragraph != blank %}{% unless slide_paragraph contains '</p>' %}{% unless block.settings.paragraph contains '</p>' %}<p>{% endunless %}{% endunless %}{{ slide_paragraph }}{% unless slide_paragraph contains '</p>' %}{% unless block.settings.paragraph contains '</p>' %}</p>{% endunless %}{% endunless %}{% endif %}
@@ -774,7 +790,7 @@ ul.bxslider {
 
 											</div></div></div>
 									{%- else -%}
-											<div class="textWrapper textClass{{ slide_num }}"><div><div class="text">
+											<div class="textWrapper textClass{{ slide_num }}">{{ shape }}<div><div class="text">
 												{% if block.settings.title != blank %}<h1>{{ slide_text }}</h1>{% endif %}
 												{% if block.settings.subtitle != blank %}<h2>{{ slide_subtext }}</h2>{% endif %}
 												{% if block.settings.paragraph != blank %}{% unless block.settings.paragraph contains '</p>' %}<p>{% endunless %}{{ slide_paragraph }}{% unless block.settings.paragraph contains '</p>' %}</p>{% endunless %}{% endif %}
@@ -796,18 +812,18 @@ ul.bxslider {
 
 											</div></div></div>
 									{%- endif %}
-								{%- endif %}
+								{%- endif -%}
 									
 								{%- if overlay_link != blank %}{{ overlay_link }}{% endif -%}
 
-								{% if section.settings.slideshow_width == 'overflow' or section.settings.slideshow_width == 'container' or section.settings.slideshow_width == 'content' %}
+								{%- if section.settings.slideshow_width == 'overflow' or section.settings.slideshow_width == 'container' or section.settings.slideshow_width == 'content' %}
 								</div>
-								{% endif %}	
+								{% endif -%}	
  
 						</li>
 
-						{% comment %}Increment through all slides to assign slide specific styling.{% endcomment %}
-						{% assign slide_num = slide_num | plus: 1 %}
+						{%- comment -%}Increment through all slides to assign slide specific styling.{%- endcomment -%}
+						{%- assign slide_num = slide_num | plus: 1 -%}
 
 		{% endif %}
 
@@ -829,57 +845,57 @@ ul.bxslider {
 .bx-controls {
 	margin: 0 !important;
 	padding: 0 !important;
-		text-align: center !important;
+	text-align: center !important;
 }
 
 .bx-controls .bx-pager {
-		{% if settings.width_bleed_to_edge %}
-		width: 100%;
-		{% else %}
-		width: {{ settings.width_max_desktop | remove: 'px' | minus: container_spacing }}px !important;
-		{% endif %}
-		padding: 0 !important;
+	{% if settings.width_bleed_to_edge %}
+	width: 100%;
+	{% else %}
+	width: {{ settings.width_max_desktop | remove: 'px' | minus: container_spacing }}px !important;
+	{% endif %}
+	padding: 0 !important;
 	
-		left: 0 !important;
-		right: 0 !important;
-		margin: auto !important;
-		padding: {{ bxpager_spacing }}px !important;
-		/* border: solid 1px red !important; */
+	left: 0 !important;
+	right: 0 !important;
+	margin: auto !important;
+	padding: {{ bxpager_spacing }}px !important;
+	/* border: solid 1px red !important; */
 }
 .bx-controls .bx-pager .bx-pager-item {
-		margin: 0 !important;
-		padding: 0 !important;
-		position: relative !important;
-		/* border: solid 1px green !important; */
-		display: inline-block !important;
-		vertical-align: middle !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	position: relative !important;
+	/* border: solid 1px green !important; */
+	display: inline-block !important;
+	vertical-align: middle !important;
 }
 {% unless settings.width_bleed_to_edge %}
 @media only screen and (min-width: 960px) and (max-width: {{ settings.width_max_desktop | remove: 'px' | plus: 60 | minus: container_spacing }}px) {
-		.bx-controls .bx-pager {
-				width: {{ 960 | minus: container_spacing }}px !important;
-		}
+	.bx-controls .bx-pager {
+		width: {{ 960 | minus: container_spacing }}px !important;
+	}
 }
 @media only screen and (min-width: {{ settings.width_max_mobile }}) and (max-width: 959px) {
-		.bx-controls .bx-pager {
-				width: {{ settings.width_max_mobile | remove: 'px' | minus: container_spacing }}px !important;
-		}
+	.bx-controls .bx-pager {
+		width: {{ settings.width_max_mobile | remove: 'px' | minus: container_spacing }}px !important;
+	}
 }
 @media only screen and (max-width: {{ settings.width_max_mobile }}) {
-		.bx-controls .bx-pager {
-				width: {{ 300 | minus: container_spacing }}px !important;
-		}
+	.bx-controls .bx-pager {
+		width: {{ 300 | minus: container_spacing }}px !important;
+	}
 }
 @media only screen and (min-width: 480px) and (max-width: {{ settings.width_max_mobile }}) {
-		.bx-controls .bx-pager {
-				width: {{ 420 | minus: container_spacing }}px !important;
-		}
+	.bx-controls .bx-pager {
+		width: {{ 420 | minus: container_spacing }}px !important;
+	}
 }
 {% endunless %}	
-	
+
 
 /* TESTING */
-@media only screen and (min-width: 960px) {
+@media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
 {{ nonmobile_styles }}
 	/*
 	#shopify-section-header {
@@ -897,6 +913,7 @@ ul.bxslider {
 	}
 	*/
 }
+
 
 /* TO DO: Align slide images per overlay */
 /* If left, hide left of image */
@@ -949,10 +966,10 @@ ul.bxslider {
 	
 	
 {% if section.settings.pagination_position == 'below' %}
-		.bx-wrapper { 
+		.bx-wrapper {
 				margin-bottom: 0;
 		}
-		.bx-wrapper .bx-pager { 
+		.bx-wrapper .bx-pager {
 				position: relative;
 				clear: both;
 				width: 100%;
@@ -966,11 +983,13 @@ ul.bxslider {
 	
 	.bx-wrapper .bxslider .textWrapper > .container {
 			/* border: solid 1px red; */
+			/*
 			max-width: 400px !important;
 			background: yellow;
+			*/
 	}	
-	
-	
+
+
 {% if section.settings.controls_mobile	%}
 {% else %}
 @media only screen and (max-width: {{ mobile_width | remove: 'px' | minus: 1 | append: 'px' }}) {
@@ -978,7 +997,7 @@ ul.bxslider {
 		display: none;
 	}
 {% endif %}
-	
+
 </style>
 {% endcapture %}
 {{ cssstyle | strip_newlines | remove: '	' | replace: '	', ' ' }}
@@ -986,6 +1005,7 @@ ul.bxslider {
 {% if section.settings.slideshow_type == 'slideshow' %}
 {% if section.blocks.size > 1 %}
 <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+{% if hasvideos == true %}<script src='//cdnjs.cloudflare.com/ajax/libs/fitvids/1.2.0/jquery.fitvids.js'></script>{% endif %}
 <script src='//cdnjs.cloudflare.com/ajax/libs/bxslider/4.2.14/jquery.bxslider.min.js'></script>
 {% endif %}
 {% endif %}
@@ -993,16 +1013,18 @@ ul.bxslider {
 
 {% if section.settings.slideshow_width == 'container' or section.settings.slideshow_width == 'content' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
 
+
 <ul id="slideshow" class="bxslider {{ section.settings.slideshow_width }}">
 {{ slides }} 
 </ul> 
+
 
 {% if section.settings.slideshow_width == 'container' or section.settings.slideshow_width == 'content' %}</div>{% endif %}
 
 {% if section.settings.slideshow_type == 'slideshow' %}
 {% if section.blocks.size > 1 %}
 {% capture scripts %}
-<script> 
+<script>
 var slider = $('.bxslider').bxSlider({	
 	mode: '{{ section.settings.slideshow_animation }}',
 	auto: {% if section.settings.slideshow_auto %}true{% else %}false{% endif %},
@@ -1240,7 +1262,7 @@ $(window).resize(function(){
 			 "default": false
 
 		},
-	{
+		{
 			"type": "header",
 			"content": "Slideshow settings"
 		},
@@ -1323,7 +1345,7 @@ $(window).resize(function(){
 		{
 			 "type": "checkbox",
 			 "id": "slideshow_auto",
-			 "label": "Autoplay slides"
+			 "label": "Auto transition slides"
 		},
 		{
 			 "type": "checkbox",
@@ -1333,8 +1355,8 @@ $(window).resize(function(){
 		},
 		{
 			 "type": "checkbox",
-			 "id": "slideshow_video_auto",
-			 "label": "Autoplay videos"
+			 "id": "slideshow_video_controls",
+			 "label": "Show video controls"
 		},
 		{
 			 "type": "checkbox",
@@ -1343,8 +1365,9 @@ $(window).resize(function(){
 		},
 		{
 			 "type": "checkbox",
-			 "id": "slideshow_video_controls",
-			 "label": "Show video controls"
+			 "id": "slideshow_video_auto",
+			 "label": "Autoplay videos",
+			 "info": "Supports MP4 videos only (iframes will not autoplay)"
 		},
 		{
 			"type": "select",
@@ -1360,45 +1383,49 @@ $(window).resize(function(){
 		{
 			"type": "header",
 			"content": "Slideshow prev/next"
-		},
-		{
-			"type": "select",
-			"id": "controls_distance",
-			"label": "Position",
-			"options": [
-				{
-					"value": "hidden",
-					"label": "Hidden"
-				},
-				{
-					"value": "outside",
-					"label": "Outside"
-				},
-				{
-					"value": "overlap",
-					"label": "Overlap"
-				},
-				{
-					"value": "inside",
-					"label": "Inside"
-				},
-				{
-					"value": "nudged",
-					"label": "Nudged"
-				}
-			],
-			"default": "inside"
-		},
-		{
-			 "type": "range",
-			 "id": "controls_size",
-			 "min": 0,
-			 "max": 100,
-			 "step": 1,
-			 "unit": "px",
-			 "label": "Button label size",
-			 "default": 30
-		},
+			},
+			{
+				"type": "select",
+				"id": "controls_distance",
+				"label": "Position",
+				"options": [
+					{
+						"value": "hidden",
+						"label": "Hidden"
+					},
+					{
+						"value": "outside",
+						"label": "Outside"
+					},
+					{
+						"value": "overlap",
+						"label": "Overlap"
+					},
+					{
+						"value": "inside",
+						"label": "Inside"
+					},
+					{
+						"value": "nudged",
+						"label": "Nudged"
+					},
+					{
+						"value": "bottom",
+						"label": "Bottom"
+					}
+				],
+				"default": "inside"
+			},
+			{
+				 "type": "range",
+				 "id": "controls_size",
+				 "min": 0,
+				 "max": 100,
+				 "step": 1,
+				 "unit": "px",
+				 "label": "Button label size",
+				 "default": 30
+			},
 			{
 				"type": "color",
 				"id": "color_slideshow_nav_bg",
@@ -1410,6 +1437,11 @@ $(window).resize(function(){
 				"id": "color_slideshow_nav_text",
 				"label": "Button label color",
 				"default": "#222222"
+			},
+			{
+				 "type": "checkbox",
+				 "id": "controls_mobile",
+				 "label": "Show on mobile"
 			},
 		{
 			"type": "header",
@@ -1529,7 +1561,7 @@ $(window).resize(function(){
 					"type": "url",
 					"id": "banner_page",
 					"label": "Banner page",
-					"info": "When set to page banner, this slide will display on this store page"
+					"info": "When set to page banner, this slide will display on this page"
 				},
 				{
 					"type": "color",
@@ -1556,7 +1588,7 @@ $(window).resize(function(){
 				{
 					"type": "select",
 					"id": "text_position",
-					"label": "Text position",
+					"label": "Slide position",
 					"options": [
 						{
 							"value": "left",
@@ -1575,8 +1607,28 @@ $(window).resize(function(){
 				},
 				{
 					"type": "select",
+					"id": "text_valign",
+					"label": "Text vertical align",
+					"options": [
+						{
+							"value": "top",
+							"label": "Top"
+						},
+						{
+							"value": "middle",
+							"label": "Middle"
+						},
+						{
+							"value": "bottom",
+							"label": "Bottom"
+						}
+					],
+					"default": "middle"
+				},
+				{
+					"type": "select",
 					"id": "text_align",
-					"label": "Text alignment",
+					"label": "Text horizontal align",
 					"options": [
 						{
 							"value": "left",

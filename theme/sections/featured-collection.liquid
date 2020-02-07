@@ -523,7 +523,7 @@ $(document).ready(function(){
   collection_markrow();
   {% endif %}
   
-  $('#shopify-section-{{ section.id }} .expand').html('<a href="#"{% if section.settings.expand == 'button' %} class="btn"{% endif %}>{{ 'collections.general.show_link' | t }}</a>');
+  $('#shopify-section-{{ section.id }} .expand').html('<a href="#"{% if section.settings.expand == 'button' %} class="btn"{% endif %}>{% if section.settings.type == 'expand' %}{{ 'collections.general.expand_link' | t }}{% else %}{{ 'collections.general.show_link' | t }}{% endif %}</a>');
   $(window).resize(function() {
       if (window.section{{ section.id | remove: '-' }} != 'open'){
         collection_markrow();
@@ -542,7 +542,7 @@ $(document).ready(function(){
     	$('#shopify-section-{{ section.id }} .grid .item').css('display', 'block');
     	$('#shopify-section-{{ section.id }} .expand a').html('{{ 'collections.general.hide_link' | t }}');
     } else {
-        $('#shopify-section-{{ section.id }} .expand a').html('{{ 'collections.general.show_link' | t }}');
+        $('#shopify-section-{{ section.id }} .expand a').html('{% if section.settings.type == 'expand' %}{{ 'collections.general.expand_link' | t }}{% else %}{{ 'collections.general.show_link' | t }}{% endif %}');
         window.section{{ section.id | remove: '-' }} = 'close';
     	collection_markrow();
     };

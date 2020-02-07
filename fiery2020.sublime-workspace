@@ -1,0 +1,405 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "theme/sections/slideshow-page.liquid",
+			"settings":
+			{
+				"buffer_size": 50563,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "theme/sections/slideshow-homepage.liquid",
+			"settings":
+			{
+				"buffer_size": 48551,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "theme/snippets/settings.liquid",
+			"settings":
+			{
+				"buffer_size": 104,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "theme/assets/theme.scss.liquid",
+			"settings":
+			{
+				"buffer_size": 120021,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "https://www.amazon.co.uk/Crucial-MX500-CT500MX500SSD1-NAND-Internal/dp/B0784SLQM6\nhttps://www.ebay.co.uk/itm/Microsoft-Windows-10-Pro-32-64Bit-Genuine-License-USB-Boot-Installation-Drive/254097198558\n",
+			"settings":
+			{
+				"buffer_size": 200,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets"
+	],
+	"file_history":
+	[
+		"/Volumes/ESD-USB/bootmgr.efi",
+		"/Volumes/ESD-USB/autorun.inf",
+		"/Users/steven/Library/Mobile Documents/com~apple~CloudDocs/iMac/Settings/CloverAppleBoot.txt",
+		"/Users/steven/Library/Mobile Documents/com~apple~CloudDocs/iMac/Settings/Mac Tips",
+		"/Users/steven/Desktop/config.yml",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/sections/slideshow-homepage.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/sections/slideshow-page.liquid",
+		"/Users/steven/Desktop/Copy of LOCKETTS - Product Information1.csv",
+		"/Users/steven/Library/Mobile Documents/com~apple~CloudDocs/iMac/Settings/EFI/bootlog.txt",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/config.yml",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/snippets/settings.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/sections/config.yml",
+		"/Users/steven/Library/Application Support/Sublime Text 3/Packages/User/ColorPicker.sublime-settings",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/assets/theme.scss.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery.txt",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery/STEVEN THEME DEV [NO TOUCH].txt",
+		"/Volumes/Files/projects/dev/shopify/themes/STEVEN THEME DEV [NO TOUCH].txt",
+		"/Volumes/Files/projects/dev/shopify/themes/config.yml",
+		"/Volumes/rdisk1s1/webroot/grid-subchildren.html"
+	],
+	"find":
+	{
+		"height": 24.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"960",
+			"width",
+			"400",
+			"width",
+			"min-width",
+			"mobile_width",
+			"text-align",
+			"slide",
+			"nonmobile_style",
+			"nonmobile_styles",
+			"style",
+			"{{ style",
+			"{{ style }}",
+			"capture style",
+			"<style",
+			"align"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 4,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "theme/sections/slideshow-page.liquid",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 50563,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								23942,
+								23942
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1580812133.45,
+							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "theme/sections/slideshow-homepage.liquid",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 48551,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								25547,
+								25547
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1580812135.85,
+							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "theme/snippets/settings.liquid",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 104,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1580812136.94,
+							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "theme/assets/theme.scss.liquid",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 120021,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								27231,
+								27234
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1580812138.69,
+							"syntax": "Packages/SCSS/SCSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 200,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								200,
+								200
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"default_dir": "/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections",
+							"sorttabs_lastactivated": 1580837521.49,
+							"syntax": "Packages/CSS3/CSS3.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "fiery2020.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 288.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

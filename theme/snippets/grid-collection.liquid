@@ -7,7 +7,6 @@
 
 	<div class="item{% if section.settings.readmore != 'hidden' %} hasexcerpt{% endif %}{% if settings.collections_border %} hasborder{% endif %}">
 
-
       	{% if section.settings.image %}
         <p class="image">
         <a href="{{ collection.url }}{% if settings.collection_default_list %}?view=list{% endif %}">        
@@ -27,16 +26,14 @@
             {{ collection.products.first | img_url: '480x480' | img_tag: alt }}
           {% endif %}
           {% endcapture %}          
-          {% if demo_img %}{% assign img = demo_img %}{% endif %}
+          {%- if demo_img -%}{%- assign img = demo_img -%}{%- endif -%}
 
           {{ img }}
 
-          <!-- <img src="{{ collection.featured_image.src | img_url: '480x480' }}" alt="{{ collection.featured_image.alt | escape }}" /> -->
-
-          {% else %}
+          {%- else -%}
           {{ title }}
-    	  <img src="https:{{ settings.placeholder_image | img_url: '480x480' }}" alt="{{ title }}">
-          {% endif %}
+          <img src="https:{{ settings.placeholder_image | img_url: '480x480' }}" alt="{{ title }}">
+          {%- endif -%}
 
           {% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' %}
           <span class="title">  
@@ -54,14 +51,13 @@
         </a>
         </p>
       	{% endif %}
-      
+
         {% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' %}
+        <a href="{{ collection.url }}{% if settings.collection_default_list %}?view=list{% endif %}"><span class="visually-hidden">{{ title }}</span></a>
       	{% unless section.settings.image %}
       	<p class="image">
-      	<a href="{{ collection.url }}{% if settings.collection_default_list %}?view=list{% endif %}">
-          
+      	<!-- <a href="{{ collection.url }}{% if settings.collection_default_list %}?view=list{% endif %}"> -->
           <img src="{{ 'blank.gif' | asset_img_url: '480x480' }}" alt="" />
-          
           <span class="title">  
             <span>
             {% if section.settings.collections_title == 'overlay' %}
@@ -72,7 +68,7 @@
             {% endif %}
             </span>
           </span>     
-      	</a>
+      	<!-- </a> -->
       	</p>
       	{% endunless %}
         {% endif %}
@@ -96,3 +92,4 @@
       	{% endif %}
       
 	</div>
+

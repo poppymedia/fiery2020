@@ -67,7 +67,7 @@
              <button type="submit" class="btn add_to_cart"{%- unless product.available %} disabled="disabled"{% endunless -%} />
            	 <span data-add-to-cart-text>{% if product.available %}{{ 'products.general.add_to_cart' | t }}{% else %}{{ 'products.general.sold_out' | t }}{% endif %}</span>
            	 </button>
-			{% endcomment %}
+			     {% endcomment %}
 
              {%- if section.settings.read_more != 'hidden' -%}
              {{ readmore }}
@@ -90,8 +90,6 @@
 	{%- if section.settings.more_options and section.settings.add_cart == 'hidden' %}{%- assign showmoreoptions = 'yes' -%}{% endif -%}
 	{%- if section.settings.read_more == 'hidden' and section.settings.add_cart == 'hidden' %}{%- assign nobuttons = 'yes' -%}{% endif -%}
 
-
-
 <!-- Force to hide read more and buttons on search results -->
 {% if search %}
 {%- assign showmoreoptions = 'yes' %}
@@ -100,8 +98,6 @@
 {%- assign readmore = '' -%}
 {%- assign addnow = '' -%}
 {% endif %}
-
-
 
 	<div class="item {% if section.settings.read_more != 'hidden' or showmoreoptions == 'yes' %}{% if section.settings.read_more == 'button' %} buttons{% endif %}{% unless nobuttons == 'yes' %} hasexcerpt{% endunless %}{% if checkaddnow contains '<button' %} andcart{% endif %}{% else %}{% if nobuttons == 'no' %} hasexcerpt{% endif %}{% endif %}{% if settings.products_border and link_product == 'true' %} hasborder{% endif %}{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' %} andmore{% endif %}">
       
@@ -134,9 +130,9 @@
 
         {%- capture get_title -%}
           {%- if section.settings.title -%}
-          <h2 class="title">
+          <span class="title">
               {{ title }}
-          </h2>
+          </span>
           {%- endif -%} 
         {%- endcapture -%}        
       
@@ -211,8 +207,7 @@
                 {%- endcapture -%}
 
               {%- else -%}
-                {%- comment %}Excluding taxes{% endcomment -%}
-          
+                {%- comment %}Excluding taxes{% endcomment -%}          
                 {%- capture show_price_tax -%} 
           			{% if product.price > 0 -%}
           			{% unless product.template_suffix contains 'giftcard' %}

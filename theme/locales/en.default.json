@@ -124,7 +124,8 @@
       "link_title": "Browse our {{ title }} collection",
       "prev_title": "Prev",
       "next_title": "Next",
-      "show_link": "Show All",
+      "expand_link": "Expand All",
+      "show_link": "View All",
       "hide_link": "Hide All"
     },
     "sorting": {

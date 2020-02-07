@@ -2,3 +2,5 @@ config.yml
 .DS_Store
 .Trashes
 Thumbs.db
+.sublime-project
+.sublime-workspace

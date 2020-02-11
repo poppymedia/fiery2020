@@ -1,5 +1,3 @@
-{% if sale == 'topleft' or sale == 'topright' %}
-
+{% if sale == 'topleft' or sale == 'topright' -%}
 <span class="soldout {{ sale }}">{{ 'products.general.sold_out' | t }}</span>
-
-{% endif %}
+{%- endif %}

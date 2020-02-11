@@ -7,25 +7,25 @@
 
 	<div class="item{% if section.settings.readmore != 'hidden' %} hasexcerpt{% endif %}{% if settings.collections_border %} hasborder{% endif %}">
 
-      	{% if section.settings.image %}
+      	{% if section.settings.image -%}
         <p class="image">
         <a href="{{ collection.url }}{% if settings.collection_default_list %}?view=list{% endif %}">        
 
-          {% if section.settings.image %}
+          {% if section.settings.image -%}
           
-          {% if section.settings.collections_title == 'hidden' %}
+          {% if section.settings.collections_title == 'hidden' -%}
           	  {% assign alt = title %}
-          {% else %}
+          {%- else -%}
           	  {% assign alt = '' %}
-          {% endif %}
+          {%- endif %}
           
-          {% capture img %}
+          {% capture img -%}
           {% if collection.image != blank %}
             {{ collection | img_url: '480x480' | img_tag: alt }}
           {% elsif collection.products.first != blank %}
             {{ collection.products.first | img_url: '480x480' | img_tag: alt }}
           {% endif %}
-          {% endcapture %}          
+          {%- endcapture %}          
           {%- if demo_img -%}{%- assign img = demo_img -%}{%- endif -%}
 
           {{ img }}
@@ -35,7 +35,7 @@
           <img src="https:{{ settings.placeholder_image | img_url: '480x480' }}" alt="{{ title }}">
           {%- endif -%}
 
-          {% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' %}
+          {% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' -%}
           <span class="title">  
             <span>
             {% if section.settings.collections_title == 'overlay' %}
@@ -46,13 +46,13 @@
             {% endif %}
             </span>
           </span>
-          {% endif %}
+          {%- endif %}
 
         </a>
         </p>
       	{% endif %}
 
-        {% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' %}
+        {% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' -%}
         <a href="{{ collection.url }}{% if settings.collection_default_list %}?view=list{% endif %}"><span class="visually-hidden">{{ title }}</span></a>
       	{% unless section.settings.image %}
       	<p class="image">
@@ -71,9 +71,9 @@
       	<!-- </a> -->
       	</p>
       	{% endunless %}
-        {% endif %}
+        {%- endif %}
       
-      	{% if section.settings.collections_title == 'below' or section.settings.collections_description == 'below' %}
+      	{% if section.settings.collections_title == 'below' or section.settings.collections_description == 'below' -%}
       	<div class="summary">
 
           {% if section.settings.collections_title == 'below' %}
@@ -89,7 +89,7 @@
           {% endif %}
 
         </div>
-      	{% endif %}
+      	{%- endif %}
       
 	</div>
 

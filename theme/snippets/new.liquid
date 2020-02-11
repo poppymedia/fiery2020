@@ -1,19 +1,19 @@
-{% if new == 'topleft' or new == 'topright' %}
+{%- if new == 'topleft' or new == 'topright' -%}
 
-{% if product %}
-{% assign product_published_at = product.published_at | date: '%s' %}
-{% assign time_ago = 'now' | date: '%s' | minus: product_published_at | divided_by: 86400 %}
-{% if time_ago < new_days %}
+{%- if product -%}
+{%- assign product_published_at = product.published_at | date: '%s' -%}
+{%- assign time_ago = 'now' | date: '%s' | minus: product_published_at | divided_by: 86400 -%}
+{%- if time_ago < new_days -%}
 <em class="new {{ new }}">{{ 'products.general.is_new' | t }}</em>
-{% endif %}
-{% endif %}
+{%- endif -%}
+{%- endif -%}
 
-{% if article %}
-{% assign article_published_at = article.published_at | date: '%s' %}
-{% assign time_ago = 'now' | date: '%s' | minus: article_published_at | divided_by: 86400 %}
-{% if time_ago < new_days %}
+{%- if article -%}
+{%- assign article_published_at = article.published_at | date: '%s' -%}
+{%- assign time_ago = 'now' | date: '%s' | minus: article_published_at | divided_by: 86400 -%}
+{%- if time_ago < new_days -%}
 <em class="new {{ new }}">{{ 'products.general.is_new' | t }}</em>
-{% endif %}
-{% endif %}
+{%- endif -%}
+{%- endif -%}
 
-{% endif %}
+{%- endif -%}

@@ -358,19 +358,19 @@
       {
         "type": "checkbox",
         "id": "collections_border",
-        "label": "Collections border",
+        "label": "Collections grid/list border",
         "default": false
       },
       {
         "type": "checkbox",
         "id": "products_border",
-        "label": "Products border",
+        "label": "Products grid/list border",
         "default": false
       },
       {
         "type": "checkbox",
         "id": "articles_border",
-        "label": "Articles border",
+        "label": "Articles grid/list border",
         "default": false
       },
       {
@@ -379,7 +379,7 @@
         "min": 0,
         "max": 30,
         "step": 1,
-        "label": "Border thickness",
+        "label": "Grid/list border thickness",
         "default": 1
       },
       {
@@ -1493,8 +1493,26 @@
       },
       {
         "type": "color",
+        "id": "color_collections_grid_title",
+        "label": "Collection title",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "color_collections_grid_text",
+        "label": "Collection text",
+        "default": "#666666"
+      },
+      {
+        "type": "color",
         "id": "color_collections_overlay_bg",
         "label": "Overlay background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_collections_overlay_title_bg",
+        "label": "Overlay title background",
         "default": "#ffffff"
       },
       {
@@ -1502,12 +1520,6 @@
         "id": "color_collections_overlay_title",
         "label": "Overlay title",
         "default": "#222222"
-      },
-      {
-        "type": "color",
-        "id": "color_collections_overlay_title_bg",
-        "label": "Overlay title background",
-        "default": "#ffffff"
       },
       {
         "type": "color",
@@ -1615,6 +1627,12 @@
       },
       {
         "type": "color",
+        "id": "color_blog_grid_border_hover",
+        "label": "Grid post border hover",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
         "id": "color_blog_grid_heading",
         "label": "Grid post text",
         "default": "#222222"
@@ -1635,6 +1653,12 @@
         "type": "color",
         "id": "color_blog_list_border",
         "label": "List post border",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_blog_list_border_hover",
+        "label": "List post border hover",
         "default": "#ffffff"
       },
       {

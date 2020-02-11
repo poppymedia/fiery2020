@@ -1,18 +1,18 @@
-{% if sale == 'topleft' or sale == 'topright' %}
+{%- if sale == 'topleft' or sale == 'topright' -%}
 
-{% unless section.settings.sale_style == 'hidden' %}
-{% if saving > 0 %}
-{% assign save_price = saving | money %}
+{%- unless section.settings.sale_style == 'hidden' -%}
+{%- if saving > 0 -%}
+{%- assign save_price = saving | money -%}
 
-{% if section.settings.sale_style == 'saving' %}
-{% assign savings = '<em class="price">' | append: save_price | append: '</em>' %}
-{% endif %}
+{%- if section.settings.sale_style == 'saving' -%}
+{%- assign savings = '<em class="price">' | append: save_price | append: '</em>' -%}
+{%- endif -%}
 
-{% if section.settings.sale_style == 'saving_percent' %}
-{% assign savings = '<em class="price">' | append: saving_percent | append: '%</em>' %}
-{% endif %}
+{%- if section.settings.sale_style == 'saving_percent' -%}
+{%- assign savings = '<em class="price">' | append: saving_percent | append: '%</em>' -%}
+{%- endif -%}
 
 <span class="sale {{ sale }}">{% if section.settings.sale_style == 'sale' %}{{ 'products.general.on_sale' | t }}{% else %}{{ 'products.general.save_html' | t: amount: savings }}{% endif %}</span>
-{% endif %}
-{% endunless %}
-{% endif %}
+{%- endif -%}
+{%- endunless -%}
+{%- endif -%}

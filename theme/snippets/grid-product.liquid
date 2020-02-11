@@ -24,7 +24,7 @@
 	{%- endcapture %}
 
     <!-- TO DO: Needs to work with whole product linked -->
-    {% capture addnow -%}
+    {%- capture addnow -%}
          {%- if template == 'product.no.cart' -%}
          {%- else -%}
          {%- if section.settings.add_cart != 'hidden' -%}  
@@ -82,7 +82,7 @@
 
          {%- endif -%}
          {%- endif -%}
-    {%- endcapture %}
+    {%- endcapture -%}
     {%- assign checkaddnow = addnow | strip_newlines -%}
 
 	{%- assign nobuttons = 'no' %}
@@ -97,7 +97,7 @@
 {%- assign checkaddnow = '' -%}
 {%- assign readmore = '' -%}
 {%- assign addnow = '' -%}
-{% endif %}
+{% endif -%}
 
 	<div class="item {% if section.settings.read_more != 'hidden' or showmoreoptions == 'yes' %}{% if section.settings.read_more == 'button' %} buttons{% endif %}{% unless nobuttons == 'yes' %} hasexcerpt{% endunless %}{% if checkaddnow contains '<button' %} andcart{% endif %}{% else %}{% if nobuttons == 'no' %} hasexcerpt{% endif %}{% endif %}{% if settings.products_border and link_product == 'true' %} hasborder{% endif %}{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' %} andmore{% endif %}">
       
@@ -209,21 +209,21 @@
               {%- else -%}
                 {%- comment %}Excluding taxes{% endcomment -%}          
                 {%- capture show_price_tax -%} 
-          			{% if product.price > 0 -%}
-          			{% unless product.template_suffix contains 'giftcard' %}
+          			{%- if product.price > 0 -%}
+          			{%- unless product.template_suffix contains 'giftcard' -%}
           				<sup>{{ 'products.general.tax_exc' | t }}</sup>
-          			{% endunless %}
-          			{% endif %}
+          			{%- endunless -%}
+          			{%- endif -%}
           		{%- endcapture -%}		
           
                 {%- capture show_tax -%}
-          			{% unless product.template_suffix contains 'giftcard' %} 
-          			{% if product.price > 0 -%}
+          			{%- unless product.template_suffix contains 'giftcard' -%} 
+          			{%- if product.price > 0 -%}
                     <p class="taxprice"><span class="price">{{ product.price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></p> 
 					{%- else -%}
           			<p></p>
-          			{%- endif %}
-          			{% endunless %}
+          			{%- endif -%}
+          			{%- endunless -%}
           		{%- endcapture -%}
 
               {%- endif -%}
@@ -252,25 +252,25 @@
 
                       {%- assign showsale = 'no' -%}
                       {%- if product.compare_at_price > product.price -%}
-                        {% if product.price_varies -%}
+                        {%- if product.price_varies -%}
                           {%- assign showsale = 'yes' -%}
                           {%- assign sale_price = product.price | money -%}
                           {{ 'products.general.on_sale_from_html' | t: price: sale_price }}
                         {%- else -%}
-                          {% assign showsale = 'yes' %}
+                          {%- assign showsale = 'yes' -%}
                           <span class="price">{{ product.price | money }}</span>            		           
                           {%- assign saving = product.compare_at_price | minus: product.price -%}          		           
                           {%- assign saving_percent = product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' -%}
-                        {%- endif %} 
+                        {%- endif -%} 
 
                       {%- else -%}
 
-                        {% if product.price_varies -%}
+                        {%- if product.price_varies -%}
                           {%- assign price = product.price | money -%}
                           {{ 'products.general.from_text_html' | t: price: price }}
                         {%- else -%}
                           <span class="price">{{ product.price | money }}</span>
-                        {%- endif %}
+                        {%- endif -%}
 
                       {%- endif -%}
 
@@ -336,8 +336,8 @@
           	{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' -%}</form>{%- endif %}              
         </div> 
       
-        {%- include 'new' -%}
-        {%- unless product.available %}{% include 'soldout' %}{% endunless -%}
-        {%- if showsale == 'yes' -%}{% include 'sale', saving:saving %}{%- endif -%}
+        {%- include 'new' %}
+        {%- unless product.available -%}{%- include 'soldout' %}{%- endunless -%}
+        {%- if showsale == 'yes' -%}{%- include 'sale', saving:saving %}{%- endif -%}
 
     </div>

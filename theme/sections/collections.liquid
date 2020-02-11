@@ -155,6 +155,12 @@
   padding: {{ section.settings.text_spacing }}%;
   margin: 0;
 }
+.products.collections.grid .item .summary .title {
+  color: {{ settings.color_collections_grid_title }};
+}
+.products.collections.grid .item .summary .content {
+  color: {{ settings.color_collections_grid_text }};
+}
   
 {% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' %}
 .products.collections.grid .item .image .title {
@@ -170,6 +176,16 @@
   {% assign opacity = section.settings.overlay_opacity | divided_by: 100.00 | round: 2 %}
   background: {{ settings.color_collections_overlay_bg | color_modify: 'alpha', opacity }};
   font-size: {{ title_size }}px;
+  {% if settings.collections_hover %}
+  -webkit-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease; 
+  -moz-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
+  -o-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
+  transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
+  {% endif %}
+}
+.products.collections.grid .item:hover .image .title {
+  {% assign opacity_hover = section.settings.overlay_opacity_hover | divided_by: 100.00 | round: 2 %}
+  background: {{ settings.color_collections_overlay_bg | color_modify: 'alpha', opacity_hover }};
 }
 .products.collections.grid .item .image .title span {
   text-align: center; 
@@ -353,6 +369,15 @@
         "step": 2,
         "label": "Overlay opacity",
         "default": 20
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity_hover",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "label": "Overlay opacity hover",
+        "default": 70
       },
       {
         "type": "checkbox",

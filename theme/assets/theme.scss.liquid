@@ -3815,9 +3815,12 @@ body .rte .grid h2 a {
   	padding: 0;
   	*/
 }
+
+
 .template-index > #main > .container {
   padding-top: 0;
 }
+
 
 
 .template-index > #main .container .shopify-section {
@@ -3864,6 +3867,11 @@ body .rte .grid h2 a {
   border: solid 1px green;
 }
 */
+
+
+
+
+
 
 
 .subtitle {
@@ -5323,4 +5331,50 @@ select,
 
 /*
 svg.payment-icon { filter: grayscale(1); }
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+/* TESTING - Set all collections to no bottom space, for section settings control */
+.template-index > #main > .container {
+  padding-top: 0;
+}
+.template-index .shopify-section.collection {
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-bottom: -{{ settings.grid_spacing }}px;
+}
+.template-index .shopify-section.collection h2 {
+  margin-top: 0;
+}
+/*
+.template-index > #main > .container {
+  padding-top: {{ settings.grid_spacing }}px;
+}
+.template-index .shopify-section.collection:nth-of-type(1) {
+  padding-top: {{ settings.grid_spacing }}px;
+}
+.template-index .shopify-section.collection {
+  padding-top: {{ settings.grid_spacing }}px;
+  padding-top: 0;
+}
+.template-index .shopify-section.collection h2 {
+  margin-top: {{ settings.grid_spacing }}px;
+  margin-top: 0;
+}
+*/
+/*
+#main .shopify-section.collection {
+  border-top: solid 1px white;
+  border-bottom: solid 1px blue;
+}
 */

@@ -589,7 +589,7 @@
         
         <p class="copyright">
           <span>{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}{% if block.settings.show_shop %} {{ shop.name }}{% endif %}</span> 
-          {% if block.settings.show_powered_by %}<span>{{ powered_by_link }}</span>{% endif %}{% if block.settings.copyright_text.size > 0 %} <span>{{ block.settings.copyright_text }}</span>{% endif %} 
+          <span>{{ powered_by_link }}</span>{% if block.settings.copyright_text.size > 0 %} <span>{{ block.settings.copyright_text }}</span>{% endif %} 
         </p>
         
         {% if section.settings.footer_font_align != 'center' %}
@@ -1040,7 +1040,7 @@
          "id": "footer_headings_enable",
          "label": "Show headings",
          "default": true
-      },
+      },  
       {
          "type": "checkbox",
          "id": "footer_cookie_enable",
@@ -1050,8 +1050,8 @@
       {
         "type": "select",
         "id": "cookie_page_width",
-        "label": "Cookie background width",
-		"default": "page",
+        "label": "Cookie notice background width",
+		  "default": "page",
         "options": [
           {
             "value": "page",
@@ -1070,9 +1070,13 @@
          "max": 60,
          "step": 5,
          "unit": "px",
-         "label": "Cookie policy spacing",
+         "label": "Cookie notice spacing",
          "default": 30
-      },    
+      },
+      {
+        "type": "header",
+        "content": "Preceding content block"
+      },
       {
         "type": "page",
         "id": "footer_page_content",
@@ -1285,12 +1289,6 @@
               "type": "checkbox",
               "id": "show_shop",
               "label": "Show store name",
-              "default": true
-            },
-            {
-              "type": "checkbox",
-              "id": "show_powered_by",
-              "label": "Show powered by",
               "default": true
             },
             {

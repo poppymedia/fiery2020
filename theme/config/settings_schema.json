@@ -1423,6 +1423,12 @@
       },
       {
         "type": "color",
+        "id": "color_btn_bg_hover",
+        "label": "Background hover",
+        "default": "#4a8393"
+      },
+      {
+        "type": "color",
         "id": "color_btn_hover",
         "label": "Background hover",
         "default": "#000000"
@@ -1481,6 +1487,12 @@
       },
       {
         "type": "color",
+        "id": "color_collections_grid_bg_hover",
+        "label": "Collection background hover",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
         "id": "color_collections_grid_border",
         "label": "Collection border",
         "default": "#ffffff"
@@ -1535,6 +1547,12 @@
         "type": "color",
         "id": "color_collection_grid_bg",
         "label": "Product background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_collection_grid_bg_hover",
+        "label": "Product background hover",
         "default": "#ffffff"
       },
       {
@@ -1617,6 +1635,12 @@
         "type": "color",
         "id": "color_blog_grid_bg",
         "label": "Grid post background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_blog_grid_bg_hover",
+        "label": "Grid post background hover",
         "default": "#ffffff"
       },
       {
@@ -1778,19 +1802,19 @@
       {
         "type": "color",
         "id": "color_cookie_bg",
-        "label": "Cookie policy background",
+        "label": "Cookie notice background",
         "default": "#ffffff"
       },
       {
         "type": "color",
         "id": "color_cookie_border",
-        "label": "Cookie policy border",
+        "label": "Cookie notice border",
         "default": "#ffffff"
       },
       {
         "type": "color",
         "id": "color_cookie_text",
-        "label": "Cookie policy text",
+        "label": "Cookie notice text",
         "default": "#222222"
       },
       {
@@ -2164,7 +2188,7 @@
         "min": 0,
         "max": 30,
         "step": 1,
-        "label": "Primary heading  kerning",
+        "label": "Primary heading kerning",
         "default": 0
       },
       {
@@ -2173,7 +2197,7 @@
         "min": 0,
         "max": 30,
         "step": 1,
-        "label": "Secondary heading  kerning",
+        "label": "Secondary heading kerning",
         "default": 0
       },
       {

@@ -595,7 +595,7 @@ ul.bxslider {
 								/* These styles apply to non-mobile only */
 								.bxslider .textClass{{ slide_num }} {
 									box-sizing:border-box;
-									{% assign assign text_width = block.settings.text_width | plus: 0 %}
+									{% assign text_width = block.settings.text_width | plus: 0 %}
 									width:calc({{ text_width }}%);
 									text-align:{{ block.settings.text_align }};
 									padding:{{ block.settings.text_spacing }}%;
@@ -606,7 +606,13 @@ ul.bxslider {
 									{% if block.settings.text_position == 'right' and text_width < 100 %}left:calc({{ 100 | minus: text_width }}%);{% endif%}
 									/* background:{% assign a = block.settings.text_background_opacity | divided_by: 100.00 %}{{ block.settings.text_background_color | hex_to_rgba: a }}; */
 								}
-
+								{% assign image_width = block.settings.image_width | plus: 0 %}
+								{% if image_width < 100 %}
+								.bxslider #slide{{ slide_num }} img {
+									{% if block.settings.text_position == 'left' %}margin-left:{{ 100 | minus: image_width }}%;{% endif %}
+									width:{{ image_width }}%;
+								}
+								{% endif %}
 								.bxslider .textClass{{ slide_num }} * { 
 									color:{{ block.settings.text_color }};
 								}
@@ -696,8 +702,14 @@ ul.bxslider {
 										/* border: solid 1px red !important; */
 										position: relative;
 										overflow: hidden;		 
-									}
+									}									
 									.bxslider #slide{{ slide_num }} img { 
+										{% if image_width < 100 %}
+										width: 100%;
+										max-width: 100% !important;
+										margin-left: 0;
+										{% else %}
+
 										{% if block.settings.text_position == 'left' and text_width < 100 %}
 										{% assign adj = text_width | times: 2 %}
 										{% assign adj_cut = text_width  %}
@@ -722,7 +734,9 @@ ul.bxslider {
 										width: {{ adj }}%;
 										max-width: {{ adj }}% !important;
 										{% endif %}
-									}									
+
+										{% endif %}
+									}						
 									{% endif %}
 									
 									{% if section.settings.slideshow_text_position_mobile %}
@@ -927,38 +941,41 @@ ul.bxslider {
 	
 {% if section.settings.slideshow_text_position_mobile %}
 @media only screen and (max-width: {{ mobile_width | remove: 'px' | minus: 1 | append: 'px' }}) {
+	.bxslider .textWrapper {
+			padding: {{ settings.grid_spacing }}px !important;
+		}
 	.bx-wrapper .bxslider .textWrapper {
-		float: none !important;
-				clear: both !important;
-		width: 100% !important;
-				max-width: none !important;
-		height: auto !important;
-		display: block !important;
-		overflow: hidden !important;
-		margin: 0 auto !important;
-		padding: 0 !important;
-				text-align: center !important;
-				position: relative !important;
+			float: none !important;
+			clear: both !important;
+			width: 100% !important;
+			max-width: none !important;
+			height: auto !important;
+			display: block !important;
+			overflow: hidden !important;
+			margin: 0 auto !important;
+			padding: 0 !important;
+			text-align: center !important;
+			position: relative !important;
 		}
 		.bx-wrapper .bxslider .textWrapper div {
-				text-align: center !important;
-				position: relative !important;
-				padding: 0 !important;
-				margin: 0 auto !important;
-				display: block !important;
-				width: 100% !important;
-				max-width: none !important;
+			text-align: center !important;
+			position: relative !important;
+			padding: 0 !important;
+			margin: 0 auto !important;
+			display: block !important;
+			width: 100% !important;
+			max-width: none !important;
 		}
 		.bx-wrapper .bxslider .textWrapper .text {
-				padding: {{ settings.grid_spacing }}px !important;
+			padding: {{ settings.grid_spacing }}px !important;
 		}
 		.bx-wrapper .bxslider .textWrapper h1 {
-				text-align: center !important;
-				position: relative !important;
-				margin: 0 auto !important;
-				display: block !important;
-				width: 100% !important;
-				max-width: none !important;
+			text-align: center !important;
+			position: relative !important;
+			margin: 0 auto !important;
+			display: block !important;
+			width: 100% !important;
+			max-width: none !important;
 		}
 }
 {% endif %}
@@ -967,16 +984,16 @@ ul.bxslider {
 	
 {% if section.settings.pagination_position == 'below' %}
 		.bx-wrapper {
-				margin-bottom: 0;
+			margin-bottom: 0;
 		}
 		.bx-wrapper .bx-pager {
-				position: relative;
-				clear: both;
-				width: 100%;
-				bottom: 0;
-				margin-bottom: 0;
-				height: 3.2em;
-				height: auto;
+			position: relative;
+			clear: both;
+			width: 100%;
+			bottom: 0;
+			margin-bottom: 0;
+			height: 3.2em;
+			height: auto;
 		}
 {% endif %}
 	
@@ -1258,7 +1275,7 @@ $(window).resize(function(){
 			 "type": "checkbox",
 			 "id": "slideshow_image_position_mobile",
 			 "label": "Crop image on mobile",
-		 "info": "Each slide will crop image at text width position. For best results, text width should be same for all slide content",
+		 "info": "Each slide will crop image at text width position (if image width is 100%). For best results, text width should be same for all slide content",
 			 "default": false
 
 		},
@@ -1522,6 +1539,16 @@ $(window).resize(function(){
 					"id": "image",
 					"label": "Image",
 					"info": "Images and videos should be same size, if slideshow has both"
+				},
+				{
+					"type": "range",
+					"id": "image_width",
+					"min": 0,
+					"max": 100,
+					"step": 5,
+					"unit": "%",
+					"label": "Image width",
+					"default": 100
 				},
 				{
 					"type": "text",

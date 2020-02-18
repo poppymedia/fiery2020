@@ -1,6 +1,7 @@
 <!-- SECTION -->
 
 {% assign gutter = settings.grid_spacing | append: 'px' %}
+{%- assign grid_gutter = gutter -%}
 {% comment %}{% assign gutter = 0 %}{% endcomment %}
 
 {% capture fillrow %}
@@ -26,12 +27,29 @@
 {%- if size == 'p' %}{{ settings.type_base_size }}{% endif -%}
 {%- endcapture -%}
 
+
 <style>
+{%- if section.settings.section_line_size > 0 -%}
+#shopify-section-{{ section.id }} .divide {     
+  position: relative;
+  height: 0;
+  width: 100%;
+  padding:  0;
+  border-bottom: solid {{ section.settings.section_line_size }}px red;
+  border-bottom: solid {{ section.settings.section_line_size }}px transparent;
+  border-width: {{ section.settings.section_line_size }}px !important;
+  border-color: {{ section.settings.section_line_color }} !important; 
+  padding-top: {{ grid_gutter }};
+  /* margin: 0 0 -{{ grid_gutter }} 0; */
+}   
+{%- endif -%}
 .products.collections.grid {  
   display: flex;
   flex-wrap: wrap; 
   position: relative;
 }
+
+{% comment %}
 #shopify-section-{{ section.id }} {
   padding-bottom: {{ gutter }};
   margin-top: -{{ gutter }}; /* */
@@ -53,6 +71,11 @@
   padding: 0;
   {% endif %}
 } 
+{% endcomment %}
+
+
+
+
 #shopify-section-{{ section.id }} .products.collections.grid {
   margin-left: -{{ section.settings.spacing }}px;
 }
@@ -68,6 +91,9 @@
   position: relative;
   overflow: hidden;
   {% endunless %}
+}  
+#shopify-section-{{ section.id }} .products.collections.grid .item:hover {
+  background: {{ settings.color_collections_grid_bg_hover }};  
 }  
 #shopify-section-{{ section.id }} .products.collections.grid .item.fillrow {
   background: transparent;
@@ -281,9 +307,19 @@
   
 </div> 
 
+
+
+{%- if section.settings.section_line_size > 0 -%}
+<div class="divide"></div>
+{%- endif -%}
+
+
+
 {% if section.settings.feature_width == 'container' or section.settings.feature_width == 'content' %}</div>{% else %}
 </div>
 {% endif %}
+
+
   
 {% comment %}{% if section.settings.onerow %}</div>{% endif %}{% endcomment %}
 
@@ -363,6 +399,7 @@ $(document).ready(function(){
 {% schema %}
   {
     "name": "List of collections",
+    "class": "collection",
     "settings": [
       {
         "type": "select",
@@ -519,6 +556,21 @@ $(document).ready(function(){
         "id": "row_justify",
         "label": "Justify rows",
         "default": true
+      },
+      {
+         "type": "range",
+         "id": "section_line_size",
+         "min": 0,
+         "max": 5,
+         "step": 1,
+         "unit": "px",
+         "label": "Divide line size",
+         "default": 1
+      },
+      {
+         "type": "color",
+         "id": "section_line_color",
+         "label": "Divide line color"
       },
       {
         "type": "header",

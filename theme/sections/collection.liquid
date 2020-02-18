@@ -1,6 +1,7 @@
 <!-- SECTION -->
 
 {% assign gutter = settings.grid_spacing | append: 'px' %}
+{%- assign grid_gutter = gutter -%}
 {% assign size = section.settings.title_size %}
 {% assign new = section.settings.new %}
 {% assign sale = section.settings.sale %}
@@ -15,6 +16,20 @@
 {%- endcapture -%}
 
 <style>
+{%- if section.settings.section_line_size > 0 -%}
+#shopify-section-{{ section.id }} .divide {     
+  position: relative;
+  height: 0;
+  width: 100%;
+  padding:  0;
+  border-bottom: solid {{ section.settings.section_line_size }}px red;
+  border-bottom: solid {{ section.settings.section_line_size }}px transparent;
+  border-width: {{ section.settings.section_line_size }}px !important;
+  border-color: {{ section.settings.section_line_color }} !important; 
+  padding-top: {{ grid_gutter }};
+  /* margin: 0 0 -{{ grid_gutter }} 0; */
+}   
+{%- endif -%}
 
 /* List */
 {% if template contains '.list' %}
@@ -356,6 +371,15 @@
   position: relative;
   background: {{ settings.color_collection_grid_bg }}; 
   padding: {{ section.settings.text_spacing }}px;
+  {% if settings.products_hover %}
+  -webkit-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease; 
+  -moz-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
+  -o-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
+  transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
+  {% endif %}
+} 
+.products.grid .item:hover {
+  background: {{ settings.color_collection_grid_bg_hover }}; 
 } 
   
 .products.collection.grid .item .more {
@@ -973,7 +997,7 @@ aside div.tags div.group ul {
 
   {{ fillrow }}
 
-  </div>  
+  </div>
 
   {% if noproducts %}
 	 {% if tagsactive > 0 %}
@@ -992,6 +1016,14 @@ aside div.tags div.group ul {
   {% endif %}
 
 {% endpaginate %}
+
+
+
+{%- if section.settings.section_line_size > 0 -%}
+<div class="divide"></div>
+{%- endif -%}
+
+
   
 </article>
 
@@ -1026,6 +1058,7 @@ jQuery('.tags .group h4').click(function() {
 {% schema %}
   {
     "name": "Collection",
+    "class": "collection",
     "settings": [
       {
         "type": "checkbox",
@@ -1082,7 +1115,7 @@ jQuery('.tags .group h4').click(function() {
         "type": "select",
         "id": "title_size",
         "label": "Product title size",
-		"default": "h4",
+		    "default": "h4",
         "options": [
           {
             "value": "h2",
@@ -1106,7 +1139,7 @@ jQuery('.tags .group h4').click(function() {
         "type": "select",
         "id": "layout_grid_list",
         "label": "Layout grid / list",
-		"default": "buttons",
+		    "default": "buttons",
         "options": [
           {
             "value": "hidden",
@@ -1234,7 +1267,7 @@ jQuery('.tags .group h4').click(function() {
            "type": "text",
            "id": "new_days",
            "label": "New for x days",
-			"default": "30"
+			     "default": "30"
       },
       {
         "type": "select",
@@ -1339,6 +1372,21 @@ jQuery('.tags .group h4').click(function() {
            }
         ],
         "default": "hidden"
+      },
+      {
+         "type": "range",
+         "id": "section_line_size",
+         "min": 0,
+         "max": 5,
+         "step": 1,
+         "unit": "px",
+         "label": "Divide line size",
+         "default": 1
+      },
+      {
+         "type": "color",
+         "id": "section_line_color",
+         "label": "Divide line color"
       },
 	{
         "type": "header",

@@ -368,8 +368,17 @@
 /* Grid & List */
 .products.grid .item {
   position: relative;
-  background: {{ settings.color_collection_grid_bg }}; 
+  background: {{ settings.color_blog_grid_bg }}; 
   padding: {{ section.settings.text_spacing }}px;
+  {% if settings.articles_hover %}
+  -webkit-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease; 
+  -moz-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
+  -o-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
+  transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
+  {% endif %}
+} 
+.products.grid .item:hover {
+  background: {{ settings.color_blog_grid_bg_hover }}; 
 } 
   
 .products.collection.grid .item .more {

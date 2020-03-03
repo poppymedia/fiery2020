@@ -797,8 +797,16 @@ aside div.tags div.group ul {
     <div class="tags">
       
     <!-- TO DO: Add collection 'all' handle to URL when in all collection -->
-    Blog filters here
-
+    {% if blog.tags.size > 0 %}
+      <ul class="tags">
+        {% for tag in blog.all_tags %}
+          <li>
+            <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %} {% endunless %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+      
     </div>
   {% endcapture %}
   {% assign filters = filters | strip_newlines | replace: '"all/', '"/collections/all/' %}
@@ -1016,7 +1024,7 @@ jQuery('.tags .group h4').click(function() {
         "type": "select",
         "id": "layout_grid_prominent_feature",
         "label": "Prominent feature",
-  		"default": "image",
+      "default": "image",
         "options": [
           {
             "value": "title",

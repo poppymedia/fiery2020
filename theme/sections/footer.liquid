@@ -426,7 +426,7 @@
       <div class="block" id="block-{{ bodyblocks }}">
         {% capture heading %}{{ 'contact.titles.visit_us' | t }}{% endcapture %} 
         {% capture address %}{% if block.settings.footer_address %}{{ shop.address.street }} <br />{{ shop.address.city }} <br />{{ shop.address.zip }} <br />{% endif %}{% endcapture %} 
-        {% capture directions %}{% if block.settings.footer_directions %}<a href="https://www.google.co.uk/maps/dir/{{ address | replace: ' <br />', '+' | replace: ' ', '+' }}">{{ 'contact.titles.get_directions' | t }}</a>{% endif %}{% endcapture %} 
+        {% capture directions %}{% if block.settings.footer_directions %}<a href="https://www.google.co.uk/maps/dir/{{ address | replace: ' <br />', '+' | replace: ' ', '+' }}" rel="nofollow">{{ 'contact.titles.get_directions' | t }}</a>{% endif %}{% endcapture %} 
         {% if heading != blank and section.settings.footer_headings_enable %}<h2>{{ heading }}</h2>{% endif %}<p>{{ address | replace: ',' }}{{ directions }}</p>
       </div>
     {%- endif %}
@@ -468,7 +468,7 @@
           {% capture social_icon %}icon-{{ social_handle }}{% endcapture %}
           {% if settings[social_link] != blank %}
             <li>
-              <a href="{{ settings[social_link] }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}">
+              <a href="{{ settings[social_link] }}" rel="nofollow" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}">
                 {% if block.settings.footer_social_icons %}
                   {% include social_icon %}
                   {% if block.settings.footer_social_text %}
@@ -511,7 +511,7 @@
             {{ payment_types }}
           </ul>
           {% else %}
-          <p>Please <a href="/admin/settings/payments">setup payments</a></p>
+          <p>{{ 'general.site.setup_please' | t }} <a href="/admin/settings/payments" rel="nofollow">{{ 'general.site.setup_payment' | t }}</a></p>
           {% endif %}
         </div>
         {% endunless %}  

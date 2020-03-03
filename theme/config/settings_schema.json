@@ -358,19 +358,19 @@
       {
         "type": "checkbox",
         "id": "collections_border",
-        "label": "Collections grid/list border",
+        "label": "Collections grid\/list border",
         "default": false
       },
       {
         "type": "checkbox",
         "id": "products_border",
-        "label": "Products grid/list border",
+        "label": "Products grid\/list border",
         "default": false
       },
       {
         "type": "checkbox",
         "id": "articles_border",
-        "label": "Articles grid/list border",
+        "label": "Articles grid\/list border",
         "default": false
       },
       {
@@ -379,7 +379,7 @@
         "min": 0,
         "max": 30,
         "step": 1,
-        "label": "Grid/list border thickness",
+        "label": "Grid\/list border thickness",
         "default": 1
       },
       {
@@ -2101,7 +2101,6 @@
         "label": "Secondary heading font",
         "default": "work_sans_n6"
       },
-
       {
         "type": "select",
         "id": "type_h1_weight",
@@ -3840,4 +3839,3 @@
     ]
   }
 ]
-

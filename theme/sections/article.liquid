@@ -114,6 +114,24 @@
 {% endif %}
 
   {% capture filters %}
+
+    {% assign tagsactive = 0 %}
+    <div class="tags">
+      
+    <!-- TO DO: Add collection 'all' handle to URL when in all collection -->
+    {% if blog.tags.size > 0 %}
+      <ul class="tags">
+        {% for tag in blog.all_tags %}
+          <li>
+            <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %} {% endunless %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+      
+    </div>
+
+  {% comment %}
   {% if article.tags.size > 0 %}
     <ul class="tags">
       {% for tag in article.tags %}
@@ -123,6 +141,8 @@
       {% endfor %}
     </ul>
   {% endif %}
+  {% endcomment %}
+
   {% endcapture %}
 
 <article class="article" id="content" role="article" itemscope itemtype="http://schema.org/Article">

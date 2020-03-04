@@ -2690,7 +2690,7 @@
       {
         "type": "select",
         "id": "gift_card_redemption",
-        "label": "Gift cards & vouchers",
+        "label": "Gift cards / vouchers",
         "info": "Redemption type. [EU directive](https:\/\/www.gov.uk\/government\/publications\/vat-treatment-of-vouchers)",
         "options": [
           {

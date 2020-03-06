@@ -269,6 +269,12 @@
         "default": true
       },
       {
+        "type": "checkbox",
+        "id": "tables_group",
+        "label": "Group on mobile",
+        "default": true
+      },      
+      {
         "type": "header",
         "content": "Buttons"
       },

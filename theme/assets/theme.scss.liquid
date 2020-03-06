@@ -957,6 +957,52 @@ tr:nth-child(even) td {
 	-webkit-overflow-scrolling: touch;
 }
 
+{% if settings.tables_group %}
+@include media-query($small) {
+	/* Force table to not be like tables anymore */
+	table.responsive {
+		thead, tbody, th, td, tr {
+			display: block;
+		}
+	}
+	/* Hide table headers (but not display: none;, for accessibility) */
+	table.responsive thead tr {
+			position: absolute;
+			top: -9999px;
+			left: -9999px;
+	}
+    table.responsive tr {
+    	{% if settings.tables_style %}
+    	border-top: solid 1px {{ settings.color_body_table_border }} !important; 
+    	{% endif %}
+      	/* margin: 0 0 1rem 0; */
+    }      
+    table.responsive tr:nth-child(odd) {
+      	/* border-bottom: solid 1px #eee; */
+    }    
+		table.responsive td {
+			/* Behave  like a "row" */
+			border: none;
+			border-bottom: 1px solid #eee;
+			position: relative;
+			padding-left: 50%;
+		}
+		table.responsive td:before {
+			/* Now like a table header */
+			position: absolute;
+			/* Top/left values mimic padding */
+			top: 0.2em;
+			left: 0.4em;
+			width: 45%;
+			padding-right: 10px;
+			white-space: nowrap;
+		}
+		table.responsive td:before { 
+			content: attr(data-label); 
+		}
+}
+{% endif %}
+
 {% endif %}
 
 /*================ Slate specific reset ================*/

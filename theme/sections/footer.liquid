@@ -154,6 +154,9 @@
 
 /* Mobile */
 @media screen and (max-width: MOB_QUERY) {
+#footer {
+  padding-bottom: {{ section.settings.footer_layout_gutter | times: 2 }}px;
+}
   #footer #divide-{{ block.id }} {
     {% if section.settings.footer_layout == 'horizontal' -%}
     {%- if block.settings.line_size > 0 -%}
@@ -190,7 +193,7 @@
   {% endif %}
   
   #footer .legal_row a {
-    margin: 0 0.5em 0 0;
+    margin: 0 0.5em;
   }
     
     
@@ -201,8 +204,8 @@
     		{%- if settings.currency_position == 'footer' -%}
               #footer .currencymenu {
                 text-align: center;
-    			display: block;
-    			width: auto;
+          			display: block;
+          			width: auto;
               }
               #footer .currencymenu ul {
                   margin: -5px auto -5px auto;
@@ -240,8 +243,8 @@
     		{%- if settings.currency_position == 'footer' -%}
               #footer .currencymenu {
                 text-align: center;
-    			display: block;
-    			width: auto;
+          			display: block;
+          			width: auto;
               }
               #footer .currencymenu ul {
                   margin: -5px auto -5px auto;
@@ -313,7 +316,8 @@
           {% if section.settings.footer_last_block_clear %}    		
             grid-column: col / span MINUS_LAST_BLOCK;
             grid-row: row 2;
-            padding-right: 0 !important;
+            {% if section.settings.footer_font_align != 'center' %}padding-right: 0 !important;{% endif %}
+            {% if section.settings.footer_font_align == 'center' %}margin-right: {{ grid_gutter }} !important;{% endif %}
           }
           {% else %}    		
             grid-column: col / span LAST_BLOCK;
@@ -586,6 +590,11 @@
         {% if section.settings.footer_font_align != 'center' %}
         {{ last_menu }}
         {% endif %}
+
+        {% if section.settings.footer_font_align == 'center' %}
+        {{ last_menu }}
+        {% endif %}   
+
         
         <p class="copyright">
           <span>{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}{% if block.settings.show_shop %} {{ shop.name }}{% endif %}</span> 
@@ -612,7 +621,6 @@
   
   
         {% if section.settings.footer_font_align == 'center' %}
-        {{ last_menu }}
   		{%- if settings.currency_position == 'footer' -%}{% include 'currency_switcher', position: 'footer' %}{%- endif -%}   
         {% endif %}   
   

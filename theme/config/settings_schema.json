@@ -1132,6 +1132,12 @@
         "default": "#767676"
       },
       {
+        "type": "color",
+        "id": "color_header_menu_divide",
+        "label": "Separator",
+        "default": "#ffffff"
+      },
+      {
         "type": "header",
         "content": "Main Menu on Mobile"
       },
@@ -1156,6 +1162,26 @@
       {
         "type": "color",
         "id": "color_header_menu_mobile_link",
+        "label": "Link",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Icons Menu on Desktop"
+      },
+      {
+        "type": "color",
+        "id": "color_icons_menu_desktop_link",
+        "label": "Link",
+        "default": "#cccccc"
+      },
+      {
+        "type": "header",
+        "content": "Icons Menu on Mobile"
+      },
+      {
+        "type": "color",
+        "id": "color_icons_menu_mobile_link",
         "label": "Link",
         "default": "#ffffff"
       },

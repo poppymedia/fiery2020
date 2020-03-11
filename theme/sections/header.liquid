@@ -34,6 +34,8 @@
 {%- assign cartbox = true -%}
 {%- endif %}
 
+{%- assign cart_icon = 'icon-' | append: section.settings.cart_icon -%} 
+
 {%- include 'settings' -%}
 {%- assign grid_mobile = settings.width_max_mobile -%}
 {%- assign grid_large = settings.width_min_desktop -%}
@@ -505,7 +507,7 @@
     height: calc({{ settings.menu_font_size }}px + {{ settings.menu_font_size | divided_by: 10 | times: 3 }}px + {{ section.settings.main_linklist_padding | times: 2 }}px);
     {% endif %}
     right: 0;
-    background: yellow;
+    background: {{ settings.color_header_menu_divide }};
   }
   .site-nav > li.site-nav--active:after,
   .site-nav > li:last-of-type:after {
@@ -1368,15 +1370,15 @@
     float: left !important;
     overflow: hidden !important;
     padding: 0 0 0 {{ settings.menu_icon_size }}px !important;
-	width: {{ settings.menu_icon_size }}px !important;
-	height: {{ settings.menu_icon_size }}px !important;
+    width: {{ settings.menu_icon_size }}px !important;
+    height: {{ settings.menu_icon_size }}px !important;
   }
   #header :not(#{{ nav }}) #cart .icon {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
-	width: {{ settings.menu_icon_size }}px !important;
-	height: {{ settings.menu_icon_size }}px !important;
+	  width: {{ settings.menu_icon_size }}px !important;
+	  height: {{ settings.menu_icon_size }}px !important;
     color: {{ settings.color_header_menu_mobile_button }};
     fill: {{ settings.color_header_menu_mobile_button }};
   }
@@ -1384,12 +1386,18 @@
   {% if section.settings.main_linklist_align_mobile == 'left' or section.settings.main_linklist_align_mobile == 'right' %}
   #header .menu-toggle svg,
   #header .menu-close svg {
-	width: {{ settings.menu_icon_size }}px !important;
-	height: {{ settings.menu_icon_size }}px !important;
+    width: {{ settings.menu_icon_size }}px !important;
+    height: {{ settings.menu_icon_size }}px !important;
     color: {{ settings.color_header_menu_mobile_button }};
     fill: {{ settings.color_header_menu_mobile_button }};
   }
+
   {% endif %}
+
+  #header .menu-close svg.icon-close {
+      color: {{ settings.color_header_menu_mobile_link }};
+      fill: {{ settings.color_header_menu_mobile_link }};
+  }
 
   .menu-toggle:hover,
   .menu-toggle:focus {
@@ -1616,6 +1624,8 @@
     	left: {{ grid_gutter }}px !important;
     	top: auto !important;
   }
+
+
 }
 {% endif %} 
 {% endif %} 
@@ -1982,6 +1992,51 @@ header .tags {
   margin-bottom: {{ grid_gutter }}px;
 }
 
+{% if section.settings.icon_links_position == 'separate' %}
+/* TESTING NEW ICONS MENU */
+#iconsnav {
+  position:  absolute;
+}
+#iconsnav #icons {
+  float: right;
+}
+#icons a {
+  color:  {{ settings.color_icons_menu_desktop_link }};
+}
+#icons li {
+  display: inline;
+}
+@media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
+  #iconsnav {
+    top: -0.5em;
+    right:  0;
+  }
+  {% if settings.color_header_menu_background == 'rgba(0,0,0,0)' %}
+  /* If menu background is transparent, right align by inheriting link padding */
+  #iconsnav ul {
+    padding-right: {{ main_menu_a_padding }} !important;
+  }
+  {% endif %}
+}
+@media only screen and (max-width: {{ grid_mobile | minus: 1 | remove: 'px' | append: 'px' }}) {
+  #iconsnav.container {
+    position: absolute !important;
+    padding: 0 !important;
+    top:  auto !important;
+    bottom: {{ grid_gutter }}px !important;
+    right: {{ grid_gutter }}px !important;
+  }
+  #iconsnav.container svg {
+    color: {{ settings.color_icons_menu_mobile_link }};
+    fill: {{ settings.color_icons_menu_mobile_link }};
+  }
+}
+{% endif %}
+
+
+
+
+
 </style>
 
 {% capture topbar %}
@@ -2021,7 +2076,73 @@ header .tags {
         {% include 'breadcrumb' %}
     {% endif %} 
 
+
+
+
+
+
+
+
+
+
+
+
+
 <div data-section-id="{{ section.id }}" data-section-type="header-section" id="header"{% if showbreadcrumb %} class="breadcrumb"{% endif %}>
+
+
+
+
+{%- capture menu_icons -%}  
+<!-- TESTING -->
+    {% if section.settings.icon_links_position != 'hidden' %}
+    {% capture list %}
+      {% assign iconlist = section.settings.icons_linklist %}
+      {% assign newmenuhandle = linklists[iconlist.title].handle %}                  
+      {% assign newmenutitle = linklists[iconlist.title].title %}  
+      {% for matchlink in linklists[iconlist].links %}
+
+      {% if matchlink.url contains 'cart' %}
+      <li class="cart">            
+        <a href="{{ matchlink.url }}">
+        {% assign showing_cart_icon = true %}
+        {%- include cart_icon -%}
+        <!-- {{ matchlink.title }} -->
+        </a>
+      </li>
+      {% endif %}
+
+      {% if matchlink.url contains 'search' %}
+      <li class="search">            
+        <a href="{{ matchlink.url }}">
+        {% assign showing_search_icon = true %}
+        {%- include 'icon-search' -%}
+        <!-- {{ matchlink.title }} -->
+        </a>
+      </li>
+      {% endif %}
+
+      {% if matchlink.url contains 'account' %}
+      <li class="account">            
+        <a href="{{ matchlink.url }}">
+        {% assign showing_user_icon = true %}
+        {%- include 'icon-user' -%}
+        <!-- {{ matchlink.title }} -->
+        </a>
+      </li>
+      {% endif %}
+
+      {% endfor %}
+    {% endcapture %}
+    {% if list contains '</li>' %}
+    {% if section.settings.main_linklist_width == 'content' %}<div id="iconsnav" class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %} 
+    <ul id="icons">{{ list }}</ul>
+    {% if section.settings.main_linklist_width == 'content' %}</div>{% endif %} 
+    {% endif %}
+    {% endif %}
+{%- endcapture -%}
+
+
 
   {%- capture icon_menu -%}
 
@@ -2041,27 +2162,31 @@ header .tags {
   		<li class="products"><a href="{% if section.settings.menu_url != '' %}/collections{% endif %}">{% include icon %}</a></li>
       {% endif -%}
   
-      {%- if section.settings.account_icon_show %}
-              {%- if shop.customer_accounts_enabled %}
-  				{% capture link %}
-                  {% if customer %}/account{% else %}/account/login{% endif %}
-  				{% endcapture %}
-  				<li class="account"><a href="{{ link }}">{% include 'icon-user' %}</a></li>
-              {% endif -%}  		
-      {% endif -%}
+      <!-- Cart link -->
+      {% unless showing_cart_icon %}
+          {%- if section.settings.account_icon_show %}
+                  {%- if shop.customer_accounts_enabled %}
+      				{% capture link %}
+                      {% if customer %}/account{% else %}/account/login{% endif %}
+      				{% endcapture %}
+      				<li class="account"><a href="{{ link }}">{% include 'icon-user' %}</a></li>
+                  {% endif -%}  		
+          {% endif -%}
 
-      {%- if settings.cart_enable %}
-      {%- if section.settings.cart_icon_show %}
-        {%- if section.settings.cart_icon == 'cart' %}{% assign icon = 'icon-cart' %}{% endif -%}
-        {%- if section.settings.cart_icon == 'bag' %}{% assign icon = 'icon-bag' %}{% endif -%}
-        {%- if section.settings.cart_icon == 'basket' %}{% assign icon = 'icon-basket' %}{% endif -%}
-  		<li class="cart" id="carthold">
-			<a href="/cart" id="cart">{%- if section.settings.cart_icon == 'text' %}{{ 'cart.general.title' | t }}{% endif %}{% if icon != 'hidden' %} {%- include icon -%}{% endif -%}
-			{%- if section.settings.cart_qty != 'hidden' and cart.item_count > 0 -%}<span>{{ cart.item_count }}{%- if section.settings.cart_qty == 'number_label' %} {{ 'cart.general.items_count' | t: count: cart.item_count }}{% endif -%}</span>
-			{%- endif -%}</a>
-		</li>
-      {% endif -%}
-      {% endif -%}
+          <!-- Cart link -->
+          {%- if settings.cart_enable %}
+          {%- if section.settings.cart_icon_show %}
+            {%- if section.settings.cart_icon == 'cart' %}{% assign icon = 'icon-cart' %}{% endif -%}
+            {%- if section.settings.cart_icon == 'bag' %}{% assign icon = 'icon-bag' %}{% endif -%}
+            {%- if section.settings.cart_icon == 'basket' %}{% assign icon = 'icon-basket' %}{% endif -%}
+      		<li class="cart" id="carthold">
+    			<a href="/cart" id="cart">{%- if section.settings.cart_icon == 'text' %}{{ 'cart.general.title' | t }}{% endif %}{% if icon != 'hidden' %} {%- include icon -%}{% endif -%}
+    			{%- if section.settings.cart_qty != 'hidden' and cart.item_count > 0 -%}<span>{{ cart.item_count }}{%- if section.settings.cart_qty == 'number_label' %} {{ 'cart.general.items_count' | t: count: cart.item_count }}{% endif -%}</span>
+    			{%- endif -%}</a>
+    		  </li>
+          {% endif -%}
+          {% endif -%}
+      {% endunless %}
   
       {%- if section.settings.main_search == 'menu_right' %}
  			{{ search_icon }}
@@ -2094,7 +2219,6 @@ header .tags {
           	{%- endif -%}
           {%- else -%}
             {%- if section.settings.cart_icon != 'hidden' and section.settings.cart_icon != 'text' -%}
-            {%- assign cart_icon = 'icon-' | append: section.settings.cart_icon -%}  
                 {%- include cart_icon -%}
             {%- endif -%}
             {%- if section.settings.cart_text_show -%}
@@ -2692,7 +2816,7 @@ header .tags {
                 {% if matchedmenu == 'yes' %}                  
                     {% if section.settings.main_linklist_submenu_type == 'dropdown' %}  
                       <!-- TO DO: MENULIST HANDLE MATCH FOR "{{ newmenutitle }}" ({{ newmenuhandle }}) -->
-  					  <!-- THIS ALLOWS 4 MENU LEVELS DEEP -->
+  					          <!-- THIS ALLOWS 4 MENU LEVELS DEEP -->
 
                       {% for matchlink in linklists[newmenuhandle].links %}
                       <li><a href="{{ matchlink.url }}">{{ matchlink.title }}</a>
@@ -2915,19 +3039,22 @@ header .tags {
 		{% endcapture %}
 		<li data-p="{{ li_count }}" class="search menu {% if template contains 'search' %}site-nav--active {% endif %}search"{% unless template == 'search' %} id="searchhold"{% endunless %}>{{ searchdata }}<a href="/search" class="site-nav__link" id="search">{% if section.settings.search_text_show %}{{ 'search.titles.heading' |t }}{% endif %}{%- if section.settings.search_icon_show %} {% include 'icon-search' %}{% endif -%}</a></li>{% assign showsearchbox = false %}
       {%- endif -%} 
-      {%- if settings.cart_enable -%}
-  		{%- capture cartlink %}{{ cart_setting | strip_newlines | replace: '<a href', '<a class="site-nav__link" id="cart" href' }}{% endcapture -%}
-  		{%- capture cartbox %}{% if cartbox %}{% unless template == 'cart' %}<div id="cartbox"></div>{% endunless %}{% endif %}{% endcapture -%}
-  		{%- capture cartdata -%}
-  		{%- if section.settings.main_linklist_hamburger_type == 'disabled' -%}
-  		{{ cartbox }}{{ cartlink }}
-  		{%- else -%}
-  		{{ cartlink }} {{ cartbox }}
-  		{%- endif -%}
-  		{%- endcapture -%}
-  		{% assign li_count = li_count | plus: 1 %}
-  		<li data-p="{{ li_count }}" class="{% if template == 'cart' %}site-nav--active {% endif %}cart" id="carthold">{{ cartdata }}</li>
-      {%- endif -%} 
+
+      {% unless showing_cart_icon %}
+        {%- if settings.cart_enable -%}
+    		{%- capture cartlink %}{{ cart_setting | strip_newlines | replace: '<a href', '<a class="site-nav__link" id="cart" href' }}{% endcapture -%}
+    		{%- capture cartbox %}{% if cartbox %}{% unless template == 'cart' %}<div id="cartbox"></div>{% endunless %}{% endif %}{% endcapture -%}
+    		{%- capture cartdata -%}
+    		{%- if section.settings.main_linklist_hamburger_type == 'disabled' -%}
+    		{{ cartbox }}{{ cartlink }}
+    		{%- else -%}
+    		{{ cartlink }} {{ cartbox }}
+    		{%- endif -%}
+    		{%- endcapture -%}
+    		{% assign li_count = li_count | plus: 1 %}
+    		<li data-p="{{ li_count }}" class="{% if template == 'cart' %}site-nav--active {% endif %}cart" id="carthold">{{ cartdata }}</li>
+        {%- endif -%} 
+      {% endunless %}
 
   	  {% comment %}
   	  {%- if showsearchbox -%}
@@ -3028,6 +3155,9 @@ header .tags {
   	{% endcapture -%}
 
 
+
+
+
   
   	
   	{%- capture menu_part -%}       
@@ -3117,12 +3247,17 @@ header .tags {
       {% endif -%} 
   
   	{% endcapture -%}
-  
+ 
+
+
+
+  <!-- TESTING MENU FOR ICONS -->
+  {% if section.settings.icon_links_position == 'separate' %}{{ menu_icons }}{% endif %}
+
+
 
 	
 	{%- if settings.currency_position == 'header' -%}{% include 'currency_switcher', position: 'header' %}{%- endif -%}
-
-
 
     {% if section.settings.logo_align == 'right' and section.settings.main_linklist_align == 'left' %}
 
@@ -3152,8 +3287,9 @@ header .tags {
   	{% if section.settings.phone_position contains 'menu' %}{{ phone }}{% endif %}
   
   
-  {% if section.settings.main_linklist_width == 'content' %}<!-- </div> --></div>{% endif %}
- 
+    {% if section.settings.main_linklist_width == 'content' %}<!-- </div> --></div>{% endif %}
+
+
 </div>
 
 
@@ -3351,7 +3487,6 @@ $('.site-nav--has-submenu').hover(function() {
 {% endcomment -%}
 
 
-
 {%- if section.settings.main_linklist_hamburger_type != 'disabled' and settings.cart_enable -%}
 {%- endif -%}
 {%- capture nav_media -%}
@@ -3359,11 +3494,15 @@ $('.site-nav--has-submenu').hover(function() {
 var desktopCartParent = '#{{ nav }} .site-nav';
 var mobileCartParent = '#{{ nav }}';
 
+const mobpos = document.getElementById('{% if section.settings.main_linklist_width == 'content' %}cartmob{% else %}header{% endif %}'); 
+{% unless section.settings.icon_links_position == 'separate' %}
 {% if settings.cart_enable %}const deskpos = document.getElementById('carthold');{% endif %}
 const desksrc = document.getElementById('searchhold'); 
-const mobpos = document.getElementById('{% if section.settings.main_linklist_width == 'content' %}cartmob{% else %}header{% endif %}'); 
 {% if settings.cart_enable %}const cart = document.getElementById('cart'); {% endif %}
 const search = document.getElementById('search');
+{% else %}
+const desksrc = document.getElementById('nav-two'); 
+{% endunless %}
   
 const mobilenav = document.getElementById('site-nav-one');
 const navtwo = document.getElementById('site-nav-two');   
@@ -3394,14 +3533,18 @@ function WidthChange(mq) {
     		{% endif %} 
       
 
-      		{% if settings.cart_enable %}mobpos.appendChild(cart);{% endif %}
-      		mobpos.appendChild(search);         
+      		{% unless section.settings.icon_links_position == 'separate' %}
+          {% if settings.cart_enable %}mobpos.appendChild(cart);{% endif %}
+          mobpos.appendChild(search); 
+          {% endunless %}        
 
 {% unless section.settings.main_linklist_hamburger_force %}
     } else {
 
-            {% if settings.cart_enable %}deskpos.appendChild(cart);{% endif %} 
-      		desksrc.appendChild(search);
+          {% unless section.settings.icon_links_position == 'separate' %}
+          {% if settings.cart_enable %}deskpos.appendChild(cart);{% endif %} 
+          desksrc.appendChild(search);
+          {% endunless %}
 
 
       		{% if split_menu == 'yes' %}
@@ -4144,6 +4287,40 @@ function WidthChange(mq) {
         "step": 1,
         "label": "Divide line size",
         "default": 1
+      },
+      {
+        "type": "header",
+        "content": "Icons menu"
+      },
+      {
+        "type": "paragraph",
+        "content": "Create and then select navigation menu with 'Icons' title. Add menu items for account, search, cart etc as desired."
+      },
+      {
+        "type": "link_list",
+        "id": "icons_linklist",
+        "label": "Content",
+        "default": "main-menu"
+      },
+      {
+        "type": "select",
+        "id": "icon_links_position",
+        "label": "Position",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "menu",
+            "label": "Within menu"
+          },
+          {
+            "value": "separate",
+            "label": "Separate menu"
+          }
+        ],
+        "default": "menu"
       },
       {
         "type": "header",

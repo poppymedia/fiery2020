@@ -796,6 +796,7 @@ aside div.tags div.group ul {
   {% if collection.handle == 'all' %}{% assign collection_title = 'products.general.products_title' | t %}{% assign collection_url = 'all' %}{% endif %}
  
   {% capture filters %}
+  {% if section.settings.tags_position != 'hidden' %}
     {% assign tagsactive = 0 %}
     <div class="tags">
       
@@ -921,6 +922,7 @@ aside div.tags div.group ul {
       {% endif %}
     {% endif %}
     </div>
+  {% endif %}
   {% endcapture %}
   {% assign filters = filters | strip_newlines | replace: '"all/', '"/collections/all/' %}
 
@@ -1411,6 +1413,10 @@ jQuery('.tags .group h4').click(function() {
         "id": "tags_position",
         "label": "Tags position",
         "options": [
+           {
+             "value": "hidden",
+             "label": "Hidden"
+           },
            {
              "value": "HEADER",
              "label": "Header"

@@ -5,7 +5,7 @@
 {% if demo_title %}{% assign title = demo_title %}{% endif %}
 {% if demo_description %}{% assign description = demo_description %}{% endif %}
 
-	<div class="item{% if section.settings.readmore != 'hidden' %} hasexcerpt{% endif %}{% if settings.collections_border %} hasborder{% endif %}">
+	<div class="item collection{% if section.settings.readmore != 'hidden' %} hasexcerpt{% endif %}{% if settings.collections_border %} hasborder{% endif %}">
 
       	{% if section.settings.image -%}
         <p class="image">

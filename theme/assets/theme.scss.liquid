@@ -3836,6 +3836,16 @@ body:before {
 .grid .title a {
   color: {{ settings.color_collection_grid_title }} !important;
 }
+.grid .product .title,
+.grid .product .title a {
+  text-transform: {{ settings.product_h_styling }};
+  font-weight: {{ settings.product_h_weight }};
+}
+.grid .blog .title,
+.grid .blog .title a {
+  text-transform: {{ settings.blog_h_styling }};
+  font-weight: {{ settings.blog_h_weight }};
+}
 body .rte .grid .summary .more a,
 body #content .grid .item .summary .more a {
   color: {{ settings.color_body_link }};

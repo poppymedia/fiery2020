@@ -14,49 +14,6 @@
   #shopify-section-{{ section.id }} {  
     overflow: hidden;  
     /* border: solid 1px white; */
-    
-    {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
-    position: relative;
-    {% if section.settings.image_position != 'hidden' %}
-    {% assign bgsize = 1000 | append: 'x' %}
-    background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
-      
-      
-    {% if section.settings.image_parallax %}
-    background-position: center -1px; 
-      
-    {% if section.settings.image_position == 'center' %}    
-    background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
-    background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
-    background-size: cover;
-    {% endif %}        
-      
-    {% else %}
-      
-    {% if section.settings.image_position == 'center' %}    
-    background-position: center center; 
-    background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
-    background-position: center center; 
-    background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
-    background-position: center center; 
-    background-size: cover;
-    {% endif %}
-      
-    {% endif %}      
-      
-
-      
-    {% endif %}      
-    background-color: {{ section.settings.separator_bg }};
-    {% endif %}
   }  
     
     
@@ -68,8 +25,6 @@
       height: 100%;
       top: 0;
       left: 0;  
-      background-color: {{ section.settings.separator_bg }};  
-      opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
   }
   {% endif %}
 
@@ -85,86 +40,57 @@
   }   
 
   {% if section.settings.separator_width == 'overflow' %}
-  #shopify-section-{{ section.id }} .container {    
+  #shopify-section-{{ section.id }} .container {
     background: transparent; 
     padding: 0 !important;
   }    
   {% endif %}    
     
   #shopify-section-{{ section.id }} .separator {
-  	/* Default to same as settings.grid_spacing */
-    grid-gap: {{ section.settings.separator_spacing }}px;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
-    {% unless section.settings.separator_autoplay %}
-    {% endunless %}
-    font-size: {{ settings.separator_font_size }}px;
+    position: relative;
+    padding-top:  {{ section.settings.separator_padding }}px;
+    padding-bottom:  {{ section.settings.separator_padding }}px;
 
-    {% if section.settings.separator_width != 'overflow' or section.settings.separator_width == 'page' %}
-    {% if section.settings.image_type == 'background' %}
-    background-size: cover;
-    {% else %}
-    background-color: {{ section.settings.separator_bg }};
-    {% endif %}
-    {% endif %}
-    
-    
-    
-    {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'page' %}
-    {% if section.settings.image_position != 'hidden' %}
-    {% assign bgsize = 1000 | append: 'x' %}
-    background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
-      
-      
-    {% if section.settings.image_parallax %}
-    background-position: center -1px; 
-      
-    {% if section.settings.image_position == 'center' %}    
-    background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
-    background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
-    background-size: cover;
-    {% endif %}      
-      
-    {% else %}  
-      
-    {% if section.settings.image_position == 'center' %}    
-    background-position: center center; 
-    background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
-    background-position: center center; 
-    background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
-    background-position: center center; 
-    background-size: cover;
-    {% endif %}
-      
+    {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
+	    {% if section.settings.image_position != 'hidden' %}
+		    {% assign bgsize = 1000 | append: 'x' %}
+		    background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
+	      
+
+	      
+		    {% if section.settings.image_position == 'center' %}    
+		    background-position: center center; 
+		    background-repeat: no-repeat;
+		    {% endif %}
+		    {% if section.settings.image_position == 'tile' %}
+		    background-position: center center; 
+		    background-repeat: repeat;
+		    {% endif %}
+		    {% if section.settings.image_position == 'fill' %}   
+		    background-position: center center; 
+		    background-size: cover;
+		    {% endif %}
+
+	      
+
+	      
+	    {% endif %}      
+	    background-color: {{ section.settings.separator_bg }};  
     {% endif %} 
-      
-      
-      
-    {% endif %}      
-    background-color: {{ section.settings.separator_bg }};
-    {% endif %}     
     
   }
 
-  {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'page' %}
+
+
+  {% if section.settings.line_size > 0 %}
   #shopify-section-{{ section.id }} .separator:before {
       content: '';
       position: absolute;
       width: 100%;
-      height: 100%;
-      top: 0;
+      height: {{ section.settings.line_size }}px;
+      top: calc(50% + {{ section.settings.line_size }}px);
       left: 0;  
-      background-color: {{ section.settings.separator_bg }};  
-      opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
+      background-color: {{ section.settings.line_color }};
   }
   {% endif %}
 
@@ -211,7 +137,9 @@
 	{% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
 
     <div class="separator divider{% if section.settings.image_parallax %} parallax{% endif %}">
-    	DIVIDE
+    	{% if section.settings.image_placement == 'foreground' and section.settings.image_position != 'hidden' %}
+    	<img src="{{ section.settings.image_bg | img_url: bgsize }}" alt="" style="width:100%" />    	
+    	{% endif %}
     </div>
 
 	{% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}</div>{% endif %}
@@ -249,120 +177,29 @@
         "default": "content"
       },
       {
-        "type": "select",
-        "id": "separator_alignment",
-        "label": "Alignment",
-        "options": [
-          {
-            "value": "left",
-            "label": "Left"
-          },
-          {
-            "value": "center",
-            "label": "Center"
-          },
-          {
-            "value": "right",
-            "label": "Right"
-          }
-        ],
-        "default": "center"
-      },
-      {
-        "type": "range",
-        "id": "per_row",
-        "min": 1,
-        "max": 4,
-        "step": 1,
-        "label": "Columns on desktop",
-        "default": 2
-      },
-      {
-        "type": "range",
-        "id": "per_row_mobile",
-        "min": 0,
-        "max": 2,
-        "step": 1,
-        "label": "Columns on mobile",
-        "default": 1
-      },
-      {
-         "type": "range",
-         "id": "separator_spacing",
-         "min": 0,
-         "max": 50,
-         "step": 10,
-         "unit": "px",
-         "label": "Column spacing",
-         "default": 0
-      },
-      {
-         "type": "range",
-         "id": "separator_padding",
-         "min": 0,
-         "max": 50,
-         "step": 5,
-         "unit": "px",
-         "label": "Column padding",
-         "default": 10
-      },
-      {
-        "type": "header",
-        "content": "Images"
-      },
-      {
-            "type": "select",
-            "id": "image_type",
-            "label": "Image type",
-            "options": [
-              {
-                "value": "hidden",
-                "label": "Hidden"
-              },
-              {
-                "value": "icon",
-                "label": "Icon"
-              },
-              {
-                "value": "image",
-                "label": "Image"
-              },
-              {
-                "value": "background",
-                "label": "Background"
-              }
-            ],
-            "default": "icon"
-      },
-      {
-             "type": "range",
-             "id": "image_size",
-             "min": 0,
-             "max": 100,
-             "step": 2,
-             "unit": "%",
-             "label": "Image size",
-             "default": 10
-      },
-      {
         "type": "header",
         "content": "Colors"
       },
       {
+              "type": "color",
+              "id": "line_color",
+              "label": "Divide line color"
+      },
+      {
         "type": "color",
         "id": "separator_bg",
-        "label": "Background and overlay color",
+        "label": "Divide background color",
         "default": "#ffffff"
       },
       {
             "type": "image_picker",
             "id": "image_bg",
-            "label": "Background image"
+            "label": "Divide image"
       },
       {
             "type": "select",
             "id": "image_position",
-            "label": "Background position",
+            "label": "Divide image position",
             "options": [
               {
                 "value": "hidden",
@@ -384,19 +221,40 @@
             "default": "fill"
       },
       {
-        "type": "range",
-        "id": "image_opacity",
-        "min": 0,
-        "max": 100,
-        "step": 5,
-        "label": "Background overlay visibility",
-        "default": 50
+            "type": "select",
+            "id": "image_placement",
+            "label": "Divide image placement",
+            "options": [
+              {
+                "value": "background",
+                "label": "Background"
+              },
+              {
+                "value": "foreground",
+                "label": "Foreground"
+              }
+            ],
+            "default": "background"
       },
       {
-         "type": "checkbox",
-         "id": "image_parallax",
-         "label": "Show parallax",
-         "default": true
+         "type": "range",
+         "id": "separator_padding",
+         "min": 0,
+         "max": 50,
+         "step": 1,
+         "unit": "px",
+         "label": "Divide padding",
+         "default": 10
+      },
+      {
+               "type": "range",
+               "id": "line_size",
+               "min": 0,
+               "max": 10,
+               "step": 1,
+               "unit": "px",
+               "label": "Divide line size",
+               "default": 1
       }
 	],
     "presets": [
@@ -407,9 +265,3 @@
     ]
   }
 {% endschema %}
-
-{% stylesheet %}
-{% endstylesheet %}
-
-{% javascript %}
-{% endjavascript %}

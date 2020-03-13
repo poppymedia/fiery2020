@@ -1863,6 +1863,46 @@
         "content": "Collections"
       },
       {
+        "type": "select",
+        "id": "product_h_styling",
+        "label": "Title capitalization",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "select",
+        "id": "product_h_weight",
+        "label": "Text weight",
+        "options": [
+          {
+            "value": "lighter",
+            "label": "Light"
+          },
+          {
+            "value": "normal",
+            "label": "Regular"
+          },
+          {
+            "value": "bold",
+            "label": "Bold"
+          }
+        ],
+        "default": "bold"
+      },
+      {
         "type": "range",
         "id": "collection_price_size",
         "min": 7,
@@ -1928,6 +1968,50 @@
       },
       {
         "type": "header",
+        "content": "Blogs"
+      },
+      {
+        "type": "select",
+        "id": "blog_h_styling",
+        "label": "Title capitalization",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "select",
+        "id": "blog_h_weight",
+        "label": "Text weight",
+        "options": [
+          {
+            "value": "lighter",
+            "label": "Light"
+          },
+          {
+            "value": "normal",
+            "label": "Regular"
+          },
+          {
+            "value": "bold",
+            "label": "Bold"
+          }
+        ],
+        "default": "bold"
+      },
+      {
+        "type": "header",
         "content": "Top bar"
       },
       {
@@ -1967,6 +2051,26 @@
       {
         "type": "header",
         "content": "Menu"
+      },
+      {
+        "type": "select",
+        "id": "menu_styling",
+        "label": "Text capitalization",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ],
+        "default": "none"
       },
       {
         "type": "range",

@@ -99,7 +99,7 @@
 {%- assign addnow = '' -%}
 {% endif -%}
 
-	<div class="item {% if section.settings.read_more != 'hidden' or showmoreoptions == 'yes' %}{% if section.settings.read_more == 'button' %} buttons{% endif %}{% unless nobuttons == 'yes' %} hasexcerpt{% endunless %}{% if checkaddnow contains '<button' %} andcart{% endif %}{% else %}{% if nobuttons == 'no' %} hasexcerpt{% endif %}{% endif %}{% if settings.products_border and link_product == 'true' %} hasborder{% endif %}{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' %} andmore{% endif %}">
+	<div class="item product {% if section.settings.read_more != 'hidden' or showmoreoptions == 'yes' %}{% if section.settings.read_more == 'button' %} buttons{% endif %}{% unless nobuttons == 'yes' %} hasexcerpt{% endunless %}{% if checkaddnow contains '<button' %} andcart{% endif %}{% else %}{% if nobuttons == 'no' %} hasexcerpt{% endif %}{% endif %}{% if settings.products_border and link_product == 'true' %} hasborder{% endif %}{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' %} andmore{% endif %}">
       
       	{%- capture get_image -%}
         <p class="image">

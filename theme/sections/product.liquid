@@ -2,6 +2,9 @@
 
 <!-- TO DO: If vendor equal to store name (as Shopify does by default) then allow vendor to be hidden -->
 
+{% include 'settings' %}
+{% assign mobile_width = grid_mobile %}
+
 {% assign font_gutter = 30 %}
 {% assign pagination = 'below' %}
 
@@ -148,6 +151,139 @@ main > div {
 }
 {% endif %}
 
+
+
+ {% if section.settings.separator_width == 'container' %}
+  @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
+  #shopify-section-{{ section.id }} .container {
+    padding: 0;
+  }
+  }
+  {% endif %}
+    
+  #shopify-section-{{ section.id }} {  
+    overflow: hidden;  
+    /* border: solid 1px white; */
+  }  
+    
+    
+  {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
+  #shopify-section-{{ section.id }}:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;  
+  }
+  {% endif %}
+
+    
+  #shopify-section-{{ section.id }} .container { 
+    overflow: hidden;   
+    /* border: solid 1px black; */   
+    
+  }  
+  #shopify-section-{{ section.id }} .container .separator {  
+    overflow: hidden;  
+    /* border: solid 1px red; */
+  }   
+
+  {% if section.settings.separator_width == 'overflow' %}
+  #shopify-section-{{ section.id }} .container {
+    background: transparent; 
+    padding: 0 !important;
+  }    
+  {% endif %}    
+    
+  #shopify-section-{{ section.id }} .separator {
+    position: relative;
+    padding-top:  {{ section.settings.separator_padding }}px;
+    padding-bottom:  {{ section.settings.separator_padding }}px;
+
+    {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
+      {% if section.settings.image_position != 'hidden' %}
+        {% assign bgsize = 1000 | append: 'x' %}
+        background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
+        
+
+        
+        {% if section.settings.image_position == 'center' %}    
+        background-position: center center; 
+        background-repeat: no-repeat;
+        {% endif %}
+        {% if section.settings.image_position == 'tile' %}
+        background-position: center center; 
+        background-repeat: repeat;
+        {% endif %}
+        {% if section.settings.image_position == 'fill' %}   
+        background-position: center center; 
+        background-size: cover;
+        {% endif %}
+
+        
+
+        
+      {% endif %}      
+      background-color: {{ section.settings.separator_bg }};  
+    {% endif %} 
+    
+  }
+
+
+
+  {% if section.settings.line_size > 0 %}
+  #shopify-section-{{ section.id }} .separator:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: {{ section.settings.line_size }}px;
+      top: calc(50% + {{ section.settings.line_size }}px);
+      left: 0;  
+      background-color: {{ section.settings.line_color }};
+  }
+  {% endif %}
+
+
+
+  @media only screen and (max-width: {{ mobile_width | remove: 'px' | minus: 1 | append: 'px' }}) {
+    {% if section.settings.per_row_mobile == 0 %}
+    #shopify-section-{{ section.id }} .separator {
+      display: none;
+    } 
+      #shopify-section-{{ section.id }} .container {
+        margin: 0 !important;
+        padding: 0 !important;
+      }   
+    {% endif %}
+    
+    {% unless section.settings.separator_width == 'content' %}
+    #shopify-section-{{ section.id }} .container { 
+      padding: 0 !important;    
+    } 
+    {% endunless %}
+ 
+
+    {% if section.settings.per_row_mobile > 0 %}
+      #shopify-section-{{ section.id }} .container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+      }
+      {% if section.settings.per_row_mobile == 1 %}
+      #shopify-section-{{ section.id }} .separator {
+        display: block;
+      }
+      {% endif %}
+      {% if section.settings.per_row_mobile == 2 %}
+      #shopify-section-{{ section.id }} .separator {
+      }    
+      {% endif %}
+    {% endif %}
+    
+  }
+
+
+
 {% endcapture %}
 
 <style>
@@ -191,6 +327,22 @@ main > div {
 {% endcapture %}
 {% endunless %}
 {% endif %}
+
+
+
+{% capture separator %}
+  {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
+
+    <div class="separator divider{% if section.settings.image_parallax %} parallax{% endif %}">
+      {% if section.settings.image_placement == 'foreground' and section.settings.image_position != 'hidden' %}
+      <img src="{{ section.settings.image_bg | img_url: bgsize }}" alt="" style="width:100%" />     
+      {% endif %}
+    </div>
+
+  {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}</div>{% endif %}
+{% endcapture %}
+
+
 
 <article class="product" id="content" data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true" itemscope itemtype="http://schema.org/Product">
 
@@ -797,6 +949,7 @@ main > div {
     {% capture get_description %}
     <div class="rte">
       {{ product.description }}
+      {{ separator }}
     </div>
     {% endcapture %}
 
@@ -1201,7 +1354,126 @@ main > div {
         "id": "show_review_comments",
         "label": "Show review comments",
         "default": true
+      },
+
+
+
+
+      {
+        "type": "header",
+        "content": "Separator"
+      },
+      {
+        "type": "text",
+        "id": "separator_marker",
+        "label": "Find & Replace",
+        "default": "<!-- SEPARATOR -->"
+      },
+      {
+        "type": "select",
+        "id": "separator_width",
+        "label": "Width",
+        "options": [
+          {
+            "value": "page",
+            "label": "Page"
+          },
+          {
+            "value": "overflow",
+            "label": "Content Overflow"
+          },
+          {
+            "value": "container",
+            "label": "Content Container"
+          },
+          {
+            "value": "content",
+            "label": "Content Text"
+          }
+        ],
+        "default": "content"
+      },
+      {
+              "type": "color",
+              "id": "line_color",
+              "label": "Divide line color"
+      },
+      {
+        "type": "color",
+        "id": "separator_bg",
+        "label": "Divide background color",
+        "default": "#ffffff"
+      },
+      {
+            "type": "image_picker",
+            "id": "image_bg",
+            "label": "Divide image"
+      },
+      {
+            "type": "select",
+            "id": "image_position",
+            "label": "Divide image position",
+            "options": [
+              {
+                "value": "hidden",
+                "label": "Hidden"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "tile",
+                "label": "Tile"
+              },
+              {
+                "value": "fill",
+                "label": "Fill"
+              }
+            ],
+            "default": "fill"
+      },
+      {
+            "type": "select",
+            "id": "image_placement",
+            "label": "Divide image placement",
+            "options": [
+              {
+                "value": "background",
+                "label": "Background"
+              },
+              {
+                "value": "foreground",
+                "label": "Foreground"
+              }
+            ],
+            "default": "background"
+      },
+      {
+         "type": "range",
+         "id": "separator_padding",
+         "min": 0,
+         "max": 50,
+         "step": 1,
+         "unit": "px",
+         "label": "Divide padding",
+         "default": 10
+      },
+      {
+               "type": "range",
+               "id": "line_size",
+               "min": 0,
+               "max": 10,
+               "step": 1,
+               "unit": "px",
+               "label": "Divide line size",
+               "default": 1
       }
+
+
+
+
+
     ]
 }
 {% endschema %}

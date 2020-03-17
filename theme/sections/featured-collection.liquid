@@ -262,7 +262,12 @@
 
   
   
-  
+
+.products.grid .item .pricing {
+  /* margin-top: {{ section.settings.spacing }}px; */
+  margin-top:  {{ section.settings.text_margin }}px;
+  margin-bottom: {{ section.settings.spacing }}px; 
+}    
   
   
   
@@ -652,6 +657,15 @@ $(document).ready(function(){
         "step": 1,
         "label": "Products text spacing",
         "default": 5
+      },
+      {
+        "type": "range",
+        "id": "text_margin",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "label": "Products text margin",
+        "default": 3
       },
       {
         "type": "select",

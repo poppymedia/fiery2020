@@ -49,7 +49,7 @@
   #shopify-section-{{ section.id }} .separator {
     position: relative;
     padding-top:  {{ section.settings.separator_padding }}px;
-    padding-bottom:  {{ section.settings.separator_padding }}px;
+    padding-bottom:  {{ section.settings.separator_padding | plus: section.settings.line_size }}px;
 
     {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
 	    {% if section.settings.image_position != 'hidden' %}
@@ -88,7 +88,7 @@
       position: absolute;
       width: 100%;
       height: {{ section.settings.line_size }}px;
-      top: calc(50% + {{ section.settings.line_size }}px);
+      top: {{ section.settings.separator_padding }}px;
       left: 0;  
       background-color: {{ section.settings.line_color }};
   }
@@ -218,7 +218,7 @@
                 "label": "Fill"
               }
             ],
-            "default": "fill"
+            "default": "hidden"
       },
       {
             "type": "select",

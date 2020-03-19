@@ -155,20 +155,19 @@ main > div {
 
  {% if section.settings.separator_width == 'container' %}
   @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
-  #separator_holder .container {
+  .separator_holder .container {
     padding: 0;
   }
   }
   {% endif %}
     
-  #separator_holder {  
+  .separator_holder {  
     overflow: hidden;  
     /* border: solid 1px white; */
-  }  
-    
+  }
     
   {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
-  #separator_holder:before {
+  .separator_holder:before {
       content: '';
       position: absolute;
       width: 100%;
@@ -177,11 +176,10 @@ main > div {
       left: 0;  
   }
   {% endif %}
-
     
-  #separator_holder .container { 
+  .separator_holder .container { 
     overflow: hidden;   
-    /* border: solid 1px black; */   
+    /* border: solid 1px black; */ 
     
   }  
   .container .separator.forproduct {  
@@ -190,23 +188,22 @@ main > div {
   }   
 
   {% if section.settings.separator_width == 'overflow' %}
-  #separator_holder .container {
+  #main .separator_holder .container { 
     background: transparent; 
     padding: 0 !important;
+    height: auto !important;
   }    
   {% endif %}    
     
-  #separator_holder .separator.forproduct {
+  .separator_holder .separator.forproduct {
     position: relative;
     padding-top:  {{ section.settings.separator_padding }}px;
-    padding-bottom:  {{ section.settings.separator_padding }}px;
+    padding-bottom:  {{ section.settings.separator_padding | plus: section.settings.line_size }}px;
 
     {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
       {% if section.settings.image_position != 'hidden' %}
         {% assign bgsize = 1000 | append: 'x' %}
         background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
-        
-
         
         {% if section.settings.image_position == 'center' %}    
         background-position: center center; 
@@ -220,62 +217,55 @@ main > div {
         background-position: center center; 
         background-size: cover;
         {% endif %}
-
-        
-
-        
-      {% endif %}      
-      background-color: {{ section.settings.separator_bg }};  
-    {% endif %} 
+  
+      {% endif %}   
+    {% endif %}     
+      background-color: {{ section.settings.separator_bg }}; 
     
   }
 
-
-
   {% if section.settings.line_size > 0 %}
-  #separator_holder .separator.forproduct:before {
+  .separator_holder .separator.forproduct:before {
       content: '';
       position: absolute;
       width: 100%;
       height: {{ section.settings.line_size }}px;
-      top: calc(50% + {{ section.settings.line_size }}px);
+      top: {{ section.settings.separator_padding }}px;
       left: 0;  
       background-color: {{ section.settings.line_color }};
   }
   {% endif %}
 
-
-
   @media only screen and (max-width: {{ mobile_width | remove: 'px' | minus: 1 | append: 'px' }}) {
     {% if section.settings.per_row_mobile == 0 %}
-    #separator_holder .separator.forproduct {
+    .separator_holder .separator.forproduct {
       display: none;
     } 
-      #separator_holder .container {
+      .separator_holder .container {
         margin: 0 !important;
         padding: 0 !important;
       }   
     {% endif %}
     
     {% unless section.settings.separator_width == 'content' %}
-    #separator_holder .container { 
+    .separator_holder .container { 
       padding: 0 !important;    
     } 
     {% endunless %}
  
 
     {% if section.settings.per_row_mobile > 0 %}
-      #separator_holder .container {
+      .separator_holder .container {
         margin-top: 0 !important;
         padding-top: 0 !important;
       }
       {% if section.settings.per_row_mobile == 1 %}
-      #separator_holder .separator {
+      .separator_holder .separator {
         display: block;
       }
       {% endif %}
       {% if section.settings.per_row_mobile == 2 %}
-      #separator_holder .separator {
+      .separator_holder .separator {
       }    
       {% endif %}
     {% endif %}
@@ -339,8 +329,8 @@ main > div {
   </div></main></article></div></div>
     {% endif %}
 
-      <div id="separator_holder">
-      {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
+      <div class="separator_holder">
+      {% if section.settings.separator_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
 
         <div class="separator forproduct divider{% if section.settings.image_parallax %} parallax{% endif %}">
           {% if section.settings.image_placement == 'foreground' and section.settings.image_position != 'hidden' %}
@@ -348,7 +338,7 @@ main > div {
           {% endif %}
         </div>
 
-      {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}</div>{% endif %}
+      {% if section.settings.separator_width == 'overflow' %}</div>{% endif %}
       </div>
 
     {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}
@@ -1453,7 +1443,7 @@ main > div {
                 "label": "Fill"
               }
             ],
-            "default": "fill"
+            "default": "hidden"
       },
       {
             "type": "select",

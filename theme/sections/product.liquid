@@ -155,20 +155,20 @@ main > div {
 
  {% if section.settings.separator_width == 'container' %}
   @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
-  #shopify-section-{{ section.id }} .container {
+  #separator_holder .container {
     padding: 0;
   }
   }
   {% endif %}
     
-  #shopify-section-{{ section.id }} {  
+  #separator_holder {  
     overflow: hidden;  
     /* border: solid 1px white; */
   }  
     
     
   {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
-  #shopify-section-{{ section.id }}:before {
+  #separator_holder:before {
       content: '';
       position: absolute;
       width: 100%;
@@ -179,24 +179,24 @@ main > div {
   {% endif %}
 
     
-  #shopify-section-{{ section.id }} .container { 
+  #separator_holder .container { 
     overflow: hidden;   
     /* border: solid 1px black; */   
     
   }  
-  #shopify-section-{{ section.id }} .container .separator {  
+  .container .separator.forproduct {  
     overflow: hidden;  
     /* border: solid 1px red; */
   }   
 
   {% if section.settings.separator_width == 'overflow' %}
-  #shopify-section-{{ section.id }} .container {
+  #separator_holder .container {
     background: transparent; 
     padding: 0 !important;
   }    
   {% endif %}    
     
-  #shopify-section-{{ section.id }} .separator {
+  #separator_holder .separator.forproduct {
     position: relative;
     padding-top:  {{ section.settings.separator_padding }}px;
     padding-bottom:  {{ section.settings.separator_padding }}px;
@@ -233,7 +233,7 @@ main > div {
 
 
   {% if section.settings.line_size > 0 %}
-  #shopify-section-{{ section.id }} .separator:before {
+  #separator_holder .separator.forproduct:before {
       content: '';
       position: absolute;
       width: 100%;
@@ -248,34 +248,34 @@ main > div {
 
   @media only screen and (max-width: {{ mobile_width | remove: 'px' | minus: 1 | append: 'px' }}) {
     {% if section.settings.per_row_mobile == 0 %}
-    #shopify-section-{{ section.id }} .separator {
+    #separator_holder .separator.forproduct {
       display: none;
     } 
-      #shopify-section-{{ section.id }} .container {
+      #separator_holder .container {
         margin: 0 !important;
         padding: 0 !important;
       }   
     {% endif %}
     
     {% unless section.settings.separator_width == 'content' %}
-    #shopify-section-{{ section.id }} .container { 
+    #separator_holder .container { 
       padding: 0 !important;    
     } 
     {% endunless %}
  
 
     {% if section.settings.per_row_mobile > 0 %}
-      #shopify-section-{{ section.id }} .container {
+      #separator_holder .container {
         margin-top: 0 !important;
         padding-top: 0 !important;
       }
       {% if section.settings.per_row_mobile == 1 %}
-      #shopify-section-{{ section.id }} .separator {
+      #separator_holder .separator {
         display: block;
       }
       {% endif %}
       {% if section.settings.per_row_mobile == 2 %}
-      #shopify-section-{{ section.id }} .separator {
+      #separator_holder .separator {
       }    
       {% endif %}
     {% endif %}
@@ -330,17 +330,35 @@ main > div {
 
 
 
+
+
 {% capture separator %}
-  {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
+  {% if product.description contains section.settings.separator_marker %}
 
-    <div class="separator divider{% if section.settings.image_parallax %} parallax{% endif %}">
-      {% if section.settings.image_placement == 'foreground' and section.settings.image_position != 'hidden' %}
-      <img src="{{ section.settings.image_bg | img_url: bgsize }}" alt="" style="width:100%" />     
-      {% endif %}
-    </div>
+    {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}
+  </div></main></article></div></div>
+    {% endif %}
 
-  {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}</div>{% endif %}
+      <div id="separator_holder">
+      {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
+
+        <div class="separator forproduct divider{% if section.settings.image_parallax %} parallax{% endif %}">
+          {% if section.settings.image_placement == 'foreground' and section.settings.image_position != 'hidden' %}
+          <img src="{{ section.settings.image_bg | img_url: bgsize }}" alt="" style="width:100%" />     
+          {% endif %}
+        </div>
+
+      {% if section.settings.separator_width == 'container' or section.settings.separator_width == 'content' or section.settings.separator_width == 'overflow' %}</div>{% endif %}
+      </div>
+
+    {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}
+    <div class="container bleed clearfix"><div id="shopify-section-product" class="shopify-section"><article class="product"><main><div>
+    {% endif %}
+
+  {% endif %}
 {% endcapture %}
+
+
 
 
 
@@ -948,8 +966,9 @@ main > div {
   
     {% capture get_description %}
     <div class="rte">
-      {{ product.description }}
-      {{ separator }}
+      {% assign separator_marker = section.settings.separator_marker %}
+      {{ product.description | replace: separator_marker, separator }}
+      {% comment %}{{ separator }}{% endcomment %}
     </div>
     {% endcapture %}
 
@@ -1064,7 +1083,10 @@ main > div {
 
 </article>
 
+<!-- NOTE: Sidebar with separator replacement impacts on page layout, disable if needed -->
+{% if settings.sidesbar_pages %}
 {% include 'sidebars' %}
+{% endif %}
 
 {% include 'check-cart' %}
 

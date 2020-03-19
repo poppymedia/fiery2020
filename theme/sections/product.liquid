@@ -323,7 +323,7 @@ main > div {
 
 
 {% capture separator %}
-  {% if product.description contains section.settings.separator_marker %}
+  {% if section.settings.separator_replace and product.description contains section.settings.separator_marker %}
 
     {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}
   </div></main></article></div></div>
@@ -956,9 +956,12 @@ main > div {
   
     {% capture get_description %}
     <div class="rte">
-      {% assign separator_marker = section.settings.separator_marker %}
-      {{ product.description | replace: separator_marker, separator }}
-      {% comment %}{{ separator }}{% endcomment %}
+      {% if section.settings.separator_replace and product.description contains section.settings.separator_marker %}
+        {% assign separator_marker = section.settings.separator_marker %}
+        {{ product.description | replace: separator_marker, separator }}
+      {% else %}
+        {{ product.description }}
+      {% endif %}
     </div>
     {% endcapture %}
 
@@ -1089,7 +1092,31 @@ main > div {
 {% schema %}
 {
     "name": "Body",
-    "settings": [
+    "settings": [      
+      {
+        "type": "select",
+        "id": "main_width",
+        "label": "Width",
+        "options": [
+          {
+            "value": "page",
+            "label": "Page"
+          },
+          {
+            "value": "overflow",
+            "label": "Content Overflow"
+          },
+          {
+            "value": "container",
+            "label": "Content Container"
+          },
+          {
+            "value": "content",
+            "label": "Content Text"
+          }
+        ],
+        "default": "content"
+      },
       {
         "type": "select",
         "id": "layout_grid_prominent_feature",
@@ -1374,6 +1401,12 @@ main > div {
       {
         "type": "header",
         "content": "Separator"
+      },
+      {
+        "type": "checkbox",
+        "id": "separator_replace",
+        "label": "Enable find & replace",
+        "default": true
       },
       {
         "type": "text",

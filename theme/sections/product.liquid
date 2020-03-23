@@ -276,9 +276,7 @@ main > div {
 
 {% endcapture %}
 
-<style>
-{{ stylesheet }}
-</style>
+
 
 {% assign productavailable = 'true' %}
 {% if section.settings.show_availability_from %}
@@ -347,6 +345,49 @@ main > div {
 
   {% endif %}
 {% endcapture %}
+
+{% capture get_tags %}
+  {% capture display_tags %}
+  <ul class="tags">
+      {% for tag in product.tags %}
+      {% assign hidetag = 'no' %}
+      {% if settings.product_heeading_tag and tag contains '#Heading_' %}
+        {% assign hidetag = 'yes' %}{% assign color_headings = tag | remove: 'Heading_' %}
+        {% assign stylesheet = stylesheet | append: 'body h1, body h2, body h3, body h4 { color:' | append: color_headings | append: ';}' %}
+        {% assign stylesheet = stylesheet | append: 'body h1 span, body h2 span, body h3 span, body h4 span { color: ' | append: settings.color_body_heading | append: ';}' %}
+      {% endif %}
+      {% if settings.product_bg_tag and tag contains '#Body_' %}
+        {% assign hidetag = 'yes' %}{% assign color_body = tag | remove: 'Body_' %}
+        {% if color_body == '#transparent' %}{% assign color_body = 'transparent' %}{% endif %}
+        {% assign stylesheet = stylesheet | append: 'body { background:' | append: color_body | append: ';}' %}
+      {% endif %}
+      {% if settings.product_main_tag and tag contains '#Main_' %}
+        {% assign hidetag = 'yes' %}{% assign color_main = tag | remove: 'Main_' %}
+        {% if color_main == '#transparent' %}{% assign color_main = 'transparent' %}{% endif %}
+        {% assign stylesheet = stylesheet | append: 'body #main { background:' | append: color_main | append: ';}' %}
+      {% endif %}
+      {% if settings.product_container_tag and tag contains '#Product_' %}
+        {% assign hidetag = 'yes' %}{% assign color_product = tag | remove: 'Product_' %}
+        {% if color_product == '#transparent' %}{% assign color_product = 'transparent' %}{% endif %}
+        {% assign stylesheet = stylesheet | append: '#main .container { background:' | append: color_product | append: ';}' %}
+      {% endif %}    
+      {% if hidetag == 'no' %}
+      <li><a href="/collections/all/{{ tag | handleize }}">{{ tag }}</a></li>
+      {% endif %}
+      {% endfor %}
+  </ul>
+  {% endcapture %}
+  {% if section.settings.show_tags %}
+  {{ display_tags }}
+  {% endif %}
+{% endcapture %}
+
+
+
+
+<style>
+{{ stylesheet }}
+</style>
 
 
 
@@ -996,6 +1037,7 @@ main > div {
           	{{ get_price }}
             {{ get_variants }}
             {{ get_description }}
+            {{ get_tags }}
             {{ get_reviews }}          
             {{ get_share }}
         </div>  
@@ -1010,6 +1052,7 @@ main > div {
           	{{ get_price }}
             {{ get_variants }}
             {{ get_description }}
+            {{ get_tags }}
             {{ get_reviews }}          
             {{ get_share }}
         </div>   
@@ -1034,6 +1077,7 @@ main > div {
           	{{ get_price }}
             {{ get_variants }}
             {{ get_description }}
+            {{ get_tags }}
             {{ get_reviews }}
           	{{ get_share }}
         </div> 
@@ -1054,6 +1098,7 @@ main > div {
           	{{ get_price }}
             {{ get_variants }}
             {{ get_description }}
+            {{ get_tags }}
             {{ get_reviews }}
           	{{ get_share }}
         </div>  
@@ -1151,6 +1196,12 @@ main > div {
         "type": "checkbox",
         "id": "show_sku",
         "label": "Show SKU",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_tags",
+        "label": "Show tags",
         "default": true
       },
       {

@@ -1661,6 +1661,38 @@
       },
       {
         "type": "header",
+        "content": "Product page"
+      },
+      {
+        "type": "paragraph",
+        "content": "Color specific parts of product page using color tags. Example black heading: #Heading_000000"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_heeading_tag",
+        "label": "Headings color tag",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_bg_tag",
+        "label": "Body bg color tag",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_main_tag",
+        "label": "Main bg color tag",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "product_container_tag",
+        "label": "Product bg color tag",
+        "default": true
+      },
+      {
+        "type": "header",
         "content": "Blogs"
       },
       {

@@ -1,4 +1,5 @@
 {%- assign affix = " &ndash; " | append: shop.name -%}
+{%- assign vendors_title = 'products.general.vendors_title' | t -%}
 {%- capture seo_title -%}
 
     {% if search.performed %}
@@ -14,15 +15,22 @@
 
 	{% else %}
 
-      {%- if collection or product -%}
-        {%- if collection and collection.url == blank -%}
-            {{- 'collections.general.collections_title' | t -}}
-        {%- else -%}
-            {{- page_title -}}
-        {%- endif -%}
+      {% comment %}{{ vendors_title }} | {{ template }} | {{ collection.title }}{% endcomment %}
+
+      {%- if collection or product -%} 
+           {%- if collection and collection.url == blank -%}
+              {{- 'collections.general.collections_title' | t -}}
+          {%- else -%}
+              {% if template contains 'vendors' or collection.template_suffix contains 'vendors' or collection_title == vendors_title %}
+                  {{ vendors_title }}
+              {% else %}
+                  {{- page_title -}}
+              {% endif %}
+          {%- endif -%}
       {%- else -%}
           {{- page_title -}}
       {%- endif -%}
+
       {%- if current_tags -%}{%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}} {%- endif -%}
       {%- if current_page != 1 -%} &ndash; {{ 'general.meta.page' | t: page: current_page -}} {%- endif -%}
 

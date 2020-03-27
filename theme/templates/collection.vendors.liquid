@@ -21,47 +21,7 @@
 
 <div id="content" class="products">
 
-  <header role="banner">
-    {% assign collection_title = 'products.general.vendors_title' | t %}
-    {% if section.settings.heading %}{% endif %}
-    <h1>{{ collection_title }}</h1> 
-    
-    {% assign counter = 0 %}
-    {% for vendor in shop.vendors %}
-      {% assign counter = counter | plus: 1 %}
-    {% endfor %}
-    {% assign counter_divided_by_3 = counter | divided_by: 3 | floor %}
-
-    <ul class="vendors">
-    {% for product_vendor in shop.vendors %}
-
-          {% assign its_a_match = false %}
-          {% capture my_collection_handle %} {{ product_vendor | handleize | strip | escape  }} {% endcapture %}
-          {% assign my_collection_handle_stripped = my_collection_handle | strip | escape %}
-
-          {% for collection in collections %}
-              {% if my_collection_handle_stripped == collection.handle %}
-              {% assign its_a_match = true %}
-              {% endif %}
-          {% endfor %}
-
-
-          {% assign showvendor = 'true' %}{% if product_vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}
-          {% if showvendor == 'true' %}
-      
-          {% if its_a_match %}
-      		<li class="vendor"><a href="/collections/{{ product_vendor | handleize }}">{{ product_vendor }}</a></li>
-          {% else %}
-      		<li class="vendor"><a href="/collections/vendors?q={{ product_vendor}}">{{ product_vendor}}</a></li>
-          {% endif %}
-      
-          {% endif %}
-
-        
-    {% endfor %}
-    </ul>
-
-  </header>
+{% include 'vendors' %}
 
 </div>
 

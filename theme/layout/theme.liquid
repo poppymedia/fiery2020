@@ -163,6 +163,8 @@
 	{%- else -%}
 	{%- if settings.sidesbar_pages %}{%- assign sidebars = true -%}{% endif -%}	  
 	{%- endif -%}
+
+	{{ 'custom.css' | asset_url | stylesheet_tag }}	
 	  
 </head>
 

@@ -20,8 +20,12 @@
 <div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
 
 <div id="content" class="products">
-  
+
+{% if collection.handle == "vendors" %}
+{% include 'vendors' %}
+{% else %}
 {% section 'collection' %}
+{% endif %}
  
 </div>
 

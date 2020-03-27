@@ -324,7 +324,7 @@ main > div {
   {% if section.settings.separator_replace and product.description contains section.settings.separator_marker %}
 
     {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}
-  </div></main></article></div></div>
+  </div></main></article></div></div></div>
     {% endif %}
 
       <div class="separator_holder">
@@ -340,7 +340,7 @@ main > div {
       </div>
 
     {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}
-    <div class="container bleed clearfix"><div id="shopify-section-product" class="shopify-section"><article class="product"><main><div>
+    <div class="separated"><div class="container bleed clearfix"><div id="shopify-section-product" class="shopify-section"><article class="product"><main><div>
     {% endif %}
 
   {% endif %}
@@ -387,6 +387,14 @@ main > div {
 
 <style>
 {{ stylesheet }}
+.metadesc {
+  border:  solid 1px #000000;
+  margin:  0 0 20px 0;
+  padding:  0;
+}
+.metadesc h2, .metadesc h3, .metadesc h4 {
+  margin-top:  0;
+}
 </style>
 
 
@@ -700,6 +708,7 @@ main > div {
           {% assign tag_group_num = 0 %}
 
           {% capture variant_items %}
+          {% unless section.settings.variant_style == 'hidden' %}
           {% for option in product.options_with_values %}
             <div class="selector-wrapper js">
               
@@ -790,8 +799,9 @@ main > div {
 
             </div>
           {% endfor %}  
+          {% endunless %}
       	  {% endcapture %}
-      
+        
         {% endunless %}
 
       	<div id="variations">{{ variant_items }}</div>
@@ -970,8 +980,9 @@ main > div {
         {% capture add_more_buttons %}
           {%- if section.settings.show_enquiry_button -%} 
           <div class="action"><span class="label">&nbsp;</span><a class="btn" href="{{ section.settings.show_enquiry_url }}">{{ 'products.general.enquiry_link' | t }}</a></div>
-          {%- else -%} 
+          {%- comment -%} 
           <div class="action supports-no-cookies"><a class="btn" href="{{ section.settings.show_enquiry_url }}">{{ 'products.general.enquiry_link' | t }}</a></div>
+          {% endcomment %}
           {%- endif -%}
         {% endcapture %}      
       
@@ -990,20 +1001,52 @@ main > div {
       </form>
       {% endif %}    
     
-      {{ notifyform }}    
+      {{ notifyform }}
 
     </div>
     {% endcapture %}  
   
-    {% capture get_description %}
-    <div class="rte">
-      {% if section.settings.separator_replace and product.description contains section.settings.separator_marker %}
-        {% assign separator_marker = section.settings.separator_marker %}
-        {{ product.description | replace: separator_marker, separator }}
+    {% capture get_description %}    
+      {%- assign opentag = '<' | append: section.settings.content_grouping -%}  
+      {% if section.settings.content_grouping != 'nogroup' and product.description contains opentag %}
+        {% capture thedescription %}
+        {%- assign desc = product.description -%}
+
+        {% if desc contains '<li>' %}
+        
+
+            {%- assign lists = desc | split: '</li>' -%} 
+            {% for list in lists %}
+              {% comment %}<code style="border: solid 1px red">{{ list }}</code>{% endcomment %}
+              {%- assign li = list | split: '<li>' %}
+              {% capture txt %}{{ li[1] | strip_newlines }}{% endcapture %}
+              {% if txt != empty %}<code style="border: solid 1px red">{{ txt }}</code>{% endif %}
+              {% for l in li %}
+                {% capture lival %}{{ l | strip_newlines }}{% endcapture %}
+                {% comment %}{% if lival != empty %}<code style="border: solid 1px red">{{ lival }}</code>{% endif %}{% endcomment %}
+              {% endfor %}
+            {% endfor %}
+
+        
+        {% endif %}
+
+        {%- assign headings = desc | split: opentag -%}
+        {%- assign count = 0 -%}
+        {% for group in headings %}{%- if count > 0 %}</div>{% endif -%}<div class="metadesc">{{ opentag }}{{ group }}{%- assign count = count | plus: 1 -%}{% endfor %}</div>
+        {% endcapture %}
+        {% assign clean = '<div class="metadesc">' | append: opentag | append: '</div>' %}
+        {% assign thedescription = thedescription | remove: clean %}
       {% else %}
-        {{ product.description }}
+        {% assign thedescription = product.description %}
       {% endif %}
-    </div>
+      <div class="rte">
+        {% if section.settings.separator_replace and thedescription contains section.settings.separator_marker %}
+          {% assign separator_marker = section.settings.separator_marker %}
+          {{ thedescription | replace: separator_marker, separator }}
+        {% else %}
+          {{ thedescription }}
+        {% endif %}
+      </div>
     {% endcapture %}
 
     {% capture get_reviews %}
@@ -1282,6 +1325,10 @@ main > div {
         "label": "Variant style",
         "options": [
           {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
             "value": "buttons",
             "label": "Buttons"
           },
@@ -1444,6 +1491,43 @@ main > div {
         "id": "show_review_comments",
         "label": "Show review comments",
         "default": true
+      },
+
+
+
+
+
+      {
+        "type": "header",
+        "content": "Grouping"
+      },
+      {
+         "type": "paragraph",
+         "content": "Headings can be used to group content for separate styling by adding 'metadesc' class wrapper"
+      },
+      {
+        "type": "select",
+        "id": "content_grouping",
+        "label": "Group with preceding heading",
+        "options": [
+          {
+            "value": "h2",
+            "label": "H2"
+          },
+          {
+            "value": "h3",
+            "label": "H3"
+          },
+          {
+            "value": "h4",
+            "label": "H4"
+          },
+          {
+            "value": "nogroup",
+            "label": "Don't group"
+          }
+        ],
+        "default": "nogroup"
       },
 
 

@@ -155,6 +155,20 @@
           {%- if section.settings.layout_grid_prominent_feature != 'title' and section.settings.layout_grid_prominent_feature == 'image_title' -%}
           {{ get_title }}
           {%- endif -%}
+
+          
+          {%- if section.settings.first_variant -%}
+          <p class="first-variant">
+              {% assign count = 0 %}  
+              {% for variant in product.variants %}
+              {% if count == 0 %}              
+                {% unless product.template_suffix contains 'giftcard' or variant.title == 'Default Title' %}{{ variant.title }}{% endunless %}
+                {% assign count = 1 %} 
+              {% endif %}   
+              {% endfor %}
+          </p>
+          {%- endif -%}
+
           
           {%- if section.settings.vendor -%}
           {%- assign showvendor = 'true' -%}{% if product.vendor == shop.name -%}{% unless settings.vendor_default %}{%- assign showvendor = 'false' -%}{% endunless %}{%- endif %}
@@ -164,6 +178,7 @@
           </p>
           {%- endif %}
           {%- endif -%}
+          
 
           <!-- Product Reviews App -->
           {%- if section.settings.show_review_rating -%}

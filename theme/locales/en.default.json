@@ -122,6 +122,7 @@
       "collection_title": "Collection",
       "collections_title": "Collections",
       "no_matches": "Sorry, there are no products in this collection",
+      "no_vendors": "Sorry, there is no collection with vendors handle",
       "no_tag_matches": "Sorry, there are no products that match your selection",
       "link_title": "Browse our {{ title }} collection",
       "prev_title": "Prev",

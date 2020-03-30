@@ -22,7 +22,8 @@
 <div id="content" class="products">
 
 {% if collection.handle == "vendors" %}
-{% include 'vendors' %}
+{% section 'vendors' %}
+{% comment %}{% include 'vendors' %}{% endcomment %}
 {% else %}
 {% section 'collection' %}
 {% endif %}

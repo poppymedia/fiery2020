@@ -3009,11 +3009,15 @@ header .tags {
   
   {%- else -%}
 
-  		{%- assign shopactive = 'no' -%}
+  	{%- assign shopactive = 'no' -%}
+
+    {% assign vendorinlist = 'no' %}
+    {% capture isvendorinmenu %}{% for linkvendor in linklists[section.settings.main_linklist].links %}{{ linkvendor.url }} {% endfor %}{% endcapture %}
+
 		{%- if shop_link == 'yes' %}
 			{% if link.url == '/collections/all' or link.url == '/collections' %}
-				{% if template contains 'product' or template contains 'collection' %}
-					{% assign shopactive = 'yes' %}
+ 				{% if template contains 'product' or template contains 'collection' %}
+					{% unless isvendorinmenu contains 'vendor' %}{% assign shopactive = 'yes' %}{% endunless %}
 				{% endif %}
 			{% endif %}
 		{% endif -%}

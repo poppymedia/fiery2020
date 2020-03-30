@@ -1,0 +1,115 @@
+{% assign title = product_vendor %}
+{% assign description = collection.description %}
+
+{% if its_a_match %}
+{% assign url = '/collections/' | append: product_vendor | handleize %}
+{% else %}
+{% assign url = '/collections/vendors?q=' | append: product_vendor %}
+{% endif %}
+
+{% assign url = collection.url %}
+
+{% if demo_url %}{% assign url = demo_url %}{% endif %}
+{% if demo_title %}{% assign title = demo_title %}{% endif %}
+{% if demo_description %}{% assign description = demo_description %}{% endif %}
+
+	<div class="item collection{% if section.settings.readmore != 'hidden' %} hasexcerpt{% endif %}{% if settings.collections_border %} hasborder{% endif %}">
+
+      
+
+      	{% if section.settings.image -%}
+          <p class="image">
+          <a href="{{ url }}">
+
+            {% if section.settings.image -%}
+              
+              {% if section.settings.collections_title == 'hidden' -%}
+              	  {% assign alt = title %}
+              {%- else -%}
+              	  {% assign alt = '' %}
+              {%- endif %}
+              
+              {% capture img -%}
+              {% if collection.image != blank %}
+                {{ collection | img_url: '480x480' | img_tag: alt }}
+              {% else %}
+
+                <!-- 
+                {% assign imgsize = section.settings.logo_size | plus: 0 | times: 1.5 | round | append: 'x' %}
+                <img src="{{ block.settings.image | img_url: imgsize }}" width="{{ section.settings.logo_size }}" />
+                -->
+
+                <img src="{{ 'blank.gif' | asset_img_url: '480x480' }}" alt="" />
+
+              {% endif %}
+              {%- endcapture %}          
+              {%- if demo_img -%}{%- assign img = demo_img -%}{%- endif -%}
+
+              {{ img }}
+
+            {%- else -%}
+
+              {{ title }}
+
+              <img src="https:{{ settings.placeholder_image | img_url: '480x480' }}" alt="{{ title }}">
+              {%- endif -%}
+
+              {% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' -%}
+              <span class="title">  
+                <span>
+                {% if section.settings.collections_title == 'overlay' %}
+                <b>{{ title }}</b>
+                {% endif %}  
+                {% if section.settings.collections_description == 'overlay' %}
+                {{ description | strip_html | truncatewords: 100 }}
+                {% endif %}
+                </span>
+              </span>
+
+            {%- endif %}
+
+          </a>
+          </p>
+      	{% endif %}
+
+        {% if section.settings.collections_title == 'overlay' or section.settings.collections_description == 'overlay' -%}
+        <a href="{{ url }}"><span class="visually-hidden">{{ title }}</span></a>
+      	{% unless section.settings.image %}
+      	<p class="image">
+      	<!-- <a href="{{ collection.url }}{% if settings.collection_default_list %}?view=list{% endif %}"> -->
+          <img src="{{ 'blank.gif' | asset_img_url: '480x480' }}" alt="" />
+          <span class="title">  
+            <span>
+            {% if section.settings.collections_title == 'overlay' %}
+            <b>{{ title }}</b>
+            {% endif %}  
+            {% if section.settings.collections_description == 'overlay' %}
+            {{ description | strip_html | truncatewords: 100 }}
+            {% endif %}
+            </span>
+          </span>     
+      	<!-- </a> -->
+      	</p>
+      	{% endunless %}
+        {%- endif %}
+      
+      	{% if section.settings.collections_title == 'below' or section.settings.collections_description == 'below' -%}
+      	<div class="summary">
+
+          {% if section.settings.collections_title == 'below' %}
+          <p class="title">
+            <a href="{{ url }}">{{ title }}</a>
+          </p>
+          {% endif %}
+
+          {% if section.settings.collections_description == 'below' %}
+          <p class="content">
+            {{ description | strip_html | truncatewords: 100 }}
+          </p>
+          {% endif %}
+
+        </div>
+      	{%- endif %}
+      
+	</div>
+

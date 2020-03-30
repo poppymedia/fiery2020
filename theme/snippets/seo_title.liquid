@@ -15,13 +15,11 @@
 
 	{% else %}
 
-      {% comment %}{{ vendors_title }} | {{ template }} | {{ collection.title }}{% endcomment %}
-
       {%- if collection or product -%} 
            {%- if collection and collection.url == blank -%}
-              {{- 'collections.general.collections_title' | t -}}
+              Collection: {{- 'collections.general.collections_title' | t -}}
           {%- else -%}
-              {% if template contains 'vendors' or collection.template_suffix contains 'vendors' or collection_title == vendors_title %}
+              {% if template contains 'vendors' or collection.template_suffix contains 'vendors' or collections[collection.handle].template_suffix contains 'vendors' or collection_title == vendors_title %}
                   {{ vendors_title }}
               {% else %}
                   {{- page_title -}}

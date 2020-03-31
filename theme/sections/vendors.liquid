@@ -70,8 +70,7 @@
   display: grid;
   grid-gap: {{ section.settings.spacing }}px;  
   grid-template-columns: repeat(auto-fit, minmax({{ section.settings.product }}px, 1fr));  
-  {% endif %}  
-  
+  {% endif %}    
   {% endcomment %}
 
 }
@@ -235,55 +234,131 @@
 
 <article>
 
-  <header role="banner">
-  {% assign collection_title = page_title %}
-  {% capture collection_handle %}{{ collection.handle }}{% endcapture %}
-    
-  {% if section.settingscollections_title %}
-  {% if collection_handle == '' %}{% assign collection_title = 'collections.general.collections_title' | t %}{% endif %}
-  <h1>{{ collection_title }}</h1>
-  {% endif %}
-    
-  </header>
+    {% capture vendorurl %}{{ collection.url }}{% endcapture %}
+    {% assign vendors_title = 'products.general.vendors_title' | t %}
 
-  <div class="rte">
+    {% if vendorurl contains 'collections/vendors?q=' and collection.current_vendor != empty %}
 
-    <div class="products collections {{ class }}">
+        <header role="banner">     
+        {% if section.settings.heading %}
+        {% assign collection_title = collection.current_vendor %}
+        {% capture collection_handle %}{{ collection.handle }}{% endcapture %} 
+        {% if collection_handle == '' %}{% assign collection_title = 'collections.general.collections_title' | t %}{% endif %}
+        {% if collection.title == vendors_title %}{% assign collection_title = 'products.general.vendors_title' | t %}{% endif %}
+        <h1>{{ collection_title }}</h1>
+        {% endif %}       
+        </header>
 
-    {% for product_vendor in shop.vendors %}
+        <div class="rte">
 
-          {% assign its_a_match = false %}
+            <!-- Display products, such as selected vendor -->
+            <div class="products collections {{ class }}"> 
+            {% for product in collection.products %}
 
-          {% capture my_collection_handle %} {{ product_vendor | handleize | strip | escape  }} {% endcapture %}
-          {% assign my_collection_handle_stripped = my_collection_handle | strip | escape %}
+              {% include 'grid-product' %}
+            
+            {% endfor %}
 
-          {% for collection in collections %}
-              {% if my_collection_handle_stripped == collection.handle %}
-              {% assign its_a_match = true %}
+            {{ fillrow }}
+
+            </div>
+
+        </div>
+
+
+
+    {% else %}
+
+        <header role="banner">        
+        {% if section.settings.heading %}
+        {% assign collection_title = page_title %}
+        {% capture collection_handle %}{{ collection.handle }}{% endcapture %}  
+        {% if collection_handle == '' %}{% assign collection_title = 'collections.general.collections_title' | t %}{% endif %}
+        {% if collection_handle == 'all' %}{% assign collection_title = 'products.general.vendors_title' | t %}{% endif %}
+        {% if collection_handle == 'vendors' %}{% assign collection_title = 'products.general.vendors_title' | t %}{% endif %}
+        <h1>{{ collection_title }}</h1>
+        {% endif %}          
+        </header>
+
+        <div class="rte">
+
+              <!-- Vendor list -->
+              <div class="products collections {{ class }}">    
+
+              {% if section.settings.vendors_source == 'content' %}
+                {%- for block in section.blocks -%}
+                          
+                          {% assign title = block.settings.title %}
+                          {% assign product_vendor = title %}
+                          {% assign product_url = block.settings.url %}
+                            {% if section.settings.collections_title == 'hidden' -%}
+                                {% assign alt = title %}
+                            {%- else -%}
+                                {% assign alt = '' %}
+                            {%- endif %}
+
+                        {% assign vendors_type = section.settings.vendors_type %}                        
+                        {% assign product_image = 'loaded' %}  
+                        {% assign product_image_url = block.settings.image | img_url: '480x480' | img_tag: alt %}
+                        {% assign its_a_match = true %}
+                        {% include 'grid-vendor' %}                    
+                {%- endfor %}              
+              {% else %}
+                {% for product_vendor in shop.vendors %}
+
+                      {% assign its_a_match = false %}
+                      {% assign product_image = '' %}
+
+                      {% capture my_collection_handle %} {{ product_vendor | handleize | strip | escape  }} {% endcapture %}
+                      {% assign my_collection_handle_stripped = my_collection_handle | strip | escape %}
+
+                      {% for collection in collections %}
+                          {% if my_collection_handle_stripped == collection.handle %}
+                            {% assign product_url = collection.url %}
+                          
+                            {% if section.settings.collections_title == 'hidden' -%}
+                                {% assign alt = title %}
+                            {%- else -%}
+                                {% assign alt = '' %}
+                            {%- endif %}
+
+                            {% if collection.image != blank %}{% assign product_image = collection.image %}{% endif %}
+                            {% assign product_image_url = collection | img_url: '480x480' | img_tag: alt %}
+                            {% assign its_a_match = true %}
+                          {% endif %}
+                      {% endfor %}
+
+                      {% assign showvendor = 'true' %}{% if product_vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}
+
+                      {% if showvendor == 'true' %}
+                        {% assign vendors_type = section.settings.vendors_type %}
+                        {% include 'grid-vendor' %}
+                      {% endif %} 
+
+                {% endfor %}
               {% endif %}
-          {% endfor %}
 
-          {% assign showvendor = 'true' %}{% if product_vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}
 
-          {% if showvendor == 'true' %}
-           {% include 'grid-vendor' %}      
-          {% endif %} 
+              {{ fillrow }}
 
-    {% endfor %}
-
-    {{ fillrow }}
-
-    </div> 
+              </div>
 
 
 
-{%- if section.settings.section_line_size > 0 -%}
-<div class="divide"></div>
-{%- endif -%}
+      {%- if section.settings.section_line_size > 0 -%}
+      <div class="divide"></div>
+      {%- endif -%}
 
 
-    
-  </div>
+          
+        </div>
+
+    {% endif %}
+
+
+
+
+
   
 </article>
 
@@ -295,13 +370,10 @@
     "class": "collection",
     "settings": [
       {
-        "type": "range",
-        "id": "products",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "label": "Vendors to show",
-        "default": 12
+        "type": "checkbox",
+        "id": "heading",
+        "label": "Show heading",
+        "default": true
       },
       {
         "type": "range",
@@ -475,21 +547,69 @@
          "label": "Divide line color"
       },
       {
-        "type": "checkbox",
-        "id": "readmore",
-        "label": "Show vendor read more",
-        "default": true
+        "type": "header",
+        "content": "Vendor content"
+      },
+      {
+        "type": "paragraph",
+        "content": "Associate image to store vendor by uploading matching image such as 'Vendor Example.png' or creating a matching collection with image file. Or just add vendor content here manually."
+      },
+      {
+        "type": "select",
+        "id": "vendors_source",
+        "label": "Source",
+        "default": "vendor",
+        "options": [
+          {
+            "value": "vendor",
+            "label": "Vendor"
+          },
+          {
+            "value": "content",
+            "label": "Content"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "vendors_type",
+        "label": "Image type",
+        "default": "png",
+        "options": [
+          {
+            "value": "png",
+            "label": "PNG"
+          },
+          {
+            "value": "gif",
+            "label": "GIF"
+          },
+          {
+            "value": "jpg",
+            "label": "JPG"
+          }
+        ]
       }
     ],
     "blocks": [
       {
-        "type": "exclusion",
-        "name": "Exclusion",
-        "settings": [
+        "type": "collection",
+        "name": "Vendor",
+        "settings": [            
           {
-            "type": "collection",
-            "id": "collection",
-            "label": "Vendor"
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+              "type": "text",
+              "id": "title",
+              "label": "Title"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "URL"
           }          
         ]
       }

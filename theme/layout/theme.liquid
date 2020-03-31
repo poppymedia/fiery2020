@@ -170,6 +170,15 @@
 
 <body id="page-{{ page_title | handle }}" class="template-{{ template.name | handle }}{% if sidebars %} sidebars{% endif %}">
 
+	{% comment %}
+	<p>
+	Template: {{ template }}
+	URL: {{ url }}
+	Collection URL: {{ collection.url }}
+	Collection Template: {{ collections[template].template_suffix }}
+	</p>
+	{% endcomment %}
+
 	  {% if settings.bg_image != empty %}<img src="{{ settings.bg_image | img_url: '4000x' }}" alt="" style="position:absolute;width:10px;height:10px;overflow:hidden;opacity:0;" aria-hidden="true" />{% endif %} 
 	  {% comment %}{% if template contains 'product' %}<img src="{{ featured_image | img_url: '480x480' }}" alt="" style="position:absolute;width:10px;height:10px;overflow:hidden;opacity:0;" aria-hidden="true" />{% endif %}{% endcomment %}
 	  <div class="parallaxholder">

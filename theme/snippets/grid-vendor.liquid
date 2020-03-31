@@ -2,18 +2,20 @@
 {% assign description = collection.description %}
 
 {% if its_a_match %}
-{% assign url = '/collections/' | append: product_vendor | handleize %}
+  {% assign url = product_url %}
 {% else %}
-{% assign url = '/collections/vendors?q=' | append: product_vendor %}
+  {% assign url = '/collections/vendors?q=' | append: product_vendor %}              
+  {% assign product_image = title | append: '.' | append: vendors_type %}             
+  {% assign product_filename_url = product_image | file_url %}            
+  {% comment %}{% assign product_filename_url = product_image | asset_url %}{% endcomment %}
+  {% assign product_image_url = '<img src="' | append: product_filename_url | append: '" />' %}
 {% endif %}
-
-{% assign url = collection.url %}
 
 {% if demo_url %}{% assign url = demo_url %}{% endif %}
 {% if demo_title %}{% assign title = demo_title %}{% endif %}
 {% if demo_description %}{% assign description = demo_description %}{% endif %}
 
-	<div class="item collection{% if section.settings.readmore != 'hidden' %} hasexcerpt{% endif %}{% if settings.collections_border %} hasborder{% endif %}">
+	<div class="item collection{% if settings.collections_border %} hasborder{% endif %}">
 
       
 
@@ -22,16 +24,11 @@
           <a href="{{ url }}">
 
             {% if section.settings.image -%}
-              
-              {% if section.settings.collections_title == 'hidden' -%}
-              	  {% assign alt = title %}
-              {%- else -%}
-              	  {% assign alt = '' %}
-              {%- endif %}
+
               
               {% capture img -%}
-              {% if collection.image != blank %}
-                {{ collection | img_url: '480x480' | img_tag: alt }}
+              {% if product_image != blank %}
+                {{ product_image_url }}
               {% else %}
 
                 <!-- 

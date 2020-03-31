@@ -20,7 +20,14 @@
               Collection: {{- 'collections.general.collections_title' | t -}}
           {%- else -%}
               {% if template contains 'vendors' or collection.template_suffix contains 'vendors' or collections[collection.handle].template_suffix contains 'vendors' or collection_title == vendors_title %}
-                  {{ vendors_title }}
+
+                  {% capture vendorurl %}{{ collection.url }}{% endcapture %}
+                  {% if vendorurl contains 'collections/vendors?q=' and collection.current_vendor != empty %}
+                    {{ collection.current_vendor }}
+                  {% else %}
+                    {{ vendors_title }}
+                  {% endif %}
+
               {% else %}
                   {{- page_title -}}
               {% endif %}

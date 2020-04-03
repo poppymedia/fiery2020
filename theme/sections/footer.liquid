@@ -595,11 +595,12 @@
         {{ last_menu }}
         {% endif %}   
 
-        
+        {% if section.settings.copyright_enable or section.settings.powered_enable or lock.settings.copyright_text.size > 0  %}
         <p class="copyright">
-          <span>{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}{% if block.settings.show_shop %} {{ shop.name }}{% endif %}</span> 
-          <span>{{ powered_by_link }}</span>{% if block.settings.copyright_text.size > 0 %} <span>{{ block.settings.copyright_text }}</span>{% endif %} 
+          <span>{% if section.settings.copyright_enable %}{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}{% endif %}{% if block.settings.show_shop %} {{ shop.name }}{% endif %}</span> 
+          <span>{% if section.settings.powered_enable %}{{ powered_by_link }}</span>{% endif %}{% if block.settings.copyright_text.size > 0 %} <span>{{ block.settings.copyright_text }}</span>{% endif %} 
         </p>
+        {% endif %}
         
         {% if section.settings.footer_font_align != 'center' %}
         {%- if settings.currency_position == 'footer' -%}{% include 'currency_switcher', position: 'footer' %}{%- endif -%}    
@@ -1053,6 +1054,18 @@
          "type": "checkbox",
          "id": "footer_cookie_enable",
          "label": "Show cookie notice",
+         "default": true
+      },
+      {
+         "type": "checkbox",
+         "id": "copyright_enable",
+         "label": "Show copyright",
+         "default": true
+      },
+      {
+         "type": "checkbox",
+         "id": "powered_enable",
+         "label": "Show powered by",
          "default": true
       },
       {

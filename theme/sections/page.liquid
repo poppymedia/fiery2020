@@ -13,6 +13,36 @@
 
 {% endcapture %}
 
+
+
+{% capture separator %}
+  {% if section.settings.separator_replace and page.content contains section.settings.separator_marker %}
+
+    {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}
+  </div></main></article></div></div></div>
+    {% endif %}
+
+      <div class="separator_holder">
+      {% if section.settings.separator_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
+
+        <div class="separator forproduct divider{% if section.settings.image_parallax %} parallax{% endif %}">
+          {% if section.settings.image_placement == 'foreground' and section.settings.image_position != 'hidden' %}
+          <img src="{{ section.settings.image_bg | img_url: bgsize }}" alt="" style="width:100%" />     
+          {% endif %}
+        </div>
+
+      {% if section.settings.separator_width == 'overflow' %}</div>{% endif %}
+      </div>
+
+    {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}
+    <div class="separated"><div class="container bleed clearfix"><div id="shopify-section-product" class="shopify-section"><article class="product"><main><div>
+    {% endif %}
+
+  {% endif %}
+{% endcapture %}
+
+
+
 <style>
 {{ stylesheet }}
 </style>
@@ -26,7 +56,37 @@
   </header>
 
   <div class="rte" itemprop="articleBody">
-    {{ page.content }}
+
+
+    {% capture get_description %}    
+      {%- assign opentag = '<' | append: section.settings.content_grouping -%}  
+      {% if section.settings.content_grouping != 'nogroup' and page.content contains opentag %}
+        {% capture thedescription %}
+        {%- assign desc = page.content -%}
+        {%- assign headings = desc | split: opentag -%}
+        {%- assign count = 0 -%}
+        {% for group in headings %}{%- if count > 0 %}</div>{% endif -%}<div class="metadesc">{{ opentag }}{{ group }}{%- assign count = count | plus: 1 -%}{% endfor %}</div>
+        {% endcapture %}
+        {% assign clean = '<div class="metadesc">' | append: opentag | append: '</div>' %}
+        {% assign thedescription = thedescription | remove: clean %}
+      {% else %}
+        {% assign thedescription = page.content %}
+      {% endif %}
+
+        {% if section.settings.separator_replace and thedescription contains section.settings.separator_marker %}
+          {% assign separator_marker = section.settings.separator_marker %}
+          {{ thedescription | replace: separator_marker, separator }}
+        {% else %}
+          {{ thedescription }}
+        {% endif %}
+
+    {% endcapture %}
+
+    {{ get_description }}
+
+
+
+           
   
   {% if settings.cookie_enable %}
     
@@ -127,6 +187,154 @@
           }
         ],
         "default": "rich"
+      },
+      {
+        "type": "header",
+        "content": "Grouping"
+      },
+      {
+         "type": "paragraph",
+         "content": "Headings can be used to group content for separate styling by adding 'metadesc' class wrapper"
+      },
+      {
+        "type": "select",
+        "id": "content_grouping",
+        "label": "Group with preceding heading",
+        "options": [
+          {
+            "value": "h2",
+            "label": "H2"
+          },
+          {
+            "value": "h3",
+            "label": "H3"
+          },
+          {
+            "value": "h4",
+            "label": "H4"
+          },
+          {
+            "value": "nogroup",
+            "label": "Don't group"
+          }
+        ],
+        "default": "nogroup"
+      },
+      {
+        "type": "header",
+        "content": "Separator"
+      },
+      {
+        "type": "checkbox",
+        "id": "separator_replace",
+        "label": "Enable find & replace",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "separator_marker",
+        "label": "Find & Replace",
+        "default": "<!-- SEPARATOR -->"
+      },
+      {
+        "type": "select",
+        "id": "separator_width",
+        "label": "Width",
+        "options": [
+          {
+            "value": "page",
+            "label": "Page"
+          },
+          {
+            "value": "overflow",
+            "label": "Content Overflow"
+          },
+          {
+            "value": "container",
+            "label": "Content Container"
+          },
+          {
+            "value": "content",
+            "label": "Content Text"
+          }
+        ],
+        "default": "content"
+      },
+      {
+              "type": "color",
+              "id": "line_color",
+              "label": "Divide line color"
+      },
+      {
+        "type": "color",
+        "id": "separator_bg",
+        "label": "Divide background color",
+        "default": "#ffffff"
+      },
+      {
+            "type": "image_picker",
+            "id": "image_bg",
+            "label": "Divide image"
+      },
+      {
+            "type": "select",
+            "id": "image_position",
+            "label": "Divide image position",
+            "options": [
+              {
+                "value": "hidden",
+                "label": "Hidden"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "tile",
+                "label": "Tile"
+              },
+              {
+                "value": "fill",
+                "label": "Fill"
+              }
+            ],
+            "default": "hidden"
+      },
+      {
+            "type": "select",
+            "id": "image_placement",
+            "label": "Divide image placement",
+            "options": [
+              {
+                "value": "background",
+                "label": "Background"
+              },
+              {
+                "value": "foreground",
+                "label": "Foreground"
+              }
+            ],
+            "default": "background"
+      },
+      {
+         "type": "range",
+         "id": "separator_padding",
+         "min": 0,
+         "max": 50,
+         "step": 1,
+         "unit": "px",
+         "label": "Divide padding",
+         "default": 10
+      },
+      {
+               "type": "range",
+               "id": "line_size",
+               "min": 0,
+               "max": 10,
+               "step": 1,
+               "unit": "px",
+               "label": "Divide line size",
+               "default": 1
       }
     ]
 }

@@ -132,6 +132,27 @@
   padding: {{ section.settings.text_spacing }}px;
   
 }  
+
+
+
+{% unless section.settings.row_justify %}
+
+  #content .products > .item,
+  #content .products.grid > .item,
+  #content .products.collection.grid > .item,
+  #content .products.collections.grid > .item {
+    flex: 1;
+    flex-basis: {{ section.settings.product }}px;
+    max-width: {{ section.settings.product }}px;
+  }
+@media only screen and (max-width: {{ settings.width_max_mobile }}) {  
+}
+{% endunless %}
+{% comment %}
+{% endcomment %}
+
+
+
 .products.collections.grid {
   margin-left: -{{ section.settings.spacing }}px;
   margin-bottom: -{{ section.settings.spacing }}px;

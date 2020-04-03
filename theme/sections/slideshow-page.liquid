@@ -385,16 +385,23 @@ ul.bxslider {
 
 {% assign slide_num = 0 %}
 {% for block in section.blocks %}
-		{% if block.settings.color_background != blank %}
+	{%- assign showslide = true -%}
+	{% if section.settings.slideshow_type == 'banner' %}
+	{% unless current_url == block.settings.banner_page %}{%- assign showslide = false -%}{% endunless %}
+	{% endif %}
+
+	{% if showslide == true -%}
+
+	{% if block.settings.color_background != blank %}
 		.bxslider #slide{{ slide_num }} { 
-				 background-color:{{ block.settings.color_background }};
+				 background-color: {{ block.settings.color_background }};
 		}
 	{% endif %}
 		.bxslider #slide{{ slide_num }} .textWrapper { 
-				 background:{% assign a = block.settings.text_background_opacity | divided_by: 100.00 %}{{ block.settings.text_background_color | hex_to_rgba: a }};
+				 background: {% assign a = block.settings.text_background_opacity | divided_by: 100.00 %}{{ block.settings.text_background_color | hex_to_rgba: a }};
 		}
 
-	.bxslider #slide{{ slide_num }} .textWrapper div { 
+		.bxslider #slide{{ slide_num }} .textWrapper div { 
 				color:{{ block.settings.text_color }};
 			background: transparent;
 
@@ -409,6 +416,9 @@ ul.bxslider {
 			background: transparent;
 		}
 	{% assign slide_num = slide_num | plus: 1 %}
+
+	{% endif %}
+
 {% endfor %}
 
 
@@ -513,8 +523,10 @@ ul.bxslider {
 				{%- assign hasvideos = false -%}
 
 				{% if section.settings.slideshow_type == 'banner' %}
-				{% unless canonical_url contains block.settings.banner_page %}{%- assign showslide = false -%}{% endunless %}
+				{% unless current_url == block.settings.banner_page %}{%- assign showslide = false -%}{% endunless %}
 				{% endif %}
+
+				{% comment %}{{ current_url }} or {{ block.settings.banner_page }}{% endcomment %}
 
 				{% if showslide == true -%}
 
@@ -999,8 +1011,8 @@ ul.bxslider {
 	
 	
 	.bx-wrapper .bxslider .textWrapper > .container {
-			/* border: solid 1px red; */
 			/*
+			border: solid 1px red; 
 			max-width: 400px !important;
 			background: yellow;
 			*/

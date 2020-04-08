@@ -530,6 +530,12 @@
   .site-nav > li.site-nav--active:first-child a {  
     padding-left: {{ section.settings.main_linklist_padding | times: 1.5 }}px;
   }
+
+  /* TO DO: Get active state working using theme settings */ 
+  .main-menu > .site-nav > .site-nav--active > a {
+    background: {{ settings.color_header_menu_selected }} !important;
+    color: {{ settings.color_header_menu_link_selected }} !important;
+  }
 }  
 {% endif %}
 
@@ -539,11 +545,6 @@
 
 
 
-/* TO DO: Get active state working using theme settings */ 
-.main-menu > .site-nav > .site-nav--active > a {
-  background: {{ settings.color_header_menu_selected }} !important;
-  color: {{ settings.color_header_menu_link_selected }} !important;
-}
 
 
 
@@ -1487,6 +1488,11 @@
     color: #fff;
     */
     color: {{ settings.color_header_menu_mobile_link }};
+  }
+  
+  /* TO DO: Get active state working using theme settings */ 
+  .main-menu > .site-nav > .site-nav--active > a {
+    color: {{ settings.color_header_menu_mobile_link_selected }} !important;
   }
 
   #header .main-menu li:first-child a {

@@ -1,6 +1,6 @@
 {% include 'settings' %}
 {% assign mobile_width = grid_mobile %}
-
+{% assign bgsize = 1000 | append: 'x' %}
 
   <style>
   {% if section.settings.separator_width == 'container' %}
@@ -53,7 +53,6 @@
 
     {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
 	    {% if section.settings.image_position != 'hidden' %}
-		    {% assign bgsize = 1000 | append: 'x' %}
 		    background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
 	      
 

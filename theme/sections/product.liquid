@@ -4,6 +4,8 @@
 
 {% include 'settings' %}
 {% assign mobile_width = grid_mobile %}
+{% assign bgsize = 1000 | append: 'x' %}
+{% assign separatorid = 0 %}
 
 {% assign font_gutter = 30 %}
 {% assign pagination = 'below' %}
@@ -202,7 +204,6 @@ main > div {
 
     {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
       {% if section.settings.image_position != 'hidden' %}
-        {% assign bgsize = 1000 | append: 'x' %}
         background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
         
         {% if section.settings.image_position == 'center' %}    
@@ -327,7 +328,7 @@ main > div {
   </div></main></article></div></div></div>
     {% endif %}
 
-      <div class="separator_holder">
+      <div class="separator_holder s{{ separatorid }}">
       {% if section.settings.separator_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
 
         <div class="separator forproduct divider{% if section.settings.image_parallax %} parallax{% endif %}">
@@ -342,6 +343,8 @@ main > div {
     {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}
     <div class="separated"><div class="container bleed clearfix"><div id="shopify-section-product" class="shopify-section"><article class="product"><main><div>
     {% endif %}
+
+    {% assign separatorid = separatorid | plus: 1 %}
 
   {% endif %}
 {% endcapture %}

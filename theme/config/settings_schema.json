@@ -1122,7 +1122,7 @@
       {
         "type": "color",
         "id": "color_header_menu_link_selected",
-        "label": "Link text Selected",
+        "label": "Link text selected",
         "default": "#ffffff"
       },
       {
@@ -1162,7 +1162,13 @@
       {
         "type": "color",
         "id": "color_header_menu_mobile_link",
-        "label": "Link",
+        "label": "Link text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_header_menu_mobile_link_selected",
+        "label": "Link text selected",
         "default": "#ffffff"
       },
       {

@@ -60,18 +60,23 @@
     {%- assign og_title = page.title | strip_html -%}
     {%- assign og_type = 'page' -%}
     {% assign thepage = pages[page.handle] %}
-    {% if thepage.content != blank %}
-      {% if thepage.content contains "<img" %}
-        {% assign images = thepage.content | split: '<img'  %}{% assign first = 'yes' %}
-        {% for image in images %}
+    {% assign content = thepage.content | strip_newlines %}
+    {% if content != blank %}
+      {% if content contains "<img" %}
+
+        {% assign images = content | split: '<img'  %}{% assign first = 'yes' %}
+
+        {% for image in images[1] %}
             {% assign src = image | split: ' src="' | last | split:'"' | first %}
             {% if first == 'yes' and src contains '/' %}{% assign src1 = src %}{% assign first = 'no' %}{% endif %}			
         {% endfor %}
+
         {% assign src = src1 %}
+
       {% endif %}
     {% endif %}
-	<!-- SRC: {{ src }} -->
-    {%- if src contains '/' -%}	  
+
+    {%- if src contains '.jpg' or src contains '.png' or src contains '.gif' or src contains '.webp' -%}  
       {%- capture og_image_tags -%}<meta property="og:image" content="{{ src }}">{%- endcapture -%}
       {%- capture og_image_secure_url_tags -%}<meta property="og:image:secure_url" content="{{ src }}">{%- endcapture -%}
     {%- else -%}

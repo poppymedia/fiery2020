@@ -514,7 +514,6 @@ ul.bxslider {
 		{%- assign slide_num = 0 -%}
 		{% capture slides %}
 		{% for block in section.blocks -%}
-
 				{%- comment -%}
 					Content for each slide block.
 				{%- endcomment -%} 
@@ -525,6 +524,8 @@ ul.bxslider {
 				{% if section.settings.slideshow_type == 'banner' %}
 				{% unless current_url == block.settings.banner_page %}{%- assign showslide = false -%}{% endunless %}
 				{% endif %}
+
+				<!-- Slide | url: {{ current_url }} | page: {{ block.settings.banner_page }} | template: {{ template }} -->
 
 				{% comment %}{{ current_url }} or {{ block.settings.banner_page }}{% endcomment %}
 

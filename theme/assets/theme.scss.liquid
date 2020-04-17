@@ -2533,24 +2533,39 @@ button,
 textarea,
 select {
 	vertical-align: top;
-	border: 1px solid $color-border;
+	border: {% if settings.button_border_thickness > 0 %}{{ settings.button_border_thickness }}px{% else %}0{% endif %} solid $color-border;
 	border-radius: 0;
-	max-width: 100%;	
-
+	max-width: 100%;
   
 	&[disabled] {
 		cursor: default;
+		/*
 		background-color: $color-disabled-bg;
 		border-color: $color-disabled-border;
 		color: $color-disabled;
+		*/
+		opacity: 0.6;
+	}
+	&[disabled]:hover {
+		/* 
+		border-color: $color-disabled-btn-border; 
+		*/
 	}
 }
 .btn {
 
 	&[disabled] {
+		/*
 		background-color: $color-disabled-btn-bg !important;
 		border-color: $color-disabled-btn-border;
 		color: $color-disabled-btn-text;
+		*/
+		opacity: 0.6;
+	}
+	&[disabled]:hover {
+		/*
+		border-color: $color-disabled-btn-border;
+		*/
 	}
 }
 

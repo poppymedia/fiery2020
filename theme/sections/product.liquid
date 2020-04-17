@@ -137,19 +137,32 @@ main > div {
 	/* border: solid 1px green; */
 }
 
+
+/* Determine width of columns */
+{% assign imgcol = 60 %}
+{% assign descol = 40 %}
+{% assign colgut = 0 %}
+{% if section.settings.layout_grid_prominent_feature == 'image_title' or section.settings.layout_grid_prominent_feature == 'title_image' %} 
+{% assign imgcol = 50 %}
+{% assign descol = 50 %}
+{% assign colgut = font_gutter | divided_by: 2 %}
+{% endif %}
+
+
+
 .half.img {
-	width: 60%;
+	width: calc({{ imgcol }}% - {{ colgut }}px);
 }
 
 {% if section.settings.layout_grid_prominent_feature == 'title_image' %}
 .half.desc {
-	width: calc(40% - {{ font_gutter }}px);
-	margin-right: {{ font_gutter }}px;
+	width: calc({{ descol }}% - {{ font_gutter }}px);
+	margin-right: {{ font_gutter | plus: colgut }}px;
 }
 {% else %}
 .half.desc {
-	width: calc(40% - {{ font_gutter }}px);
-	margin-left: {{ font_gutter }}px;
+	width: calc({{ descol }}% - {{ font_gutter }}px);
+	margin-left: {{ font_gutter | plus: colgut }}px;
 }
 {% endif %}
 
@@ -164,6 +177,7 @@ main > div {
   {% endif %}
     
   .separator_holder {  
+    position: relative;
     overflow: hidden;  
     /* border: solid 1px white; */
   }
@@ -356,7 +370,7 @@ main > div {
       {% assign hidetag = 'no' %}
       {% if settings.product_heeading_tag and tag contains '#Heading_' %}
         {% assign hidetag = 'yes' %}{% assign color_headings = tag | remove: 'Heading_' %}
-        {% assign stylesheet = stylesheet | append: 'body h1, body h2, body h3, body h4 { color:' | append: color_headings | append: ';}' %}
+        {% assign stylesheet = stylesheet | append: 'body h1, body h2, body h3, body h4 { color:' | append: color_headings | append: ';} #main .btn, .sy-controls li a:after { background:' | append: color_headings | append: ' !important; border-color:' | append: color_headings | append: ' !important;}' %}
         {% assign stylesheet = stylesheet | append: 'body h1 span, body h2 span, body h3 span, body h4 span { color: ' | append: settings.color_body_heading | append: ';}' %}
       {% endif %}
       {% if settings.product_bg_tag and tag contains '#Body_' %}
@@ -507,7 +521,8 @@ main > div {
               {% endif -%}            
 
               {% comment %}<a href="{{ image.src | img_url: '480x480' }}" data-product-single-thumbnail>{% endcomment %}
-              <img src="{{ image.src | img_url: '480x480' }}"{{ alt }}>{% comment %}<a href="#slide{{ img_num }}"></a>{% endcomment %}
+              {% assign img_size = section.settings.image_size | append: 'x' %}
+              <img src="{{ image.src | img_url: img_size }}"{{ alt }}>{% comment %}<a href="#slide{{ img_num }}"></a>{% endcomment %}
              {% comment %}</a>{% endcomment %}
             </li>
             {%- assign img_num = img_num | plus: 1 -%}
@@ -646,7 +661,8 @@ main > div {
     {% else %}
     <ul class="slides">
       <li>
-        <img src="{{ featured_image | img_url: '480x480' }}"{{ alt }} data-product-featured-image>
+        {% assign img_size = section.settings.image_size | append: 'x' %}
+        <img src="{{ featured_image | img_url: img_size }}"{{ alt }} data-product-featured-image>
       </li>
       {% unless section.settings.show_variant_always and thumb_num < 2 %}
       {{ thumbnails }}
@@ -1052,6 +1068,20 @@ main > div {
       </div>
     {% endcapture %}
 
+    {% capture get_first_variant %}
+    {%- if section.settings.first_variant -%}
+    <div class="first-variant">
+      {% assign count = 0 %}  
+      {% for variant in product.variants %}
+          {% if count == 0 %}              
+              {% unless product.template_suffix contains 'giftcard' or variant.title == 'Default Title' %}{{ variant.title }}{% endunless %}
+          {% assign count = 1 %} 
+      {% endif %}   
+      {% endfor %}
+    </div>
+    {%- endif -%}
+    {% endcapture %}
+
     {% capture get_reviews %}
     <!-- Product Reviews App -->
     {% if section.settings.show_review_comments %}
@@ -1077,6 +1107,7 @@ main > div {
   		</div>
         <div class="half desc">
             {{ get_h1 }}
+            {{ get_first_variant }}
             {{ get_vendor }}
             {{ get_sku }}
         	{{ get_rating }}
@@ -1092,6 +1123,7 @@ main > div {
     	{% if section.settings.layout_grid_prominent_feature == 'title_image' %} 
         <div class="half desc">
             {{ get_h1 }}
+            {{ get_first_variant }}
             {{ get_vendor }}
             {{ get_sku }}
         	{{ get_rating }}
@@ -1111,6 +1143,7 @@ main > div {
         {% if section.settings.layout_grid_prominent_feature == 'title' %}
         <div class="full">
             {{ get_h1 }}
+            {{ get_first_variant }}
             {{ get_vendor }}
             {{ get_sku }}
             {{ get_rating }}
@@ -1233,6 +1266,30 @@ main > div {
         ]
       },
       {
+        "type": "select",
+        "id": "image_size",
+        "label": "Image size",
+        "options": [
+          {
+            "value": "480",
+            "label": "Small"
+          },
+          {
+            "value": "800",
+            "label": "Medium"
+          },
+          {
+            "value": "1200",
+            "label": "Large"
+          },
+          {
+            "value": "original",
+            "label": "Original"
+          }
+        ],
+        "default": "1200"
+      },
+      {
         "type": "checkbox",
         "id": "show_vendor",
         "label": "Show vendor",
@@ -1318,8 +1375,14 @@ main > div {
       },
       {
         "type": "checkbox",
+        "id": "first_variant",
+        "label": "Show first variant label",
+        "default": true
+      },
+      {
+        "type": "checkbox",
         "id": "show_variant_always",
-        "label": "Always show a variant",
+        "label": "Always show variant option",
         "default": true
       },
       {

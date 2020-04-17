@@ -106,7 +106,7 @@
       	{%- if section.settings.image -%}
 
           {%- capture img -%}
-          {%- if product.featured_image.src -%}          
+          {%- if product.featured_image.src -%}
        
           <img src="{{ product.featured_image.src | img_url: '480x480' }}" alt="{{ product.featured_image.alt | escape }}">
 
@@ -129,7 +129,7 @@
       	{%- endcapture -%}      
 
         {%- capture get_title -%}
-          {%- if section.settings.title -%}
+          {%- if section.settings.product_title -%}
           <span class="title">
               {{ title }}
           </span>

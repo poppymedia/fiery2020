@@ -314,6 +314,15 @@
         "default": "120px"
       },
       {
+        "type": "range",
+        "id": "button_border_thickness",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "label": "Button border thickness",
+        "default": 1
+      },
+      {
         "type": "checkbox",
         "id": "button_min_override",
         "label": "Remove minimum width",

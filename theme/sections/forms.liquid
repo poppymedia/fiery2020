@@ -1,0 +1,180 @@
+{% if section.blocks.size > 0 %}
+
+{% assign font_gutter = settings.grid_spacing | append: 'px' %}
+{% assign grid_gutter = font_gutter | remove: 'px' | plus: 0 %}
+{% assign form_prefix = 'bh2k20' %}
+
+{% capture fields %}
+{%- for block in section.blocks -%}
+
+  {% assign label = block.settings.title %}
+  {% assign name = label | handle %}
+  {% assign id = form_prefix | append: name %}
+  {% assign required = '' %}
+  {% assign asterisk = '' %}
+  
+  <div class="{{ block.settings.width }}">
+
+    {% if block.settings.required %} 
+    {% assign required = ' required' %}
+    {% assign asterisk = ' <sup>*</sup>' %}
+    {% endif %}
+
+    <label for="{{ id }}">{{ label }}{{ asterisk }}</label>
+
+    {% if block.settings.type == 'text' %} 
+    <input name="contact[{{ name }}]" id="{{ id }}" type="text" value=""{{ required }} />
+    {% endif %}
+
+    {% if block.settings.type == 'textarea' %}
+    <textarea name="contact[{{ name }}]" id="{{ id }}" class="{{ block.settings.width }}"{{ required }}></textarea>
+    {% endif %}
+     
+  </div>
+
+{%- endfor %}
+{% endcapture %}
+
+
+    <form>
+ 
+      {{ fields }}
+
+      <div>
+
+      <button class="btn">{{ section.settings.button_text }}</button>
+
+      </div>
+      
+    </form>
+
+
+{% endif %}
+
+{% schema %}
+
+{
+  "name": "Form",
+  "class": "form-section",
+  "settings": [
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button label",
+          "default": "Submit"
+        },
+        {
+          "type": "select",
+          "id": "button_width",
+          "label": "Button width",
+          "options": [
+            {
+              "value": "full",
+              "label": "Full"
+            },
+            {
+              "value": "auto",
+              "label": "Auto"
+            }
+          ],
+          "default": "auto"
+        },
+        {
+          "type": "header",
+          "content": "Fields"
+        },
+        {
+          "type": "checkbox",
+          "id": "labels_as_placeholders",
+          "label": "Display labels as placeholders",
+          "default": false
+        }
+        
+  ],
+  "name": "Form",
+  "blocks": [
+    {
+      "type": "form",
+      "name": "Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "options": [
+            {
+              "value": "full",
+              "label": "100%"
+            },
+            {
+              "value": "half",
+              "label": "50%"
+            },
+            {
+              "value": "third",
+              "label": "33%"
+            }
+          ],
+          "default": "full"
+        },
+        {
+          "type": "select",
+          "id": "type",
+          "label": "Type",
+          "options": [
+            {
+              "value": "text",
+              "label": "Text"
+            },
+            {
+              "value": "textarea",
+              "label": "Textarea"
+            },
+            {
+              "value": "checkbox",
+              "label": "Checkbox"
+            },
+            {
+              "value": "select",
+              "label": "Select"
+            },
+            {
+              "value": "radio",
+              "label": "Radio"
+            }
+          ],
+          "default": "text"
+        },
+        {
+          "type": "textarea",
+          "id": "options",
+          "label": "Options",
+          "info": "List to create group"
+        }, 
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Form",
+      "category": "Content"
+    }
+  ]
+}
+
+{% endschema %}

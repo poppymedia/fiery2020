@@ -149,6 +149,94 @@
 {%- endif %}
 {%- endcapture %}
 
+
+
+
+
+  {% assign icons_in_menu = 0 %}
+
+  {%- capture cart_setting -%}
+      {%- if settings.cart_enable -%}
+        {%- unless section.settings.cart_text_show == false and section.settings.cart_icon == 'hidden' -%}
+        <a href="/cart">
+          {%- if section.settings.main_linklist_type == 'text' -%}          
+            {%- if section.settings.cart_text_show -%}{{ 'cart.general.cart' | t }}{%- endif -%}
+            {%- if section.settings.cart_icon_show -%}
+                {% if section.settings.cart_icon == 'cart' %}{% assign cart_icon = 'icon-cart' %}{% endif %}
+                {% if section.settings.cart_icon == 'bag' %}{% assign cart_icon = 'icon-bag' %}{% endif %}
+                {% if section.settings.cart_icon == 'basket' %}{% assign cart_icon = 'icon-basket' %}{% endif %}
+                {% if section.settings.cart_icon != 'hidden' and section.settings.cart_icon != 'text' %} 
+                {%- include cart_icon -%}
+          
+              {% unless template == 'cart' %}
+                  {%- if section.settings.cart_qty != 'hidden' and cart.item_count > 0 -%}
+                      <span>{{ cart.item_count }}
+                      {%- if section.settings.cart_qty == 'number_label' %} {{ 'cart.general.items_count' | t: count: cart.item_count }}{% endif -%}
+                      </span>
+                  {%- endif -%}
+              {% endunless %}
+          
+                {%- endif -%}          
+            {%- endif -%}
+          {%- else -%}
+            {%- if section.settings.cart_icon != 'hidden' and section.settings.cart_icon != 'text' -%}
+                {%- include cart_icon -%}
+            {%- endif -%}
+            {%- if section.settings.cart_text_show -%}
+                {{ 'cart.general.cart' | t }}
+            {%- endif -%}
+          
+            {% unless template == 'cart' %}
+            {%- if section.settings.cart_qty != 'hidden' and cart.item_count > 0 -%}
+                <span>{{ cart.item_count }}
+                {%- if section.settings.cart_qty == 'number_label' %} {{ 'cart.general.items_count' | t: count: cart.item_count }}{% endif -%}
+                </span>
+            {%- endif -%}
+            {% endunless %}
+          
+          {%- endif -%}
+        </a>
+        {% assign icons_in_menu = icons_in_menu | plus: 1 %}
+        {%- endunless -%}
+      {%- endif -%}
+  {%- endcapture -%}
+
+
+
+  {%- capture user_setting -%}
+    {% if shop.customer_accounts_enabled %}
+        {% if section.settings.account_icon == 'bust' %}{% assign user_icon = 'icon-user' %}{% endif %}
+        {% if section.settings.account_icon == 'padlock' %}{% assign user_icon = 'icon-padlock' %}{% endif %}
+
+        {% if section.settings.account_icon != 'hidden' %} 
+        {% capture link %}{% if customer %}/account{% else %}/account/login{% endif %}{% endcapture %}
+        <a href="{{ link }}">
+          {%- if section.settings.main_linklist_type == 'text' -%}          
+            {%- if section.settings.cart_text_show -%}{{ 'layout.customer.account' | t }}{%- endif -%}
+            {%- if section.settings.cart_icon_show -%}
+                {%- include user_icon -%}        
+            {%- endif -%}
+          {%- else -%}
+            {%- if section.settings.account_icon_show -%}
+                {%- include user_icon -%}
+            {%- endif -%}
+            {%- if section.settings.account_text_show -%}
+                {{ 'layout.customer.account' | t }}
+            {%- endif -%}         
+          {%- endif -%}
+        </a>
+        {% assign icons_in_menu = icons_in_menu | plus: 1 %}
+        {% endif %}
+
+      {% endif %}
+  {%- endcapture -%}
+
+
+
+
+
+
+
 {% if template == 'gift_card' -%}
 
 {%- assign img_style = '<img style="width:' | append: section.settings.logo_size | append: 'px" ' -%}
@@ -475,7 +563,7 @@
 }
 .site-nav a {  
   padding: {{ section.settings.main_linklist_padding }}px {{ section.settings.main_linklist_padding | times: 1.5 }}px;
-  
+
   {% if section.settings.main_linklist_align == 'right' %}margin-left: {{ section.settings.main_linklist_spacing }}px;margin-right:0;{% endif %}
   {% if section.settings.main_linklist_align == 'left' %}margin-right: {{ section.settings.main_linklist_spacing }}px;margin-left:0;{% endif %}
   {% if section.settings.main_linklist_align == 'center' %}margin-left: 0; margin-right: {{ section.settings.main_linklist_spacing }}px;{% endif %}
@@ -676,14 +764,14 @@
     align-items: {{ section.settings.main_linklist_position }};
   }
 }
-
-
 #header > .container header,
 #header > .container #{{ nav }},
 #header > .container #{{ nav }}-two {
   margin-top: 0;
 }
 {% endif %}
+
+
 
 
 #header,
@@ -1110,6 +1198,23 @@
     left: auto;
   }
   {% endif %}
+
+
+  {% if split_menu == 'yes' and section.settings.logo_align == 'center' and section.settings.main_linklist_align == 'center' %}
+  #header #{{ nav }},
+  #header #{{ nav }}-two {
+    position: absolute;
+    overflow: visible;
+    right:  auto;
+    left: {{ grid_gutter }}px;
+    top: 0;
+    padding: 0;
+  }
+  #header #{{ nav }}-two {
+    right: {{ grid_gutter }}px;
+    left: auto;
+  }
+  {% endif %}  
   
 
   #header #{{ nav }} {
@@ -1122,6 +1227,11 @@
     width: calc(50% - {{ settings.logo_size | divided_by: 1.25 }}px);
     left: auto;
     /* right: {{ font_gutter }}px; */
+    {% endif %}
+
+    {% if split_menu == 'yes' and section.settings.logo_align == 'center' and section.settings.main_linklist_align == 'center' %}
+    width: calc(50% - {{ settings.logo_size | divided_by: 1.25 }}px);
+    right: auto;
     {% endif %}
   }  
   #header #{{ nav }}-two {
@@ -1148,7 +1258,23 @@
     
     {% if section.settings.main_linklist_align == 'left' %}text-align: right;{% endif %}
     {% if section.settings.main_linklist_align == 'right' %}text-align: left;{% endif %}
+
+    {% if split_menu == 'yes' and section.settings.logo_align == 'center' and section.settings.main_linklist_align == 'center' %}
+    width: calc(50% - {{ settings.logo_size | divided_by: 1.25 }}px);
+    text-align: center;
+    {% endif %}
   }
+
+  {% if split_menu == 'yes' and section.settings.logo_align == 'center' and section.settings.main_linklist_align == 'center' %}
+  #carthold {
+    position:  absolute !important;
+    right: 0 !important;
+  }
+  #accounthold {
+    position:  absolute !important;
+    right: {% if icons_in_menu > 1 %}30px{% else %}0{% endif %} !important;
+  }
+  {% endif %}
   
 }
 {% endunless %}
@@ -1237,7 +1363,7 @@
   
   
   
-  
+{% if section.settings.main_linklist != blank %}
 {% if section.settings.main_linklist_hamburger_type != 'disabled' %}
 {% unless section.settings.main_linklist_hamburger_force %}
 @media only screen and (max-width: {{ grid_mobile | minus: 1 | remove: 'px' | append: 'px' }}) {
@@ -1579,7 +1705,7 @@
 {% endunless %}
   
 {% endif %} 
-
+{% endif %}
 
   
   
@@ -1706,7 +1832,7 @@
 
 
 
-
+{% if section.settings.main_linklist != blank %}
 {% if section.settings.main_linklist_hamburger_force %}
   @media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
     #header {
@@ -1738,7 +1864,7 @@
     }
   }
 {% endif %}
-
+{% endif %}
 
 
 
@@ -2201,50 +2327,10 @@ header .tags {
 
   {%- endcapture -%}
 
-  {%- capture cart_setting -%}
-      {%- if settings.cart_enable -%}
-        {%- unless section.settings.cart_text_show == false and section.settings.cart_icon == 'hidden' -%}
-        <a href="/cart">
-          {%- if section.settings.main_linklist_type == 'text' -%}          
-          	{%- if section.settings.cart_text_show -%}{{ 'cart.general.cart' | t }}{%- endif -%}
-            {%- if section.settings.cart_icon_show -%}
-                {% if section.settings.cart_icon == 'cart' %}{% assign cart_icon = 'icon-cart' %}{% endif %}
-                {% if section.settings.cart_icon == 'bag' %}{% assign cart_icon = 'icon-bag' %}{% endif %}
-                {% if section.settings.cart_icon == 'basket' %}{% assign cart_icon = 'icon-basket' %}{% endif %}
-                {% if section.settings.cart_icon != 'hidden' and section.settings.cart_icon != 'text' %} 
-                {%- include cart_icon -%}
-          
-          		{% unless template == 'cart' %}
-                  {%- if section.settings.cart_qty != 'hidden' and cart.item_count > 0 -%}
-                      <span>{{ cart.item_count }}
-                      {%- if section.settings.cart_qty == 'number_label' %} {{ 'cart.general.items_count' | t: count: cart.item_count }}{% endif -%}
-                      </span>
-                  {%- endif -%}
-          		{% endunless %}
-          
-                {%- endif -%}          
-          	{%- endif -%}
-          {%- else -%}
-            {%- if section.settings.cart_icon != 'hidden' and section.settings.cart_icon != 'text' -%}
-                {%- include cart_icon -%}
-            {%- endif -%}
-            {%- if section.settings.cart_text_show -%}
-              	{{ 'cart.general.cart' | t }}
-            {%- endif -%}
-          
-          	{% unless template == 'cart' %}
-            {%- if section.settings.cart_qty != 'hidden' and cart.item_count > 0 -%}
-                <span>{{ cart.item_count }}
-                {%- if section.settings.cart_qty == 'number_label' %} {{ 'cart.general.items_count' | t: count: cart.item_count }}{% endif -%}
-                </span>
-            {%- endif -%}
-          	{% endunless %}
-          
-          {%- endif -%}
-        </a>
-        {%- endunless -%}
-      {%- endif -%}
-  {%- endcapture -%}
+
+
+
+
 
 <style>
 
@@ -3065,6 +3151,15 @@ header .tags {
     		{% assign li_count = li_count | plus: 1 %}
     		<li data-p="{{ li_count }}" class="{% if template == 'cart' %}site-nav--active {% endif %}cart" id="carthold">{{ cartdata }}</li>
         {%- endif -%} 
+      {% endunless %} 
+
+      {% unless showing_user_icon %}
+        {%- capture accountlink %}{{ user_setting | strip_newlines | replace: '<a href', '<a class="site-nav__link" id="account" href' }}{% endcapture -%}
+        {%- capture accountdata -%}
+        {{ accountlink }}
+        {% endcapture %}
+        {% assign li_count = li_count | plus: 1 %}
+        <li data-p="{{ li_count }}" class="{% if template == 'account' %}site-nav--active {% endif %}account" id="accounthold">{{ accountdata }}</li>
       {% endunless %}
 
   	  {% comment %}
@@ -3192,12 +3287,18 @@ header .tags {
         {% capture aria %} class="main-menu" aria-expanded="false" aria-label="{{ menu }}"{% endcapture %}
       {% endif %}
   
+      {% if section.settings.main_linklist != blank %}
       {{ open_menu }}
+      {% endif %}
   
       {% if section.settings.main_linklist_type == 'icons' %}
         {% if icon_menu contains '</li>' %}
         <nav role="navigation" id="{{ nav }}"{{ aria }}> 
+
+          {% if section.settings.main_linklist != blank %}
           {{ close_menu }}
+          {% endif %}
+
           <ul class="site-nav">
           {{ icon_menu | strip_newlines | remove: '  ' }}
           </ul>
@@ -3208,9 +3309,15 @@ header .tags {
       {%- if section.settings.main_linklist_type == 'text' %}
         {% if main_menu contains '</li>' %}
         <nav role="navigation" id="{{ nav }}"{{ aria }}> 
+
+          {% if section.settings.main_linklist != blank %}
           {{ close_menu }}
+          {% endif %}
+
           <ul class="site-nav"{% if split_menu == 'yes' %} id="site-nav-one"{% endif%}>
             	{% assign menu_one = main_menu | strip_newlines | remove: '  ' | remove: '		' %}
+              <!-- Subtract icons when inside menu -->
+              {% assign li_count = li_count | minus: icons_in_menu %}
             	<!-- Ensure nav-one is bigger if uneven -->
             	{% assign li_count_half = li_count | divided_by: 2 %}
             	{% assign li_count_diff = li_count | minus: li_count_half %}
@@ -3425,6 +3532,25 @@ header .tags {
   {% endif %}
   {% endif %}
 
+
+
+
+  {% if section.settings.main_linklist == blank %}
+  {% if section.settings.logo_align_mobile == 'left' %}
+  <!-- TESTING -->
+  <style>
+  @media only screen and (max-width: {{ grid_large | remove: 'px' | append: 'px' }}) {
+    #header .container header .brand img {
+    min-width: {{ settings.logo_size_mobile }}px !important;
+    }
+  }
+  </style>
+  {% endif %}
+  {% endif %}
+
+
+
+
 {% endcapture %}
 
 {{ style | strip_newlines | remove: '	' | replace: '  ', ' ' }}
@@ -3498,6 +3624,7 @@ $('.site-nav--has-submenu').hover(function() {
 {% endcomment -%}
 
 
+
 {%- if section.settings.main_linklist_hamburger_type != 'disabled' and settings.cart_enable -%}
 {%- endif -%}
 {%- capture nav_media -%}
@@ -3508,7 +3635,7 @@ var mobileCartParent = '#{{ nav }}';
 const mobpos = document.getElementById('{% if section.settings.main_linklist_width == 'content' %}cartmob{% else %}header{% endif %}'); 
 {% unless section.settings.icon_links_position == 'separate' %}
 {% if settings.cart_enable %}const deskpos = document.getElementById('carthold');{% endif %}
-const desksrc = document.getElementById('searchhold'); 
+{% unless section.settings.main_search_home or section.settings.main_search_pages %}{% if section.settings.main_search != 'hidden' %}const desksrc = document.getElementById('searchhold'); {% endif %}{% endunless %}
 {% if settings.cart_enable %}const cart = document.getElementById('cart'); {% endif %}
 const search = document.getElementById('search');
 {% else %}
@@ -3546,7 +3673,7 @@ function WidthChange(mq) {
 
       		{% unless section.settings.icon_links_position == 'separate' %}
           {% if settings.cart_enable %}mobpos.appendChild(cart);{% endif %}
-          mobpos.appendChild(search); 
+          {% unless section.settings.main_search_home or section.settings.main_search_pages %}{% if section.settings.main_search != 'hidden' %}mobpos.appendChild(search); {% endif %}{% endunless %}
           {% endunless %}        
 
 {% unless section.settings.main_linklist_hamburger_force %}
@@ -3554,7 +3681,7 @@ function WidthChange(mq) {
 
           {% unless section.settings.icon_links_position == 'separate' %}
           {% if settings.cart_enable %}deskpos.appendChild(cart);{% endif %} 
-          desksrc.appendChild(search);
+          {% unless section.settings.main_search_home or section.settings.main_search_pages %}{% if section.settings.main_search != 'hidden' %}desksrc.appendChild(search); {% endif %}{% endunless %}
           {% endunless %}
 
 
@@ -3571,7 +3698,9 @@ function WidthChange(mq) {
 </script>
 {%- endcapture -%}
 
+{% if section.settings.main_linklist != blank %}
 {{ nav_media | strip_newlines | remove: '	' | replace: '  ', ' ' }}
+{% endif %}
 
 
 

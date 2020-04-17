@@ -17,99 +17,68 @@
 {% include 'breadcrumb' %}
 {% endif %}
 
-{% capture sidebar %}{% section 'sidebar' %}{% endcapture %}
-
 <div class="container contact{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
-  
-<div id="shopify-section-page" class="shopify-section">
 
-<main>  
-  
-<div id="content">
+  {% section 'page' %}
+ 
 
-  <header role="banner">
-    <h1>{{ page.title }}</h1>
-  </header>
+    {% assign heading = 'hidden' %}
+    {% include 'form-contact' with heading %}
+    
 
-  <div class="rte">
-    {{ page.content }}
-  </div>
+      
+      {% section 'forms' %}
 
-  {% assign heading = 'hidden' %}
-  {% include 'form-contact' with heading %}
-  
-  <p class="map">
-    <label>{{ 'contact.form.map' | t }}</label>
+      {% section 'map' %}
+      
+
     
     {% comment %}
-    {% capture map %}
-	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2462.183242217219!2d-2.0775222481786!3d51.894119990074245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48711bbcd00ea2ad%3A0x31b7e705572e777b!2sBlue+Horizons+Marketing!5e0!3m2!1sen!2suk!4v1541153619274" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-    {% endcapture %}
-    {{ map }}
+    {% form 'contact' %}
+
+      {% if form.posted_successfully? %}
+        <p class="form-success">
+          {{ 'contact.form.post_success' | t }}
+        </p>
+      {% endif %}
+
+      {{ form.errors | default_errors }}
+
+      <label for="ContactFormName">{{ 'contact.form.name' | t }}</label>
+      <input type="text"
+        name="contact[name]"
+        id="ContactFormName"
+        placeholder="{{ 'contact.form.name' | t }}"
+        value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+
+      <label for="ContactFormEmail">{{ 'contact.form.email' | t }}</label>
+      <input type="email"
+        name="contact[email]"
+        id="ContactFormEmail"
+        placeholder="{{ 'contact.form.email' | t }}"
+        value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off">
+
+      <label for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
+      <input type="tel"
+        name="contact[phone]"
+        id="ContactFormPhone"
+        placeholder="{{ 'contact.form.phone' | t }}"
+        value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+        pattern="[0-9\-]*">
+
+      <label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
+      <textarea rows="10"
+        name="contact[body]"
+        id="ContactFormMessage"
+        placeholder="{{ 'contact.form.message' | t }}">{%- if form.body -%}{{ form.body }}{%- endif -%}</textarea>
+
+      <input type="submit" class="btn" value="{{ 'contact.form.submit' | t }}">
+
+    {% endform %}
     {% endcomment %}
-    
-    {% section 'map' %}
-    
-  </p>
-  
-  {% comment %}
-  {% form 'contact' %}
 
-    {% if form.posted_successfully? %}
-      <p class="form-success">
-        {{ 'contact.form.post_success' | t }}
-      </p>
-    {% endif %}
-
-    {{ form.errors | default_errors }}
-
-    <label for="ContactFormName">{{ 'contact.form.name' | t }}</label>
-    <input type="text"
-      name="contact[name]"
-      id="ContactFormName"
-      placeholder="{{ 'contact.form.name' | t }}"
-      value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
-
-    <label for="ContactFormEmail">{{ 'contact.form.email' | t }}</label>
-    <input type="email"
-      name="contact[email]"
-      id="ContactFormEmail"
-      placeholder="{{ 'contact.form.email' | t }}"
-      value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-      spellcheck="false"
-      autocomplete="off"
-      autocapitalize="off">
-
-    <label for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
-    <input type="tel"
-      name="contact[phone]"
-      id="ContactFormPhone"
-      placeholder="{{ 'contact.form.phone' | t }}"
-      value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-      pattern="[0-9\-]*">
-
-    <label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
-    <textarea rows="10"
-      name="contact[body]"
-      id="ContactFormMessage"
-      placeholder="{{ 'contact.form.message' | t }}">{%- if form.body -%}{{ form.body }}{%- endif -%}</textarea>
-
-    <input type="submit" class="btn" value="{{ 'contact.form.submit' | t }}">
-
-  {% endform %}
-  {% endcomment %}
-  
-  {% if settings.contact_form_code %}
-  <!-- TO DO: Add social-sharing support here -->
-  {% include 'social-sharing' %}
-  {% endif %}
-  
-</div>
-  
-</main>
-  
-{% include 'sidebars' %}
-  
-</div>
 
 </div>

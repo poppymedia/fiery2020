@@ -9,6 +9,12 @@
 {% assign current_url = page.url %}
 {% when 'page' %}
 {% assign current_url = page.url %}
+{% when 'page.contact' %}
+{% assign current_url = page.url %}
+{% when 'page.gallery' %}
+{% assign current_url = page.url %}
+{% when 'page.cookie.consent' %}
+{% assign current_url = page.url %}
 {% when 'blog' %}
 {% assign current_url = blog.url %}
 {% when 'article' %}
@@ -16,5 +22,11 @@
 {% when 'collection' %}
 {% assign current_url = collection.url %}
 {% when 'product' %}
+{% assign current_url = product.url %}
+{% when 'product.no.cart' %}
+{% assign current_url = product.url %}
+{% when 'product.orderform' %}
+{% assign current_url = product.url %}
+{% when 'product.giftcard' %}
 {% assign current_url = product.url %}
 {% endcase %} 

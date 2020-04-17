@@ -595,7 +595,7 @@
         {{ last_menu }}
         {% endif %}   
 
-        {% if section.settings.copyright_enable or section.settings.powered_enable or lock.settings.copyright_text.size > 0  %}
+        {% if section.settings.copyright_enable or section.settings.powered_enable or block.settings.copyright_text.size > 0  %}
         <p class="copyright">
           <span>{% if section.settings.copyright_enable %}{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }}{% endif %}{% if block.settings.show_shop %} {{ shop.name }}{% endif %}</span> 
           <span>{% if section.settings.powered_enable %}{{ powered_by_link }}</span>{% endif %}{% if block.settings.copyright_text.size > 0 %} <span>{{ block.settings.copyright_text }}</span>{% endif %} 

@@ -1030,7 +1030,7 @@ ul.bxslider {
 
 {% if section.settings.slideshow_width == 'container' or section.settings.slideshow_width == 'content' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
 
-{% if section.blocks.size > 1 %}
+{% if section.blocks.size > 0 %}
 <ul id="slideshow" class="bxslider {{ section.settings.slideshow_width }}">
 {{ slides }} 
 </ul> 
@@ -1042,7 +1042,7 @@ ul.bxslider {
 {% if section.blocks.size > 1 %}
 {% capture scripts %}
 <script>
-var slider = $('.bxslider').bxSlider({	
+var slider = $('#shopify-section-{{ section.id }} .bxslider').bxSlider({	
 	mode: '{{ section.settings.slideshow_animation }}',
 	auto: {% if section.settings.slideshow_auto %}true{% else %}false{% endif %},
 	video: {% if hasvideos == true %}true{% else %}false{% endif %},
@@ -1718,7 +1718,13 @@ $(window).resize(function(){
 				}
 			]
 		}
-	]
+	],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "category": "Content"
+    }
+  ]
 }
 
 {% endschema %}

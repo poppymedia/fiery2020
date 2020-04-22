@@ -2422,7 +2422,8 @@ li.search #searchbox {
 .bxslider .textWrapper .btn,
 .template-giftcard #gift-card-actions .btn,
 .readmore .link,
-.btn {
+.btn,
+.rte .btn {
 	@include prefix('user-select', 'none', moz ms webkit spec);
 	@include prefix(appearance, none, webkit moz spec);
 	background: $color-btn-bg;
@@ -2588,7 +2589,9 @@ textarea,
 select {
 	padding: 0.4em 0.7em;
 	background-color: $color-form-bg;
-	border-color: $color-form-border;
+	/* border-color: $color-form-border; */
+	border: {% if settings.input_border_thickness > 0 %}{{ settings.input_border_thickness }}px{% else %}0{% endif %} solid $color-form-border;
+	/* border: solid 1px red !important; */
 	color: $color-form-text;
 	/*
 	&:hover,
@@ -2870,7 +2873,8 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 }
 #main form a,
 #main aside a,
-#main article a {
+#main article a,
+.separated a {
   color: {{ settings.color_body_link }};
 }
 /*================ MODULES ================*/
@@ -4653,6 +4657,22 @@ form:not(.search-box) textarea {
   
   line-height: 1.25em !important;
 }
+form:not(.search-box) .full,
+form:not(.search-box) .half,
+form:not(.search-box) .third {
+  padding: {{ settings.button_padding | divided_by: 4 | times: 0.01 }}em 0;
+  
+  line-height: 1.25em !important;
+}
+form:not(.search-box) .full label,
+form:not(.search-box) .half label,
+form:not(.search-box) .third label {
+  padding-bottom: 0.2em !important;
+  display: block !important;
+}
+form .actions {
+	clear: both;
+}
 @include media-query($small) {
   form .text,
   form .actions {  
@@ -5294,13 +5314,26 @@ select,
 }
 {% endif %}
 
-
-
 @media only screen and (min-width: $grid-medium) {
   .half {
       float: left;
       display: inline-block;
-      width: 50%;
+      width: 49%;
+  }
+  .half + .half {
+      float: right;
+  }
+  .third {
+      float: left;
+      display: inline-block;
+      width: 32%;
+  }
+  .third + .third {
+      float: left;
+      margin-left: 2%;
+  }
+  .third + .third + .third {
+      float: right;
   }
 }
 @media only screen and (max-width: $grid-medium) {

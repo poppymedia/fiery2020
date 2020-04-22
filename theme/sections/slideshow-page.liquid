@@ -619,6 +619,9 @@ ul.bxslider {
 									{% if block.settings.text_position == 'right' and text_width < 100 %}left:calc({{ 100 | minus: text_width }}%);{% endif%}
 									/* background:{% assign a = block.settings.text_background_opacity | divided_by: 100.00 %}{{ block.settings.text_background_color | hex_to_rgba: a }}; */
 								}
+								.bxslider .textClass{{ slide_num }} h1, .bxslider .textClass{{ slide_num }} h2 {
+									text-align:{{ block.settings.text_align }};
+								}
 								{% assign image_width = block.settings.image_width | plus: 0 %}
 								{% if image_width < 100 %}
 								.bxslider #slide{{ slide_num }} img {

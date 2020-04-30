@@ -376,6 +376,7 @@
       "title": "Order History",
       "order_number": "Order",
       "date": "Date",
+      "time": "Time",
       "payment_status": "Payment Status",
       "fulfillment_status": "Fulfillment Status",
       "total": "Total",
@@ -405,7 +406,7 @@
     "recover_password": {
       "title": "Reset your password",
       "email": "Email",
-      "submit": "Submit",
+      "submit": "Reset",
       "cancel": "Cancel",
       "subtext": "We will send you an email to reset your password.",
       "success": "We have sent you an email with a link to update your password."
@@ -418,12 +419,14 @@
       "submit": "Reset Password"
     },
     "register": {
-      "title": "Create Account",
+      "title": "New account",
+      "description": "Create an account",
       "first_name": "First Name",
       "last_name": "Last Name",
       "email": "Email",
       "password": "Password",
       "submit": "Create",
+      "register": "Register",
       "cancel": "Return to Store"
     }
   },

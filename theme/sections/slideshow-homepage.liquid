@@ -23,6 +23,17 @@
 {% if section.blocks.size > 0 %}
 
 {% capture stylesheet %}
+
+/*
+{% if section.settings.slideshow_text_to_content %}
+.bxslider .textWrapper .container .text {
+	border: solid 10px red;
+	max-width: {{ settings.width_max_desktop | plus: 60 }}px !important;
+	margin: 0 auto !important;
+}
+{% endif %}
+*/
+
 .bxslider > li {
 	position: relative;
 	overflow: hidden;

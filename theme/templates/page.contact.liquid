@@ -19,66 +19,52 @@
 
 <div class="container contact{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
 
-  {% section 'page' %}
- 
+<div class="contactholder">
 
-    {% assign heading = 'hidden' %}
-    {% comment %}{% include 'form-contact' with heading %}{% endcomment %}
-    
+<article class="page" id="content" role="article" itemscope itemtype="http://schema.org/Article">
 
-      
+  <main>
+  
+    <header role="banner">
+      <h1>{{ page.title }}</h1>
+    </header>
+
+    <div class="rte" itemprop="articleBody">
+
+      {% section 'pagepart' %}
+
+      {% assign heading = 'hidden' %}
+          
       {% section 'forms' %}
 
-      {% section 'map' %}
+      {% section 'map' %}   
+
+      {% comment %}
+      {% endcomment %} 
       
+    </div> 
 
-    
-    {% comment %}
-    {% form 'contact' %}
+  </main>
+  
+</article>
 
-      {% if form.posted_successfully? %}
-        <p class="form-success">
-          {{ 'contact.form.post_success' | t }}
-        </p>
-      {% endif %}
+<!-- NOTE: Sidebar with separator replacement impacts on page layout, disable if needed -->
+{% if settings.sidesbar_pages %}
+{% include 'sidebars' %}
+{% endif %}
 
-      {{ form.errors | default_errors }}
+  {% comment %}
 
-      <label for="ContactFormName">{{ 'contact.form.name' | t }}</label>
-      <input type="text"
-        name="contact[name]"
-        id="ContactFormName"
-        placeholder="{{ 'contact.form.name' | t }}"
-        value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+    {% section 'page' %} 
 
-      <label for="ContactFormEmail">{{ 'contact.form.email' | t }}</label>
-      <input type="email"
-        name="contact[email]"
-        id="ContactFormEmail"
-        placeholder="{{ 'contact.form.email' | t }}"
-        value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-        spellcheck="false"
-        autocomplete="off"
-        autocapitalize="off">
+    {% assign heading = 'hidden' %}
+        
+    {% section 'forms' %}
 
-      <label for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
-      <input type="tel"
-        name="contact[phone]"
-        id="ContactFormPhone"
-        placeholder="{{ 'contact.form.phone' | t }}"
-        value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-        pattern="[0-9\-]*">
+    {% section 'map' %}
 
-      <label for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
-      <textarea rows="10"
-        name="contact[body]"
-        id="ContactFormMessage"
-        placeholder="{{ 'contact.form.message' | t }}">{%- if form.body -%}{{ form.body }}{%- endif -%}</textarea>
+  {% endcomment %}
 
-      <input type="submit" class="btn" value="{{ 'contact.form.submit' | t }}">
-
-    {% endform %}
-    {% endcomment %}
-
+</div>
 
 </div>

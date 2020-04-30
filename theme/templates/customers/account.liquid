@@ -17,9 +17,7 @@
 {% include 'breadcrumb' %}
 {% endif %}
 
-{% capture sidebar %}{% section 'sidebar' %}{% endcapture %}
-
-<div id="content">
+<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
 
 <h1>{{ 'customer.account.title' | t }}</h1>
 
@@ -66,4 +64,4 @@
 <a href="/account/addresses">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
   
 </div>
-{{ sidebar }}
+

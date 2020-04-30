@@ -9,12 +9,6 @@
 {% assign current_url = page.url %}
 {% when 'page' %}
 {% assign current_url = page.url %}
-{% when 'page.contact' %}
-{% assign current_url = page.url %}
-{% when 'page.gallery' %}
-{% assign current_url = page.url %}
-{% when 'page.cookie.consent' %}
-{% assign current_url = page.url %}
 {% when 'blog' %}
 {% assign current_url = blog.url %}
 {% when 'article' %}
@@ -23,10 +17,22 @@
 {% assign current_url = collection.url %}
 {% when 'product' %}
 {% assign current_url = product.url %}
-{% when 'product.no.cart' %}
-{% assign current_url = product.url %}
-{% when 'product.orderform' %}
-{% assign current_url = product.url %}
-{% when 'product.giftcard' %}
-{% assign current_url = product.url %}
 {% endcase %} 
+{% if template contains 'page.' %}
+{% assign current_url = page.url %}
+{% endif %}
+{% if template contains 'product.' %}
+{% assign current_url = product.url %}
+{% endif %}
+{% if template contains 'blog.' %}
+{% assign current_url = blog.url %}
+{% endif %}
+{% if template contains 'article.' %}
+{% assign current_url = blog.url %}
+{% endif %}
+{% if template contains 'collection.' %}
+{% assign current_url = collection.url %}
+{% endif %}
+{% if template contains 'product.' %}
+{% assign current_url = product.url %}
+{% endif %}

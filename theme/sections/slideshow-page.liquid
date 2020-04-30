@@ -23,6 +23,16 @@
 {% if section.blocks.size > 0 %}
 
 {% capture stylesheet %}
+
+/*
+{% if section.settings.slideshow_text_to_content %}
+.bxslider .textWrapper .container .text {
+	max-width: {{ settings.width_max_desktop | plus: 60 }}px !important;
+	margin: 0 auto;
+}
+{% endif %}
+*/
+
 .bxslider > li {
 	position: relative;
 	overflow: hidden;
@@ -448,7 +458,7 @@ ul.bxslider {
 	}
 	.bxslider .textWrapper > .container {
 		height: 100%;
-		width: 100%;
+		{% unless section.settings.slideshow_text_to_content %}width: 100%;{% endunless %}
 	}
 
 

@@ -3,22 +3,32 @@
 
   {% if section.blocks.size > 0 %}
 
-
   <style>
   {% if section.settings.promotions_width == 'container' %}
   @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
   #shopify-section-{{ section.id }} .container {
     padding: 0;
+    background-color: {{ section.settings.promotions_bg }}; 
   }
+  }
+  {% endif %}
+
+  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
+  @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
+    #shopify-section-{{ section.id }} > h2,
+    #shopify-section-{{ section.id }} > .container > h2 {
+      padding-top:  0;
+      margin-top:  0;
+    }
   }
   {% endif %}
     
   #shopify-section-{{ section.id }} {  
     overflow: hidden;  
     /* border: solid 1px white; */
-    
+   
     {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
-    {% if section.settings.image_position != 'hidden' %}
+    {% if section.settings.image_position != 'hidden' and section.settings.image_bg != nil %}
     {% assign bgsize = 1000 | append: 'x' %}
     background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
       
@@ -58,9 +68,23 @@
     {% endif %}      
     background-color: {{ section.settings.promotions_bg }};
     {% endif %}
+
+
+
   }  
+
+  #shopify-section-{{ section.id }} > h2,
+  #shopify-section-{{ section.id }} > .container > h2 {
+    color: {{ section.settings.promotions_title }};
+    /*
+    padding-top:  0;
+    margin-top:  0;
+    */
+    position: relative;
+    z-index: 3;
+  }
     
-    
+  {% unless section.settings.image_position == 'hidden' %}
   {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
   #shopify-section-{{ section.id }}:before {
       content: '';
@@ -72,6 +96,9 @@
       background-color: {{ section.settings.promotions_bg }};  
       opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
   }
+  {% endif %}
+  {% endunless %}
+  {% if section.settings.image_bg != nil %}
   {% endif %}
 
     
@@ -102,60 +129,72 @@
     {% endunless %}
     font-size: {{ settings.promotions_font_size }}px;
 
-    {% if section.settings.promotions_width != 'overflow' or section.settings.promotions_width == 'page' %}
-    {% if section.settings.image_type == 'background' %}
-    background-size: cover;
-    {% else %}
-    background-color: {{ section.settings.promotions_bg }};
+
+
+
+    {% if section.settings.image_bg != nil %}
+    {% unless section.settings.image_position == 'hidden' %}
+
+        {% if section.settings.promotions_width != 'overflow' or section.settings.promotions_width == 'page' %}
+        {% if section.settings.image_type == 'background' %}
+        background-size: cover;
+        {% else %}    
+        background-color: {{ section.settings.promotions_bg }};
+        {% endif %}
+        {% endif %}
+        
+        
+        
+        {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
+        {% if section.settings.image_position != 'hidden' %}
+        {% assign bgsize = 1000 | append: 'x' %}
+        background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
+          
+          
+        {% if section.settings.image_parallax %}
+        background-position: center -1px; 
+          
+        {% if section.settings.image_position == 'center' %}    
+        background-repeat: no-repeat;
+        {% endif %}
+        {% if section.settings.image_position == 'tile' %}
+        background-repeat: repeat;
+        {% endif %}
+        {% if section.settings.image_position == 'fill' %}   
+        background-size: cover;
+        {% endif %}      
+          
+        {% else %}  
+          
+        {% if section.settings.image_position == 'center' %}    
+        background-position: center center; 
+        background-repeat: no-repeat;
+        {% endif %}
+        {% if section.settings.image_position == 'tile' %}
+        background-position: center center; 
+        background-repeat: repeat;
+        {% endif %}
+        {% if section.settings.image_position == 'fill' %}   
+        background-position: center center; 
+        background-size: cover;
+        {% endif %}
+          
+        {% endif %} 
+          
+          
+          
+        {% endif %}      
+        background-color: {{ section.settings.promotions_bg }};
+        {% endif %} 
+
+
+    {% endunless %}
     {% endif %}
-    {% endif %}
-    
-    
-    
-    {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
-    {% if section.settings.image_position != 'hidden' %}
-    {% assign bgsize = 1000 | append: 'x' %}
-    background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
-      
-      
-    {% if section.settings.image_parallax %}
-    background-position: center -1px; 
-      
-    {% if section.settings.image_position == 'center' %}    
-    background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
-    background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
-    background-size: cover;
-    {% endif %}      
-      
-    {% else %}  
-      
-    {% if section.settings.image_position == 'center' %}    
-    background-position: center center; 
-    background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
-    background-position: center center; 
-    background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
-    background-position: center center; 
-    background-size: cover;
-    {% endif %}
-      
-    {% endif %} 
-      
-      
-      
-    {% endif %}      
-    background-color: {{ section.settings.promotions_bg }};
-    {% endif %}     
+
     
   }
 
+  {% unless section.settings.image_position == 'hidden' %}
   {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
   #shopify-section-{{ section.id }} .promotions:before {
       content: '';
@@ -168,6 +207,9 @@
       opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
   }
   {% endif %}
+  {% endunless %}
+  {% if section.settings.image_bg != nil %}
+  {% endif %}
   
     
   #shopify-section-{{ section.id }} .promotion {
@@ -176,7 +218,8 @@
     position: relative;
     padding: {{ section.settings.promotions_padding }}px;
     background: transparent;
-  }    
+    
+  }
   {% if section.settings.image_type != 'hidden' %}  
   #shopify-section-{{ section.id }} .promotion > img {
     display: block;
@@ -264,10 +307,6 @@
         }
     	{% endif %}
       {% endif %}
-      {% if section.settings.per_row_mobile == 2 %}
-      #shopify-section-{{ section.id }} .promotions {
-      }    
-      {% endif %}
     {% endif %}
     
     #shopify-section-{{ section.id }} .promotions .promotion {  
@@ -280,10 +319,12 @@
 
 	{% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
 
+    {% if section.settings.title != empty %}<h2>{{ section.settings.title }}</h2>{% endif %}
+
     <div class="promotions textcolumns{% if section.settings.image_parallax %} parallax{% endif %}">
     {%- for block in section.blocks -%}
         {% assign imgsize = 400 | append: 'x' %}
-        <div class="promotion item" role="presentation"{% if block.settings.image and section.settings.image_type == 'background' %} style="background: url('{{ block.settings.image | img_url: imgsize }}') {{ block.settings.color_bg }} no-repeat center center;"{% else %} style="background:{{ block.settings.color_bg }}"{% endif %}>
+        <div class="promotion item" role="presentation" style="{% if block.settings.image and section.settings.image_type == 'background' %}background: url('{{ block.settings.image | img_url: imgsize }}') {{ block.settings.color_bg }} no-repeat center center;{% else %}background:{{ block.settings.color_bg }};{% endif %}border: {% if block.settings.border_thickness > 0 %}{{ block.settings.border_thickness }}px{% else %}0{% endif %} solid {{ block.settings.color_border }};">
 
           {% if block.settings.image and section.settings.image_type != 'background' %}
           <img src="{{ block.settings.image | img_url: imgsize }}" />
@@ -311,6 +352,12 @@
     "name": "Text Columns",
 	"class": "parallax",
     "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Text Columns"
+      },
       {
         "type": "select",
         "id": "promotions_width",
@@ -354,15 +401,6 @@
           }
         ],
         "default": "center"
-      },
-      {
-        "type": "range",
-        "id": "per_row",
-        "min": 1,
-        "max": 4,
-        "step": 1,
-        "label": "Columns on desktop",
-        "default": 2
       },
       {
         "type": "range",
@@ -461,6 +499,12 @@
       },
       {
         "type": "color",
+        "id": "promotions_title",
+        "label": "Title color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
         "id": "promotions_text",
         "label": "Text color",
         "default": "#000000"
@@ -532,7 +576,7 @@
             "label": "Heading"
           },
           {
-            "type": "textarea",
+            "type": "richtext",
             "id": "subheading",
             "label": "Text"
           },
@@ -540,23 +584,34 @@
             "type": "url",
             "id": "url",
             "label": "Link URL"
+          },  
+          {
+            "type": "range",
+            "id": "border_thickness",
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "label": "Border thickness",
+            "default": 1
           }, 
           {
-            "type": "header",
-            "content": "Colors"
+            "type": "color",
+            "id": "color_border",
+            "label": "Border color",
+            "default": "#9a9999"
+          }, 
+          {
+            "type": "color",
+            "id": "color_bg",
+            "label": "Background color",
+            "default": "#000000"
           },
           {
             "type": "color",
             "id": "color_text",
             "label": "Text color",
             "default": "#ffffff"
-          },
-          {
-            "type": "color",
-            "id": "color_bg",
-            "label": "Background color",
-            "default": "#000000"
-          }       
+          } 
         ]
       }
     ],

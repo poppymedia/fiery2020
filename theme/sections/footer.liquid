@@ -369,12 +369,23 @@
     {%- endif%}
 
     {% if block.type == 'social' -%}
-    {% assign bodyblocks = bodyblocks | plus: 1 %}
-      <div class="block id="block-{{ bodyblocks }}"">
+      {% assign bodyblocks = bodyblocks | plus: 1 %}
+      {% capture menustyles %}    
+      #footer #block-{{ bodyblocks }} ul {
+        {% if block.settings.footer_social_bullets %}
+        margin-left: 1em;
+        {% else %}
+        list-style: none;
+        margin-left: 0;
+        {% endif %}
+      }
+      {% endcapture %}      
+      {% assign styles = styles | append: menustyles %} 
+      <div class="block" id="block-{{ bodyblocks }}">        
         {% capture heading %}{{ 'general.social.follow_us' | t }}{% endcapture %} 
         {% if heading != blank and section.settings.footer_headings_enable %}<h2>{{ heading }}</h2>{% endif %}
         {%- assign social_accounts = 'Blog, Facebook, GooglePlus, Instagram, LinkedIn, Pinterest, Snapchat, Tumblr, Twitter, Vimeo, YouTube' | split: ', ' -%}
-        <ul{% if block.settings.footer_social_icons %} class="nobullets"{% endif %}>
+        <ul>
         {% for social in social_accounts %}
           {%- assign social_handle = social | handleize -%}
           {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
@@ -1230,13 +1241,20 @@
               "id": "footer_social_text",
               "label": "Show social text",
               "default": true
-			},
+			},      
 			{
               "type": "checkbox",
               "id": "footer_social_icons",
               "label": "Show social icons",
               "default": true
-			}
+			},
+            {
+              "type": "checkbox",
+              "id": "footer_social_bullets",
+              "label": "Show bullets",
+              "default": true
+            }
+
           ]
         },
         {

@@ -17,9 +17,7 @@
 {% include 'breadcrumb' %}
 {% endif %}
 
-{% capture sidebar %}{% section 'sidebar' %}{% endcapture %}
-
-<div id="content">
+<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
   
 <h1>{{ 'customer.activate_account.title' | t }}</h1>
 <p>{{ 'customer.activate_account.subtext' | t }}</p>
@@ -52,4 +50,4 @@
 {% endform %}
   
 </div>
-{{ sidebar }}
+

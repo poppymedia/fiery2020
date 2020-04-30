@@ -1052,6 +1052,26 @@ input[type="submit"],
 	cursor: pointer;
 }
 
+.full, .half, .third {
+	position: relative;
+}
+input.checkbox {
+	/*
+	position: absolute;
+	top: 0.1em;
+	*/
+	position: relative;
+	margin: -0.15em 0 0 0;
+	float: left;
+
+	width: auto;
+	transform: scale(1.3);
+}
+label.checkbox {
+	position: relative;
+	margin-left: 1.5em;
+}
+
 optgroup {
 	font-weight: $font-weight-bold;
 }
@@ -4488,23 +4508,34 @@ aside div.tags .group.checkboxes ul li a {
 @media only screen and (min-width: $grid-large) {
   .sidebars .shopify-section > article,
   .sidebars .shopify-section > main,
-  .sidebars .contact > main {
+  .sidebars .contactholder article {
     float: right;
     width: 70%;
     position: relative;
     /* overflow: hidden; */
   }
-  .sidebars .shopify-section > aside {
+  .sidebars .shopify-section > aside,
+  .sidebars .contactholder aside {
     float: left;
     width: calc(30% - {{ settings.grid_spacing | append: 'px' }});
     position: relative;
     /* overflow: hidden; */
   }
+  .sidebars .contactholder aside h2 {
+    margin-top: 0;
+    padding-top: 0;
+  }
+  .sidebars .contactholder article .shopify-section {
+    clear: both;
+    overflow: hidden;
+    display: block;
+  }
 
 
   @supports (display: grid) {
     .sidebars .container .shopify-section,
-    .sidebars .container #content > .shopify-section {
+    .sidebars .container #content > .shopify-section,
+    .sidebars .contactholder {
       display: grid;
       /* TO DO: Set sidebar column to max width otherwise percentage sidebar looks too wide on large screens */
       grid-template-columns: {{ settings.sidebar_size }}px 1fr;
@@ -4515,16 +4546,17 @@ aside div.tags .group.checkboxes ul li a {
     }
     .sidebars .container .shopify-section > article,
     .sidebars .container .shopify-section > main,
-    .sidebars .contact > main {
+    .sidebars .contactholder article {
       float: none;
       width: auto;
       order: 1;
     }
-    .sidebars .container .shopify-section > aside {
+    .sidebars .container .shopify-section > aside,
+    .sidebars .contactholder aside {
       float: none;
       width: auto;
       order: 0;
-    }  
+    }    
   }
 
 
@@ -4660,8 +4692,8 @@ form:not(.search-box) textarea {
 form:not(.search-box) .full,
 form:not(.search-box) .half,
 form:not(.search-box) .third {
-  padding: {{ settings.button_padding | divided_by: 4 | times: 0.01 }}em 0;
-  
+  padding: 0 0 {{ settings.button_padding | divided_by: 4 | times: 0.01 }}em 0;
+  margin-bottom: 0.2em;
   line-height: 1.25em !important;
 }
 form:not(.search-box) .full label,
@@ -4672,6 +4704,7 @@ form:not(.search-box) .third label {
 }
 form .actions {
 	clear: both;
+  	padding-bottom: 2em !important;
 }
 @include media-query($small) {
   form .text,
@@ -4684,6 +4717,9 @@ form .actions {
     padding: 0 !important;
     margin: 0 !important;
   }
+  form .half,
+  form .third,
+  form .twothirds,
   footer form .text input,
   footer form button {  
     width: 100% !important;
@@ -5315,30 +5351,74 @@ select,
 {% endif %}
 
 @media only screen and (min-width: $grid-medium) {
+  .full {
+  	position: relative;
+  	clear: both;
+  }
   .half {
       float: left;
+      width: 50%;
       display: inline-block;
-      width: 49%;
+   }
+  .half.login {
+      width: 48%;
+   }
+  .half + .half + .half {
+      float: left;
   }
-  .half + .half {
+  .half + .half, 
+  .half + .half + .half + .half, 
+  .half + .half + .half + .half + .half + .half {
       float: right;
   }
   .third {
       float: left;
       display: inline-block;
-      width: 32%;
+      width: 33.33%;
   }
-  .third + .third {
+   .twothirds {
       float: left;
-      margin-left: 2%;
+      display: inline-block;
+      width: 66.66%;
   }
-  .third + .third + .third {
+     
+  .third + .third,
+  .third + .third + .third + .third + .third {
+      float: left;
+  }
+  .third + .third + .third,
+  .third + .third + .third + .third + .third + .third {
       float: right;
   }
+
+  .half.login, 
+  .half.login + .half.login, 
+  .half.login + .half.login + .half.login + .half.login, 
+  .half.login + .half.login + .half.login + .half.login + .half.login + .half.login {
+      width: 45%;
+  }
+  form .half {
+      width: 49%;
+  }
+  form .twothirds {
+      width: 74%;
+  }
+  form .third {
+      width: 32%;
+  }
+  form .third + .third,
+  form .third + .third + .third + .third + .third  {
+      margin-left: 2%;
+  }
+
 }
 @media only screen and (max-width: $grid-medium) {
   .half.img,
-  .half.desc {
+  .half.desc,
+  .third.img,
+  .third.desc,
+  .twothirds.img,
+  .twothirds.desc {
       width: 100% !important;
       margin-left: 0 !important;
   }

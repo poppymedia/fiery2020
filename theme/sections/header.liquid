@@ -509,6 +509,7 @@
     text-align: {% if section.settings.logo_align == 'center' and section.settings.main_linklist_align == 'below' %}center{% else %}{{ section.settings.main_linklist_align }}{% endif %};
   }
 }
+{% assign svgdiff = settings.menu_icon_size | minus: settings.menu_font_size %}
 #{{ nav }} svg,
 #{{ nav }}-two svg {
   width: {{ settings.menu_icon_size }}px;
@@ -522,7 +523,8 @@
   
   /* match  #header .main-menu a */
   margin: -{{ 0.75 | divided_by: 2 }}em 0;
-  
+  margin: -{{ svgdiff }}px 0 0 0 !important;
+
 }
 #{{ nav }} ul ul svg.icon-arrow-down,
 #{{ nav }} ul ul svg.icon-triangle-down {
@@ -3137,7 +3139,7 @@ header .tags {
 		<li data-p="{{ li_count }}" class="search menu {% if template contains 'search' %}site-nav--active {% endif %}search"{% unless template == 'search' %} id="searchhold"{% endunless %}>{{ searchdata }}<a href="/search" class="site-nav__link" id="search">{% if section.settings.search_text_show %}{{ 'search.titles.heading' |t }}{% endif %}{%- if section.settings.search_icon_show %} {% include 'icon-search' %}{% endif -%}</a></li>{% assign showsearchbox = false %}
       {%- endif -%} 
 
-      {% unless showing_cart_icon %}
+      {% if section.settings.icon_links_position == 'menu' %}
         {%- if settings.cart_enable -%}
     		{%- capture cartlink %}{{ cart_setting | strip_newlines | replace: '<a href', '<a class="site-nav__link" id="cart" href' }}{% endcapture -%}
     		{%- capture cartbox %}{% if cartbox %}{% unless template == 'cart' %}<div id="cartbox"></div>{% endunless %}{% endif %}{% endcapture -%}
@@ -3149,9 +3151,11 @@ header .tags {
     		{%- endif -%}
     		{%- endcapture -%}
     		{% assign li_count = li_count | plus: 1 %}
-    		<li data-p="{{ li_count }}" class="{% if template == 'cart' %}site-nav--active {% endif %}cart" id="carthold">{{ cartdata }}</li>
+    		<li data-p="{{ li_count }}" class="{% if template == 'cart' %}site-nav--active {% endif %}cart" id="carthold">{{ cartdata }}</li>{% if section.settings.icon_links_position == 'menu' %}{% endif %}
         {%- endif -%} 
+      {% unless showing_cart_icon %}
       {% endunless %} 
+      {% endif %}
 
       {% unless showing_user_icon %}
         {%- capture accountlink %}{{ user_setting | strip_newlines | replace: '<a href', '<a class="site-nav__link" id="account" href' }}{% endcapture -%}

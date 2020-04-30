@@ -16,6 +16,7 @@
 
 
 
+
 {% capture separator %}
   {% if section.settings.separator_replace and page.content contains section.settings.separator_marker %}
 
@@ -48,15 +49,7 @@
 {{ stylesheet }}
 </style>
 
-<article class="page" id="content" role="article" itemscope itemtype="http://schema.org/Article">
 
-  <main>
-  
-  <header role="banner">
-    <h1>{{ page.title }}</h1>
-  </header>
-
-  <div class="rte" itemprop="articleBody">
 
 
     {% capture get_description %}    
@@ -148,21 +141,14 @@
   		{% endif %}
 
   {% endif %}
-    
-  </div> 
 
-  </main>
+
 
   {% if section.settings.share_buttons != 'hidden' %}
     {% include 'social-sharing', share_title: page.title, share_permalink: page.url, share_image: page, share_status: section.settings.share_buttons %}
   {% endif %}
-  
-</article>
 
-<!-- NOTE: Sidebar with separator replacement impacts on page layout, disable if needed -->
-{% if settings.sidesbar_pages %}
-{% include 'sidebars' %}
-{% endif %}
+
 
 {% schema %}
 {

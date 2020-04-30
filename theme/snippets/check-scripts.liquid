@@ -111,89 +111,94 @@
 {{ header_content }}
 {% endcomment -%}
 
-{% capture get_cookie_body %}
-{% if settings.cookie_enable %}
-{% if template contains 'cookie.consent' %}
-
-{% if check_header_content contains 'Shopify' -%} 
-
 {%- capture r %}
 {% endcapture -%}
 {%- capture rr %}
 
 {% endcapture -%}
 
-{% if settings.cookie_necessary_cookies != '' -%}
-{% capture necessary_cookies -%}
-<li><em>{{ settings.cookie_necessary_cookies | replace: rr, '.</li><li><em>' | replace: r, '</em>' }}.</li>
-{%- endcapture %}
-{%- endif %}
 
-{% if settings.cookie_not_necessary_cookies != '' -%}
-{% capture not_necessary_cookies -%}
-<li><em>{{ settings.cookie_not_necessary_cookies | replace: rr, '.</li><li><em>' | replace: r, '</em>' }}.</li>
-{%- endcapture %}
-{%- endif %}
+{% capture get_cookie_body %}
+{% if settings.cookie_enable %}
+  {% if template contains 'cookie.consent' %}
 
-{% if settings.cookie_third_party_cookies != '' -%}
-{% capture third_party_cookies -%}
-<h3>Third Party</h3>
-<p>These cookies are set by another website domain by technology partners or external web services. Please visit respective domains for further details.</p>
-<ul>
-<li><em>{{ settings.cookie_third_party_cookies | replace: rr, '.</li><li><em>' | replace: r, '</em>' }}.</li>
-</ul>
-{%- endcapture %}
-{%- endif %}
+    {% if check_header_content contains 'Shopify' -%} 
 
-<div class="cookies-list">
- 
-{% if settings.cart_enable -%}
-<h3>Necessary for the {{ 'general.site.shop_ref' | t }} to function</h3>
-<p>These cookies are necessary for the {{ 'general.site.shop_ref' | t }} {{ 'cart.general.shop_ref' | t }} and checkout services to function. They do not store any personally identifiable information.</p>
-<ul>
-<li><em>Name</em>						Function</li>
-<li><em>_ab</em>					 	Used in connection with access to admin.</li>
-<li><em>_orig_referrer</em>			 	Used in connection with shopping cart.</li>
-<li><em>_secure_session_id</em>		 	Used in connection with navigation through a storefront.</li>
-<li><em>Cart</em>					 	Used in connection with shopping cart.</li>
-<li><em>cart_sig</em>				 	Used in connection with checkout.</li>
-<li><em>cart_ts</em>				 	Used in connection with checkout.</li>
-<li><em>checkout_token</em>			 	Used in connection with checkout.</li>
-<li><em>Secret</em>					 	Used in connection with checkout.</li>
-<li><em>Secure_customer_sig</em>	 	Used in connection with customer login.</li>
-<li><em>storefront_digest</em> 			Used in connection with customer login.</li>
-{{ necessary_cookies }}
-</ul>
-{%- endif %}
 
-<h3>Reporting and Analytics</h3>
-<p>These cookies allow measurement and tracking of visitors to help improve services and performance of the {{ 'general.site.shop_ref' | t }}. All information they collect is anonymized.</p>
-<ul>
-<li><em>Name</em>			 			Function</li>
-<li><em>_landing_page</em> 				Tracks landing pages.</li>
-<li><em>_orig_referrer</em> 			Tracks landing pages.</li>
-<li><em>_s</em> 						Shopify analytics.</li>
-<li><em>_shopify_fs</em> 				Shopify analytics.</li>
-<li><em>_shopify_s</em> 				Shopify analytics.</li>
-<li><em>_shopify_sa_p</em> 				Shopify analytics relating to marketing & referrals.</li>
-<li><em>_shopify_sa_t</em> 				Shopify analytics relating to marketing & referrals.</li>
-<li><em>_shopify_uniq</em> 				Shopify analytics.</li>
-<li><em>_shopify_visit</em> 			Shopify analytics.</li>
-<li><em>_shopify_y</em> 				Shopify analytics.</li>
-<li><em>_y</em> 	 					Shopify analytics.</li>
-<li><em>tracked_start_checkout</em> 	Shopify analytics relating to checkout.</li>
-<li><em>{{ cookiefilename }}</em> 		Used to manage customer cookies preference.</li>
-{{ not_necessary_cookies }}
-</ul>
-  
-{{ third_party_cookies }}
-  
-{% if settings.cookie_necessary_cookies == '' and settings.cookie_not_necessary_cookies == '' and settings.cookie_third_party_cookies == '' -%}
-<p>{{ 'general.accessibility.cookie_source_html' | t }}</p>  
-{%- endif %}
-  
-{%- endif %}
-</div>
-{% endif %}
+      {% if settings.cookie_necessary_cookies != '' -%}
+        {% capture necessary_cookies -%}
+        <li><em>{{ settings.cookie_necessary_cookies | replace: rr, '.</li><li><em>' | replace: r, '</em>' }}.</li>
+        {%- endcapture %}
+      {%- endif %}
+
+      {% if settings.cookie_not_necessary_cookies != '' -%}
+        {% capture not_necessary_cookies -%}
+        <li><em>{{ settings.cookie_not_necessary_cookies | replace: rr, '.</li><li><em>' | replace: r, '</em>' }}.</li>
+        {%- endcapture %}
+      {%- endif %}
+
+      {% if settings.cookie_third_party_cookies != '' -%}
+        {% capture third_party_cookies -%}
+        <h3>Third Party</h3>
+        <p>These cookies are set by another website domain by technology partners or external web services. Please visit respective domains for further details.</p>
+        <ul>
+        <li><em>{{ settings.cookie_third_party_cookies | replace: rr, '.</li><li><em>' | replace: r, '</em>' }}.</li>
+        </ul>
+        {%- endcapture %}
+      {%- endif %}
+
+      <div class="cookies-list">
+       
+        {% if settings.cart_enable -%}
+        <h3>Necessary for the {{ 'general.site.shop_ref' | t }} to function</h3>
+        <p>These cookies are necessary for the {{ 'general.site.shop_ref' | t }} {{ 'cart.general.shop_ref' | t }} and checkout services to function. They do not store any personally identifiable information.</p>
+        <ul>
+        <li><em>Name</em>						Function</li>
+        <li><em>_ab</em>					 	Used in connection with access to admin.</li>
+        <li><em>_orig_referrer</em>			 	Used in connection with shopping cart.</li>
+        <li><em>_secure_session_id</em>		 	Used in connection with navigation through a storefront.</li>
+        <li><em>Cart</em>					 	Used in connection with shopping cart.</li>
+        <li><em>cart_sig</em>				 	Used in connection with checkout.</li>
+        <li><em>cart_ts</em>				 	Used in connection with checkout.</li>
+        <li><em>checkout_token</em>			 	Used in connection with checkout.</li>
+        <li><em>Secret</em>					 	Used in connection with checkout.</li>
+        <li><em>Secure_customer_sig</em>	 	Used in connection with customer login.</li>
+        <li><em>storefront_digest</em> 			Used in connection with customer login.</li>
+        {{ necessary_cookies }}
+        </ul>
+        {%- endif %}
+
+        <h3>Reporting and Analytics</h3>
+        <p>These cookies allow measurement and tracking of visitors to help improve services and performance of the {{ 'general.site.shop_ref' | t }}. All information they collect is anonymized.</p>
+        <ul>
+        <li><em>Name</em>			 			Function</li>
+        <li><em>_landing_page</em> 				Tracks landing pages.</li>
+        <li><em>_orig_referrer</em> 			Tracks landing pages.</li>
+        <li><em>_s</em> 						Shopify analytics.</li>
+        <li><em>_shopify_fs</em> 				Shopify analytics.</li>
+        <li><em>_shopify_s</em> 				Shopify analytics.</li>
+        <li><em>_shopify_sa_p</em> 				Shopify analytics relating to marketing & referrals.</li>
+        <li><em>_shopify_sa_t</em> 				Shopify analytics relating to marketing & referrals.</li>
+        <li><em>_shopify_uniq</em> 				Shopify analytics.</li>
+        <li><em>_shopify_visit</em> 			Shopify analytics.</li>
+        <li><em>_shopify_y</em> 				Shopify analytics.</li>
+        <li><em>_y</em> 	 					Shopify analytics.</li>
+        <li><em>tracked_start_checkout</em> 	Shopify analytics relating to checkout.</li>
+        <li><em>{{ cookiefilename }}</em> 		Used to manage customer cookies preference.</li>
+        {{ not_necessary_cookies }}
+        </ul>
+        
+        {{ third_party_cookies }}
+        
+        {% if settings.cookie_necessary_cookies == '' and settings.cookie_not_necessary_cookies == '' and settings.cookie_third_party_cookies == '' -%}
+        <p>{{ 'general.accessibility.cookie_source_html' | t }}</p>  
+        {%- endif %}
+
+        </div>
+
+    {%- endif %}
+
+
+  {% endif %}
 {% endif %}
 {% endcapture %}

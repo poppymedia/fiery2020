@@ -19,7 +19,7 @@
 
 <div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
 
-  <div id="CustomerLoginForm" class="half">
+  <div id="CustomerLoginForm" class="half login">
     <h2>{{ 'customer.login.title' | t }}</h2>
     {% form 'customer_login' %}
 
@@ -61,17 +61,13 @@
 
         <input type="submit" class="btn" value="{{ 'customer.login.sign_in' | t }}">
 
-        <a href="/account/register">
-          {{ 'layout.customer.create_account' | t }}
-        </a>
-
       </div>
 
     {% endform %}
 
   </div>
 
-  <div id="RecoverPasswordForm" class="half">
+  <div id="RecoverPasswordForm" class="half login">
 
     <h2>{{ 'customer.recover_password.title' | t }}</h2>
 
@@ -105,9 +101,11 @@
 
         <input type="submit" class="btn" value="{{ 'customer.recover_password.submit' | t }}">
 
+        <!--
         <a href="/account/login">
           {{ 'customer.recover_password.cancel' | t }}
         </a>
+        -->
 
       </div>
 
@@ -116,11 +114,29 @@
   </div>
 
   {% if shop.checkout.guest_login %}
+  <div class="half login">
     <h2>{{ 'customer.login.guest_title' | t }}</h2>
-
     {% form 'guest_login' %}
       <input type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
     {% endform %}
+  </div>
   {% endif %}
+
+  {% comment %}
+  <div id="CreateCustomerForm" class="half login">
+
+    <h2>{{ 'customer.register.title' | t }}</h2>    
+    {% include 'register' %}
+
+  </div>
+  {% endcomment %}
+
+  <div class="full">
+    <h2>{{ 'customer.register.title' | t }}</h2>
+    <p>{{ 'customer.register.description' | t }}</p>
+    
+      <a href="/account/register" class="btn">{{ 'customer.register.submit' | t }}</a>
+
+  </div>
 
 </div>

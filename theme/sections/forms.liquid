@@ -4,7 +4,10 @@
 {%- assign grid_gutter = font_gutter | remove: 'px' | plus: 0 -%}
 {%- assign form_prefix = 'bh2k20' -%}
 {%- assign form = 'contact' -%} 
-{%- assign email_label = 'contact.form.email' | t -%}
+{%- assign email_label = 'customer.login.email' | t -%}
+{%- assign date_label = 'customer.orders.date' | t -%}
+{%- assign time_label = 'customer.orders.time' | t -%}
+{%- assign phone_label = 'customer.addresses.phone' | t -%}
 
 {% capture fields -%}
 {%- for block in section.blocks -%}
@@ -14,9 +17,23 @@
   {%- assign id = form_prefix | append: name -%}
   {%- assign required = '' -%}
   {%- assign asterisk = ''-%}
+
   {%- assign label_email = email_label | downcase -%}
   {%- assign field_email = label | downcase -%}
+
+  {%- assign label_date = date_label | downcase -%}
+  {%- assign field_date = label | downcase -%}
+
+  {%- assign label_time = time_label | downcase -%}
+  {%- assign field_time = label | downcase -%}
+
+  {%- assign label_phone = phone_label | downcase -%}
+  {%- assign field_phone = label | downcase -%}
+
   {%- if field_email contains label_email -%}{%- assign type = 'email' -%}{%- else -%}{%- assign type = 'text' %}{%- endif -%}
+  {%- if field_date contains label_date -%}{%- assign type = 'date' -%}{%- else -%}{%- assign type = 'text' %}{%- endif -%}
+  {%- if field_time contains label_time -%}{%- assign type = 'time' -%}{%- else -%}{%- assign type = 'text' %}{%- endif -%}
+  {%- if field_phone contains label_phone -%}{%- assign type = 'tel' -%}{%- else -%}{%- assign type = 'text' %}{%- endif -%}
 
   {% if block.settings.type == 'heading' -%}
   <h2 class="{{ id }}">{{ block.settings.title }}</h2>
@@ -26,6 +43,7 @@
   <p class="{{ id }}">{{ block.settings.title }}</p>
   {%- endif %}  
   
+  {% unless block.settings.type == 'heading' or block.settings.type == 'paragraph' %}
   <div class="{{ block.settings.width }}">
 
     {% if block.settings.required -%} 
@@ -34,9 +52,13 @@
     {% assign placeholder = '' %}
     {%- endif %}
 
+    {% if block.settings.type == 'checkbox' or block.settings.type == 'radio' -%}
+    {% assign groupclass = ' class="checkbox"' %}
+    {% endif %}
+
     {% unless section.settings.labels_as_placeholders -%}
-    {% unless block.settings.type == 'heading' or block.settings.type == 'paragraph' %}
-    <label for="{{ id }}">{{ label }}{{ asterisk }}</label>
+    {% unless block.settings.type == 'heading' or block.settings.type == 'paragraph' or block.settings.type == 'radio' or block.settings.type == 'checkbox' %}
+    <label for="{{ id }}"{{ groupclass }}>{{ label }}{{ asterisk }}</label>
     {% endunless %}
     {%- endunless %}
 
@@ -60,12 +82,37 @@
     {% if section.settings.labels_as_placeholders %}{% assign placeholder = '<option>' | append: label | append: '</option>' %}{% endif %}
     {% assign options = block.settings.options | newline_to_br | split: '<br />' %}    
     {% capture optionlist %}{% for option in options %}{% assign opt = option | strip_newlines %}{% assign val = opt | handle %}<option value="{{ val }}">{{ opt }}</option>{% endfor %}{% endcapture %}
-    <select name="{{ name }}" id="{{ id }}" class="{{ block.settings.width }}"{{ required }}>
+    <select name="{{ name }}" id="{{ id }}"{{ required }}>
     {{ placeholder }}{{ optionlist }}
     </select>
     {%- endif %}
+
+    {% if block.settings.type == 'radio' -%}
+    {% assign value = name %}
+    {% assign name = form | append: '[' | append: name | append: ']' %}
+    {% if section.settings.labels_as_placeholders %}{% assign placeholder = '<option>' | append: label | append: '</option>' %}{% endif %}
+    {% assign options = block.settings.options | newline_to_br | split: '<br />' %}    
+    {% capture optionlist %}{% for option in options %}{% assign opt = option | strip_newlines %}{% assign val = opt | handle %}<input value="{{ val }}"{{ groupclass }} id="{{ val }}" name="{{ name }}" type="radio"><label for="{{ val }}"{{ groupclass }}>{{ opt }}</label>{% endfor %}{% endcapture %}
+    <fieldset>
+    <legend>{{ label }}</legend>
+    {{ optionlist }}
+    </fieldset>
+    {%- endif %}
+
+    {% if block.settings.type == 'checkbox' -%}
+    {% assign value = name %}
+    {% assign name = form | append: '[' | append: name | append: ']' %}
+    {% if section.settings.labels_as_placeholders %}{% assign placeholder = '<option>' | append: label | append: '</option>' %}{% endif %}
+    {% assign options = block.settings.options | newline_to_br | split: '<br />' %}    
+    {% capture optionlist %}{% for option in options %}{% assign opt = option | strip_newlines %}{% assign val = opt | handle %}<input value="{{ val }}"{{ groupclass }} id="{{ val }}" name="{{ name }}" type="checkbox"><label for="{{ val }}"{{ groupclass }}>{{ opt }}</label>{% endfor %}{% endcapture %}
+    <fieldset>
+    <legend>{{ label }}</legend>
+    {{ optionlist }}
+    </fieldset>
+    {%- endif %}
      
   </div>
+  {% endunless %}
 
 {%- endfor -%}
 {%- endcapture %}
@@ -84,7 +131,7 @@
  
       {{ fields }}
 
-      <div class="action">
+      <div class="actions">
 
       <button class="btn">{{ section.settings.button_text }}</button>
 
@@ -204,16 +251,16 @@
               "label": "Textarea"
             },
             {
-              "value": "checkbox",
-              "label": "Checkbox"
+              "value": "select",
+              "label": "Select group"
             },
             {
-              "value": "select",
-              "label": "Select"
+              "value": "checkbox",
+              "label": "Checkbox group"
             },
             {
               "value": "radio",
-              "label": "Radio"
+              "label": "Radio group"
             },
             {
               "value": "heading",

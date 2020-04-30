@@ -884,9 +884,9 @@ slate.a11y = {
  * @namespace cart
  */
 
+{% if settings.footer_cookie_enable %}
 slate.cart = {
   
-  {% if settings.footer_cookie_enable %}
   /**
    * Browser cookies are required to use the cart. This function checks if
    * cookies are enabled in the browser.
@@ -899,10 +899,10 @@ slate.cart = {
       cookieEnabled = (document.cookie.indexOf('testcookie') !== -1);
     }
     return cookieEnabled;
-  }
-  {% endif %}
+  }  
 
 };
+{% endif %}
 
 /**
  * Utility helpers

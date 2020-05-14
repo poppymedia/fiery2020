@@ -232,53 +232,57 @@
 
 </style>
 
-<article>
+<article id="content">
 
-  <header role="banner">
-  {% assign collection_title = page_title %}
-  {% capture collection_handle %}{{ collection.handle }}{% endcapture %}
-    
-  {% if section.settingscollections_title %}
-  {% if collection_handle == '' %}{% assign collection_title = 'collections.general.collections_title' | t %}{% endif %}
-  <h1>{{ collection_title }}</h1>
-  {% endif %}
-    
-  </header>
+  <main>
 
-  <div class="rte">
-
-    <div class="products collections {{ class }}">
-
-    {% for collection in collections %}
+    <header role="banner">
+    {% assign collection_title = page_title %}
+    {% capture collection_handle %}{{ collection.handle }}{% endcapture %}
       
-      {% assign show_collection = 'yes' %}
-      {% if section.blocks.size > 0 %}
-        {%- for block in section.blocks -%}
-        	{% if block.type == 'exclusion' %}
-      			{% if block.settings.collection == collection.handle %}{% assign show_collection = 'no' %}{% endif %}
-      		{% endif %}
-        {%- endfor -%}
-      {% endif %}
+    {% if section.settingscollections_title %}
+    {% if collection_handle == '' %}{% assign collection_title = 'collections.general.collections_title' | t %}{% endif %}
+    <h1>{{ collection_title }}</h1>
+    {% endif %}
+      
+    </header>
 
-      {% if show_collection == 'yes' %}
-      {% include 'grid-collection' %}
-      {% endif %}
+    <div class="rte">
 
-    {% endfor %}
+      <div class="products collections {{ class }}">
 
-    {{ fillrow }}
+      {% for collection in collections %}
+        
+        {% assign show_collection = 'yes' %}
+        {% if section.blocks.size > 0 %}
+          {%- for block in section.blocks -%}
+          	{% if block.type == 'exclusion' %}
+        			{% if block.settings.collection == collection.handle %}{% assign show_collection = 'no' %}{% endif %}
+        		{% endif %}
+          {%- endfor -%}
+        {% endif %}
 
-    </div> 
+        {% if show_collection == 'yes' %}
+        {% include 'grid-collection' %}
+        {% endif %}
+
+      {% endfor %}
+
+      {{ fillrow }}
+
+      </div> 
 
 
 
-{%- if section.settings.section_line_size > 0 -%}
-<div class="divide"></div>
-{%- endif -%}
+  {%- if section.settings.section_line_size > 0 -%}
+  <div class="divide"></div>
+  {%- endif -%}
 
 
-    
-  </div>
+      
+    </div>
+
+  </main>
   
 </article>
 

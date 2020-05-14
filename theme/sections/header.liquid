@@ -1301,6 +1301,24 @@
   
   
   
+
+
+/* TESTING */
+{% if section.settings.logo_align_mobile == 'left' and section.settings.main_linklist_align_mobile == 'right' %}
+@media only screen and (max-width: {{ grid_mobile | minus: 1 | remove: 'px' | append: 'px' }}) {
+    #header .container header .brand img {
+      min-width: {{ settings.logo_size_mobile }}px !important;
+      max-width: {{ settings.logo_size_mobile }}px !important;
+      width: {{ settings.logo_size_mobile }}px !important;
+    }
+    #header #cart {
+      position:  absolute !important;
+      left: auto !important;
+      right: 60px !important;
+      /* margin-top:  -5px !important; */
+    }
+}
+{% endif %}  
   
   
   

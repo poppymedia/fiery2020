@@ -50,7 +50,18 @@
   {{ output }}
   
   {% if settings.sidesbar_sidepages %}
+  {% if template contains 'page' %}
   {% assign sidebar_page = 'sidebar-' | append: page.handle %}
+  {% endif %}
+  {% if template contains 'blog' %}
+  {% assign sidebar_page = 'sidebar-' | append: blog.handle %}
+  {% endif %}
+  {% if template contains 'article' %}
+  {% assign sidebar_page = 'sidebar-' | append: blog.handle %}
+  {% endif %}
+  {% if template contains 'cart' %}
+  {% assign sidebar_page = 'sidebar-' | append: page.handle %}
+  {% endif %}
   {% if sidebar_page %}
   	{{ pages[sidebar_page].content }}
   	{% comment %}{% section '{{ sidebar_section }}' %}{% endcomment %}

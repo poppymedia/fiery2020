@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Simply Fiery",
-    "theme_version": "0.6.2",
+    "theme_version": "0.6.3",
     "theme_author": "Blue Horizons",
     "theme_documentation_url": "https:\/\/shopify.bluehorizonsmarketing.co.uk",
     "theme_support_url": "https:\/\/bluehorizonsmarketing.slack.com\/help"
@@ -286,7 +286,7 @@
         "id": "tables_group",
         "label": "Group on mobile",
         "default": true
-      },      
+      },
       {
         "type": "header",
         "content": "Buttons"
@@ -377,7 +377,29 @@
         "id": "sidesbar_sidepages",
         "label": "Embed sidebar pages",
         "default": true,
-        "info": "Example: If page title is 'Contact us' and handle is 'contact-us', creating a page called 'Sidebar\/Contact us' with handle 'sidebar-contact-us' will display that sidebar page in sidebar of that page."
+        "info": "Example: If page title is 'Contact us' and handle is 'contact-us', creating a page called 'Sidebar \/ Contact us' with handle 'sidebar-contact-us' will display that sidebar page in sidebar of that page."
+      },
+      {
+        "type": "header",
+        "content": "Footer content"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_pages",
+        "label": "Footer on other pages",
+        "default": false
+      },
+      {
+        "id": "footer_content",
+        "type": "url",
+        "label": "Footer content"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_sidepages",
+        "label": "Embed footer pages",
+        "default": true,
+        "info": "Example: If page title is 'Contact us' and handle is 'contact-us', creating a page called 'Footer \/ Contact us' with handle 'footer-contact-us' will display that footer page in bottom of that page."
       },
       {
         "type": "header",
@@ -1761,6 +1783,12 @@
       },
       {
         "type": "color",
+        "id": "color_blog_grid_readmore_link",
+        "label": "Grid post read more link",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
         "id": "color_blog_list_bg",
         "label": "List post background",
         "default": "#ffffff"
@@ -1793,6 +1821,12 @@
         "type": "color",
         "id": "color_blog_list_text",
         "label": "List post text",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "color_blog_list_readmore_link",
+        "label": "List post read more link",
         "default": "#222222"
       },
       {
@@ -2892,7 +2926,7 @@
       {
         "type": "select",
         "id": "gift_card_redemption",
-        "label": "Gift cards / vouchers",
+        "label": "Gift cards \/ vouchers",
         "info": "Redemption type. [EU directive](https:\/\/www.gov.uk\/government\/publications\/vat-treatment-of-vouchers)",
         "options": [
           {
@@ -3009,6 +3043,12 @@
         "type": "checkbox",
         "id": "cart_remove",
         "label": "Show remove buttons",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_agreement",
+        "label": "Show agreement checkbox",
         "default": true
       },
       {

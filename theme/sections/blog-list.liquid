@@ -309,6 +309,15 @@
 .products.grid .item:hover {
   background: {{ settings.color_blog_grid_bg_hover }}; 
 } 
+
+
+
+.products.collection.grid .item .link.read_more {
+  color: {{ settings.color_blog_list_readmore_link }};
+}
+
+
+
 .products.collection.grid .item .more form.readmore button.btn,
 .products.collection.grid .item .readmore .link {
   float: left !important;
@@ -781,131 +790,173 @@ aside div.tags div.group ul {
 {% endcomment %}
 
 
+{% if section.settings.read_more == 'expand' %}
+.js .list .expand {
+    display:  block;
+    width:  100%;
+}
+.js .list .expand p,
+.js .list .expand div {
+    display:  block;
+    width:  100%;
+}
+.js .list .accordian {
+    cursor: pointer;
+    transition: {{ settings.transition_duration | divided_by: 10.00 }}s;  
+    display:  block;
+    position:  relative;  
+}
+.js .list .accordian:after {
+    content:  '\2795';
+    float:  right;
+    margin-left:  1em;
+    
+}
+.js .list .accordian.active:after {
+    content: "\2796"; 
+}
+.js .list .panel {
+    opacity:  0;
+    overflow:  hidden;
+    max-height:  0;
+    transition: {{ settings.transition_duration | divided_by: 10.00 }}s ease-in-out;
+}
+
+.js .list .panel.show {
+    opacity: 1;
+    max-height: 1000px; /* Whatever you like, as long as its more than the height of the content (on all screen sizes) */
+}
+{% endif %}
+}
   
 </style>
 
 <article class="page" id="content" role="article" itemscope itemtype="http://schema.org/Article">
-  
-{% capture fillrow %}
-{% unless template contains '.list' %}
-{% unless section.settings.row_justify %} 
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-{% endunless %}
-{% endunless %}
-{% endcapture %}
 
-  {% assign collection_title = blog.title %}
-  {% assign collection_url = blog.url %}
-  {% if blog.handle == 'all' %}{% assign collection_title = 'products.general.products_title' | t %}{% assign collection_url = 'all' %}{% endif %}
- 
-  {% capture filters %}
-    {% assign tagsactive = 0 %}
-    <div class="tags">
-      
-    <!-- TO DO: Add collection 'all' handle to URL when in all collection -->
-    {% if blog.tags.size > 0 %}
-      <ul class="tags">
-        {% for tag in blog.all_tags %}
-          <li>
-            <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %} {% endunless %}
-          </li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-      
-    </div>
-  {% endcapture %}
-  {% assign filters = filters | strip_newlines | replace: '"all/', '"/collections/all/' %}
+  <main>
+     
+    {% capture fillrow %}
+    {% unless template contains '.list' %}
+    {% unless section.settings.row_justify %} 
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    {% endunless %}
+    {% endunless %}
+    {% endcapture %}
 
-  <header role="banner">
-    
-    {% if section.settings.heading %}
-    <h1>{{ collection_title }}</h1>
-    {% endif %}
-    
-    {% if blog.description != blank %}
-      <div class="rte">
-        {{ blog.description }}
-      </div>
-    {% endif %}
-    
-    {% comment %}{% include 'grid-sortbar' %}{% endcomment %}
-    
-    {% if section.settings.layout_grid_list != 'hidden' %}
-    {% assign tooltype = blog %}
-    {% include 'grid-toolbar' with tooltype %}
-    {% endif %}
+      {% assign collection_title = blog.title %}
+      {% assign collection_url = blog.url %}
+      {% if blog.handle == 'all' %}{% assign collection_title = 'products.general.products_title' | t %}{% assign collection_url = 'all' %}{% endif %}
+     
+      {% capture filters %}
+        {% assign tagsactive = 0 %}
+        <div class="tags">
+          
+        <!-- TO DO: Add collection 'all' handle to URL when in all collection -->
+        {% if blog.tags.size > 0 %}
+          <ul class="tags">
+            {% for tag in blog.all_tags %}
+              <li>
+                <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %} {% endunless %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+          
+        </div>
+      {% endcapture %}
+      {% assign filters = filters | strip_newlines | replace: '"all/', '"/collections/all/' %}
 
-    {% comment %}
-    <h2>Tags in Blog</h2>
-    <ul>
-    {% for tag in blog.all_tags %}  
-    {{ tag }}
-    {% endfor %} 
-    </ul>
-    {% endcomment %} 
-    
-    {% if section.settings.tags_position == 'HEADER' %}{{ filters }}{% endif %}
-    
-  </header>
+      <header role="banner">
+        
+        {% if section.settings.heading %}
+        <h1>{{ collection_title }}</h1>
+        {% endif %}
+        
+        {% if blog.description != blank %}
+          <div class="rte">
+            {{ blog.description }}
+          </div>
+        {% endif %}
+        
+        {% comment %}{% include 'grid-sortbar' %}{% endcomment %}
+        
+        {% if section.settings.layout_grid_list != 'hidden' %}
+        {% assign tooltype = blog %}
+        {% include 'grid-toolbar' with tooltype %}
+        {% endif %}
 
-{% assign perpage = section.settings.products %}
-{% paginate blog.articles by perpage %}
+        {% comment %}
+        <h2>Tags in Blog</h2>
+        <ul>
+        {% for tag in blog.all_tags %}  
+        {{ tag }}
+        {% endfor %} 
+        </ul>
+        {% endcomment %} 
+        
+        {% if section.settings.tags_position == 'HEADER' %}{{ filters }}{% endif %}
+        
+      </header>
 
-  {% if section.settings.pagination_top %}
-  {% if paginate.pages > 1 %}
-        {% assign position = 'top' %}
-            {% include 'pagination' with position %}
-  {% endif %}
-  {% endif %}
+    {% assign perpage = section.settings.products %}
+    {% paginate blog.articles by perpage %}
 
-  <div class="products collection grid{{ class }}{% if section.settings.tags_position contains 'TOP' or section.settings.tags_position contains 'BOTTOM' %} sidegap{% endif %}">
-
-  {% for article in blog.articles %}
-
-      {% include 'grid-article' %}
-    
-  {% else %}
-    
-      {% if blog.handle == 'all' and blog.all_vendors.size == 0 and blog.all_types.size == 0 %}
-        {% for i in (1..8) %}
-          <a href="#">
-            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-            {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
-          </a>
-
-          <p>
-            <a href="#">{{ 'homepage.onboarding.product_title' | t }}</a>
-          </p>
-
-          <p>
-            {{ 1999 | money }}
-          </p>
-        {% endfor %}
-      {% else %}
-     {% assign noproducts = true %}
+      {% if section.settings.pagination_top %}
+      {% if paginate.pages > 1 %}
+            {% assign position = 'top' %}
+                {% include 'pagination' with position %}
+      {% endif %}
       {% endif %}
 
-  {% endfor %}
+      <div class="products collection grid{{ class }}{% if section.settings.tags_position contains 'TOP' or section.settings.tags_position contains 'BOTTOM' %} sidegap{% endif %}">
 
-  {{ fillrow }}
+      {% for article in blog.articles %}
 
-  </div>  
-    
-  {% if section.settings.pagination_bottom %}
-  {% if paginate.pages > 1 %}
-        {% assign position = 'bottom' %}
-     <div style="clear:both;overflow:hidden;height:0;padding:0;"></div>
-            {% include 'pagination' with position %}
-  {% endif %}
-  {% endif %}
+          {% include 'grid-article' %}
+        
+      {% else %}
+        
+          {% if blog.handle == 'all' and blog.all_vendors.size == 0 and blog.all_types.size == 0 %}
+            {% for i in (1..8) %}
+              <a href="#">
+                {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+              </a>
 
-{% endpaginate %}
+              <p>
+                <a href="#">{{ 'homepage.onboarding.product_title' | t }}</a>
+              </p>
+
+              <p>
+                {{ 1999 | money }}
+              </p>
+            {% endfor %}
+          {% else %}
+         {% assign noproducts = true %}
+          {% endif %}
+
+      {% endfor %}
+
+      {{ fillrow }}
+
+      </div>  
+        
+      {% if section.settings.pagination_bottom %}
+      {% if paginate.pages > 1 %}
+            {% assign position = 'bottom' %}
+         <div style="clear:both;overflow:hidden;height:0;padding:0;"></div>
+                {% include 'pagination' with position %}
+      {% endif %}
+      {% endif %}
+
+    {% endpaginate %}
+
+  </main>
   
 </article>
 
@@ -934,6 +985,34 @@ jQuery('.tags .group h4').click(function() {
 });
 </script>
 {% endif %}
+
+
+{% if section.settings.read_more == 'expand' %}
+<script>
+document.addEventListener('DOMContentLoaded', function(event) { 
+  var acc = document.getElementsByClassName('accordian');
+  var panel = document.getElementsByClassName('panel');
+  for (var i = 0; i < acc.length; i++) {
+      acc[i].onclick = function() {
+          var setClasses = !this.classList.contains('active');
+          setClass(acc, 'active', 'remove');
+          setClass(panel, 'show', 'remove');
+
+          if (setClasses) {
+              this.classList.toggle('active');
+              this.nextElementSibling.classList.toggle('show');
+          }
+      }
+  }
+  function setClass(els, className, fnName) {
+      for (var i = 0; i < els.length; i++) {
+          els[i].classList[fnName](className);
+      }
+  }
+});
+</script>
+{% endif %}
+
 
 {% include 'check-cart' %}
 
@@ -1169,6 +1248,14 @@ jQuery('.tags .group h4').click(function() {
              "label": "Hidden"
            },
            {
+             "value": "text",
+             "label": "Text"
+           },
+           {
+             "value": "expand",
+             "label": "Expand"
+           },
+           {
              "value": "link",
              "label": "Link"
            },
@@ -1178,12 +1265,16 @@ jQuery('.tags .group h4').click(function() {
            }
         ],
         "default": "link"
-      },
+      },      
       {
         "type": "select",
         "id": "tags_position",
         "label": "Tags position",
         "options": [
+           {
+             "value": "hidden",
+             "label": "Hidden"
+           },
            {
              "value": "HEADER",
              "label": "Header"

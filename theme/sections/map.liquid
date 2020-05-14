@@ -3,7 +3,6 @@
 {% assign font_gutter = settings.grid_spacing | append: 'px' %}
 {% assign grid_gutter = font_gutter | remove: 'px' | plus: 0 %}
 
-{% capture maps %}
 {%- for block in section.blocks -%}
 <div class="map">
   {% if block.settings.embed != empty %}
@@ -13,7 +12,6 @@
   {% endif %}
 </div>
 {%- endfor %}
-{% endcapture %}
 
 <style>
   .map-section .map {
@@ -34,22 +32,6 @@
   */
 </style>
 
-
-    <p class="map">
-      <label>{{ 'contact.form.map' | t }}</label>
-      
-      {% comment %}
-      {% capture map %}
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2462.183242217219!2d-2.0775222481786!3d51.894119990074245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48711bbcd00ea2ad%3A0x31b7e705572e777b!2sBlue+Horizons+Marketing!5e0!3m2!1sen!2suk!4v1541153619274" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-      {% endcapture %}
-      {{ map }}
-      {% endcomment %}
-      
-      {{ maps }}
-      
-    </p>
-
-
 {% endif %}
 
 {% schema %}
@@ -68,7 +50,7 @@
       "label": "Width",
       "default": 100
     },
-  {
+	{
       "type": "range",
       "id": "height",
       "min": 250,
@@ -78,7 +60,7 @@
       "label": "Height",
       "default": 500
     },
-  {
+	{
       "type": "range",
       "id": "mobile_height",
       "min": 250,

@@ -18,9 +18,10 @@
 {% if demo_content %}{% assign content = demo_content %}{% endif %}
 
   {% capture readmore -%}
-         {%- if section.settings.read_more == 'link' -%}<span class="link read_more visually-shown"{{ more_visibility }}>{%- endif -%}
-         {%- if section.settings.read_more == 'button' -%}<span class="btn read_more visually-shown"{{ more_visibility }}>{%- endif -%}<!-- {{ 'blogs.article.read_more' | t }} -->{%- if section.settings.read_more == 'button' -%}</span>{%- endif -%}
-         {% if section.settings.read_more == 'link' %}</span>{% endif -%}
+        {%- if section.settings.read_more == 'text' -%}{{ 'blogs.article.read_more' | t }}{%- endif -%}
+        {%- if section.settings.read_more == 'link' -%}<span class="link read_more visually-shown"{{ more_visibility }}>{%- endif -%}
+        {%- if section.settings.read_more == 'button' -%}<span class="btn read_more visually-shown"{{ more_visibility }}>{%- endif -%}<!-- {{ 'blogs.article.read_more' | t }} -->{%- if section.settings.read_more == 'button' -%}</span>{%- endif -%}
+        {% if section.settings.read_more == 'link' %}</span>{% endif -%}
   {%- endcapture %}
 
     <!-- TO DO: Needs to work with whole product linked -->
@@ -80,11 +81,12 @@
 
         {%- capture get_title -%}
           {% if section.settings.title -%}
-          <span class="title">
+          {% if section.settings.read_more == 'expand' %}{% assign d = 'p' %}{% else %}{% assign d = 'span' %}{% endif %}
+          <{{ d }} class="title{%- if section.settings.read_more == 'expand' %} accordian{% endif %}">
 
               {{ title }}
 
-          </span>
+          </{{ d }}>
           {%- endif %} 
         {%- endcapture -%}      
     
@@ -123,7 +125,7 @@
         {%- endif %}
 
 
-        <div class="summary">
+        <div class="summary{%- if section.settings.read_more == 'expand' %} expand{%- endif -%}">
 
           {% if section.settings.layout_grid_prominent_feature != 'title' and section.settings.layout_grid_prominent_feature == 'image_title' -%}
           {{ get_title }}
@@ -196,7 +198,7 @@
           {% unless section.settings.layout_grid_prominent_feature == 'date' %}{{ get_date }}{% endunless %}   
 
           {% if section.settings.description -%}
-          <p class="content">
+          <p class="content{%- if section.settings.read_more == 'expand' %} panel{% endif %}">
             {% comment %}{{ content | strip_html | truncatewords: 100 }}{% endcomment %}
             {% assign content = content | strip_html %}            
             {% if section.settings.description_paragraph %}
@@ -214,7 +216,9 @@
           
         </div>  
              
+        {%- unless section.settings.read_more == 'expand' %}
         <a href="{{ article.url }}"><span class="visually-hidden">{{ 'blogs.article.read_more' | t }}</span></a> 
+        {%- endunless -%}
 
         <div class="more">
           

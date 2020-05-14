@@ -291,7 +291,8 @@
       "continue_browsing_html": "Continue shopping",
       "continue_browsing_url": "\/",
       "item_quantity": "Item quantity",
-      "savings": "You are saving"
+      "savings": "You are saving",
+      "agreement_html": "I have read and accept the <a href=\"\/policies\/privacy-policy\">privacy policy</a> terms."
     },
     "label": {
       "product": "Product",

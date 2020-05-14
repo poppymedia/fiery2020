@@ -778,256 +778,258 @@
   
 </style>
 
-<article>
-  
-{% capture fillrow %}
-{% unless template contains '.list' %}
-{% unless section.settings.row_justify %} 
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-<div class="item fillrow"></div>
-{% endunless %}
-{% endunless %}
-{% endcapture %}
+<article id="content">
 
-  {% assign collection_title = collection.title %}
-  {% assign collection_url = collection.url %}
-  {% if collection.handle == 'all' %}{% assign collection_title = 'products.general.products_title' | t %}{% assign collection_url = 'all' %}{% endif %}
- 
-  {% capture filters %}
-  {% if section.settings.tags_position != 'hidden' %}
-    {% assign tagsactive = 0 %}
-    <div class="tags">
+  <main>
       
-    <!-- TO DO: Add collection 'all' handle to URL when in all collection -->
-      
-    {% if section.blocks.size > 0 %}
-      {% assign tagsinblock = 0 %}
-      {% capture tagblock %}
-      {% assign groupid = 0 %}
-      {% for block in section.blocks %}
-          {% capture group %}
-          <div class="group {% if section.settings.tags_style == 'dropdown' or section.settings.tags_style == 'expand' %}expand {% if section.settings.menus_elastic %}elastic {% endif %}{% endif %}{{ block.settings.type }}{% if section.settings.tags_style == 'dropdown' %} has-submenu{% endif %}" style="z-index:{{ section.blocks.size | minus: groupid }}">
-          <h4>{{ block.settings.title }}{% if arrowshape != 'hidden' %}{% if section.settings.tags_style != 'block' %}{%- include iconshape -%}{% endif %}{% endif %}</h4>
-          {% assign tags = block.settings.tags | replace: "
-", ', ' %}
-          {% assign tag_array = tags | split: ", " %}
-          <ul>
-            {% for tag in tag_array %}
-            
-                {% if collection.all_tags contains tag %}
+    {% capture fillrow %}
+    {% unless template contains '.list' %}
+    {% unless section.settings.row_justify %} 
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    <div class="item fillrow"></div>
+    {% endunless %}
+    {% endunless %}
+    {% endcapture %}
 
-                  {% assign tag_x = '+' | append: tag %}
-                  {% assign tag_u = '/' | append: tag %}
-                  {% capture tags_current %}{% for tag in current_tags %}+{{ tag }}{% endfor %}{% endcapture %}        
-                  {% if current_tags contains tag %}
-                    <li class="active">
-                      {% assign tagsactive = tagsactive | plus: 1 %}
-                      {% assign tag_url = collection_url | append: '/' | append: tags_current | remove: tag_x %}
-                      <a href="{{ tag_url | replace: tag_u, '/' | replace: '/+', '/' }}">{{ tag }}</a>
-                    </li>
-                  {% else %}
-                    <li>              
-                      {% assign tag_url = collection_url | append: '/' | append: tags_current | append: tag_x %}
-                      <a href="{{ tag_url | replace: '/+', '/' }}">{{ tag }}</a>
-                    </li>
+      {% assign collection_title = collection.title %}
+      {% assign collection_url = collection.url %}
+      {% if collection.handle == 'all' %}{% assign collection_title = 'products.general.products_title' | t %}{% assign collection_url = 'all' %}{% endif %}
+     
+      {% capture filters %}
+      {% if section.settings.tags_position != 'hidden' %}
+        {% assign tagsactive = 0 %}
+        <div class="tags">
+          
+        <!-- TO DO: Add collection 'all' handle to URL when in all collection -->
+          
+        {% if section.blocks.size > 0 %}
+          {% assign tagsinblock = 0 %}
+          {% capture tagblock %}
+          {% assign groupid = 0 %}
+          {% for block in section.blocks %}
+              {% capture group %}
+              <div class="group {% if section.settings.tags_style == 'dropdown' or section.settings.tags_style == 'expand' %}expand {% if section.settings.menus_elastic %}elastic {% endif %}{% endif %}{{ block.settings.type }}{% if section.settings.tags_style == 'dropdown' %} has-submenu{% endif %}" style="z-index:{{ section.blocks.size | minus: groupid }}">
+              <h4>{{ block.settings.title }}{% if arrowshape != 'hidden' %}{% if section.settings.tags_style != 'block' %}{%- include iconshape -%}{% endif %}{% endif %}</h4>
+              {% assign tags = block.settings.tags | replace: "
+    ", ', ' %}
+              {% assign tag_array = tags | split: ", " %}
+              <ul>
+                {% for tag in tag_array %}
+                
+                    {% if collection.all_tags contains tag %}
+
+                      {% assign tag_x = '+' | append: tag %}
+                      {% assign tag_u = '/' | append: tag %}
+                      {% capture tags_current %}{% for tag in current_tags %}+{{ tag }}{% endfor %}{% endcapture %}        
+                      {% if current_tags contains tag %}
+                        <li class="active">
+                          {% assign tagsactive = tagsactive | plus: 1 %}
+                          {% assign tag_url = collection_url | append: '/' | append: tags_current | remove: tag_x %}
+                          <a href="{{ tag_url | replace: tag_u, '/' | replace: '/+', '/' }}">{{ tag }}</a>
+                        </li>
+                      {% else %}
+                        <li>              
+                          {% assign tag_url = collection_url | append: '/' | append: tags_current | append: tag_x %}
+                          <a href="{{ tag_url | replace: '/+', '/' }}">{{ tag }}</a>
+                        </li>
+                      {% endif %}
+
+                    {% endif %}
+                
+                {% endfor %}       
+              </ul>    	
+              </div>   
+              {% assign tagsinblock = tagsinblock | plus: 1 %}
+              {% assign groupid = groupid | plus: 1 %}
+              {% endcapture %}
+          
+              {% unless group contains 'class="active"' %}{{ group }}{% else %}{{ group | replace: 'class="group', 'class="group open' }}{% endunless %}
+          
+          {% endfor %}
+          
+          {% if section.settings.tagvendors %}
+          
+              {% assign counter = 0 %}
+              {% for vendor in shop.vendors %}
+                {% assign counter = counter | plus: 1 %}
+              {% endfor %}
+              {% assign counter_divided_by_3 = counter | divided_by: 3 | floor %}   
+
+              {% if counter > 0 %}
+              <div class="group {% if section.settings.tags_style == 'dropdown' or section.settings.tags_style == 'expand' %}expand {% if section.settings.menus_elastic %}elastic {% endif %}{% endif %}checkboxes{% if section.settings.tags_style == 'dropdown' %} has-submenu{% endif %}" style="z-index:{{ section.blocks.size | minus: groupid }}">
+              <h4>{{ 'products.general.vendors_title' | t }}{% if arrowshape != 'hidden' %}{%- include iconshape -%}{% endif %}</h4>  
+              <ul>
+                
+                  {% for product_vendor in shop.vendors %}
+                  {% assign its_a_match = false %}
+                  {% capture my_collection_handle %} {{ product_vendor | handleize | strip | escape  }} {% endcapture %}
+                  {% assign my_collection_handle_stripped = my_collection_handle | strip | escape %}
+                
+                  {% for collection in collections %}
+                  {% if my_collection_handle_stripped == collection.handle %}
+                  {% assign its_a_match = true %}
                   {% endif %}
+                  {% endfor %}
 
-                {% endif %}
-            
-            {% endfor %}       
-          </ul>    	
-          </div>   
-          {% assign tagsinblock = tagsinblock | plus: 1 %}
-          {% assign groupid = groupid | plus: 1 %}
+                  {% assign showvendor = 'true' %}{% if product_vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}
+                  {% if showvendor == 'true' %}            
+
+                      {% if its_a_match %}
+                        <li><a href="/collections/{{ product_vendor | handleize }}">{{ product_vendor }}</a></li>
+                      {% else %}
+                        <li><a href="/collections/vendors?q={{ product_vendor}}">{{ product_vendor}}</a></li>
+                      {% endif %}
+
+                  {% endif %}            
+                
+                  {% endfor %}
+
+              </ul>
+              </div>
+              {% endif %} 
+          
+          {% endif %}      
+          
           {% endcapture %}
-      
-          {% unless group contains 'class="active"' %}{{ group }}{% else %}{{ group | replace: 'class="group', 'class="group open' }}{% endunless %}
-      
-      {% endfor %}
-      
-      {% if section.settings.tagvendors %}
-      
-          {% assign counter = 0 %}
-          {% for vendor in shop.vendors %}
-            {% assign counter = counter | plus: 1 %}
-          {% endfor %}
-          {% assign counter_divided_by_3 = counter | divided_by: 3 | floor %}   
-
-          {% if counter > 0 %}
-          <div class="group {% if section.settings.tags_style == 'dropdown' or section.settings.tags_style == 'expand' %}expand {% if section.settings.menus_elastic %}elastic {% endif %}{% endif %}checkboxes{% if section.settings.tags_style == 'dropdown' %} has-submenu{% endif %}" style="z-index:{{ section.blocks.size | minus: groupid }}">
-          <h4>{{ 'products.general.vendors_title' | t }}{% if arrowshape != 'hidden' %}{%- include iconshape -%}{% endif %}</h4>  
-          <ul>
-            
-              {% for product_vendor in shop.vendors %}
-              {% assign its_a_match = false %}
-              {% capture my_collection_handle %} {{ product_vendor | handleize | strip | escape  }} {% endcapture %}
-              {% assign my_collection_handle_stripped = my_collection_handle | strip | escape %}
-            
-              {% for collection in collections %}
-              {% if my_collection_handle_stripped == collection.handle %}
-              {% assign its_a_match = true %}
-              {% endif %}
+          {% if tagsinblock > 0 %}
+              {{ tagblock }}
+          {% endif %}
+        {% else %}    
+          {% if section.settings.tags %}
+          {% if collection.all_tags.size > 0 %}
+          	<div class="group">
+            <ul>
+              {% for tag in collection.all_tags %}
+                {% assign tag_x = '+' | append: tag %}
+                {% assign tag_u = '/' | append: tag %}
+                {% capture tags_current %}{% for tag in current_tags %}+{{ tag }}{% endfor %}{% endcapture %}        
+                {% if current_tags contains tag %}
+                  <li class="active">
+                    {% assign tagsactive = tagsactive | plus: 1 %}
+                    {% assign tag_url = collection_url | append: '/' | append: tags_current | remove: tag_x %}
+                    <a href="{{ tag_url | replace: tag_u, '/' | replace: '/+', '/' }}">{{ tag }}</a>
+                  </li>
+                {% else %}
+                  <li>              
+                    {% assign tag_url = collection_url | append: '/' | append: tags_current | append: tag_x %}
+                    <a href="{{ tag_url | replace: '/+', '/' }}">{{ tag }}</a>
+                  </li>
+                {% endif %}
               {% endfor %}
-
-              {% assign showvendor = 'true' %}{% if product_vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}
-              {% if showvendor == 'true' %}            
-
-                  {% if its_a_match %}
-                    <li><a href="/collections/{{ product_vendor | handleize }}">{{ product_vendor }}</a></li>
-                  {% else %}
-                    <li><a href="/collections/vendors?q={{ product_vendor}}">{{ product_vendor}}</a></li>
-                  {% endif %}
-
-              {% endif %}            
-            
-              {% endfor %}
-
-          </ul>
-          </div>
-          {% endif %} 
-      
-      {% endif %}      
-      
-      {% endcapture %}
-      {% if tagsinblock > 0 %}
-          {{ tagblock }}
-      {% endif %}
-    {% else %}    
-      {% if section.settings.tags %}
-      {% if collection.all_tags.size > 0 %}
-      	<div class="group">
-        <ul>
-          {% for tag in collection.all_tags %}
-            {% assign tag_x = '+' | append: tag %}
-            {% assign tag_u = '/' | append: tag %}
-            {% capture tags_current %}{% for tag in current_tags %}+{{ tag }}{% endfor %}{% endcapture %}        
-            {% if current_tags contains tag %}
-              <li class="active">
-                {% assign tagsactive = tagsactive | plus: 1 %}
-                {% assign tag_url = collection_url | append: '/' | append: tags_current | remove: tag_x %}
-                <a href="{{ tag_url | replace: tag_u, '/' | replace: '/+', '/' }}">{{ tag }}</a>
-              </li>
-            {% else %}
-              <li>              
-                {% assign tag_url = collection_url | append: '/' | append: tags_current | append: tag_x %}
-                <a href="{{ tag_url | replace: '/+', '/' }}">{{ tag }}</a>
-              </li>
-            {% endif %}
-          {% endfor %}
-        </ul>
+            </ul>
+            </div>
+          {% endif %}
+          {% endif %}
+        {% endif %}
         </div>
       {% endif %}
+      {% endcapture %}
+      {% assign filters = filters | strip_newlines | replace: '"all/', '"/collections/all/' %}
+
+      <header role="banner">
+        
+        {% if section.settings.heading %}
+        <h1>{{ collection_title }}</h1>
+        {% endif %}
+        
+        {% if collection.description != blank %}
+          <div class="rte">
+            {{ collection.description }}
+          </div>
+        {% endif %}
+        
+        {% include 'grid-sortbar' %}
+        
+        {% if section.settings.layout_grid_list != 'hidden' %}
+        {% assign tooltype = collection %}
+        {% include 'grid-toolbar' with tooltype %}
+        {% endif %}
+
+        {% comment %}
+        <h2>Tags in Collection</h2>
+        <ul>
+        {% for tag in collection.all_tags %}  
+        {{ tag }}
+        {% endfor %} 
+        </ul>
+        {% endcomment %} 
+        
+        {% if section.settings.tags_position == 'HEADER' %}{{ filters }}{% endif %}
+        
+      </header>
+
+    {% assign perpage = section.settings.products %}
+    {% paginate collection.products by perpage %}
+
+      {% if section.settings.pagination_top %}
+      {% if paginate.pages > 1 %}
+          		{% assign position = 'top' %}
+                {% include 'pagination' with position %}
       {% endif %}
-    {% endif %}
-    </div>
-  {% endif %}
-  {% endcapture %}
-  {% assign filters = filters | strip_newlines | replace: '"all/', '"/collections/all/' %}
+      {% endif %}
 
-  <header role="banner">
-    
-    {% if section.settings.heading %}
-    <h1>{{ collection_title }}</h1>
-    {% endif %}
-    
-    {% if collection.description != blank %}
-      <div class="rte">
-        {{ collection.description }}
-      </div>
-    {% endif %}
-    
-    {% include 'grid-sortbar' %}
-    
-    {% if section.settings.layout_grid_list != 'hidden' %}
-    {% assign tooltype = collection %}
-    {% include 'grid-toolbar' with tooltype %}
-    {% endif %}
+      <div class="products collection grid{{ class }}{% if section.settings.tags_position contains 'TOP' or section.settings.tags_position contains 'BOTTOM' %} sidegap{% endif %}">
 
-    {% comment %}
-    <h2>Tags in Collection</h2>
-    <ul>
-    {% for tag in collection.all_tags %}  
-    {{ tag }}
-    {% endfor %} 
-    </ul>
-    {% endcomment %} 
-    
-    {% if section.settings.tags_position == 'HEADER' %}{{ filters }}{% endif %}
-    
-  </header>
+      {% for product in collection.products %}
 
-{% assign perpage = section.settings.products %}
-{% paginate collection.products by perpage %}
-
-  {% if section.settings.pagination_top %}
-  {% if paginate.pages > 1 %}
-      		{% assign position = 'top' %}
-            {% include 'pagination' with position %}
-  {% endif %}
-  {% endif %}
-
-  <div class="products collection grid{{ class }}{% if section.settings.tags_position contains 'TOP' or section.settings.tags_position contains 'BOTTOM' %} sidegap{% endif %}">
-
-  {% for product in collection.products %}
-
-      {% include 'grid-product' %}
-    
-  {% else %}
-    
-      {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
-        {% for i in (1..8) %}
-          <a href="#">
-            {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-            {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
-          </a>
-
-          <p>
-            <a href="#">{{ 'homepage.onboarding.product_title' | t }}</a>
-          </p>
-
-          <p>
-            {{ 1999 | money }}
-          </p>
-        {% endfor %}
+          {% include 'grid-product' %}
+        
       {% else %}
-    	{% assign noproducts = true %}
+        
+          {% if collection.handle == 'all' and collection.all_vendors.size == 0 and collection.all_types.size == 0 %}
+            {% for i in (1..8) %}
+              <a href="#">
+                {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+              </a>
+
+              <p>
+                <a href="#">{{ 'homepage.onboarding.product_title' | t }}</a>
+              </p>
+
+              <p>
+                {{ 1999 | money }}
+              </p>
+            {% endfor %}
+          {% else %}
+        	{% assign noproducts = true %}
+          {% endif %}
+
+      {% endfor %}
+
+      {{ fillrow }}
+
+      </div>
+
+      {% if noproducts %}
+    	 {% if tagsactive > 0 %}
+            <p>{{ 'collections.general.no_tag_matches' | t }}</p>
+         {% else %}
+            <p>{{ 'collections.general.no_matches' | t }}</p>
+         {% endif %}
+      {% endif %}
+        
+      {% if section.settings.pagination_bottom %}
+      {% if paginate.pages > 1 %}
+          		{% assign position = 'bottom' %}
+      			<div style="clear:both;overflow:hidden;height:0;padding:0;"></div>
+                {% include 'pagination' with position %}
+      {% endif %}
       {% endif %}
 
-  {% endfor %}
-
-  {{ fillrow }}
-
-  </div>
-
-  {% if noproducts %}
-	 {% if tagsactive > 0 %}
-        <p>{{ 'collections.general.no_tag_matches' | t }}</p>
-     {% else %}
-        <p>{{ 'collections.general.no_matches' | t }}</p>
-     {% endif %}
-  {% endif %}
-    
-  {% if section.settings.pagination_bottom %}
-  {% if paginate.pages > 1 %}
-      		{% assign position = 'bottom' %}
-  			<div style="clear:both;overflow:hidden;height:0;padding:0;"></div>
-            {% include 'pagination' with position %}
-  {% endif %}
-  {% endif %}
-
-{% endpaginate %}
+    {% endpaginate %}
 
 
 
-{%- if section.settings.section_line_size > 0 -%}
-<div class="divide"></div>
-{%- endif -%}
+    {%- if section.settings.section_line_size > 0 -%}
+    <div class="divide"></div>
+    {%- endif -%}
 
-
+  </main>
   
 </article>
 

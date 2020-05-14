@@ -21,277 +21,293 @@
 <div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
   
 {% assign quantity_style = settings.quantity_style %}
- 
+
 <div class="shopify-section" id="shopify-section-cart">
 
-    <main class="product" id="content">
+    <article class="product" id="content">
 
-    {% if cart.item_count > 0 %}
-      <h1>{{ 'cart.general.title' | t }}</h1>
+      <main>
+
+        {% if cart.item_count > 0 %}
+          <h1>{{ 'cart.general.title' | t }}</h1>
+          
+          {% if cart.item_count > settings.cart_box_limit %}
+          		{% assign widgetstatus = ' class="overflow"' %}
+          {% endif %}
+
+            <form action="/cart" method="post"{{ widgetstatus }} novalidate>
+              {% assign showimage = 'no' %}
+              <table class="responsive-table">        
+                <thead class="small--hide visually-hidden">
+                  <tr>
+
+                    <!-- Title & Image -->
+                    <th{% if showimage == 'yes' %} colspan="2"{% endif %}>{{ 'cart.label.product' | t }}</th>
+
+                    <!-- Quntity -->
+                    <th>{{ 'cart.label.quantity' | t }}</th>
+
+                    <!-- Price -->
+                    <th>{{ 'cart.label.price' | t }}</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% assign item_c = 1 %}
+                  {% for item in cart.items %}
+
+                  {% comment %}
+
+                  Cart Item Template
+                  =====================
+                  The data-label attributes on <td> elements are mobile-friendly helpers 
+                  used for responsive-table labels
+                  {% endcomment %}
+
+                    {% if item_c >= settings.cart_box_limit %}
+                      	{% assign widget = ' widget-hidden' %}{% assign diff = cart.item_count | minus: settings.cart_box_limit %}
+                  		{% capture widgetoverflow %}<p class="overflow" style="display:none"><small>{{ 'cart.widget.more_products_html' | t: number: settings.cart_box_limit, total: cart.item_count }}</small></p>{% endcapture %}
+                    {% endif %}
+                    <tr class="responsive-table-row{{ widget }}">
+
+                      <!-- Image -->
+                      {% if showimage == 'yes' %}
+                      <td class="image">
+                      	<a href="{{ item.url | within: collections.all }}">
       
-      {% if cart.item_count > settings.cart_box_limit %}
-      		{% assign widgetstatus = ' class="overflow"' %}
-      {% endif %}
+                          {%- assign current_variant = item.product.selected_or_first_available_variant -%} 
+                          {%- if item.product.template_suffix contains 'orderform' -%}
+                          {%- assign featured_image = item.product.featured_image -%}
+                          {%- else -%}
+                          {%- assign featured_image = item -%}
+                          {%- endif -%}
 
-        <form action="/cart" method="post"{{ widgetstatus }} novalidate>
-          <table class="responsive-table">        
-            <thead class="small--hide visually-hidden">
-              <tr>
+                          {%- assign thumb_src_1 = item | img_url: '240x240' -%}                    
 
-                <!-- Title & Image -->
-                <th colspan="2">{{ 'cart.label.product' | t }}</th>
+                          <!-- <img src="{{ item | img_url: '240x240' }}" alt="{{ item.title | escape }}"> -->
+                          <img src="{{ thumb_src_1 }}" alt="{{ item.title | escape }}">
+                        </a>
 
-                <!-- Quntity -->
-                <th>{{ 'cart.label.quantity' | t }}</th>
+                      </td>
+                      {% endif %}
 
-                <!-- Price -->
-                <th>{{ 'cart.label.price' | t }}</th>
+                      <!-- Title -->              
+                      <td class="title">
+                        <a href="{{ item.url }}">{{ item.product.title }}</a>
+                        <p class="vendor">{{ item.vendor }}</p>
 
-              </tr>
-            </thead>
-            <tbody>
+                        {%- assign property_size = item.properties | size -%}
 
-              {% assign item_c = 1 %}
-              {% for item in cart.items %}
+                        {% if property_size > 0 %}
+                        <p class="properties">
+                          {% for p in item.properties %}
+                            {% unless p.last == blank %}
+                            {{ p.first }}:
 
-              {% comment %}
+                            {% if p.last contains '/uploads/' %}
+                              <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                            {% else %}
+                              {{ p.last }}
+                            {% endif %}
 
-              Cart Item Template
-              =====================
-              The data-label attributes on <td> elements are mobile-friendly helpers 
-              used for responsive-table labels
-              {% endcomment %}
+                            {% endunless %}
+                          {% endfor %}
+                        </p>
+                        {% endif %}
+                      </td>
 
-                {% if item_c >= settings.cart_box_limit %}
-                  	{% assign widget = ' widget-hidden' %}{% assign diff = cart.item_count | minus: settings.cart_box_limit %}
-              		{% capture widgetoverflow %}<p class="overflow" style="display:none"><small>{{ 'cart.widget.more_products_html' | t: number: settings.cart_box_limit, total: cart.item_count }}</small></p>{% endcapture %}
-                {% endif %}
-                <tr class="responsive-table-row{{ widget }}">
+                      <!-- Quantity -->
+                      <td data-label="{{ 'cart.label.quantity' | t }}">
+                        <div class="quantity{% unless quantity_style == 'minimal' %} buttons {{ quantity_style }}{% endunless %} supports-cookies">                     
+                        <span class="label visually-hidden">{{ 'products.general.quantity' | t }}</span>
+                        <input type="number" id="updates_{{ item.key }}" name="updates[]" value="{{ item.quantity }}" min="0">
+                        </div>                
 
-                  <!-- Image -->
-                  <td class="image">
-                  	<a href="{{ item.url | within: collections.all }}">
-  
-                      {%- assign current_variant = item.product.selected_or_first_available_variant -%} 
-                      {%- if item.product.template_suffix contains 'orderform' -%}
-                      {%- assign featured_image = item.product.featured_image -%}
-                      {%- else -%}
-                      {%- assign featured_image = item -%}
-                      {%- endif -%}
-
-                      {%- assign thumb_src_1 = item | img_url: '240x240' -%}                    
-
-                      <!-- <img src="{{ item | img_url: '240x240' }}" alt="{{ item.title | escape }}"> -->
-                      <img src="{{ thumb_src_1 }}" alt="{{ item.title | escape }}">
-                    </a>
-
-                  </td>
-
-                  <!-- Title -->              
-                  <td class="title">
-                    <a href="{{ item.url }}">{{ item.product.title }}</a>
-                    <p class="vendor">{{ item.vendor }}</p>
-
-                    {%- assign property_size = item.properties | size -%}
-
-                    {% if property_size > 0 %}
-                    <p class="properties">
-                      {% for p in item.properties %}
-                        {% unless p.last == blank %}
-                        {{ p.first }}:
-
-                        {% if p.last contains '/uploads/' %}
-                          <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
-                        {% else %}
-                          {{ p.last }}
+                        {% if settings.cart_remove %}
+                        <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="btn">
+                          {{ 'cart.general.remove' | t }}
+                        </a>   
                         {% endif %}
 
-                        {% endunless %}
-                      {% endfor %}
-                    </p>
-                    {% endif %}
-                  </td>
+                      </td>
 
-                  <!-- Quantity -->
-                  <td data-label="{{ 'cart.label.quantity' | t }}">
-                    <div class="quantity{% unless quantity_style == 'minimal' %} buttons {{ quantity_style }}{% endunless %} supports-cookies">                     
-                    <span class="label visually-hidden">{{ 'products.general.quantity' | t }}</span>
-                    <input type="number" id="updates_{{ item.key }}" name="updates[]" value="{{ item.quantity }}" min="0">
-                    </div>                
+                      
+                      {% if settings.tax_inc_and_exc -%}
+                        {%- assign taxes_rate = settings.taxes_rate -%}
+                        {%- assign tax_diff = 100 | minus: taxes_rate -%}
+                        {%- assign tax_rate_add = "1." | append: taxes_rate | plus: 0 -%}
+                        {%- assign tax_rate_exc = "0." | append: tax_diff | plus: 0 -%}          
+                        {% if shop.taxes_included -%}
+                          {% comment %}Taxes included{% endcomment %}
+                          {% capture show_price_tax %} <sup>{{ 'products.general.tax_inc' | t }}</sup>{% endcapture %}
+                          {% capture show_tax -%}
+                              <p class="taxprice"><small><span class="price">{{ product.price | times: tax_rate_exc | money }}</span> <sup>{{ 'products.general.tax_exc' | t }}</sup></small></p> 
+                          {%- endcapture %}
+                        {% else %}
+                          {% comment %}Excluding taxes{% endcomment %}
+                          {% capture show_price_tax %} <sup>{{ 'products.general.tax_exc' | t }}</sup>{% endcapture %}
+                          {% capture show_tax -%}
+                              <p class="taxprice"><small><span class="price">{{ product.price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></small></p> 
+                          {%- endcapture %}
+                        {%- endif %}
+                      {%- endif %}  
 
-                    {% if settings.cart_remove %}
-                    <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="btn">
-                      {{ 'cart.general.remove' | t }}
-                    </a>   
-                    {% endif %}
+                      
+                      <!-- Price -->
+                      <td data-label="{{ 'cart.label.price' | t }}">
+                        {% if item.original_line_price != item.line_price %}
+                          <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                          {{ item.price | money }}
+                          <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                          <s>{{ item.original_price | money }}</s>
+                        {% else %}
+                          {{ item.price | money }}
+                        {% endif %}
+                        {{ show_price_tax }}
+                      </td>
 
-                  </td>
+                    </tr>
+                  	{% assign item_c = item_c | plus: 1 %}
 
-                  
-                  {% if settings.tax_inc_and_exc -%}
-                    {%- assign taxes_rate = settings.taxes_rate -%}
-                    {%- assign tax_diff = 100 | minus: taxes_rate -%}
-                    {%- assign tax_rate_add = "1." | append: taxes_rate | plus: 0 -%}
-                    {%- assign tax_rate_exc = "0." | append: tax_diff | plus: 0 -%}          
-                    {% if shop.taxes_included -%}
-                      {% comment %}Taxes included{% endcomment %}
-                      {% capture show_price_tax %} <sup>{{ 'products.general.tax_inc' | t }}</sup>{% endcapture %}
-                      {% capture show_tax -%}
-                          <p class="taxprice"><small><span class="price">{{ product.price | times: tax_rate_exc | money }}</span> <sup>{{ 'products.general.tax_exc' | t }}</sup></small></p> 
-                      {%- endcapture %}
-                    {% else %}
-                      {% comment %}Excluding taxes{% endcomment %}
-                      {% capture show_price_tax %} <sup>{{ 'products.general.tax_exc' | t }}</sup>{% endcapture %}
-                      {% capture show_tax -%}
-                          <p class="taxprice"><small><span class="price">{{ product.price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></small></p> 
-                      {%- endcapture %}
-                    {%- endif %}
-                  {%- endif %}  
+                  {% endfor %}
+                </tbody>
+              </table>
+              
+              {{ widgetoverflow }}
 
-                  
-                  <!-- Price -->
-                  <td data-label="{{ 'cart.label.price' | t }}">
-                    {% if item.original_line_price != item.line_price %}
-                      <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
-                      {{ item.price | money }}
-                      <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
-                      <s>{{ item.original_price | money }}</s>
-                    {% else %}
-                      {{ item.price | money }}
-                    {% endif %}
-                    {{ show_price_tax }}
-                  </td>
+              {% if settings.cart_notes_enable %}
+              <p>
+                <label for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
+                <textarea name="note" id="CartSpecialInstructions">{{ cart.note }}</textarea>
+              </p>
+              {% endif %}
 
-                </tr>
-              	{% assign item_c = item_c | plus: 1 %}
+              {% if settings.tax_inc_and_exc -%}
+                {%- assign taxes_rate = settings.taxes_rate -%}
+                {%- assign tax_diff = 100 | minus: taxes_rate -%}
+                {%- assign tax_rate_add = "1." | append: taxes_rate | plus: 0 -%}
+                {%- assign tax_rate_exc = "0." | append: tax_diff | plus: 0 -%}          
+                {% if shop.taxes_included -%}
+                  {% comment %}Taxes included{% endcomment %}
+                  {% capture show_price_tax %} <sup>{{ 'products.general.tax_inc' | t }}</sup>{% endcapture %}
+                  {% capture show_tax -%}
+                      <br /><span class="taxprice"><span class="price">{{ cart.total_price | times: tax_rate_exc | money }}</span> <sup>{{ 'products.general.tax_exc' | t }}</sup></span> 
+                  {%- endcapture %}
+                {% else %}
+                  {% comment %}Excluding taxes{% endcomment %}
+                  {% capture show_price_tax %} <sup>{{ 'products.general.tax_exc' | t }}</sup>{% endcapture %}
+                  {% capture show_tax -%}
+                      <br /><span class="taxprice"><span class="price">{{ cart.total_price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></span> 
+                  {%- endcapture %}
+                {%- endif %}
+              {%- endif %}           
+              
+              {% capture totals %}
+              <div class="totals">
+              <p class="row">{{ 'cart.general.subtotal' | t }} 
+              <em>{{ cart.total_price | money }}{{ show_price_tax }}{{ show_tax }}</em></p>
+                
+              {% if settings.shipping_calculator == 'Enabled' %}
+              <p class="row" id="estimated-shipping" style="display:none">{{ 'cart.shipping_calculator.estimated_shipping' | t }} 
+              {{ 'cart.shipping_calculator.from' | t }} <em>{{ 0 | money }}{{ show_price_tax }}</em></p>
+              {% endif %}  
+              {% assign showcheckout = true %}
+              {% assign minimumspend = settings.cart_minimum_spend_amount | remove: '.' | plus: 0 %}
+              {% assign minimumspend_num = minimumspend %}
+              {% if minimumspend > 0 and cart.total_price < minimumspend %}{% if settings.cart_minimum_spend_checkout %}{% assign showcheckout = false %}{% endif %}{% assign minimummoney = minimumspend | money %}{% else %}{% assign minimummoney = minimumspend | money %}{% endif %}      
+              {% endcapture %}          
+              
+              {% capture calculator %}
+              {% if settings.shipping_calculator == 'Enabled' %}
+              {% include 'form-shipping-calculator' %}
+              {% endif %} 
+              {% endcapture %}
 
-              {% endfor %}
-            </tbody>
-          </table>
+              {{ totals }}
+
+              {% if cart.total_discounts > 0 %}
+                <p>{{ 'cart.general.savings' | t }} {{ cart.total_discounts | money }}</p>
+              {% endif %}
+              </div>
+
+              {% if settings.shipping_calculator == 'Enabled' %}
+              {% else %}      
+              <p class="shipping">{{ 'cart.general.shipping_at_checkout' | t }}</p>
+              {% endif %} 
+
+              {% if settings.cart_agreement %}
+              <p class="agree">
+                <input type="checkbox" id="agree" required="required" />  <label for="agree">{{ 'cart.general.agreement_html' | t }}</label>
+              </p>
+              {% endif %}  
+
+              <span class="actions">
+              <a class="btn view" href="/cart" style="display:none">{{ 'cart.general.view' | t }}</a>
+              <input type="submit" name="update" class="btn" value="{{ 'cart.general.update' | t }}">
+              <input type="submit" name="checkout" class="btn" value="{{ 'cart.general.checkout' | t }}"{% unless showcheckout == true %} disabled{% endunless %}>
+              </span>
+
+              {% if minimumspend_num > cart.total_price  %}
+              {% if minimumspend > 0 and settings.cart_minimum_spend_text %}<p class="minspend{% if settings.cart_notice %} notice{% endif %}">{{ 'cart.general.minimum_spend_html' | t: amount: minimummoney }}</p>{% endif %}
+              {% endif %}
+
+            </form>
+
+            {{ calculator }}
+
+        {% else %}
+
+            <h1>{{ 'cart.general.title' | t }}</h1>
           
-          {{ widgetoverflow }}
+          	<form class="empty">
 
-          {% if settings.cart_notes_enable %}
-          <p>
-            <label for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
-            <textarea name="note" id="CartSpecialInstructions">{{ cart.note }}</textarea>
-          </p>
-          {% endif %}
+              {% comment %}
+              Cart empty state
+              {% endcomment %}
 
-          {% if settings.tax_inc_and_exc -%}
-            {%- assign taxes_rate = settings.taxes_rate -%}
-            {%- assign tax_diff = 100 | minus: taxes_rate -%}
-            {%- assign tax_rate_add = "1." | append: taxes_rate | plus: 0 -%}
-            {%- assign tax_rate_exc = "0." | append: tax_diff | plus: 0 -%}          
-            {% if shop.taxes_included -%}
-              {% comment %}Taxes included{% endcomment %}
-              {% capture show_price_tax %} <sup>{{ 'products.general.tax_inc' | t }}</sup>{% endcapture %}
-              {% capture show_tax -%}
-                  <br /><span class="taxprice"><span class="price">{{ cart.total_price | times: tax_rate_exc | money }}</span> <sup>{{ 'products.general.tax_exc' | t }}</sup></span> 
-              {%- endcapture %}
-            {% else %}
-              {% comment %}Excluding taxes{% endcomment %}
-              {% capture show_price_tax %} <sup>{{ 'products.general.tax_exc' | t }}</sup>{% endcapture %}
-              {% capture show_tax -%}
-                  <br /><span class="taxprice"><span class="price">{{ cart.total_price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></span> 
-              {%- endcapture %}
-            {%- endif %}
-          {%- endif %}           
-          
-          {% capture totals %}
-          <div class="totals">
-          <p class="row">{{ 'cart.general.subtotal' | t }} 
-          <em>{{ cart.total_price | money }}{{ show_price_tax }}{{ show_tax }}</em></p>
-            
-          {% if settings.shipping_calculator == 'Enabled' %}
-          <p class="row" id="estimated-shipping" style="display:none">{{ 'cart.shipping_calculator.estimated_shipping' | t }} 
-          {{ 'cart.shipping_calculator.from' | t }} <em>{{ 0 | money }}{{ show_price_tax }}</em></p>
-          {% endif %}  
-          {% assign showcheckout = true %}
-          {% assign minimumspend = settings.cart_minimum_spend_amount | remove: '.' | plus: 0 %}
-          {% assign minimumspend_num = minimumspend %}
-          {% if minimumspend > 0 and cart.total_price < minimumspend %}{% if settings.cart_minimum_spend_checkout %}{% assign showcheckout = false %}{% endif %}{% assign minimummoney = minimumspend | money %}{% else %}{% assign minimummoney = minimumspend | money %}{% endif %}      
-          {% endcapture %}          
-          
-          {% capture calculator %}
-          {% if settings.shipping_calculator == 'Enabled' %}
-          {% include 'form-shipping-calculator' %}
-          {% endif %} 
-          {% endcapture %}
+              {% comment %}
+              Cart no cookies state
+              ---------------------
+              Browser cookies are required to use the cart. If cookies aren't enabled in the browser 
+              a message is displayed prompting the user to enable them.
+              {% endcomment %}
 
-          {{ totals }}
+              {% comment %}
+              {%- if settings.cookie_enable %}
+              <!--  class="supports-no-cookies" -->
+              <p id="cookie-cart">{{ 'cart.general.cookies_required' | t }}</p>
+              {% endif -%}
 
-          {% if cart.total_discounts > 0 %}
-            <p>{{ 'cart.general.savings' | t }} {{ cart.total_discounts | money }}</p>
-          {% endif %}
-          </div>
+              <div class="supports-cookies">
+                <p>{{ 'cart.general.empty' | t }}</p>
+                <p><a href="{{ 'cart.general.continue_browsing_url' | t }}" class="btn continue">{{ 'cart.general.continue_browsing_html' | t }}</a></p>
+              </div>    
+              {% endcomment %}
 
-          {% if settings.shipping_calculator == 'Enabled' %}
-          {% else %}      
-          <p>{{ 'cart.general.shipping_at_checkout' | t }}</p>
-          {% endif %}  
+              <div class="supports-no-cookies">
+                <p>{{ 'cart.general.cookies_required' | t }}</p>
+              </div>
 
-          <span class="actions">
-          <a class="btn view" href="/cart" style="display:none">{{ 'cart.general.view' | t }}</a>
-          <input type="submit" name="update" class="btn" value="{{ 'cart.general.update' | t }}">
-          <input type="submit" name="checkout" class="btn" value="{{ 'cart.general.checkout' | t }}"{% unless showcheckout == true %} disabled{% endunless %}>
-          </span>
+              <div class="supports-cookies">
+              <p>{{ 'cart.general.empty' | t }}</p>
+              <p><a href="{{ 'cart.general.continue_browsing_url' | t }}" class="btn continue">{{ 'cart.general.continue_browsing_html' | t }}</a></p>
+              </div>
+              
+          </form>
 
-          {% if minimumspend_num > cart.total_price  %}
-          {% if minimumspend > 0 and settings.cart_minimum_spend_text %}<p class="minspend{% if settings.cart_notice %} notice{% endif %}">{{ 'cart.general.minimum_spend_html' | t: amount: minimummoney }}</p>{% endif %}
-          {% endif %}
+        {% endif %}
 
-        </form>
+      </main>
 
-        {{ calculator }}
-
-    {% else %}
-
-        <h1>{{ 'cart.general.title' | t }}</h1>
-      
-      	<form class="empty">
-
-          {% comment %}
-          Cart empty state
-          {% endcomment %}
-
-          {% comment %}
-          Cart no cookies state
-          ---------------------
-          Browser cookies are required to use the cart. If cookies aren't enabled in the browser 
-          a message is displayed prompting the user to enable them.
-          {% endcomment %}
-
-          {% comment %}
-          {%- if settings.cookie_enable %}
-          <!--  class="supports-no-cookies" -->
-          <p id="cookie-cart">{{ 'cart.general.cookies_required' | t }}</p>
-          {% endif -%}
-
-          <div class="supports-cookies">
-            <p>{{ 'cart.general.empty' | t }}</p>
-            <p><a href="{{ 'cart.general.continue_browsing_url' | t }}" class="btn continue">{{ 'cart.general.continue_browsing_html' | t }}</a></p>
-          </div>    
-          {% endcomment %}
-
-          <div class="supports-no-cookies">
-            <p>{{ 'cart.general.cookies_required' | t }}</p>
-          </div>
-
-          <div class="supports-cookies">
-          <p>{{ 'cart.general.empty' | t }}</p>
-          <p><a href="{{ 'cart.general.continue_browsing_url' | t }}" class="btn continue">{{ 'cart.general.continue_browsing_html' | t }}</a></p>
-          </div>
-          
-      </form>
-
-    {% endif %}
-
-    </main>
+    </article>
 
 
+    {% if settings.sidesbar_pages %}
     {% include 'sidebars' %}
+    {% endif %}
   
+
 </div>
 
 </div>

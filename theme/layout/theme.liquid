@@ -229,6 +229,10 @@
 	  	  	  {% assign footer_logos = footer | strip_newlines %}
 
 	  	  	  {% assign header_content = header | strip_newlines %}	  
+			  
+			  {% if settings.footer_pages %}
+			  {% include 'footers' %}
+			  {% endif %}
 
 	  	  	  {{ logos }}
 
@@ -349,7 +353,7 @@ $('select').each(function(){
 	  	  	  	  	  	  	  class: $this.attr('id'),
 	  	  	  	  	  	  	  rel: $this.children('option').eq(i).val()
 	  	  	  	  	  }).appendTo($list);
-	  	  	  }
+	  	  	  };
 
 	  	  	  var $listItems = $list.children('li');
 

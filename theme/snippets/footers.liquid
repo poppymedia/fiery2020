@@ -1,0 +1,99 @@
+{% if settings.footer_content or settings.footer_pages %}
+
+  <!-- TOP -->
+  {% capture footer_content %}
+    {% assign data = settings.footer_content %}
+    
+    {% unless template == 'cart' %}
+      
+      {% if data contains '/pages/' %}
+      	 {% assign data_var = data | remove: '/pages/' %}
+      	 {% capture output %}{{ pages[data_var].content }}{% endcapture %}
+      {% endif %}
+
+      {% if data == '/collections' %}  	 
+         {% capture output %}
+         {% for collection in collections %}
+            {% include 'grid-collection' %}
+         {% endfor %}
+         {% endcapture %}
+      {% endif %}
+
+      {% if data contains '/collections/' %}  	 
+         {% assign data_var = data | remove: '/collections/' %}
+         {% capture output %}
+     	 {% for product in collections[data_var].products %}
+         	{% include 'grid-product' %}
+     	 {% endfor %}
+         {% endcapture %}
+      {% endif %}
+
+      {% if data contains '/products/' %}
+         {% assign data_var = data | remove: '/products/' %}
+         {% capture output %}{{ products[data_var].content }}{% endcapture %}
+      {% endif %}
+
+      {% if data contains '/blogs/' %}
+      	 {% assign data_var = data | remove: '/blogs/' %}
+      	 {% if data_var contains '/' %}  	
+            <!-- post -->
+      		{% assign article = data | split: '/' | last %}
+            {% capture output %}{{ articles[data_var].content }}{% endcapture %}
+      	 {% else %}  	
+            <!-- blog -->
+            {% capture output %}
+            {% for article in blogs[data_var].articles %}
+                  {% include 'grid-article' %}  
+            {% endfor %}
+            {% endcapture %}
+      	 {% endif %}
+      {% endif %}
+      {{ output }}
+
+    {% endunless %}
+
+  {% endcapture %}
+
+
+
+  {% capture footer_page %}
+  {% if settings.footer_pages %}
+  {% if template contains 'page' %}
+  {% assign footer_page = 'footer-' | append: page.handle %}
+  {% endif %}
+  {% if template contains 'blog' %}
+  {% assign footer_page = 'footer-' | append: blog.handle %}
+  {% endif %}
+  {% if template contains 'article' %}
+  {% assign footer_page = 'footer-' | append: blog.handle %}
+  {% endif %}
+  {% if template contains 'cart' %}
+  {% assign footer_page = 'footer-cart' %}
+  {% endif %}
+  {% if footer_page %}
+    {{ pages[footer_page].content }}
+    {% comment %}{% section '{{ sidebar_section }}' %}{% endcomment %}
+  {% endif %}
+  {% endif %}
+  {% endcapture %}
+
+
+  
+
+  {% if footer_content.size > 3 or footer_page.size > 3 %}
+  <div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
+  <aside class="content-footer">
+
+    {{ footer_content }}
+    {{ footer_page }}
+    
+    <!-- BOTTOM -->
+
+  </aside>
+  </div>
+  {% endif %}
+
+
+
+
+{% endif%}

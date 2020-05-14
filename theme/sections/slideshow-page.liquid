@@ -680,6 +680,33 @@ ul.bxslider {
 									{% endif %}
 								}
 
+
+
+
+
+
+								{% if section.settings.slideshow_bg_width == 'page' and block.settings.image != nil %}
+								.bxslider #slide{{ slide_num }} { 
+									background-image: url('{{ block.settings.image | img_url: '2000x' }}');
+									background-position: center;
+									background-repeat: no-repeat;
+									background-size: cover;
+								}
+								.bxslider #slide{{ slide_num }} img { 
+									opacity: 0;
+								}
+								.bxslider #slide{{ slide_num }} .container,
+								.bxslider #slide{{ slide_num }} .textWrapper,
+								.bxslider #slide{{ slide_num }} .text { 
+									background: transparent !important;
+								}
+								{% endif %}
+
+								
+
+
+
+
 								{%- comment -%}
 								/* TO DO: Test for triangle setting */
 								.bxslider #slide{{ slide_num }} .textWrapper > span {							
@@ -787,6 +814,40 @@ ul.bxslider {
 											border-bottom: solid {{ section.settings.pagination_size | times: 2 }}px transparent !important;
 									}
 									{% endif %}
+
+
+
+
+									/* TESTING */
+									{% if section.settings.slideshow_text_position_mobile %}
+									{% else %}
+									.bxslider #slide{{ slide_num }} img { 
+										display: none !important;
+									}
+									.bxslider #slide{{ slide_num }} .textWrapper { 
+										position: relative;
+										background-image: url('{{ block.settings.image | img_url: '2000x' }}');
+										background-position: center;
+										background-repeat: no-repeat;
+										background-size: cover;
+									}
+									.bxslider #slide{{ slide_num }} .textWrapper .text { 
+										background: transparent !important;
+									}									
+									{% endif %}
+
+
+
+
+
+
+
+									
+
+
+
+
+
 									
 								{% endcapture %}
 
@@ -1263,8 +1324,24 @@ $(window).resize(function(){
 		},
 		{
 			"type": "select",
+			"id": "slideshow_bg_width",
+			"label": "Background width",
+			"options": [
+				{
+					"value": "page",
+					"label": "Page"
+				},
+				{
+					"value": "content",
+					"label": "Content"
+				}
+			],
+			"default": "content"
+		},
+		{
+			"type": "select",
 			"id": "slideshow_width",
-			"label": "Width",
+			"label": "Content width",
 			"options": [
 				{
 					"value": "page",

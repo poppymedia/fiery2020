@@ -1,4 +1,4 @@
-<!-- SECTION -->
+<!-- SECTION / v2 -->
 
 {% include 'settings' %}
 {%- assign grid_mobile = settings.width_max_mobile -%}
@@ -17,8 +17,8 @@
   </div>
   {% endif %}  
 
-    {%- if section.settings.footer_blocks_line_size > 0 -%}
-    <style>
+  	{%- if section.settings.footer_blocks_line_size > 0 -%}
+  	<style>
         #footer #opening-divide {          
           height: {{ grid_gutter }};
           width: 100%;
@@ -28,10 +28,10 @@
           padding-top: {{ grid_gutter }};
           border-width: {{ section.settings.footer_blocks_line_size }}px !important;
           border-color: {{ section.settings.footer_blocks_line_color }} !important;  
-        }     
+        }    	
     </style>
-    <div id="opening-divide">
-    </div>
+  	<div id="opening-divide">
+  	</div>
     {%- endif -%}
 
   <footer>
@@ -41,7 +41,7 @@
   {% for block in section.blocks %}
 
     {%- unless block.type == 'divide' -%}
-      {% assign block_num = block_num | plus: 1 %}
+    	{% assign block_num = block_num | plus: 1 %}
     {%- endunless -%}
 
     {% if block.type == 'divide' -%}
@@ -110,11 +110,11 @@
           .legal_row {
               text-align: center;
           }
-        {%- if settings.currency_position == 'footer' -%}
+    		{%- if settings.currency_position == 'footer' -%}
               #footer .currencymenu {
                 text-align: center;
-                display: block;
-                width: auto;
+          			display: block;
+          			width: auto;
               }
               #footer .currencymenu ul {
                   margin: -5px auto -5px auto;
@@ -122,7 +122,7 @@
               #footer .currencymenu ul ul {
                   margin-left: -5px;
               }
-        {% endif %}
+    		{% endif %}
     {% endif %}
     
 
@@ -149,11 +149,11 @@
           .legal_row {
               text-align: center;
           }
-        {%- if settings.currency_position == 'footer' -%}
+    		{%- if settings.currency_position == 'footer' -%}
               #footer .currencymenu {
                 text-align: center;
-                display: block;
-                width: auto;
+          			display: block;
+          			width: auto;
               }
               #footer .currencymenu ul {
                   margin: -5px auto -5px auto;
@@ -161,7 +161,7 @@
               #footer .currencymenu ul ul {
                   margin-left: -5px;
               }
-        {% endif %}
+    		{% endif %}
       {% else %}
           .copyright {
             text-align: left;
@@ -222,13 +222,13 @@
         /* Last block */
         #footer #block-LAST_BLOCK {
           {% if section.settings.footer_layout == 'horizontal' -%}
-          {% if section.settings.footer_last_block_clear %}       
+          {% if section.settings.footer_last_block_clear %}    		
             grid-column: col / span MINUS_LAST_BLOCK;
             grid-row: row 2;
             {% if section.settings.footer_font_align != 'center' %}padding-right: 0 !important;{% endif %}
             {% if section.settings.footer_font_align == 'center' %}margin-right: {{ grid_gutter }} !important;{% endif %}
           }
-          {% else %}        
+          {% else %}    		
             grid-column: col / span LAST_BLOCK;
             grid-row: auto;
           }
@@ -283,7 +283,7 @@
                   border-top: solid 1px red !important;   
                   border-width: {{ block.settings.line_size }}px !important;
                 }    
-        {% endif %}
+    		{% endif %}
         {% endif %}    
         #footer .search-box  {
           margin-right: -{{ grid_gutter }};
@@ -293,7 +293,7 @@
           padding-top: {{ grid_gutter }};
           border-color: {{ section.settings.footer_blocks_line_color }} !important; 
         }
-  {% endif %}
+	{% endif %}
   }
 }
 
@@ -350,7 +350,7 @@
         {% assign labels = 'visible' %}
         {% if section.settings.footer_headings_enable %}{% else %}{% assign heading = 'hidden' %}{% endif %}
         {% unless block.settings.footer_form_labels %}
-          {% assign labels = 'hidden' %}
+        	{% assign labels = 'hidden' %}
         {% endunless%}
         
         {% if block.settings.footer_form == 'search' %}
@@ -445,17 +445,17 @@
     {% assign bodyblocks = bodyblocks | plus: 1 %}
       {%- assign footer_linklist = block.settings.footer_linklist -%}
       {% if linklists[footer_linklist].links.size > 0 %}
-      {% capture menustyles %}    
-      #footer #block-{{ bodyblocks }} ul {
-        {% if block.settings.footer_linklist_bullets %}
-        margin-left: 1em;
-        {% else %}
-        list-style: none;
-        margin-left: 0;
-        {% endif %}
-      }
-      {% endcapture %}      
-      {% assign styles = styles | append: menustyles %}  
+    	{% capture menustyles %}    
+    	#footer #block-{{ bodyblocks }} ul {
+    		{% if block.settings.footer_linklist_bullets %}
+    		margin-left: 1em;
+    		{% else %}
+    		list-style: none;
+    		margin-left: 0;
+    		{% endif %}
+    	}
+    	{% endcapture %}    	
+    	{% assign styles = styles | append: menustyles %}  
       <div class="block" id="block-{{ bodyblocks }}">
         {% capture heading %}{{ linklists[footer_linklist].title }}{% endcapture %} 
         {% if heading != blank and section.settings.footer_headings_enable %}<h2>{{ heading }}</h2>{% endif %}
@@ -542,7 +542,7 @@
   
   
         {% if section.settings.footer_font_align == 'center' %}
-      {%- if settings.currency_position == 'footer' -%}{% include 'currency_switcher', position: 'footer' %}{%- endif -%}   
+  		{%- if settings.currency_position == 'footer' -%}{% include 'currency_switcher', position: 'footer' %}{%- endif -%}   
         {% endif %}   
   
   
@@ -556,60 +556,57 @@
 
 
 
-{% if settings.cookie_enable %}
-  {% if section.settings.footer_cookie_enable %}
-  {% unless template contains 'cookie.consent' %}
 
-  {% if section.settings.footer_cookie_enable %}
-  <div class="supports-cookies">
-    
-  {% if section.settings.cookie_page_width == 'content' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}"><div class="column">{% endif %} 
-   
-  <div id="cookie-notice">  
+{% if section.settings.footer_cookie_enable %}
+{% unless template contains 'cookie.consent' %}
 
-    {% assign cookies_url = settings.cookie_page %}
-    {% capture cookies_link %}<a href="/pages/{{ cookies_url }}#settings">{{ 'general.accessibility.cookies' | t }}</a>{% endcapture %}
-    {% if settings.cookie_enable %}
-    {{ 'general.accessibility.no_cookie_policy_cookie_notice_html' | t: cookies: cookies_link }}
-    {% else %}
-    {{ 'general.accessibility.no_cookies' | t }}
-    {% endif %}
-    
-  </div>  
-    
-  {% if section.settings.cookie_page_width == 'content' %}</div></div>{% endif %}  
-    
-    
-    
+{% if section.settings.footer_cookie_enable %}
+<div class="supports-cookies">
+  
+{% if section.settings.cookie_page_width == 'content' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}"><div class="column">{% endif %} 
+ 
+<div id="cookie-notice">  
+
+  {% assign cookies_url = settings.cookie_page %}
+  {% capture cookies_link %}<a href="/pages/{{ cookies_url }}#settings">{{ 'general.accessibility.cookies' | t }}</a>{% endcapture %}
   {% if settings.cookie_enable %}
-    {% assign cookie_status = true %}
-    {% assign cookie_status = 'foot' %}
+  {{ 'general.accessibility.no_cookie_policy_cookie_notice_html' | t: cookies: cookies_link }}
+  {% else %}
+  {{ 'general.accessibility.no_cookies' | t }}
   {% endif %}
-      
+  
+</div>  
+  
+{% if section.settings.cookie_page_width == 'content' %}</div></div>{% endif %}  
+  
+  
+  
+{% if settings.cookie_enable %}
+{% assign cookie_status = true %}
+{% assign cookie_status = 'foot' %}
+{% endif %}
+  
+{% capture cookie_js %}
+{% include 'cookie-js' with cookie_status %} 
+{% endcapture %}
+{{ cookie_js | strip_newlines | remove: '	' | replace: '  ', ' ' }}
+{% comment %}
+{% endcomment %}  
+  
+  
 
-    {% capture cookie_js %}
-    {% include 'cookie-js' with cookie_status %} 
-    {% endcapture %}
-    {{ cookie_js | strip_newlines | remove: ' ' | replace: '  ', ' ' }}
-    {% comment %}
-    {% endcomment %}  
-
-    
-
-  </div>
-    
-  {% endif %}
-
-  {% endunless %}
-  {% endif %}
+</div>
+  
 {% endif %}
 
+{% endunless %}
+{% endif %}
 {% endcapture %}
 
 {% assign styles = styles | append: lastblock_nonmobile %}
 
 {% if section.settings.footer_last_block_clear %}
-  {% assign bodyblocks = bodyblocks | minus: 1 %}
+	{% assign bodyblocks = bodyblocks | minus: 1 %}
 {% endif %}
 {% assign blockcount = section.blocks.size %}
 {% assign lastblockid = blockcount | minus: 1 %}
@@ -625,11 +622,11 @@
 
 {% if section.settings.footer_cookie_enable %}
 #cookie-notice b {
-  font-weight: normal;  
-  cursor: pointer;
+	font-weight: normal;	
+	cursor: pointer;
 }
 #cookie-notice b.active {
-  font-weight: bold;  
+	font-weight: bold;	
 }
 {% endif %}
 
@@ -714,105 +711,105 @@
 
 /* Mobile */
 {% if bodyblocks > 3 %}
-  {% assign query = grid_large %}
+	{% assign query = grid_large %}
 {% else %}
-  {% assign query = grid_mobile %}
+	{% assign query = grid_mobile %}
 {% endif %}
 @media screen and (max-width: {{ query }}) {
   #footer > .container .column {
     margin-right: 0;
-    width: calc(100%);
+  	width: calc(100%);
   }
   #footer .block {
     float: none !important;
-  margin: 0 0 {{ font_gutter }} 0;
-  width: 100%;
+	margin: 0 0 {{ font_gutter }} 0;
+	width: 100%;
     padding-right: 0;
-  padding-left: 0;
-  } 
+	padding-left: 0;
+  }	
   #footer #{{ clearblockid }} {
     margin: 0 !important;
-    width: calc(100%);
+  	width: calc(100%);
   }
 }
 
 /* Larger than mobile */
 @media screen and (min-width: DESK_QUERY) {
-  #footer .container {      
-      padding-top: {{ grid_gutter }};
+	#footer .container {    	
+  		padding-top: {{ grid_gutter }};
     }
-  {% if section.settings.footer_layout == 'horizontal' %}
-  #footer footer {
-    display: grid;
-    grid-gap: {{ grid_gutter }};
-    
-    {% if bodyblocks == 2 %}
-    /* 2 Columns + Copyright Row */
-    {% if section.settings.footer_last_block_clear %}
-      grid-template-columns: [col] 50% [col] 50%;
-    grid-template-rows: [row] auto [row] auto;
-    {% else %}
-    /* 3 Columns */
-      grid-template-columns: [col] 50% [col] 50%;
-    grid-template-rows: [row] auto;
-    {% endif %}
-    {% endif %}
-    
-    {% if bodyblocks == 3 %}
-    /* 3 Columns + Copyright Row */
-    {% if section.settings.footer_last_block_clear %}
-      grid-template-columns: [col] 33.33% [col] calc(33.33% - {{ grid_gutter }}) [col] calc(33.33% - {{ grid_gutter }});
-    grid-template-rows: [row] auto [row] auto;
-    {% else %}
-    /* 4 Columns */
-      grid-template-columns: [col] 33.33% [col] calc(33.33% - {{ grid_gutter }}) [col] calc(33.33% - {{ grid_gutter }});
-    grid-template-rows: [row] auto;
-    {% endif %}
-    {% endif %}
-    
-    {% if bodyblocks == 4 %}
-    /* 4 Columns + Copyright Row */
-    {% if section.settings.footer_last_block_clear %}
-      grid-template-columns: [col] 25% [col] calc(25% - {{ grid_gutter }}) [col] calc(25% - {{ grid_gutter }}) [col] calc(25% - {{ grid_gutter }});
-    grid-template-rows: [row] auto [row] auto;
-    {% else %}
-    /* 5 Columns */
-      grid-template-columns: [col] 25% [col] calc(25% - {{ grid_gutter }}) [col] calc(25% - {{ grid_gutter }}) [col] calc(25% - {{ grid_gutter }});
-    grid-template-rows: [row] auto;
-    {% endif %}
-    {% endif %}
-    
-    {% if bodyblocks == 5 %}
-    /* 5 Columns + Copyright Row */
-    {% if section.settings.footer_last_block_clear %}
-      grid-template-columns: [col] 20% [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }});
-    grid-template-rows: [row] auto [row] auto;
-    {% else %}
-    /* 3 Columns, 2 Rows */
-      grid-template-columns: [col] 20% [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }});
-    grid-template-rows: [row] auto [row] auto;
-    {% endif %}
-    {% endif %}
-    
-    {% if bodyblocks == 6 %}
-    /* 3 Columns, 2 Rows + Copyright Row */
-    {% if section.settings.footer_last_block_clear %}
-      grid-template-columns: [col] 33.33% [col] calc(33.33% - {{ grid_gutter }}) [col] calc(33.33% - {{ grid_gutter }});
-    grid-template-rows: [row] auto [row] auto;
-    {% else %}
-    /* 3 Columns, 2 Rows */
-      grid-template-columns: [col] 33.33% [col] calc(33.33% - {{ grid_gutter }}) [col] calc(33.33% - {{ grid_gutter }});
-    grid-template-rows: [row] auto [row] auto;
-    {% endif %}
-    {% endif %}
-    }
-  #footer .block {
-    /* background: yellow; */
-  }
-  #footer .divide {
-    display: none;
-  }
-  {% endif %}
+	{% if section.settings.footer_layout == 'horizontal' %}
+	#footer footer {
+		display: grid;
+		grid-gap: {{ grid_gutter }};
+		
+		{% if bodyblocks == 2 %}
+		/* 2 Columns + Copyright Row */
+		{% if section.settings.footer_last_block_clear %}
+  		grid-template-columns: [col] 50% [col] 50%;
+		grid-template-rows: [row] auto [row] auto;
+		{% else %}
+		/* 3 Columns */
+  		grid-template-columns: [col] 50% [col] 50%;
+		grid-template-rows: [row] auto;
+		{% endif %}
+		{% endif %}
+		
+		{% if bodyblocks == 3 %}
+		/* 3 Columns + Copyright Row */
+		{% if section.settings.footer_last_block_clear %}
+  		grid-template-columns: [col] 33.33% [col] calc(33.33% - {{ grid_gutter }}) [col] calc(33.33% - {{ grid_gutter }});
+		grid-template-rows: [row] auto [row] auto;
+		{% else %}
+		/* 4 Columns */
+  		grid-template-columns: [col] 33.33% [col] calc(33.33% - {{ grid_gutter }}) [col] calc(33.33% - {{ grid_gutter }});
+		grid-template-rows: [row] auto;
+		{% endif %}
+		{% endif %}
+		
+		{% if bodyblocks == 4 %}
+		/* 4 Columns + Copyright Row */
+		{% if section.settings.footer_last_block_clear %}
+  		grid-template-columns: [col] 25% [col] calc(25% - {{ grid_gutter }}) [col] calc(25% - {{ grid_gutter }}) [col] calc(25% - {{ grid_gutter }});
+		grid-template-rows: [row] auto [row] auto;
+		{% else %}
+		/* 5 Columns */
+  		grid-template-columns: [col] 25% [col] calc(25% - {{ grid_gutter }}) [col] calc(25% - {{ grid_gutter }}) [col] calc(25% - {{ grid_gutter }});
+		grid-template-rows: [row] auto;
+		{% endif %}
+		{% endif %}
+		
+		{% if bodyblocks == 5 %}
+		/* 5 Columns + Copyright Row */
+		{% if section.settings.footer_last_block_clear %}
+  		grid-template-columns: [col] 20% [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }});
+		grid-template-rows: [row] auto [row] auto;
+		{% else %}
+		/* 3 Columns, 2 Rows */
+  		grid-template-columns: [col] 20% [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }}) [col] calc(20% - {{ grid_gutter }});
+		grid-template-rows: [row] auto [row] auto;
+		{% endif %}
+		{% endif %}
+		
+		{% if bodyblocks == 6 %}
+		/* 3 Columns, 2 Rows + Copyright Row */
+		{% if section.settings.footer_last_block_clear %}
+  		grid-template-columns: [col] 33.33% [col] calc(33.33% - {{ grid_gutter }}) [col] calc(33.33% - {{ grid_gutter }});
+		grid-template-rows: [row] auto [row] auto;
+		{% else %}
+		/* 3 Columns, 2 Rows */
+  		grid-template-columns: [col] 33.33% [col] calc(33.33% - {{ grid_gutter }}) [col] calc(33.33% - {{ grid_gutter }});
+		grid-template-rows: [row] auto [row] auto;
+		{% endif %}
+		{% endif %}
+  	}
+	#footer .block {
+		/* background: yellow; */
+	}
+	#footer .divide {
+		display: none;
+	}
+	{% endif %}
 }
 
 {% endcapture %}
@@ -833,8 +830,8 @@
 {% assign lastblockid = bodyblocks | plus: 1 %}
 /* LAST BLOCK ID: {{ lastblockid }} */
   
-{{ initstyles | replace: 'DESK_QUERY', deskquery | strip_newlines | remove: ' ' | replace: '  ', ' ' }}
-{{ styles | replace: 'MOB_QUERY', mobquery | replace: 'DESK_QUERY', deskquery | replace: 'LAST_DIVIDE', lastdivide | replace: 'MINUS_LAST_BLOCK', minuslastblockid | replace: 'LAST_BLOCK', lastblockid | strip_newlines | remove: '  ' | replace: '  ', ' ' }}
+{{ initstyles | replace: 'DESK_QUERY', deskquery | strip_newlines | remove: '	' | replace: '  ', ' ' }}
+{{ styles | replace: 'MOB_QUERY', mobquery | replace: 'DESK_QUERY', deskquery | replace: 'LAST_DIVIDE', lastdivide | replace: 'MINUS_LAST_BLOCK', minuslastblockid | replace: 'LAST_BLOCK', lastblockid | strip_newlines | remove: '	' | replace: '  ', ' ' }}
 
 
 
@@ -947,10 +944,10 @@
 {% raw %}
   <p id="shipping-rates-feedback" {{#if success}} class="success" {{else}} class="error" {{/if}}>
   {{#if success}}
-  {{#if rates}}
+	{{#if rates}}
       {{#rates}}
-        {{#if @first}}
-          Shipping starts at {{price}}
+      	{{#if @first}}
+        	Shipping starts at {{price}}
         {{/if}}
       {{/rates}}
     {{else}}
@@ -994,7 +991,7 @@
         "type": "select",
         "id": "footer_page_width",
         "label": "Background width",
-    "default": "page",
+		"default": "page",
         "options": [
           {
             "value": "page",
@@ -1010,7 +1007,7 @@
         "type": "select",
         "id": "footer_width",
         "label": "Content width",
-    "default": "page",
+		"default": "page",
         "options": [
           {
             "value": "page",
@@ -1026,7 +1023,7 @@
         "type": "select",
         "id": "footer_layout",
         "label": "Content layout",
-    "default": "vertical",
+		"default": "vertical",
         "options": [
           {
             "value": "vertical",
@@ -1096,7 +1093,7 @@
         "type": "select",
         "id": "cookie_page_width",
         "label": "Cookie notice background width",
-      "default": "page",
+		  "default": "page",
         "options": [
           {
             "value": "page",
@@ -1178,12 +1175,12 @@
           "type": "menu",
           "name": "Footer menu",
           "settings": [
-      {
+			{
               "type": "link_list",
               "id": "footer_linklist",
               "label": "First menu",
               "default": "footer"
-      },
+			},
             {
               "type": "checkbox",
               "id": "footer_linklist_bullets",
@@ -1238,18 +1235,18 @@
           "type": "social",
           "name": "Social",
           "settings": [
-      {
+			{
               "type": "checkbox",
               "id": "footer_social_text",
               "label": "Show social text",
               "default": true
-      },      
-      {
+			},      
+			{
               "type": "checkbox",
               "id": "footer_social_icons",
               "label": "Show social icons",
               "default": true
-      },
+			},
             {
               "type": "checkbox",
               "id": "footer_social_bullets",
@@ -1262,7 +1259,7 @@
         {
           "type": "form",
           "name": "Form",
-      "settings": [  
+			"settings": [  
               {
                 "type": "select",
                 "id": "footer_form",
@@ -1289,7 +1286,7 @@
                 "label": "Show field labels",
                 "default": false
               }
-      ]
+			]
         },
         {
           "type": "code",
@@ -1331,11 +1328,11 @@
           "type": "copyright",
           "name": "Copyright",
           "settings": [
-      {
+			{
               "type": "link_list",
               "id": "copyright_linklist",
               "label": "Legal menu"
-      },
+			},
             {
               "type": "checkbox",
               "id": "show_shop",

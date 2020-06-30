@@ -120,7 +120,7 @@
   {% endif %}    
     
   #shopify-section-{{ section.id }} .promotions {
-  	/* Default to same as settings.grid_spacing */
+    /* Default to same as settings.grid_spacing */
     grid-gap: {{ section.settings.promotions_spacing }}px;
     display: grid;
     grid-auto-flow: column;
@@ -251,30 +251,47 @@
     font-size: {{ section.settings.promotions_font_size }}px;
   }
   {% if section.settings.image_type != 'hidden' %}
-  #shopify-section-{{ section.id }} .promotion img,
-  #shopify-section-{{ section.id }} .promotion svg {
-    width: {{ section.settings.image_size }}%;
-    {% if section.settings.image_type == 'icon' %}
-    display: inline;
-    margin: auto 0.5em auto 0;
-    padding: 0;
-    vertical-align: middle;
-    {% endif %}
+    #shopify-section-{{ section.id }} .promotion img,
+    #shopify-section-{{ section.id }} .promotion svg {
+      width: {{ section.settings.image_size }}%;
+      {% if section.settings.image_type == 'icon' %}
+      display: inline;
+      margin: auto 0.5em auto 0;
+      padding: 0;
+      vertical-align: middle;
+      {% endif %}
+      {% if section.settings.image_type == 'image' %}
+      margin: 0 auto 0.5em auto;
+      margin: 0 auto 0 auto !important;
+      /* float: left; */
+      float: left;
+      width: 100%;
+      display: block;
+      {% endif %}
+    }
     {% if section.settings.image_type == 'image' %}
-    margin: 0 auto 0.5em auto;
+    #shopify-section-{{ section.id }} .promotion img + *,
+    #shopify-section-{{ section.id }} .promotion svg + * {
+      margin-top: 0.5em;
+    }
     {% endif %}
-  }
   {% endif %}
   #shopify-section-{{ section.id }} .promotion .desc {
-  	{% if section.settings.image_type == 'icon' %}
+    {% if section.settings.image_type == 'icon' %}
     display: inline-block;
     vertical-align: middle;
-  	{% endif %}
+    {% endif %}
   } 
 
 
 
   @media only screen and (max-width: {{ mobile_width | remove: 'px' | minus: 1 | append: 'px' }}) {
+    {% if section.settings.image_type == 'image' %}
+      #shopify-section-{{ section.id }} .promotion img,
+      #shopify-section-{{ section.id }} .promotion svg {
+        float: none;
+      }
+    {% endif %}
     {% if section.settings.per_row_mobile == 0 %}
     #shopify-section-{{ section.id }} .promotions {
       display: none;
@@ -308,29 +325,42 @@
           margin-bottom: {{ section.settings.promotions_spacing }}px;
           {% endif %}            
         } 
-    	{%- if section.blocks.size > 1 -%}
+      {%- if section.blocks.size > 1 -%}
         #shopify-section-{{ section.id }} .promotions > div:last-of-type {
           margin-bottom: {{ section.settings.promotions_spacing }}px; 
         }
-    	{% endif %}
+      {% endif %}
       {% endif %}
     {% endif %}
     
     #shopify-section-{{ section.id }} .promotions .promotion {  
-    	margin-top: {{ section.settings.promotions_spacing }}px;
+      margin-top: {{ section.settings.promotions_spacing }}px;
     }
     
   }
     
   </style>
 
-	{% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
+  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
 
     {% if section.settings.title != empty %}<h2>{{ section.settings.title }}</h2>{% endif %}
 
     <div class="promotions textcolumns{% if section.settings.image_parallax %} parallax{% endif %}">
     {%- for block in section.blocks -%}
-        {% assign imgsize = 400 | append: 'x' %}
+
+        {% capture blockstyle %}
+          {% if block.settings.image and section.settings.image_type != 'background' %}
+          #shopify-section-{{ section.id }} .promotion img {
+            margin: 0 !important;
+            padding: 0 !important;
+          } 
+          {% endif %}
+        {% endcapture %}
+        
+        {% assign styles = styles | append: blockstyle %}
+      
+        {% assign imgsize = 1000 | append: 'x' %}
+
         <div class="promotion item" role="presentation" style="{% if block.settings.image and section.settings.image_type == 'background' %}background: url('{{ block.settings.image | img_url: imgsize }}') {{ block.settings.color_bg }} no-repeat center center;{% else %}background:{{ block.settings.color_bg }};{% endif %}border: {% if block.settings.border_thickness > 0 %}{{ block.settings.border_thickness }}px{% else %}0{% endif %} solid {{ block.settings.color_border }};">
 
           {% if block.settings.image and section.settings.image_type != 'background' %}
@@ -348,16 +378,18 @@
     {%- endfor %}
     </div>
 
-	{% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}</div>{% endif %}
+  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}</div>{% endif %}
 
   {% endif %}
 
-
+<style>
+{{ styles }}
+</style>
 
 {% schema %}
   {
     "name": "Text Columns",
-	"class": "parallax",
+  "class": "parallax",
     "settings": [
       {
         "type": "text",
@@ -566,7 +598,7 @@
          "label": "Show parallax",
          "default": true
       }
-	],
+  ],
     "blocks": [
       {
         "type": "promotion",
@@ -620,12 +652,6 @@
             "default": "#ffffff"
           } 
         ]
-      }
-    ],
-    "presets": [
-      {
-        "name": "Text Columns",
-        "category": "Content"
       }
     ]
   }

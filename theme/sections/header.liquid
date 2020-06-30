@@ -906,6 +906,12 @@
     display: none;
     {% endif %}
   }
+  {% if section.settings.main_search_mobile %}
+  {% else %}
+  #searchhold {
+    display: none !important;
+  }
+  {% endif %}
 }
 
   
@@ -1991,8 +1997,14 @@ li.cart a span {
 	  {% capture customer_links -%}
       {%- if shop.customer_accounts_enabled -%}
   			{% assign li_count = li_count | plus: 1 %}
-                <ul>
+
+
+                  <li>{{ user_setting }}</li>
+
+                  {% comment %}
+
                   {% if customer %}
+                  {% comment %}
                     <li>
                       {% if customer.first_name != blank %}
                         {% capture first_name %}<a href="/account">{{ customer.first_name }}</a>{% endcapture %}
@@ -2001,6 +2013,7 @@ li.cart a span {
                         <a href="/account">{{ 'layout.customer.account' | t }}</a>
                       {% endif %}
                     </li>
+                    {% endcomment %}
                     <li>
                       {{ 'layout.customer.log_out' | t | customer_logout_link }}
                     </li>
@@ -2008,11 +2021,16 @@ li.cart a span {
                     <li>
                       {{ 'layout.customer.log_in' | t | customer_login_link }}
                     </li>
+                    {% comment %}
                     <li>
                       {{ 'layout.customer.create_account' | t | customer_register_link }}
                     </li>
+                    {% endcomment %}
                   {% endif %}
-                </ul>
+
+                  {% endcomment %}
+
+
       {%- endif -%}
 	  {%- endcapture %}	  
       {% endif %} 
@@ -3157,24 +3175,6 @@ header .tags {
 		<li data-p="{{ li_count }}" class="search menu {% if template contains 'search' %}site-nav--active {% endif %}search"{% unless template == 'search' %} id="searchhold"{% endunless %}>{{ searchdata }}<a href="/search" class="site-nav__link" id="search">{% if section.settings.search_text_show %}{{ 'search.titles.heading' |t }}{% endif %}{%- if section.settings.search_icon_show %} {% include 'icon-search' %}{% endif -%}</a></li>{% assign showsearchbox = false %}
       {%- endif -%} 
 
-      {% if section.settings.icon_links_position == 'menu' %}
-        {%- if settings.cart_enable -%}
-    		{%- capture cartlink %}{{ cart_setting | strip_newlines | replace: '<a href', '<a class="site-nav__link" id="cart" href' }}{% endcapture -%}
-    		{%- capture cartbox %}{% if cartbox %}{% unless template == 'cart' %}<div id="cartbox"></div>{% endunless %}{% endif %}{% endcapture -%}
-    		{%- capture cartdata -%}
-    		{%- if section.settings.main_linklist_hamburger_type == 'disabled' -%}
-    		{{ cartbox }}{{ cartlink }}
-    		{%- else -%}
-    		{{ cartlink }} {{ cartbox }}
-    		{%- endif -%}
-    		{%- endcapture -%}
-    		{% assign li_count = li_count | plus: 1 %}
-    		<li data-p="{{ li_count }}" class="{% if template == 'cart' %}site-nav--active {% endif %}cart" id="carthold">{{ cartdata }}</li>{% if section.settings.icon_links_position == 'menu' %}{% endif %}
-        {%- endif -%} 
-      {% unless showing_cart_icon %}
-      {% endunless %} 
-      {% endif %}
-
       {% unless showing_user_icon %}
         {%- capture accountlink %}{{ user_setting | strip_newlines | replace: '<a href', '<a class="site-nav__link" id="account" href' }}{% endcapture -%}
         {%- capture accountdata -%}
@@ -3183,6 +3183,8 @@ header .tags {
         {% assign li_count = li_count | plus: 1 %}
         <li data-p="{{ li_count }}" class="{% if template == 'account' %}site-nav--active {% endif %}account" id="accounthold">{{ accountdata }}</li>
       {% endunless %}
+
+
 
   	  {% comment %}
   	  {%- if showsearchbox -%}
@@ -3237,6 +3239,29 @@ header .tags {
       {{ customer_links }}
 	  </li>
       {% endif %}
+
+
+
+      {% if section.settings.icon_links_position == 'menu' %}
+        {%- if settings.cart_enable -%}
+        {%- capture cartlink %}{{ cart_setting | strip_newlines | replace: '<a href', '<a class="site-nav__link" id="cart" href' }}{% endcapture -%}
+        {%- capture cartbox %}{% if cartbox %}{% unless template == 'cart' %}<div id="cartbox"></div>{% endunless %}{% endif %}{% endcapture -%}
+        {%- capture cartdata -%}
+        {%- if section.settings.main_linklist_hamburger_type == 'disabled' -%}
+        {{ cartbox }}{{ cartlink }}
+        {%- else -%}
+        {{ cartlink }} {{ cartbox }}
+        {%- endif -%}
+        {%- endcapture -%}
+        {% assign li_count = li_count | plus: 1 %}
+        <li data-p="{{ li_count }}" class="{% if template == 'cart' %}site-nav--active {% endif %}cart" id="carthold">{{ cartdata }}</li>{% if section.settings.icon_links_position == 'menu' %}{% endif %}
+        {%- endif -%} 
+      {% unless showing_cart_icon %}
+      {% endunless %} 
+      {% endif %}
+
+
+      
   
   {%- endcapture -%}
   

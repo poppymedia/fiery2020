@@ -8,10 +8,10 @@
 	"buffers":
 	[
 		{
-			"file": "theme/sections/slideshow-page.liquid",
+			"file": "theme/assets/theme.scss.liquid",
 			"settings":
 			{
-				"buffer_size": 50563,
+				"buffer_size": 124896,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -20,33 +20,82 @@
 			"file": "theme/sections/slideshow-homepage.liquid",
 			"settings":
 			{
-				"buffer_size": 48551,
+				"buffer_size": 53469,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "theme/snippets/settings.liquid",
+			"file": "theme/sections/slideshow-page.liquid",
 			"settings":
 			{
-				"buffer_size": 104,
+				"buffer_size": 55552,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "theme/assets/theme.scss.liquid",
+			"file": "theme/locales/en.default.json",
 			"settings":
 			{
-				"buffer_size": 120021,
+				"buffer_size": 18091,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "https://www.amazon.co.uk/Crucial-MX500-CT500MX500SSD1-NAND-Internal/dp/B0784SLQM6\nhttps://www.ebay.co.uk/itm/Microsoft-Windows-10-Pro-32-64Bit-Genuine-License-USB-Boot-Installation-Drive/254097198558\n",
+			"file": "theme/config/settings_schema.json",
 			"settings":
 			{
-				"buffer_size": 200,
+				"buffer_size": 94213,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "theme/sections/header.liquid",
+			"settings":
+			{
+				"buffer_size": 156950,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "theme/sections/forms.liquid",
+			"settings":
+			{
+				"buffer_size": 9613,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<!-- SECTION -->\n\n<!-- TO DO: If vendor equal to store name (as Shopify does by default) then allow vendor to be hidden -->\n\n{% include 'settings' %}\n{% assign mobile_width = grid_mobile %}\n{% assign bgsize = 1000 | append: 'x' %}\n{% assign separatorid = 0 %}\n\n{% assign font_gutter = 30 %}\n{% assign pagination = 'below' %}\n\n{% capture stylesheet %}\n{% if pagination == 'below' %}\n#main .container {\n  padding-bottom: {{ font_gutter | times: 2 | plus: section.settings.controls_size }}px !important;\n}\n{% endif %}\n#prevnext.icons {\n  left: 0;\n  width: 100%;\n  position: relative;\n  overflow: visible;\n}\n#prevnext {\n  {% if pagination == 'below' %}\n  position: absolute !important;\n  bottom: 0;\n  left: 0;\n  width: calc(100% - {{ font_gutter | times: 2 }}px) !important;\n  margin: 0 {{ font_gutter }}px {{ font_gutter }}px {{ font_gutter }}px\n  {% endif %}\n}\n\n#prevnext .prev {\n  float: left;\n}\n#prevnext .next {\n  float: right;\n}\n\n#prevnext.icons .prev,\n#prevnext.icons .next {\n  line-height: 75%;\n  font-size: {{ section.settings.controls_size }}px;\n  {% if section.settings.controls_type == 'buttons' %}\n  height: {{ section.settings.controls_size }}px;\n  width: {{ section.settings.controls_size }}px;\n  text-align: center;\n  vertical-align: middle;\n  text-align: center;\n  {% endif %}\n}\n  \n{% if section.settings.controls_type == 'buttons' %}\n#prevnext.icons .prev:before {\n  content: '\\2039';\n}\n#prevnext.icons .next:after {\n  content: '\\203A';\n}\n{% endif %}\n\n{% if section.settings.controls_distance == 'outside' %}\n#prevnext.icons .prev {\n  margin-left: -{{ section.settings.controls_size | plus: font_gutter }}px;\n}\n#prevnext.icons .next {\n  margin-right: -{{ section.settings.controls_size | plus: font_gutter }}px;\n}\n{% endif %}\n{% if section.settings.controls_distance == 'overlap' %}\n#prevnext.icons .prev {\n  margin-left: -{{ section.settings.controls_size | divided_by: 2 | plus: font_gutter }}px;\n}\n#prevnext.icons .next {\n  margin-right: -{{ section.settings.controls_size | divided_by: 2 | plus: font_gutter }}px;\n}\n{% endif %}\n{% if section.settings.controls_distance == 'inside' %}\n#prevnext.icons .prev {\n  margin-left: -{{ font_gutter }}px;\n}\n#prevnext.icons .next {\n  margin-right: -{{ font_gutter }}px;\n}\n{% endif %}\n{% if section.settings.controls_distance == 'nudged' %}\n#prevnext.icons .prev {\n  margin-left: 0;\n}\n#prevnext.icons .next {\n  margin-right: 0;\n}\n{% endif %}\n\n{% if section.settings.share_buttons != 'hidden' %}\n.social-sharing {\n\tmargin-bottom: {{ font_gutter }}px;\n}\n.social-sharing a {\n\tmargin-right: 0.75em;\n}\n.social-sharing .icon {\n\tmargin-top: -0.2em;\n}\n{% endif %}\n\n/* Product thumbnails */\n#productshots li {\n\tdisplay: inline;\n}\n\n/* Product Reviews App */\n.spr-badge {\n\tfont-size: 60%;\n} \n{% if section.settings.review_rating == 'right' %}\nh1.badge {\n\tpadding-right: 5em;\n\tposition: relative;\n}\n.spr-badge {\n\tposition: absolute;\n\tright: 0;\n\ttop: 0;\n} \n{% else %}\n.product .spr-badge {\n  margin-top: -0.5em;\n  margin-bottom: 0.5em;\n}\n{% endif %}\n\n\nmain > div {\n\t/* border: solid 1px green; */\n}\n\n\n/* Determine width of columns */\n{% assign imgcol = 60 %}\n{% assign descol = 40 %}\n{% assign colgut = 0 %}\n{% if section.settings.layout_grid_prominent_feature == 'image_title' or section.settings.layout_grid_prominent_feature == 'title_image' %} \n{% assign imgcol = 50 %}\n{% assign descol = 50 %}\n{% assign colgut = font_gutter | divided_by: 2 %}\n{% endif %}\n\n\n\n.half.img {\n\twidth: calc({{ imgcol }}% - {{ colgut }}px);\n}\n\n{% if section.settings.layout_grid_prominent_feature == 'title_image' %}\n.half.desc {\n\twidth: calc({{ descol }}% - {{ font_gutter }}px);\n\tmargin-right: {{ font_gutter | plus: colgut }}px;\n}\n{% else %}\n.half.desc {\n\twidth: calc({{ descol }}% - {{ font_gutter }}px);\n\tmargin-left: {{ font_gutter | plus: colgut }}px;\n}\n{% endif %}\n\n\n\n {% if section.settings.separator_width == 'container' %}\n  @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {\n  .separator_holder .container {\n    padding: 0;\n  }\n  }\n  {% endif %}\n    \n  .separator_holder {  \n    position: relative;\n    overflow: hidden;  \n    /* border: solid 1px white; */\n  }\n    \n  {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}\n  .separator_holder:before {\n      content: '';\n      position: absolute;\n      width: 100%;\n      height: 100%;\n      top: 0;\n      left: 0;  \n  }\n  {% endif %}\n    \n  .separator_holder .container { \n    overflow: hidden;   \n    /* border: solid 1px black; */ \n    \n  }  \n  .container .separator.forproduct {  \n    overflow: hidden;  \n    /* border: solid 1px red; */\n  }   \n\n  {% if section.settings.separator_width == 'overflow' %}\n  #main .separator_holder .container { \n    background: transparent; \n    padding: 0 !important;\n    height: auto !important;\n  }    \n  {% endif %}    \n    \n  .separator_holder .separator.forproduct {\n    position: relative;\n    padding-top:  {{ section.settings.separator_padding }}px;\n    padding-bottom:  {{ section.settings.separator_padding | plus: section.settings.line_size }}px;\n\n    {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}\n      {% if section.settings.image_position != 'hidden' %}\n        background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');\n        \n        {% if section.settings.image_position == 'center' %}    \n        background-position: center center; \n        background-repeat: no-repeat;\n        {% endif %}\n        {% if section.settings.image_position == 'tile' %}\n        background-position: center center; \n        background-repeat: repeat;\n        {% endif %}\n        {% if section.settings.image_position == 'fill' %}   \n        background-position: center center; \n        background-size: cover;\n        {% endif %}\n  \n      {% endif %}   \n    {% endif %}     \n      background-color: {{ section.settings.separator_bg }}; \n    \n  }\n\n  {% if section.settings.line_size > 0 %}\n  .separator_holder .separator.forproduct:before {\n      content: '';\n      position: absolute;\n      width: 100%;\n      height: {{ section.settings.line_size }}px;\n      top: {{ section.settings.separator_padding }}px;\n      left: 0;  \n      background-color: {{ section.settings.line_color }};\n  }\n  {% endif %}\n\n  @media only screen and (max-width: {{ mobile_width | remove: 'px' | minus: 1 | append: 'px' }}) {\n    {% if section.settings.per_row_mobile == 0 %}\n    .separator_holder .separator.forproduct {\n      display: none;\n    } \n      .separator_holder .container {\n        margin: 0 !important;\n        padding: 0 !important;\n      }   \n    {% endif %}\n    \n    {% unless section.settings.separator_width == 'content' %}\n    .separator_holder .container { \n      padding: 0 !important;    \n    } \n    {% endunless %}\n \n\n    {% if section.settings.per_row_mobile > 0 %}\n      .separator_holder .container {\n        margin-top: 0 !important;\n        padding-top: 0 !important;\n      }\n      {% if section.settings.per_row_mobile == 1 %}\n      .separator_holder .separator {\n        display: block;\n      }\n      {% endif %}\n      {% if section.settings.per_row_mobile == 2 %}\n      .separator_holder .separator {\n      }    \n      {% endif %}\n    {% endif %}\n    \n  }\n\n\n\n{% endcapture %}\n\n\n\n{% assign productavailable = 'true' %}\n{% if section.settings.show_availability_from %}\n{% unless product.available %}\n{% assign productavailable = 'false' %}\n{% capture notifyform %}\n<div id=\"sold-out\">\n  {% form 'contact' %}\n    {% if form.posted_successfully? %}\n    <p class=\"accent-text\">{{ 'products.general.notify_response_html' | t }}</p>\n    {% else %}\n    <p>{{ 'products.general.notify_message_html' | t: title: product.title }}</p>\n    {% endif %}\n    {% if form.errors %}\n    <div class=\"error feedback accent-text\">\n      <p>{{ 'products.general.notify_error_html' | t }}</p>\n    </div>\n    {% endif %}\n    {% unless form.posted_successfully? %}\n    <div id=\"notify-me-wrapper\" class=\"clearfix\" style=\"display:none\">\n      <span class=\"text\">\n      {% if customer %}\n      <input type=\"hidden\" name=\"contact[email]\" value=\"{{ customer.email }}\" />\n      {% else %}\n      <input type=\"email\" name=\"contact[email]\" placeholder=\"your@email.com\" class=\"{% if form.errors contains 'email' %}error{% endif %}\" value=\"{{ contact.fields.email }}\" required=\"required\" />\n      {% endif %}\n      </span>\n      <span class=\"action\">\n      <input type=\"hidden\" name=\"contact[body]\" value=\"{% assign esctitle = product.title | escape %}{{ 'products.general.notify_success_html' | t: title: esctitle }}\" />   \n      <button type=\"submit\" class=\"btn\"><span>{{ 'products.general.notify_button' | t }}</span></button>    \n      </span>\n    </div>\n    {% endunless %}\n  {% endform %}\n</div>\n{% endcapture %}\n{% endunless %}\n{% endif %}\n\n\n\n\n\n{% capture separator %}\n  {% if section.settings.separator_replace and product.description contains section.settings.separator_marker %}\n\n    {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}\n  </div></main></article></div></div></div>\n    {% endif %}\n\n      <div class=\"separator_holder s{{ separatorid }}\">\n      {% if section.settings.separator_width == 'overflow' %}<div class=\"container{% if settings.width_bleed_to_edge %} bleed{% endif %}\">{% endif %}\n\n        <div class=\"separator forproduct divider{% if section.settings.image_parallax %} parallax{% endif %}\">\n          {% if section.settings.image_placement == 'foreground' and section.settings.image_position != 'hidden' %}\n          <img src=\"{{ section.settings.image_bg | img_url: bgsize }}\" alt=\"\" style=\"width:100%\" />     \n          {% endif %}\n        </div>\n\n      {% if section.settings.separator_width == 'overflow' %}</div>{% endif %}\n      </div>\n\n    {% if section.settings.separator_width == 'page' or section.settings.separator_width == 'overflow' %}\n    <div class=\"separated\"><div class=\"container bleed clearfix\"><div id=\"shopify-section-product\" class=\"shopify-section\"><article class=\"product\"><main><div>\n    {% endif %}\n\n    {% assign separatorid = separatorid | plus: 1 %}\n\n  {% endif %}\n{% endcapture %}\n\n{% capture get_tags %}\n  {% capture display_tags %}\n  <ul class=\"tags\">\n      {% for tag in product.tags %}\n      {% assign hidetag = 'no' %}\n      {% if settings.product_heeading_tag and tag contains '#Heading_' %}\n        {% assign hidetag = 'yes' %}{% assign color_headings = tag | remove: 'Heading_' %}\n        {% assign stylesheet = stylesheet | append: 'body h1, body h2, body h3, body h4 { color:' | append: color_headings | append: ';} #main .btn, .sy-controls li a:after { background:' | append: color_headings | append: ' !important; border-color:' | append: color_headings | append: ' !important;}' %}\n        {% assign stylesheet = stylesheet | append: 'body h1 span, body h2 span, body h3 span, body h4 span { color: ' | append: settings.color_body_heading | append: ';}' %}\n      {% endif %}\n      {% if settings.product_bg_tag and tag contains '#Body_' %}\n        {% assign hidetag = 'yes' %}{% assign color_body = tag | remove: 'Body_' %}\n        {% if color_body == '#transparent' %}{% assign color_body = 'transparent' %}{% endif %}\n        {% assign stylesheet = stylesheet | append: 'body { background:' | append: color_body | append: ';}' %}\n      {% endif %}\n      {% if settings.product_main_tag and tag contains '#Main_' %}\n        {% assign hidetag = 'yes' %}{% assign color_main = tag | remove: 'Main_' %}\n        {% if color_main == '#transparent' %}{% assign color_main = 'transparent' %}{% endif %}\n        {% assign stylesheet = stylesheet | append: 'body #main { background:' | append: color_main | append: ';}' %}\n      {% endif %}\n      {% if settings.product_container_tag and tag contains '#Product_' %}\n        {% assign hidetag = 'yes' %}{% assign color_product = tag | remove: 'Product_' %}\n        {% if color_product == '#transparent' %}{% assign color_product = 'transparent' %}{% endif %}\n        {% assign stylesheet = stylesheet | append: '#main .container { background:' | append: color_product | append: ';}' %}\n      {% endif %}    \n      {% if hidetag == 'no' %}\n      <li><a href=\"/collections/all/{{ tag | handleize }}\">{{ tag }}</a></li>\n      {% endif %}\n      {% endfor %}\n  </ul>\n  {% endcapture %}\n  {% if section.settings.show_tags %}\n  {{ display_tags }}\n  {% endif %}\n{% endcapture %}\n\n\n\n\n<style>\n{{ stylesheet }}\n.metadesc {\n  border:  solid 1px #000000;\n  margin:  0 0 20px 0;\n  padding:  0;\n}\n.metadesc h2, .metadesc h3, .metadesc h4 {\n  margin-top:  0;\n}\n</style>\n\n\n\n\n\n<article class=\"product\" id=\"content\" data-section-id=\"{{ section.id }}\" data-section-type=\"product\" data-enable-history-state=\"true\" itemscope itemtype=\"http://schema.org/Product\">\n\n  {%- assign current_variant = product.selected_or_first_available_variant -%} \n  {% if product.template_suffix contains 'orderform' %}\n  {%- assign featured_image = product.featured_image -%}\n  {%- else -%}\n  {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}\n  {%- endif -%}\n  {%- assign thumbsize = '160x' -%}\n  \n  {%- assign thumb_src_1 = featured_image | img_url: '480x480' -%}\n  {%- assign thumblist = thumb_src_1 -%}\n  \n  {%- assign slide_src_1 = featured_image | img_url: '480x480' -%}\n  {%- assign slidelist = slide_src_1 -%}\n\n    {% capture variants %}\n        {%- assign variant_imgs = '' -%}\n        {%- assign variant_id_list = '' -%}\n    \n        <select name=\"id\" class=\"no-js{% unless product.options.size > 1 %}{% unless section.settings.show_variant_always %} visually-hidden{% endunless %}{% endunless %} supports-cookies\" data-product-select>        \n          {% for variant in product.variants %}\n\n            {% capture variant_img %}{{ variant | img_url: thumbsize }}{% endcapture %}\n            {%- assign variant_img = variant_img | split: \"?\" -%}\n            {%- assign variant_img = variant_img[0] -%}\n            {%- unless variant_imgs == '' %}{% assign variant_imgs = variant_imgs | append: ', ' %}{% endunless -%}\n            {%- assign variant_imgs = variant_imgs | append: variant_img -%}\n\n            <option\n              {% if variant == current_variant %}selected=\"selected\"{% endif %}\n              {% unless variant.available %}disabled=\"disabled\"{% endunless %}\n              value=\"{{ variant.id }}\">\n                {{ variant.title }}\n            </option>\n\n          \t{% unless variant_id_list == '' %}{% assign variant_id_list = variant_id_list | append: ', ' %}{% endunless %}\n          \t{%- assign variant_id_list = variant_id_list | append: variant.title | append: '__' | append: variant.id -%}\n\n          {% endfor %}\n\n        </select>\n    {% endcapture %}\n\n    {%- assign main_src = featured_image | img_url: thumbsize -%}\n    {%- assign main_src = main_src | split: \"?\" -%}\n    {%- assign main_src = main_src[0] -%}    \n\n    {%- comment %}\n    <p>Main Src: <br />{{ main_src }}</p>\n    {% capture variant_imgs_list %}\n    {%- assign variant_imgs_split = variant_imgs | split: ', ' -%}\n    {% for img in variant_imgs_split %}\n          {{ img }}<br />\n    {% endfor %}\n    {% endcapture %}\n    <p>Variant Src: <br />{{ variant_imgs_list }}</p>\n    {% endcomment -%}    \n    \n    {%- assign tag_group_names = '' -%}\n    {%- assign tag_group_num = 0 -%}\n    {% for option in product.options_with_values %}\n    \t{% assign tag_group_names = tag_group_names | append: option.name %}\n    \t{% if tag_group_num == 0 %}{% assign tag_group_names = tag_group_names | append: ', ' %}{% endif %}\n    \t{% assign tag_group_num = tag_group_num | plus: 1 %}\n    {% endfor %}\n    {%- assign firstgroup = tag_group_names | split: ', ' | first | downcase -%} \n\n    {% capture thumbnails %}\n    {% if product.images.size > 1 %}\n    \n\t\t{%- assign img_num = 2 -%}\n        {% for image in product.images %} \n\n            {%- assign showimg = 'yes' -%}\n            {% capture thumbsrc %}{{ image.src | img_url: thumbsize }}{% endcapture %}\n            {%- assign check_imgs = variant_img -%}\n            {%- assign check_img = thumbsrc | split: \"?\" -%}\n            {%- assign check_img = check_img[0] -%}  \n  \t\t    {%- assign slide_src = image.src | img_url: '480x480' -%}\t\n\n            {% if firstgroup contains 'colour' or firstgroup contains 'color' %}\n              {% if section.settings.show_variant_duplicates %}     \t\t\t\n                    {% if check_imgs contains check_img or main_src contains check_img or variant_imgs contains check_img %}                  \n                        {% assign showimg = 'no' %}\n                    {% endif %}\n              {% endif %}\n            {% endif %}\n  \n\t\t\t{%- comment %} Check that slide hasn't already been shown -->{% endcomment -%}\n  \t\t    {% if slidelist contains slide_src %}{% assign showimg = 'no' %}{% endif %}\n            {% if showimg == 'yes' %}\n            <li>\n              {%- comment %}\n              {{ check_img }}\n              {% endcomment -%}\n\n              {%- assign alt = '' -%}\n              {%- if section.settings.show_gallery_captions %}\n              {% capture alt %} alt=\"{{ image.alt | escape }}\"{% endcapture %}\n              {% endif -%}            \n\n              {% comment %}<a href=\"{{ image.src | img_url: '480x480' }}\" data-product-single-thumbnail>{% endcomment %}\n              {% assign img_size = section.settings.image_size | append: 'x' %}\n              <img src=\"{{ image.src | img_url: img_size }}\"{{ alt }}>{% comment %}<a href=\"#slide{{ img_num }}\"></a>{% endcomment %}\n             {% comment %}</a>{% endcomment %}\n            </li>\n            {%- assign img_num = img_num | plus: 1 -%}\n  \t\t  \t{%- assign slidelist = slidelist | append: ',' | append: slide_src -%}\n            {% endif %}\n\n        {% endfor %}\n\n    {% endif %}\n    {% endcapture %}\n\n    {% capture thumbs %}\n    {% if product.images.size > 1 %}\n\t\t{%- assign thumb_num = 2 -%}\n        {% for image in product.images %} \n\n          {%- assign showimg = 'yes' -%}\n          {% capture thumbsrc %}{{ image.src | img_url: thumbsize }}{% endcapture %}\n          {%- assign check_imgs = variant_img -%}\n          {%- assign check_img = thumbsrc | split: \"?\" -%}\n          {%- assign check_img = check_img[0] -%}  \n  \t\t  {%- assign thumb_src = image.src | img_url: '480x480' -%}\n\n          {%- if firstgroup contains 'colour' or firstgroup contains 'color' %}\n            {% if section.settings.show_variant_duplicates %}     \t\t\t\n                  {% if check_imgs contains check_img or main_src contains check_img or variant_imgs contains check_img %}                  \n                      {%- assign showimg = 'no' -%}\n                  {% endif %}\n            {% endif %}\n          {% endif -%}\n  \n  \t\t  {%- comment %} Check that thumbnail hasn't already been shown -->{% endcomment -%}\n  \t\t  {% if thumblist contains thumb_src %}{% assign showimg = 'no' %}{% endif %}\n          {% if showimg == 'yes' %}\n          <li>\n            {%- comment %}\n            {{ check_img }}\n            {% endcomment -%}\n            \n            {%- assign alt = '' -%}\n            {%- if section.settings.show_gallery_captions %}\n            {% capture alt %} alt=\"{{ image.alt | escape }}\"{% endcapture %}\n            {% endif -%}\n\n            <a href=\"#{{ thumb_num }}\" data-slide=\"{{ thumb_num }}\"><img src=\"{{ thumb_src }}\"{{ alt }}></a>\n          </li>\n          {%- assign thumb_num = thumb_num | plus: 1 -%}  \n  \t\t  {%- assign thumblist = thumblist | append: ',' | append: thumb_src -%}\n          {% endif %}\n\n        {% endfor %}\n\n    {% endif %}\n    {% endcapture %}\n\n  <meta itemprop=\"name\" content=\"{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}\">\n  <meta itemprop=\"url\" content=\"{{ shop.url }}{{ current_variant.url }}\">\n  <meta itemprop=\"brand\" content=\"{{ product.vendor }}\">\n  <meta itemprop=\"image\" content=\"{{ featured_image | img_url: thumbsize }}\">\n  <meta itemprop=\"description\" content=\"{% assign desc = product.description | default: shop.name | strip_html | newline_to_br | split: '<br />' %}{{ desc[0] }}\">  \n\n  <main>\n   \n    {% capture get_h1 %}\n    <!-- Title -->\n    <h1{% if section.settings.review_rating == 'right' %} class=\"badge\"{% endif %}>{{ product.title }}\n    <!-- Product Reviews App -->\n    {% if section.settings.review_rating == 'right' %}\n    <span class=\"shopify-product-reviews-badge\" data-id=\"{{ product.id }}\"></span> \n    {% endif %}    \n    </h1>\n    {% endcapture %}\n    \n    {% capture get_vendor %}\n    <!-- Vendor -->\n    {% if section.settings.show_vendor %}\n          {% assign showvendor = 'true' %}{% if product.vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}\n          {% if showvendor == 'true' %}\n          <p class=\"vendor\">\n            \n            {{ product.vendor }}\n            \n          </p>\n          {% endif %}\n    {% endif %}\n    {% endcapture %}\n    \n    {% capture get_sku %}\n    <!-- Vendor -->\n    {% if section.settings.show_sku %}\n        {% if section.settings.sku_as_summary %}\n        {% else %}\n          <p class=\"vendor\">\n            \n            {{ current_variant.sku }}\n            \n          </p>\n        {% endif %}\n    {% endif %}\n    {% endcapture %}\n\n    {% capture get_sku_summary %}\n    {% if section.settings.sku_as_summary %}\n          <p class=\"summary\">\n            \n            {{ current_variant.sku }}\n            \n          </p>\n    {% endif %}\n    {% endcapture %}\n        \n    {% capture get_rating %}\n    <!-- Product Reviews App -->\n    {% if section.settings.review_rating == 'title' %}\n    <span class=\"shopify-product-reviews-badge\" data-id=\"{{ product.id }}\"></span> \n    {% endif %}\n    {% endcapture %}\n    \n    {% capture get_images %}\n    <!-- Thumbnails -->\n    {{ 'slippry.scss.css' | asset_url | stylesheet_tag }}\n    \n    {% assign alt = '' %}\n    {% if section.settings.show_gallery_captions %}\n    {% capture alt %} alt=\"{{ featured_image.alt | escape }}\"{% endcapture %}\n    {% endif %}\n      \n    {% if section.settings.enable_slides and thumb_num > 1 %}\n    <ul id=\"thumbnails\" class=\"slides\">\n      <li>\n        <img src=\"{{ slide_src_1 }}\"{{ alt }} data-product-featured-image>{% comment %}<a href=\"#slide1\"></a>{% endcomment %}\n      </li>\n      {% unless section.settings.show_variant_always and thumb_num < 2 %}\n      {{ thumbnails }}\n      {% endunless %}\n    </ul>\n    {% capture get_thumbs %}\n    {% unless section.settings.show_variant_always and thumb_num < 2 %}\n    <div class=\"thumb-box\">\n      <ul class=\"thumbs\">\n        <li>\n          <a href=\"#1\" data-slide=\"1\"><img src=\"{{ thumb_src_1 }}\"{{ alt }}></a>\n        </li>\n        {{ thumbs }}\n      </ul>\n    </div>\n    {% endunless %}\n    {% endcapture %}\n    {% else %}\n    <ul class=\"slides\">\n      <li>\n        {% assign img_size = section.settings.image_size | append: 'x' %}\n        <img src=\"{{ featured_image | img_url: img_size }}\"{{ alt }} data-product-featured-image>\n      </li>\n      {% unless section.settings.show_variant_always and thumb_num < 2 %}\n      {{ thumbnails }}\n      {% endunless %}\n    </ul>\n    {% endif %}\n    {% endcapture %}\n\n\n    {% capture get_variants %}\n    <!-- Variants -->    \n    <div itemprop=\"offers\" itemscope itemtype=\"http://schema.org/Offer\">\n      <meta itemprop=\"priceCurrency\" content=\"{{ shop.currency }}\">\n      <meta itemprop=\"price\" content=\"{{ current_variant.price | divided_by: 100.00 }}\">\n      <link itemprop=\"availability\" href=\"http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}\">\n\n      {% if productavailable == 'true' %}\n      <form action=\"/cart/add\" method=\"post\" enctype=\"multipart/form-data\" class=\"product_form\">\n      {% endif %}   \n          \n      <!-- TO DO: Enable inc and exc prices to be ordered -->\n          \n          {% assign showprice = 'true' %}\n          {% assign show_tax = '' %}\n          {% assign show_price_tax = '' %}\n          \n          {% if product.price == 0 -%}\n          \t\t{% assign showprice = 'false' %}\n          {%- endif %}\n\n          {% if showprice == 'false' -%}\n          \t\t{% assign show_tax = '<p></p>' %}\n          {% else %}   \n        \n                {% if settings.tax_inc_and_exc -%}\n                  {%- assign taxes_rate = settings.taxes_rate -%}\n                  {%- assign tax_diff = 100 | minus: taxes_rate -%}\n                  {%- assign tax_rate_add = \"1.\" | append: taxes_rate | plus: 0 -%}\n                  {%- assign tax_rate_exc = \"0.\" | append: tax_diff | plus: 0 -%}          \n                  {% if shop.taxes_included -%}\n                    {% comment %}Taxes included{% endcomment %}\n                    {% capture show_price_tax %} <sup>{{ 'products.general.tax_inc' | t }}</sup>{% endcapture %}\n                    {% capture show_tax -%}\n                        <p class=\"taxprice\"><small><span class=\"price\">{{ product.price | times: tax_rate_exc | money }}</span> <sup>{{ 'products.general.tax_exc' | t }}</sup></small></p> \n                    {%- endcapture %}\n                  {% else %}\n                    {% comment %}Excluding taxes{% endcomment %}\n                    {% capture show_price_tax %} <sup>{{ 'products.general.tax_exc' | t }}</sup>{% endcapture %}\n                    {% capture show_tax -%}\n                        <p class=\"taxprice\"><small><span class=\"price\">{{ product.price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></small></p> \n                    {%- endcapture %}\n                  {%- endif %}\n                {%- endif %}  \n        \n          {% endif %}\n         \n        {% capture variant_groups %}\n        {% unless product.has_only_default_variant %}\n\n          {% assign options_current = '' %}\n\n          {% assign opt_i = 0 %}\n          {% assign tag_group_num = 0 %}\n\n          {% capture variant_items %}\n          {% unless section.settings.variant_style == 'hidden' %}\n            {% for option in product.options_with_values %}\n              <div class=\"selector-wrapper js\">\n                \n                {% unless template contains 'giftcard' %} \n                <label for=\"SingleOptionSelector-{{ forloop.index0 }}\">\n                  {{ option.name }}\n                  {% assign tag_group_num = tag_group_num | plus: 1 %}\n                </label>\n                {% endunless %}\n\n                {% if section.settings.variant_style == 'dropdowns' %}\n                <select\n                  id=\"SingleOptionSelector-{{ forloop.index0 }}\"\n                  data-single-option-selector\n                  data-index=\"option{{ option.position }}\">\n                  {% for value in option.values %}\n                    <option\n                      value=\"{{ value | escape }}\"\n                      {% if option.selected_value == value %}selected=\"selected\"{% endif %}>\n                        {{ value }}\n                    </option>\n                  {% endfor %}\n                </select>\n                {% endif %}\n\n                {% comment %}ID List: {{ variant_id_list }}<br />{% endcomment %}\n                {% if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' %} \n                    {% assign option_name = option.name | downcase %}\n                    {% assign current_option = \"option\" | append: option.position %}\n                    {% assign other_options = \"option1 option2 option3\" | remove: current_option | strip | split: \" \" %}\n                    {% for value in option.values %}\n\n                          {% assign available = false %}\n                          {% for variant in product.variants %}\n                \t\t\t\t{% assign showthumb = false %}\n                \t\t\t\t{% if section.settings.variant_style == 'thumbnails' %}\n                                  {% comment %}\n                                  <!-- NOTE: Color option needs to be positioned as first option -->\n                                  {% endcomment %}                                \n                \t\t\t\t\t{% if firstgroup contains 'colour' or firstgroup contains 'color' %}\n                \t\t\t\t\t\t{% assign showthumb = true %}\n                \t\t\t\t\t{% endif %}\n                \t\t\t\t{% endif %}\n                              {% capture id %}{{ variant.id }}{% endcapture %}\n                              {% unless variant.available %}\n                                {% continue %}\n                              {% endunless %}\n                              {% unless variant[current_option] == value %}\n                                {% continue %}\n                              {% endunless %}\n                              {% unless variant[other_options[0]] == current_variant[other_options[0]] %}\n                                {% continue %}\n                              {% endunless %}\n                              {% unless variant[other_options[1]] == current_variant[other_options[1]] %}\n                                {% continue %}\n                              {% endunless %}\n                              {% assign available = true %}\n                              {% assign uri = variant.id %}\n                              {% capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture %} \n               \t\t\t\t\n                \t\t\t\t{% unless option_name contains 'colour' or option_name contains 'color' %}\n                                 {% comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment %}\n                                 {% if section.settings.show_color_thumbnails %}\n                                      {% assign showthumb = false %}\n                                 {% endif %}\n                \t\t\t\t{% endunless %}\t\t\t\n                \n                              {% capture text %}{% if showthumb == true %}<img src=\"{{ variant | img_url: '60x' }}\" />{% else %}{{ value }}{% assign class=' class=\"btn\"' %}{% endif %}{% endcapture %}              \n                \t\t\t\t{% assign opt_i = opt_i | plus: 1 %}\n                \t\t\t\t{% endfor %}\n                          {% assign checked = \"\" %}\n                          {% if current_variant[current_option] == value %}\n                            \t{% assign checked = ' disabled' %}\n                          {% endif %}             \n\n                          <a href=\"{{ url }}\"{{ class }}{{ checked }} />{{ text }}</a>\n\n                    {% endfor %}\n            \n            \t\t\t{% if template contains 'giftcard' %}   \t\t\t\n              \t\t\t{% if shop.taxes_included %}\n              \t\t\t{% else %}\n              \t\t\t  {% if settings.gift_card_redemption == 'single' %}<p class=\"notice\">{{ 'gift_cards.general.gift_cards_priced' | t }} {{ 'products.general.tax_inc' | t }}</p>{% endif %}\n              \t\t\t{% endif %}    \n                  {% endif %}\n\n                {% endif %}\n\n              </div>\n            {% endfor %}  \n          {% endunless %}\n      \t  {% endcapture %}\n        \n        {% endunless %}\n\n        {% comment %}<!-- Don't show variants if there is only one and label is displayed -->{% endcomment %}\n        {% if section.settings.first_variant and product.variants.size == 1 %}        \n        {% else %}\n      \t<div id=\"variations\">{{ variant_items }}</div>\n        {% endif %}\n\n      \t{% if product.variants.size > 1 %}\n          {% unless section.settings.show_variant_always and product.options.size < 2 %}\n          {{ variants }}\n        \t{% endunless %}\n      \t{% else %}\n          {% if section.settings.show_variant_always %}\n          {{ variants }}\n          {% else %}\n        \t<input type=\"hidden\" name=\"id\" value=\"{{ product.variants.first.id }}\"/>\n          {% endif %}\n      \t{% endif %}\n\n      \t{% comment %}\n        {% unless section.settings.show_variant_always and product.options.size < 2 %}\n        {{ variants }} \n      \t{% endunless %}\n      \t{% endcomment %} \n\n\n            \n        {% if template == 'product.no.cart' %}\n        <!-- Product without add to cart -->\n            <div id=\"pricedata\">\n\n              <div data-price-wrapper>\n                <span data-product-price>\n                  {{ current_variant.price | money }}\n                </span>\n\n                {% if product.compare_at_price_max > product.price %}\n                  <span class=\"visually-hidden\" data-compare-text>{{ 'products.general.regular_price' | t }}</span>\n                  <s data-compare-price>\n                    {% if current_variant.compare_at_price > current_variant.price %}\n                      {{ current_variant.compare_at_price | money }}\n                    {% endif %}\n                  </s>\n                {% endif %}\n                \n                {{ show_price_tax }}\n                \n              </div>\n            \n                {% if showprice != 'false' -%}\n                {{ show_tax }} \n                {%- endif %}\n              \n            \t</div>\n\n        {% else %}\n\n            {% capture get_price %}      \t\n              <!-- Product with add to cart -->\n              {% unless template contains 'giftcard' %}\n            \t\t{% unless product.template_suffix contains 'orderform' %}\n                  <div id=\"pricedata\">\n\n                    <div data-price-wrapper>\n                      <span data-product-price>\n\n                        {% if product.price == 0 -%}\n\n                        {{ 'products.general.price_none' | t }}\n\n                        {%- else -%}\n\n                        {{ current_variant.price | money }}\n\n                        {%- endif %}\n\n                      </span>\n\n                      {% if product.compare_at_price_max > product.price and section.settings.show_compare_price %}\n                        <span class=\"visually-hidden\" data-compare-text>{{ 'products.general.regular_price' | t }}</span>\n                        <s data-compare-price>\n                          {% if current_variant.compare_at_price > current_variant.price %}\n                            {{ current_variant.compare_at_price | money }}\n                          {% endif %}\n                        </s>\n                      {% endif %}\n\n                      {{ show_price_tax }}\n\n                    </div>\n\n                    {% comment %}\n                    <div data-price-wrapper>\n                      <span data-product-inventory>\n                      {% if product.variants.first.inventory_management == 'shopify' %}\n                          {% if product.variants.first.inventory_quantity > 0 %}\n                             {% assign stock = product.variants.first.inventory_quantity %}\n                             {% comment %}{{ product.variants.first.inventory_quantity }} in stock{% endcomment %}\n                             {{ 'products.general.in_stock' | t: stock }}\n                          {% else %}\n                             {% comment %}Out of stock{% endcomment %}\n                             {{ 'products.general.no_stock' | t }}\n                          {% endif %}\n                       {% else %}\n                          In stock\n                       {% endif %}\n                      </span>\n                    </div>  \n                    {% endcomment %}\n\n                    {% if section.settings.show_saving %}\n                    {% if current_variant.compare_at_price > current_variant.price %}\n                    <div data-price-wrapper>\n                       <span data-product-save>\n                       {% assign diff = current_variant.compare_at_price | minus: current_variant.price | money %}\n                       {{ 'products.general.save_html' | t: amount: diff }}\n                       </span>\n                    </div>\n                    {% endif %}      \t\n                    {% endif %}    \n\n                      {% if showprice != 'false' -%}\n                      {{ show_tax }} \n                      {%- endif %} \n\n                  </div>  \n            \t\t{% endunless %}\n              {% endunless %}\n            {% endcapture %}\n\n              {% if settings.cart_enable %}\n            \n                <div class=\"supports-no-cookies\">\n                  <p class=\"notice\">{{ 'cart.general.cookies_required' | t }}</p>\n                </div>\n\n                <!-- supports-cookies ensures only cookie enabled browsers can add to cart -->\n                {% if section.settings.show_qty %}\n                <div class=\"action quantity{% unless settings.quantity_style == 'minimal' %}{% unless settings.quantity_style == 'default' %} buttons {% endunless %}{{ settings.quantity_style }}{% endunless %} supports-cookies\">\n                <span class=\"label visually-hidden\">{{ 'products.general.quantity' | t }}</span>\n                <input type=\"number\" id=\"Quantity\" name=\"quantity\" value=\"1\" min=\"1\">\n                </div>\n                {% endif %}      \n\n                {% if section.settings.show_addtocart_button %}\n\n                    {% if settings.cart_action == 'update' %}\n                      <input type=\"hidden\" name=\"return_to\" value=\"back\" />\n                    {% elsif settings.cart_action == 'checkout' %}\n                      <input type=\"hidden\" name=\"return_to\" value=\"/checkout\" />\n                    {% endif %}\n\n                    {% capture add_to_cart %}\n\n                      <!-- supports-cookies ensures only cookie enabled browsers can add to cart -->\n                      <div class=\"action supports-cookies\">\n                      <span class=\"label\">&nbsp;</span>\n                      <button\n                        type=\"submit\"\n                        name=\"add\"\n                        data-add-to-cart\n                        class=\"btn add_to_cart\"\n                        {%- unless current_variant.available %}disabled=\"disabled\"{% endunless -%}>        \n                          <span data-add-to-cart-text>\n                            {%- if current_variant.available -%}\n                              {{ 'products.general.add_to_cart' | t }}\n                            {%- else -%}\n                              {{ 'products.general.sold_out' | t }}\n                            {%- endif -%}\n                          </span>\n                      </button>\n                      </div>\n            \n            \t\t\t{% endcapture %}  \n\n                {% endif %}\n\n              {% endif %}\n\n        {% endif %}\n\n \n        {% capture add_more_buttons %}\n          {%- if section.settings.show_enquiry_button -%} \n          <div class=\"action\"><span class=\"label\">&nbsp;</span><a class=\"btn\" href=\"{{ section.settings.show_enquiry_url }}\">{{ 'products.general.enquiry_link' | t }}</a></div>\n          {%- comment -%} \n          <div class=\"action supports-no-cookies\"><a class=\"btn\" href=\"{{ section.settings.show_enquiry_url }}\">{{ 'products.general.enquiry_link' | t }}</a></div>\n          {% endcomment %}\n          {%- endif -%}\n        {% endcapture %}      \n      \n      \n        <div>\n          {{ add_to_cart }}\n          {{ add_more_buttons }}     \n        </div>\n\n\n      {% endcapture %}\n      \n      {{ variant_groups }}\n\n      {% if productavailable == 'true' %}\n      </form>\n      {% endif %}    \n    \n      {{ notifyform }}\n\n    </div>\n    {% endcapture %}  \n\n\n  \n    {% capture get_description %}    \n      {%- assign opentag = '<' | append: section.settings.content_grouping -%}  \n      {% if section.settings.content_grouping != 'nogroup' and product.description contains opentag %}\n        {% capture thedescription %}\n        {%- assign desc = product.description -%}\n\n        {% if desc contains '<li>' %}\n        \n\n            {%- assign lists = desc | split: '</li>' -%} \n            {% for list in lists %}\n              {% comment %}<code style=\"border: solid 1px red\">{{ list }}</code>{% endcomment %}\n              {%- assign li = list | split: '<li>' %}\n              {% capture txt %}{{ li[1] | strip_newlines }}{% endcapture %}{% assign id = txt | handle %}\n              {% if txt != empty %}<code style=\"border: solid 1px red\" title=\"{{ id }}\">{{ txt }}</code>{% endif %}\n              {% for l in li %}\n                {% capture lival %}{{ l | strip_newlines }}{% endcapture %}\n                {% comment %}{% if lival != empty %}<code style=\"border: solid 1px red\">{{ lival }}</code>{% endif %}{% endcomment %}\n              {% endfor %}\n            {% endfor %}\n\n        \n        {% endif %}\n\n        {%- assign headings = desc | split: opentag -%}\n        {%- assign count = 0 -%}\n        {% for group in headings %}{%- if count > 0 %}</div>{% endif -%}<div class=\"metadesc\">{{ opentag }}{{ group }}{%- assign count = count | plus: 1 -%}{% endfor %}</div>\n        {% endcapture %}\n        {% assign clean = '<div class=\"metadesc\">' | append: opentag | append: '</div>' %}\n        {% assign thedescription = thedescription | remove: clean %}\n      {% else %}\n        {% assign thedescription = product.description %}\n      {% endif %}\n      <div class=\"rte\">\n        {% if settings.sidesbar_pages %}\n          {{ thedescription }}\n        {% else %}\n          {% if section.settings.separator_replace and thedescription contains section.settings.separator_marker %}\n            {% if settings.sidesbar_pages %}\n              {{ thedescription }}\n            {% else %}\n              {% assign separator_marker = section.settings.separator_marker %}\n              {{ thedescription | replace: separator_marker, separator }}\n            {% endif %]}\n          {% else %}\n            {{ thedescription }}\n          {% endif %}\n        {% endif %}\n      </div>\n    {% endcapture %}\n\n    {% capture get_first_variant %}\n    {%- if section.settings.first_variant -%}\n    <div class=\"first-variant\">\n      {% assign count = 0 %}  \n      {% for variant in product.variants %}\n          {% if count == 0 %}              \n              {% unless product.template_suffix contains 'giftcard' or variant.title == 'Default Title' %}{{ variant.title }}{% endunless %}\n          {% assign count = 1 %} \n      {% endif %}   \n      {% endfor %}\n    </div>\n    {%- endif -%}\n    {% endcapture %}\n\n    {% capture get_reviews %}\n    <!-- Product Reviews App -->\n    {% if section.settings.show_review_comments %}\n  \t<div id=\"shopify-product-reviews\" data-id=\"{{ product.id }}\">{{ product.metafields.spr.reviews }}</div>\n  \t{% endif %}\n    {% endcapture %}\n\n    {% capture get_share %}\n    {% if section.settings.share_buttons != 'hidden' %}\n      {% assign producturl = product.url | within: collection %}\n      {% include 'social-sharing', share_title: product.title, share_permalink: producturl, share_image: product, share_status: section.settings.share_buttons %}\n    {% endif %}\n    {% endcapture %} \n  \n  \t{% if product.template_suffix contains 'orderform' %}\n  \t{% capture get_variants %}{% include 'variants-list' %}{% endcapture %}\n  \t{% endif %}\n\n    {% assign imgcolwidth = section.settings.gallery_size %}\n    {% if section.settings.gallery_size == 'full' %}\n      {% assign imgcolwidth = '' %}\n    {% endif %}\n    {% if section.settings.gallery_size == 'third' %}\n      {% assign descolwidth = 'twothirds' %}\n    {% endif %}\n    {% if section.settings.gallery_size == 'half' %}\n      {% assign descolwidth = 'half' %}\n    {% endif %}\n    {% if section.settings.gallery_size == 'twothirds' %}\n      {% assign descolwidth = 'third' %}\n    {% endif %}\n  \n    \t{% if section.settings.layout_grid_prominent_feature == 'image_title' %}  \n  \t\t<div class=\"{{ imgcolwidth }} img\">\n        \t  {{ get_images }}\n          \t{{ get_thumbs }}\n  \t\t</div>\n      <div class=\"{{ descolwidth }} desc\">\n            {{ get_h1 }}\n            {{ get_first_variant }}\n            {{ get_vendor }}\n            {{ get_sku }}\n        \t  {{ get_rating }}\n          \t{{ get_price }}\n            {{ get_variants }}\n            {{ get_sku_summary }}\n            {{ get_description }}\n            {{ get_tags }}\n            {{ get_reviews }}          \n            {{ get_share }}\n      </div>  \n    \t{% endif %}\n  \n      {% if section.settings.layout_grid_prominent_feature == 'title_image' %} \n      {{ get_h1 }}\n      <div class=\"{{ imgcolwidth }}  img\">\n            {{ get_images }}\n            {{ get_thumbs }}\n      </div>\n      <div class=\"{{ descolwidth }} desc\">\n            {{ get_first_variant }}\n            {{ get_vendor }}\n            {{ get_sku }}\n            {{ get_rating }}\n            {{ get_price }}\n            {{ get_variants }}\n            {{ get_sku_summary }}\n            {{ get_description }}\n            {{ get_tags }}\n            {{ get_reviews }}          \n            {{ get_share }}\n      </div>  \n      {% endif %}\n  \n    \t{% if section.settings.layout_grid_prominent_feature == 'title_desc' %} \n      <div class=\"intro\">\n        {{ get_h1 }}\n        {{ get_first_variant }}\n        {{ get_vendor }}\n        {{ get_sku }}\n        {{ get_rating }}\n        {{ get_price }}\n        {{ get_sku_summary }}\n        {{ get_variants }}\n      </div>\n  \t\t<div class=\"{{ imgcolwidth }}  img\">\n        \t  {{ get_images }}\n          \t{{ get_thumbs }}\n  \t\t</div>\n      <div class=\"{{ descolwidth }} desc\">\n            {{ get_description }}\n            {{ get_tags }}\n            {{ get_reviews }}          \n            {{ get_share }}\n      </div>  \n    \t{% endif %}\n\n        {% if section.settings.layout_grid_prominent_feature == 'title' %}\n        <div class=\"full\">\n            {{ get_h1 }}\n            {{ get_first_variant }}\n            {{ get_vendor }}\n            {{ get_sku }}\n            {{ get_rating }}\n        </div>\n        <div class=\"half img\">\n            {{ get_images }}\n          \t{{ get_thumbs }}\n        </div>\n        <div class=\"half desc\">\n          \t{{ get_price }}\n            {{ get_variants }}\n            {{ get_sku_summary }}\n            {{ get_description }}\n            {{ get_tags }}\n            {{ get_reviews }}\n          \t{{ get_share }}\n        </div> \n        {% endif %}\n  \n        {% if section.settings.layout_grid_prominent_feature == 'image' %}\n        <div class=\"intro\">\n            {{ get_images }}\n        </div>\n        <div class=\"half\">\n            {{ get_h1 }}\n            {{ get_vendor }}\n            {{ get_sku }}\n            {{ get_rating }}\n          \t{{ get_thumbs }}\n        </div>\n        <div class=\"half desc\">\n          \t{{ get_price }}\n            {{ get_variants }}\n            {{ get_sku_summary }}\n            {{ get_description }}\n            {{ get_tags }}\n            {{ get_reviews }}\n          \t{{ get_share }}\n        </div>  \n        {% endif %}\n\n\n  </main>\n\n  {% unless product == empty %}\n    <script type=\"application/json\" data-product-json>\n      {{ product | json }}\n    </script>\n  {% endunless %}\n\n  {% if pagination != 'below' %}\n  {% if section.settings.controls_distance != 'hidden' %}\n  {% include 'prev_next' %}\n  {% endif %}\n  {% endif %}\n\n</article>\n\n<!-- NOTE: Sidebar with separator replacement impacts on page layout, disable if needed -->\n{% if settings.sidesbar_pages %}\n{% include 'sidebars' %}\n{% endif %}\n\n{% include 'check-cart' %}\n\n{% if pagination == 'below' %}\n{% if section.settings.controls_distance != 'hidden' %}\n{% include 'prev_next' %}\n{% endif %}\n{% endif %}\n\n{% schema %}\n{\n    \"name\": \"Body\",\n    \"settings\": [      \n      {\n        \"type\": \"select\",\n        \"id\": \"main_width\",\n        \"label\": \"Width\",\n        \"options\": [\n          {\n            \"value\": \"page\",\n            \"label\": \"Page\"\n          },\n          {\n            \"value\": \"overflow\",\n            \"label\": \"Content Overflow\"\n          },\n          {\n            \"value\": \"container\",\n            \"label\": \"Content Container\"\n          },\n          {\n            \"value\": \"content\",\n            \"label\": \"Content Text\"\n          }\n        ],\n        \"default\": \"content\"\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"layout_grid_prominent_feature\",\n        \"label\": \"Prominent feature\",\n  \t\t\"default\": \"title\",\n        \"options\": [\n          {\n            \"value\": \"title\",\n            \"label\": \"Title\"\n          },\n          {\n            \"value\": \"image\",\n            \"label\": \"Image\"\n          },\n          {\n            \"value\": \"title_image\",\n            \"label\": \"Title & image\"\n          },\n          {\n            \"value\": \"title_desc\",\n            \"label\": \"Title & description\"\n          },\n          {\n            \"value\": \"image_title\",\n            \"label\": \"Image & title\"\n          }\n        ]\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"gallery_size\",\n        \"label\": \"Gallery width\",\n        \"options\": [\n          {\n            \"value\": \"third\",\n            \"label\": \"1/3\"\n          },\n          {\n            \"value\": \"half\",\n            \"label\": \"1/2\"\n          },\n          {\n            \"value\": \"twothirds\",\n            \"label\": \"2/3\"\n          },\n          {\n            \"value\": \"full\",\n            \"label\": \"1/1\"\n          }\n        ],\n        \"default\": \"half\"\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"image_size\",\n        \"label\": \"Image size\",\n        \"options\": [\n          {\n            \"value\": \"480\",\n            \"label\": \"Small\"\n          },\n          {\n            \"value\": \"800\",\n            \"label\": \"Medium\"\n          },\n          {\n            \"value\": \"1200\",\n            \"label\": \"Large\"\n          },\n          {\n            \"value\": \"original\",\n            \"label\": \"Original\"\n          }\n        ],\n        \"default\": \"1200\"\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_vendor\",\n        \"label\": \"Show vendor\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_sku\",\n        \"label\": \"Show SKU\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"sku_as_summary\",\n        \"label\": \"Use SKU as summary\",\n        \"default\": false\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_tags\",\n        \"label\": \"Show tags\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_saving\",\n        \"label\": \"Show saving\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_compare_price\",\n        \"label\": \"Show compare price\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_sidebar\",\n        \"label\": \"Show sidebar\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_qty\",\n        \"label\": \"Show quantity\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_availability_from\",\n        \"label\": \"Show availability form\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_addtocart_button\",\n        \"label\": \"Show add to cart button\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_enquiry_button\",\n        \"label\": \"Show enquiry button\",\n        \"default\": false\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"enable_slides\",\n        \"label\": \"Enable gallery slides\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_gallery_captions\",\n        \"label\": \"Show slide captions\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_color_thumbnails\",\n        \"label\": \"Show just color thumbnails\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_variant_duplicates\",\n        \"label\": \"Show just variant thumbnail\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"first_variant\",\n        \"label\": \"Show first variant label\",\n        \"default\": true\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_variant_always\",\n        \"label\": \"Always show variant option\",\n        \"default\": true\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"variant_style\",\n        \"label\": \"Variant style\",\n        \"options\": [\n          {\n            \"value\": \"hidden\",\n            \"label\": \"Hidden\"\n          },\n          {\n            \"value\": \"buttons\",\n            \"label\": \"Buttons\"\n          },\n          {\n            \"value\": \"dropdowns\",\n            \"label\": \"Dropdowns\"\n          },\n          {\n            \"value\": \"thumbnails\",\n            \"label\": \"Thumbnails\"\n          }\n        ],\n        \"default\": \"dropdowns\"\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"share_buttons\",\n        \"label\": \"Social sharing\",\n        \"options\": [\n          {\n            \"value\": \"hidden\",\n            \"label\": \"Hidden\"\n          },\n          {\n            \"value\": \"icons\",\n            \"label\": \"Icons\"\n          },\n          {\n            \"value\": \"text\",\n            \"label\": \"Text\"\n          },\n          {\n            \"value\": \"rich\",\n            \"label\": \"Rich\"\n          },\n          {\n            \"value\": \"buttons\",\n            \"label\": \"Buttons\"\n          }\n        ],\n        \"default\": \"rich\"\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"cart_action\",\n        \"label\": \"Add to cart behaviour\",\n        \"options\": [\n          {\n            \"value\": \"cart\",\n            \"label\": \"Go to Cart\"\n          },\n          {\n            \"value\": \"checkout\",\n            \"label\": \"Go to Checkout\"\n          },\n          {\n            \"value\": \"update\",\n            \"label\": \"Update Page\"\n          },\n          {\n            \"value\": \"drawer\",\n            \"label\": \"Update Drawer\"\n          }\n        ],\n        \"default\": \"cart\"\n      },\n      {\n          \"type\": \"url\",\n          \"id\": \"show_enquiry_url\",\n          \"label\": \"Enquiry button URL\"\n      },\n      {\n         \"type\": \"range\",\n         \"id\": \"controls_size\",\n         \"min\": 0,\n         \"max\": 100,\n         \"step\": 1,\n         \"unit\": \"px\",\n         \"label\": \"Prev/Next size\",\n         \"default\": 30\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"controls_distance\",\n        \"label\": \"Prev/Next position\",\n        \"options\": [\n          {\n            \"value\": \"hidden\",\n            \"label\": \"Hidden\"\n          },\n          {\n            \"value\": \"outside\",\n            \"label\": \"Outside\"\n          },\n          {\n            \"value\": \"overlap\",\n            \"label\": \"Overlap\"\n          },\n          {\n            \"value\": \"inside\",\n            \"label\": \"Inside\"\n          },\n          {\n            \"value\": \"nudged\",\n            \"label\": \"Nudged\"\n          }\n        ],\n        \"default\": \"inside\"\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"controls_type\",\n        \"label\": \"Prev/Next type\",\n        \"options\": [\n          {\n            \"value\": \"buttons\",\n            \"label\": \"Icon\"\n          },\n          {\n            \"value\": \"buttons_text\",\n            \"label\": \"Button\"\n          },\n          {\n            \"value\": \"text\",\n            \"label\": \"Text\"\n          }\n        ],\n        \"default\": \"buttons\"\n      },\n      {\n        \"type\": \"header\",\n        \"content\": \"Reviews\"\n      },\n      {\n         \"type\": \"paragraph\",\n         \"content\": \"Available if [app](https:\\/\\/apps.shopify.com\\/product-reviews) is intalled. [Check](\\/admin\\/apps\\/product-reviews)\"\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"review_rating\",\n        \"label\": \"Show review rating\",\n        \"options\": [\n          {\n            \"value\": \"title\",\n            \"label\": \"Below product title\"\n          },\n          {\n            \"value\": \"right\",\n            \"label\": \"Right of product title\"\n          },\n          {\n            \"value\": \"hidden\",\n            \"label\": \"Hidden\"\n          }\n        ],\n        \"default\": \"title\"\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"show_review_comments\",\n        \"label\": \"Show review comments\",\n        \"default\": true\n      },\n      {\n        \"type\": \"header\",\n        \"content\": \"Grouping\"\n      },\n      {\n         \"type\": \"paragraph\",\n         \"content\": \"Headings can be used to group content for separate styling by adding 'metadesc' class wrapper\"\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"content_grouping\",\n        \"label\": \"Group with preceding heading\",\n        \"options\": [\n          {\n            \"value\": \"h2\",\n            \"label\": \"H2\"\n          },\n          {\n            \"value\": \"h3\",\n            \"label\": \"H3\"\n          },\n          {\n            \"value\": \"h4\",\n            \"label\": \"H4\"\n          },\n          {\n            \"value\": \"nogroup\",\n            \"label\": \"Don't group\"\n          }\n        ],\n        \"default\": \"nogroup\"\n      },\n      {\n        \"type\": \"header\",\n        \"content\": \"Separator\"\n      },\n      {\n         \"type\": \"paragraph\",\n         \"content\": \"When sidebar is disabled\"\n      },\n      {\n        \"type\": \"checkbox\",\n        \"id\": \"separator_replace\",\n        \"label\": \"Enable find & replace\",\n        \"default\": true\n      },\n      {\n        \"type\": \"text\",\n        \"id\": \"separator_marker\",\n        \"label\": \"Find & Replace\",\n        \"default\": \"<!-- SEPARATOR -->\"\n      },\n      {\n        \"type\": \"select\",\n        \"id\": \"separator_width\",\n        \"label\": \"Width\",\n        \"options\": [\n          {\n            \"value\": \"page\",\n            \"label\": \"Page\"\n          },\n          {\n            \"value\": \"overflow\",\n            \"label\": \"Content Overflow\"\n          },\n          {\n            \"value\": \"container\",\n            \"label\": \"Content Container\"\n          },\n          {\n            \"value\": \"content\",\n            \"label\": \"Content Text\"\n          }\n        ],\n        \"default\": \"content\"\n      },\n      {\n              \"type\": \"color\",\n              \"id\": \"line_color\",\n              \"label\": \"Divide line color\"\n      },\n      {\n        \"type\": \"color\",\n        \"id\": \"separator_bg\",\n        \"label\": \"Divide background color\",\n        \"default\": \"#ffffff\"\n      },\n      {\n            \"type\": \"image_picker\",\n            \"id\": \"image_bg\",\n            \"label\": \"Divide image\"\n      },\n      {\n            \"type\": \"select\",\n            \"id\": \"image_position\",\n            \"label\": \"Divide image position\",\n            \"options\": [\n              {\n                \"value\": \"hidden\",\n                \"label\": \"Hidden\"\n              },\n              {\n                \"value\": \"center\",\n                \"label\": \"Center\"\n              },\n              {\n                \"value\": \"tile\",\n                \"label\": \"Tile\"\n              },\n              {\n                \"value\": \"fill\",\n                \"label\": \"Fill\"\n              }\n            ],\n            \"default\": \"hidden\"\n      },\n      {\n            \"type\": \"select\",\n            \"id\": \"image_placement\",\n            \"label\": \"Divide image placement\",\n            \"options\": [\n              {\n                \"value\": \"background\",\n                \"label\": \"Background\"\n              },\n              {\n                \"value\": \"foreground\",\n                \"label\": \"Foreground\"\n              }\n            ],\n            \"default\": \"background\"\n      },\n      {\n         \"type\": \"range\",\n         \"id\": \"separator_padding\",\n         \"min\": 0,\n         \"max\": 50,\n         \"step\": 1,\n         \"unit\": \"px\",\n         \"label\": \"Divide padding\",\n         \"default\": 10\n      },\n      {\n               \"type\": \"range\",\n               \"id\": \"line_size\",\n               \"min\": 0,\n               \"max\": 10,\n               \"step\": 1,\n               \"unit\": \"px\",\n               \"label\": \"Divide line size\",\n               \"default\": 1\n      }\n\n\n\n\n\n    ]\n}\n{% endschema %}",
+			"file": "theme/sections/product.liquid",
+			"file_size": 59158,
+			"file_write_time": 132355890740000000,
+			"settings":
+			{
+				"buffer_size": 59286,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "theme/templates/cart.liquid",
+			"settings":
+			{
+				"buffer_size": 14166,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Icons\n---\n\nhtml.js.supports-cookies.svg.supports.placeholder.no-touchevents.csstransforms.csstransforms3d.flexbox body#page-your-shopping-cart.template-cart.sidebars div.parallaxholder div#shopify-section-header.shopify-section div#header div#cartmob.container.bleed a#cart.site-nav__link svg.icon.icon-cart\n\nhtml.js.supports-cookies.svg.supports.placeholder.no-touchevents.csstransforms.csstransforms3d.flexbox body#page-your-shopping-cart.template-cart.sidebars div.parallaxholder div#shopify-section-header.shopify-section div#header div#cartmob.container.bleed a#main-menu-toggle.menu-toggle svg.icon.icon-hamburger\n\n\nhtml.js body.template-index.loaded.js-animate div.root div#PageContainer.page-container div.transition-body div#shopify-section-header.shopify-section div div.header-wrapper.header-wrapper--overlay.is-light header.site-header div.page-width div.header-layout.header-layout--right.header-layout--mobile-logo-only div.header-item.header-item--navigation.text-right.small--hide ul.site-nav.site-navigation.small--hide li.site-nav__item.site-nav__expanded-item.site-nav--has-dropdown a.site-nav__link.site-nav__link--has-dropdown",
+			"settings":
+			{
+				"buffer_size": 1147,
+				"line_ending": "Unix",
+				"name": "Icons"
 			}
 		}
 	],
@@ -63,7 +112,7 @@
 		[
 			[
 				"Package Control: ",
-				"Package Control: Remove Package"
+				"Package Control: Install Package"
 			]
 		],
 		"width": 0.0
@@ -87,10 +136,115 @@
 	"expanded_folders":
 	[
 		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme",
-		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets"
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/config",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections"
 	],
 	"file_history":
 	[
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/login.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/customers/login.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/article.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/featured-collection.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/textcolumns.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/grid-product.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/product-seperator-content.liquid",
+		"/Users/steven/Downloads/MyFontsWebfontsKit 2/StartHere.html",
+		"/Users/steven/Downloads/MyFontsWebfontsKit 2/MyFontsWebfontsKit.css",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/layout/theme.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/slideshow-page.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/settings.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/page.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/password.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/layout/password.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/product.no.cart.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/cart.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/footers.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/sidebars.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/seo_title.liquid",
+		"/Users/steven/Downloads/Locketts website product info sample.csv",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/slideshow-homepage.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/collection.liquid",
+		"/Users/steven/Desktop/Copy of LOCKETTS - Product Information1 (2).csv",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/collections.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/featured-collections.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/footer.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/page.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/assets/theme.js",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/locales/en.default.json",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/config/settings_schema.json",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/config/settings_data.json",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/config.yml",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/assets/theme.scss.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/search.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/check-scripts.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/cookie-js.liquid",
+		"/Users/steven/Desktop/footer-working.liquid",
+		"/Users/steven/Desktop/footer-notworking.liqud.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/blog-list.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/blog.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/product.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/grid-article.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/blog.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/vendors.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/layout/gift_card.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/header.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/forms.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/assets/theme.js.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/page.contact.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/pagepart.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/page.styles.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/blog.list.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/list.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/customers/register.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/register.liquid",
+		"/Users/steven/Downloads/MyFontsWebfontsKit/MyFontsWebfontsKit.css",
+		"/Users/steven/Desktop/files.html",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/customers/reset_password.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/customers/account.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/customers/activate_account.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/vendors.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/variants-list.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/assets/slippry.scss.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/icon-bag.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/icon-padlock.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/icon-user.liquid",
+		"/Users/steven/Desktop/user.svg",
+		"/Users/steven/Desktop/padlock.svg",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/map.liquid",
+		"/Users/steven/Desktop/bag.svg",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/icon-basket.liquid",
+		"/Users/steven/Desktop/basket.svg",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/separator.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/social-meta-tags.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/grid-vendor.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/logos.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/collection.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/collection.vendors.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/pagination.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/grid-collection.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/collection.list.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/prev_next.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/assets/custom.css",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/assets/animate.css",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/templates/product.liquid",
+		"/Volumes/Files/projects/clients/smilecareimplantcentre/custom.js",
+		"/Volumes/Files/projects/clients/smilecareimplantcentre/style.css",
+		"/Volumes/Files/projects/clients/jekkas/impulse-jw-edit/snippets/product-description-tabs.liquid",
+		"/Volumes/Files/projects/clients/jekkas/impulse-jw-edit/snippets/jekkapedia.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/grid-page.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/gallery.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/newsletter.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections/featured-text.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/config.yml",
+		"/Volumes/Files/projects/clients/locketts/shortlist-test.csv",
+		"/Volumes/EFI/EFI/OC/config.plist",
+		"/Users/steven/Desktop/SSDT/config.plist",
+		"/Users/steven/Downloads/SSDT-PMC.aml",
+		"/Volumes/EFI/EFI/OC/ACPI/SSDT-PMC.aml",
+		"/Users/steven/Desktop/SSDT/SSDT-PMC.dsl",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/new.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/soldout.liquid",
+		"/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets/sale.liquid",
 		"/Volumes/ESD-USB/bootmgr.efi",
 		"/Volumes/ESD-USB/autorun.inf",
 		"/Users/steven/Library/Mobile Documents/com~apple~CloudDocs/iMac/Settings/CloverAppleBoot.txt",
@@ -100,7 +254,6 @@
 		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/sections/slideshow-page.liquid",
 		"/Users/steven/Desktop/Copy of LOCKETTS - Product Information1.csv",
 		"/Users/steven/Library/Mobile Documents/com~apple~CloudDocs/iMac/Settings/EFI/bootlog.txt",
-		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/config.yml",
 		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/snippets/settings.liquid",
 		"/Volumes/Files/projects/dev/shopify/themes/fiery/theme/sections/config.yml",
 		"/Users/steven/Library/Application Support/Sublime Text 3/Packages/User/ColorPicker.sublime-settings",
@@ -113,13 +266,14 @@
 	],
 	"find":
 	{
-		"height": 24.0
+		"height": 39.0
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 101.0,
 		"where_history":
 		[
+			"<project>"
 		]
 	},
 	"find_state":
@@ -127,65 +281,428 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"960",
-			"width",
-			"400",
-			"width",
-			"min-width",
-			"mobile_width",
-			"text-align",
-			"slide",
-			"nonmobile_style",
-			"nonmobile_styles",
-			"style",
-			"{{ style",
-			"{{ style }}",
-			"capture style",
-			"<style",
-			"align"
+			"overlay_link",
+			"quantity_style",
+			"quantity",
+			"Cart page",
+			"showimage",
+			"cart",
+			"#",
+			"quantity style",
+			"visually",
+			"variants",
+			"show_variant_always",
+			"Always show variant option",
+			"toggle",
+			"customer_links",
+			"user_setting",
+			"account_",
+			"icon",
+			"customer_links",
+			"customer links",
+			"current_url",
+			"slides",
+			"Cart",
+			"/-",
+			"/ ",
+			"http://www.bluehorizonsmedia.co.uk/temp4/.jpg",
+			"\"",
+			"http:--www.bluehorizonsmedia.co.uk-temp4-",
+			"/",
+			"--",
+			" ",
+			" .jpg",
+			"$",
+			")",
+			"(",
+			"^",
+			"^.jpg",
+			"$",
+			"http://www.bluehorizonsmedia.co.uk/temp4/$",
+			"^",
+			"--",
+			"_",
+			"--",
+			"\"",
+			")",
+			"(",
+			" ",
+			"img ",
+			".rte",
+			"products_alignment",
+			"title",
+			"description",
+			"vendor",
+			"title_size",
+			"sku_as_summary",
+			"show",
+			"image",
+			"show product image",
+			"for ",
+			"products",
+			"sku",
+			"current",
+			"sku",
+			"price",
+			"layout_grid_prominent_feature",
+			"max-width",
+			"search",
+			"get_variants",
+			"endcapture",
+			"get_variant",
+			"get_first_variant",
+			"get_variants",
+			"layout_grid_prominent_feature",
+			"title & image",
+			"language",
+			"form",
+			"cart",
+			"agree",
+			"cart",
+			"cursor",
+			"table ",
+			"table",
+			"sidebars",
+			".rte .btn {",
+			"cookie",
+			"shopify-section-footer",
+			".expand",
+			"expand",
+			"sidesbar_sidepages",
+			"sidebar",
+			"Sidebar",
+			"search",
+			"font-size",
+			"70%",
+			"80%",
+			"cursor",
+			"slideshow_text_position_mobile",
+			"mobile",
+			"transition",
+			"+",
+			"read_more",
+			"content",
+			"image_size",
+			"gallery_size",
+			"banner",
+			"layout_grid_prominent_feature",
+			"get_h1",
+			"read_more",
+			"articles_border",
+			"borders",
+			"Articles grid/list border",
+			"read",
+			"grid post background",
+			"read",
+			"Tags position",
+			"overflow",
+			"slideshow_bg_width",
+			".btn",
+			"btn",
+			"<a href",
+			"promotions_alignment",
+			"align",
+			"image_type",
+			"align",
+			" img ",
+			"section.settings.logo_align_mobile == 'left'",
+			" img ",
+			"section.settings.logo_align_mobile == 'left'",
+			"Mobile align"
 		],
-		"highlight": true,
+		"highlight": false,
 		"in_selection": false,
 		"preserve_case": false,
 		"regex": false,
 		"replace_history":
 		[
+			"/",
+			"",
+			"http://www.bluehorizonsmedia.co.uk/temp4/",
+			"-",
+			".jpg",
+			"",
+			"http://www.bluehorizonsmedia.co.uk/temp4/",
+			"",
+			".jpg",
+			"",
+			"http://www.bluehorizonsmedia.co.uk/temp4/",
+			"-",
+			"",
+			"-",
+			"\" />",
+			"<img src=\"",
+			"",
+			"-",
+			"",
+			"-",
+			"separator",
+			"divides",
+			"divide_",
+			"divide",
+			"separator_width",
+			"",
+			"-",
+			""
 		],
 		"reverse": false,
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
-		"wrap": true
+		"wrap": false
 	},
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "theme/sections/slideshow-page.liquid",
+					"file": "theme/assets/theme.scss.liquid",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 50563,
+						"buffer_size": 124896,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								23942,
-								23942
+								124896,
+								124896
 							]
 						],
 						"settings":
 						{
 							"apply_syntax_touched": true,
-							"sorttabs_lastactivated": 1580812133.45,
+							"sorttabs_lastactivated": 1592910799.45,
+							"syntax": "Packages/SCSS/SCSS.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 83042.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "theme/sections/slideshow-homepage.liquid",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 53469,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								32829,
+								32829
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1592910871.82,
 							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage",
 							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 13223.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "theme/sections/slideshow-page.liquid",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 55552,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								33801,
+								33801
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1592910824.2,
+							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 13208.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "theme/locales/en.default.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18091,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12181,
+								12188
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1590745178.82,
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "theme/config/settings_schema.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 94213,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								68961,
+								68982
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1591631682.44,
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "theme/sections/header.liquid",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 156950,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								54904,
+								54910
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1591631973.8,
+							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "theme/sections/forms.liquid",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9613,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6312,
+								6312
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1591355745.43,
+							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "theme/sections/product.liquid",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 59286,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								36506,
+								36506
+							]
+						],
+						"settings":
+						{
+							"apply_syntax_touched": true,
+							"sorttabs_lastactivated": 1591632090.54,
+							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"word_wrap": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -195,28 +712,29 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
-					"file": "theme/sections/slideshow-homepage.liquid",
+					"buffer": 8,
+					"file": "theme/templates/cart.liquid",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 48551,
+						"buffer_size": 14166,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								25547,
-								25547
+								13058,
+								13058
 							]
 						],
 						"settings":
 						{
 							"apply_syntax_touched": true,
-							"sorttabs_lastactivated": 1580812135.85,
+							"sorttabs_lastactivated": 1591685545.63,
 							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage",
-							"translate_tabs_to_spaces": false
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -226,95 +744,34 @@
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "theme/snippets/settings.liquid",
+					"buffer": 9,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 104,
+						"buffer_size": 1147,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1000,
+								1008
 							]
 						],
 						"settings":
 						{
 							"apply_syntax_touched": true,
-							"sorttabs_lastactivated": 1580812136.94,
-							"syntax": "Packages/Siteleaf Liquid Syntax/Syntaxes/HTML (Liquid).tmLanguage"
+							"auto_name": "Icons",
+							"default_dir": "/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/snippets",
+							"sorttabs_lastactivated": 1591631684.05,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "theme/assets/theme.scss.liquid",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 120021,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								27231,
-								27234
-							]
-						],
-						"settings":
-						{
-							"apply_syntax_touched": true,
-							"sorttabs_lastactivated": 1580812138.69,
-							"syntax": "Packages/SCSS/SCSS.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 200,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								200,
-								200
-							]
-						],
-						"settings":
-						{
-							"apply_syntax_touched": true,
-							"default_dir": "/Volumes/Files/projects/dev/shopify/themes/fiery2020/theme/sections",
-							"sorttabs_lastactivated": 1580837521.49,
-							"syntax": "Packages/CSS3/CSS3.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
+					"stack_index": 6,
 					"type": "text"
 				}
 			]
@@ -326,7 +783,7 @@
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 36.0
 	},
 	"layout":
 	{
@@ -359,7 +816,7 @@
 	"project": "fiery2020.sublime-project",
 	"replace":
 	{
-		"height": 44.0
+		"height": 70.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -397,7 +854,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 288.0,
+	"side_bar_width": 348.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

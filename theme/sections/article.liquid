@@ -267,6 +267,40 @@
       </div>
       {% endif %}
       {% endif %}
+  
+      {% if section.settings.layout_grid_prominent_feature == 'title_date' %} 
+      {% if section.settings.gallery_size == 'full' %}
+            {{ get_h1 }}
+            {{ get_date }}
+      <div class="{{ descolwidth }} desc">
+            {{ get_images }}
+            {{ get_description }}
+      </div>   
+      <div class="{{ imgcolwidth }}  img">
+            {{ get_tags }}
+            {{ get_reviews }}          
+            {{ get_share }}
+      </div>
+      {% else %}
+      <div class="{{ descolwidth }} desc">
+            {{ get_h1 }}
+            {{ get_first_variant }}
+            {{ get_vendor }}
+            {{ get_sku }}
+            {{ get_rating }}
+            {{ get_price }}
+            {{ get_variants }}
+            {{ get_description }}
+            {{ get_tags }}
+            {{ get_reviews }}          
+            {{ get_share }}
+      </div>   
+      <div class="{{ imgcolwidth }}  img">
+            {{ get_images }}
+            {{ get_thumbs }}
+      </div>
+      {% endif %}
+      {% endif %}
 
         {% if section.settings.layout_grid_prominent_feature == 'title' %}
         <div class="full">
@@ -479,6 +513,10 @@
           {
             "value": "title_image",
             "label": "Title & image"
+          },
+          {
+            "value": "title_date",
+            "label": "Title & date"
           },
           {
             "value": "image_title",

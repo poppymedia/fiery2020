@@ -234,6 +234,10 @@
         "label": "Quantity style",
         "options": [
           {
+            "value": "default",
+            "label": "Default"
+          },
+          {
             "value": "minimal",
             "label": "Minimal"
           },

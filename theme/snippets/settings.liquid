@@ -36,3 +36,6 @@
 {% if template contains 'product.' %}
 {% assign current_url = product.url %}
 {% endif %}
+{% if template contains 'customers/login' %}
+{% assign current_url = '/account/login' %}
+{% endif %}

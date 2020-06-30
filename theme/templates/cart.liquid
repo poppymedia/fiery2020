@@ -32,7 +32,7 @@
           <h1>{{ 'cart.general.title' | t }}</h1>
           
           {% if cart.item_count > settings.cart_box_limit %}
-          		{% assign widgetstatus = ' class="overflow"' %}
+              {% assign widgetstatus = ' class="overflow"' %}
           {% endif %}
 
             <form action="/cart" method="post"{{ widgetstatus }} novalidate>
@@ -66,15 +66,15 @@
                   {% endcomment %}
 
                     {% if item_c >= settings.cart_box_limit %}
-                      	{% assign widget = ' widget-hidden' %}{% assign diff = cart.item_count | minus: settings.cart_box_limit %}
-                  		{% capture widgetoverflow %}<p class="overflow" style="display:none"><small>{{ 'cart.widget.more_products_html' | t: number: settings.cart_box_limit, total: cart.item_count }}</small></p>{% endcapture %}
+                        {% assign widget = ' widget-hidden' %}{% assign diff = cart.item_count | minus: settings.cart_box_limit %}
+                      {% capture widgetoverflow %}<p class="overflow" style="display:none"><small>{{ 'cart.widget.more_products_html' | t: number: settings.cart_box_limit, total: cart.item_count }}</small></p>{% endcapture %}
                     {% endif %}
                     <tr class="responsive-table-row{{ widget }}">
 
                       <!-- Image -->
                       {% if showimage == 'yes' %}
                       <td class="image">
-                      	<a href="{{ item.url | within: collections.all }}">
+                        <a href="{{ item.url | within: collections.all }}">
       
                           {%- assign current_variant = item.product.selected_or_first_available_variant -%} 
                           {%- if item.product.template_suffix contains 'orderform' -%}
@@ -119,7 +119,7 @@
 
                       <!-- Quantity -->
                       <td data-label="{{ 'cart.label.quantity' | t }}">
-                        <div class="quantity{% unless quantity_style == 'minimal' %} buttons {{ quantity_style }}{% endunless %} supports-cookies">                     
+                        <div class="quantity{% unless quantity_style == 'minimal' %}{% unless quantity_style == 'default' %} buttons {% endunless %} {{ quantity_style }} {% endunless %} supports-cookies">                     
                         <span class="label visually-hidden">{{ 'products.general.quantity' | t }}</span>
                         <input type="number" id="updates_{{ item.key }}" name="updates[]" value="{{ item.quantity }}" min="0">
                         </div>                
@@ -168,7 +168,7 @@
                       </td>
 
                     </tr>
-                  	{% assign item_c = item_c | plus: 1 %}
+                    {% assign item_c = item_c | plus: 1 %}
 
                   {% endfor %}
                 </tbody>
@@ -260,7 +260,7 @@
 
             <h1>{{ 'cart.general.title' | t }}</h1>
           
-          	<form class="empty">
+            <form class="empty">
 
               {% comment %}
               Cart empty state

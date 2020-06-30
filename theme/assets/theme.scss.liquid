@@ -901,112 +901,107 @@ form .acceptance input {
 // Styling for all tables nested in RTE
 {% if settings.tables_style %}
 
-div:not('#shopify-section-cart') {
-	
-	.rte table {
-		table-layout: fixed;
-	}
-
-	// Remove most spacing between table cells.
-	table {
-		border-collapse: collapse;
-		border-spacing: 0;
-	}
-
-	td,
-	th {
-		padding: 0;
-	}
-	th,
-	td {  
-		padding: 0.2em 0.4em;
-		border: solid 1px {{ settings.color_body_table_border }};
-	}
-	table,
-	table tr,
-	table th,
-	table td {
-		border-color: {{ settings.color_body_table_border }} !important;
-		text-align: left;
-	}
-	th {
-		background: {{ settings.color_body_th_bg }};
-		color: {{ settings.color_body_th_text }};
-	}
-	tr:nth-child(odd) td {
-		background: {{ settings.color_body_tr_odd_bg }};
-		color: {{ settings.color_body_tr_text }};
-	}
-	tr:nth-child(even) td {
-		background: {{ settings.color_body_tr_even_bg }};
-		color: {{ settings.color_body_tr_text }};
-	}
-		
-	// allow table to scroll for tables in the RTE since we don't know
-	// how many columns they will contain. Class added by JS.
-	// sass-lint:disable no-misspelled-properties
-	.rte-table {
-		max-width: 100%;
-		overflow: auto;
-		-webkit-overflow-scrolling: touch;
-	}
-
-	// This class is wrapped around tables in the RTE
-	// to prevent layout breaking with a scrollable parent
-	.rte__table-wrapper {
-		max-width: 100%;
-		overflow: auto;
-		-webkit-overflow-scrolling: touch;
-	}
-
-	{% if settings.tables_group %}
-	@include media-query($small) {
-		/* Force table to not be like tables anymore */
-		table.responsive {
-			thead, tbody, th, td, tr {
-				display: block;
-			}
-		}
-		/* Hide table headers (but not display: none;, for accessibility) */
-		table.responsive thead tr {
-				position: absolute;
-				top: -9999px;
-				left: -9999px;
-		}
-	    table.responsive tr {
-	    	{% if settings.tables_style %}
-	    	border-top: solid 1px {{ settings.color_body_table_border }} !important; 
-	    	{% endif %}
-	      	/* margin: 0 0 1rem 0; */
-	    }      
-	    table.responsive tr:nth-child(odd) {
-	      	/* border-bottom: solid 1px #eee; */
-	    }    
-			table.responsive td {
-				/* Behave  like a "row" */
-				border: none;
-				border-bottom: 1px solid #eee;
-				position: relative;
-				padding-left: 50%;
-			}
-			table.responsive td:before {
-				/* Now like a table header */
-				position: absolute;
-				/* Top/left values mimic padding */
-				top: 0.2em;
-				left: 0.4em;
-				width: 45%;
-				padding-right: 10px;
-				white-space: nowrap;
-			}
-			table.responsive td:before { 
-				content: attr(data-label); 
-			}
-	}
-	{% endif %}
-
-
+.rte table {
+	table-layout: fixed;
 }
+
+// Remove most spacing between table cells.
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+td,
+th {
+	padding: 0;
+}
+th,
+td {  
+	padding: 0.2em 0.4em;
+	border: solid 1px {{ settings.color_body_table_border }};
+}
+table,
+table tr,
+table th,
+table td {
+	border-color: {{ settings.color_body_table_border }} !important;
+	text-align: left;
+}
+th {
+	background: {{ settings.color_body_th_bg }};
+	color: {{ settings.color_body_th_text }};
+}
+tr:nth-child(odd) td {
+	background: {{ settings.color_body_tr_odd_bg }};
+	color: {{ settings.color_body_tr_text }};
+}
+tr:nth-child(even) td {
+	background: {{ settings.color_body_tr_even_bg }};
+	color: {{ settings.color_body_tr_text }};
+}
+	
+// allow table to scroll for tables in the RTE since we don't know
+// how many columns they will contain. Class added by JS.
+// sass-lint:disable no-misspelled-properties
+.rte-table {
+	max-width: 100%;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+// This class is wrapped around tables in the RTE
+// to prevent layout breaking with a scrollable parent
+.rte__table-wrapper {
+	max-width: 100%;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+{% if settings.tables_group %}
+@include media-query($small) {
+	/* Force table to not be like tables anymore */
+	table.responsive {
+		thead, tbody, th, td, tr {
+			display: block;
+		}
+	}
+	/* Hide table headers (but not display: none;, for accessibility) */
+	table.responsive thead tr {
+			position: absolute;
+			top: -9999px;
+			left: -9999px;
+	}
+    table.responsive tr {
+    	{% if settings.tables_style %}
+    	border-top: solid 1px {{ settings.color_body_table_border }} !important; 
+    	{% endif %}
+      	/* margin: 0 0 1rem 0; */
+    }      
+    table.responsive tr:nth-child(odd) {
+      	/* border-bottom: solid 1px #eee; */
+    }    
+		table.responsive td {
+			/* Behave  like a "row" */
+			border: none;
+			border-bottom: 1px solid #eee;
+			position: relative;
+			padding-left: 50%;
+		}
+		table.responsive td:before {
+			/* Now like a table header */
+			position: absolute;
+			/* Top/left values mimic padding */
+			top: 0.2em;
+			left: 0.4em;
+			width: 45%;
+			padding-right: 10px;
+			white-space: nowrap;
+		}
+		table.responsive td:before { 
+			content: attr(data-label); 
+		}
+}
+{% endif %}
 
 {% endif %}
 
@@ -1090,20 +1085,6 @@ option {
 // hide outline on focus for elements which are given focus by JS
 [tabindex='-1']:focus {
 	outline: none;
-}
-
-#shopify-section-cart .agree {
-	position: relative;
-	display: block;
-	width: 100%;
-}
-	#shopify-section-cart .agree label {
-		display: inline; 
-		float: none;
-	}
-#shopify-section-cart .shipping + .agree {
-	padding-top: 0;
-	margin-top: 0;
 }
 
 /*============================================================================
@@ -1973,56 +1954,72 @@ symbol {
 
   		th,
   		td {
+          vertical-align: top;
+          /*
           padding-top: $gutter;
           padding-bottom: $gutter;
-          vertical-align: top;
+          */
+          padding: $gutter;
         }
   		td.images {
           width: 5em;
           position: relative;
         }
   		td.title {
-          width: 60%;
+          width: 80em;
           text-align: left;
-          padding-left: 20px;
+          padding-left: $gutter;
           a,
           p {
             padding: 0;
             margin: 0;
           }
         }
+  
+  		width: 100%;
 
   		@include media-query($medium-up) {  
                 td.title {
-                  width: 50%;
+                  width: 80em;
                 }
                 td[data-label="{{ 'cart.label.quantity' | t }}"] {
                     width: 8em;
                     text-align: right;
 
                     .quantity {
-                      margin: -7px 0 0 0;
+                      position: relative;
+          			  margin: -7px 0 0 0;
                       padding: 0;
                     }
                     .btn {
                       margin: 0 0 0 10px;
-                    }          	
+                    }  
+          			width: 8em !important;        	
                 }
 
                 td[data-label="{{ 'cart.label.price' | t }}"] {
                     width: 8em;
-                    text-align: right;        	
+                    text-align: right;  
+          			width: 8em !important;      	
                 }
         }
 
   		@include media-query($small) {
+          		/*
+          		td {
+                  border: none !important;
+                }
+          		*/
                 td[data-label="{{ 'cart.label.quantity' | t }}"] {
-                    width: 12em;
+          			position: relative;
+          			top: 0;
+                    width: 8em;
                     text-align: right;
 
                     .quantity {
                       margin: 0;
                       padding: 0;
+                      width: 100%;
                     }
                     .btn {
                       margin: 0 0 0 10px;
@@ -2032,6 +2029,8 @@ symbol {
                     position: absolute;
                     right: 0;
                     bottom: 0;
+                    width: 8em;
+                    text-align: right;
                 }  
         }
 
@@ -2450,11 +2449,7 @@ li.search #searchbox {
   	text-transform: {{ settings.button_styling }} !important;
   	letter-spacing: 0;
   	padding: 0.51em 0.9em !important;
-  	{% if settings.button_shape == 'rounded' %}
-  	padding: {{ settings.button_padding | divided_by: 4 | times: 0.01 }}em {{ settings.button_padding | divided_by: 4 | times: 0.01 | times: 3 }}em !important;
-  	{% else %}
-  	padding: {{ settings.button_padding | divided_by: 4 | times: 0.01 }}em {{ settings.button_padding | divided_by: 4 | times: 0.01 | times: 2 }}em !important;
-  	{% endif %}
+  	padding: {{ settings.button_padding | divided_by: 4 | times: 0.01 }}em {{ settings.button_padding | divided_by: 4 | times: 0.01 | times: 1.8 }}em !important;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -2466,7 +2461,6 @@ li.search #searchbox {
 .template-giftcard #gift-card-actions .btn,
 .readmore .link,
 .btn,
-#shopify-section-cart .btn,
 .rte .btn {
 	@include prefix('user-select', 'none', moz ms webkit spec);
 	@include prefix(appearance, none, webkit moz spec);
@@ -2542,16 +2536,7 @@ a.btn span {
 .search-box button.btn {
     min-width: auto;
 }
-/*
-@media only screen and (max-width: $grid-large) {
-	.search-box input,
-	.search-box button.btn {
-	  	font-size: {{ settings.button_base_size }} !important;
-		padding: 0.24em 0.6em !important;
-	  	padding: 0.74em 1em !important;	
-  }
-}
-*/
+
 
 
 /*================ Search page ================*/
@@ -3077,6 +3062,10 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 body.template-password { 
 	padding-top: 10%;
 	text-align: center; 
+  	color: {{ settings.color_body_text }};
+}
+body.template-password a { 
+  	color: {{ settings.color_body_link }};
 }
 {% comment %}
 body.template-password { 
@@ -3111,6 +3100,7 @@ body.template-password:before {
   position: relative;
   margin: auto;
   width: {{ settings.logo_size }}px !important;
+  fill: {{ settings.color_body_link }};
 }  
 @include media-query($small) {
   .site-logo img,
@@ -3145,7 +3135,7 @@ body.template-password footer svg {
 body.template-password #MainContent,
 body.template-password #Login {
   	width: 80%;
-	max-width: 22em;
+	/* max-width: 22em; */
   	margin: 0 auto;
 }
 body.template-password input {
@@ -3647,10 +3637,6 @@ body.template-password button {
 .products.collections.grid .item > a:hover {
   border-color: {{ settings.color_collections_grid_border_hover }};
 }
-{% else %}
-.products.collections.grid .item > a {
-	border: none;
-}
 {% endif %}
 .products.collections.grid.list .item.dated .subtitle {
   border-right: solid 1px white;
@@ -3700,10 +3686,6 @@ body.template-password button {
 .template-blog .products.grid .item:hover > a,
 .template-blog .products.grid .item > a:hover {
   border-color: {{ settings.color_blog_grid_border_hover }};
-}
-{% else %}
-.template-blog .products.grid .item > a {
-	border: none;
 }
 {% endif %}
 .template-blog .products.grid.list .item.dated .subtitle {
@@ -3755,10 +3737,6 @@ body.template-password button {
 .template-blog .products.grid.list .item:hover > a,
 .template-blog .products.grid.list .item > a:hover {
   border-color: {{ settings.color_blog_list_border_hover }};
-}
-{% else %}
-.template-blog .products.grid.list .item > a {
-	border: none;
 }
 {% endif %}
 .template-blog .products.grid.list .item.dated .subtitle {
@@ -4553,34 +4531,23 @@ aside div.tags .group.checkboxes ul li a {
 @media only screen and (min-width: $grid-large) {
   .sidebars .shopify-section > article,
   .sidebars .shopify-section > main,
-  .sidebars .contactholder article {
+  .sidebars .contact > main {
     float: right;
     width: 70%;
     position: relative;
     /* overflow: hidden; */
   }
-  .sidebars .shopify-section > aside,
-  .sidebars .contactholder aside {
+  .sidebars .shopify-section > aside {
     float: left;
     width: calc(30% - {{ settings.grid_spacing | append: 'px' }});
     position: relative;
     /* overflow: hidden; */
   }
-  .sidebars .contactholder aside h2 {
-    margin-top: 0;
-    padding-top: 0;
-  }
-  .sidebars .contactholder article .shopify-section {
-    clear: both;
-    overflow: hidden;
-    display: block;
-  }
 
 
   @supports (display: grid) {
     .sidebars .container .shopify-section,
-    .sidebars .container #content > .shopify-section,
-    .sidebars .contactholder {
+    .sidebars .container #content > .shopify-section {
       display: grid;
       /* TO DO: Set sidebar column to max width otherwise percentage sidebar looks too wide on large screens */
       grid-template-columns: {{ settings.sidebar_size }}px 1fr;
@@ -4591,17 +4558,16 @@ aside div.tags .group.checkboxes ul li a {
     }
     .sidebars .container .shopify-section > article,
     .sidebars .container .shopify-section > main,
-    .sidebars .contactholder article {
+    .sidebars .contact > main {
       float: none;
       width: auto;
       order: 1;
     }
-    .sidebars .container .shopify-section > aside,
-    .sidebars .contactholder aside {
+    .sidebars .container .shopify-section > aside {
       float: none;
       width: auto;
       order: 0;
-    }    
+    }  
   }
 
 
@@ -4675,7 +4641,7 @@ aside div.tags .group.checkboxes ul li a {
         }
       }
       a.current {
-        /* cursor: default; */
+        cursor: default;
         &::after {
           border-color: white !important;
         }
@@ -4762,9 +4728,6 @@ form .actions {
     padding: 0 !important;
     margin: 0 !important;
   }
-  form .half,
-  form .third,
-  form .twothirds,
   footer form .text input,
   footer form button {  
     width: 100% !important;
@@ -5063,7 +5026,6 @@ input,
 button,
 .readmore .link,
 .btn,
-.bxslider .text .btn,
 .sy-controls li a:after,
 #prevnext.icons span, #prevnext.icons a,
 textarea,
@@ -5422,12 +5384,6 @@ select,
       display: inline-block;
       width: 33.33%;
   }
-   .twothirds {
-      float: left;
-      display: inline-block;
-      width: 66.66%;
-  }
-     
   .third + .third,
   .third + .third + .third + .third + .third {
       float: left;
@@ -5446,9 +5402,6 @@ select,
   form .half {
       width: 49%;
   }
-  form .twothirds {
-      width: 74%;
-  }
   form .third {
       width: 32%;
   }
@@ -5460,11 +5413,7 @@ select,
 }
 @media only screen and (max-width: $grid-medium) {
   .half.img,
-  .half.desc,
-  .third.img,
-  .third.desc,
-  .twothirds.img,
-  .twothirds.desc {
+  .half.desc {
       width: 100% !important;
       margin-left: 0 !important;
   }

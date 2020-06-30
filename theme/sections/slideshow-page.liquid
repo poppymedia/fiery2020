@@ -8,6 +8,7 @@
 {% if section.settings.slideshow_blogs and template contains 'blog' %}{% assign showslideshow = true %}{% endif %}
 {% if section.settings.slideshow_article and template contains 'article' %}{% assign showslideshow = true %}{% endif %}
 {% if section.settings.slideshow_searches and template contains 'search' %}{% assign showslideshow = true %}{% endif %}
+{% if section.settings.slideshow_account and template contains 'customers' %}{% assign showslideshow = true %}{% endif %}
 {% if section.settings.slideshow_cart and template == 'cart' %}{% assign showslideshow = true %}{% endif %}
 
 {% if showslideshow %}
@@ -616,7 +617,7 @@ ul.bxslider {
 									
 								{% capture style -%}
 								/* These styles apply to non-mobile only */
-								.bxslider .textClass{{ slide_num }} {
+								#shopify-section-{{ section.id }} .bxslider .textClass{{ slide_num }} {
 									box-sizing:border-box;
 									{% assign text_width = block.settings.text_width | plus: 0 %}
 									width:calc({{ text_width }}%);
@@ -629,21 +630,21 @@ ul.bxslider {
 									{% if block.settings.text_position == 'right' and text_width < 100 %}left:calc({{ 100 | minus: text_width }}%);{% endif%}
 									/* background:{% assign a = block.settings.text_background_opacity | divided_by: 100.00 %}{{ block.settings.text_background_color | hex_to_rgba: a }}; */
 								}
-								.bxslider .textClass{{ slide_num }} h1, .bxslider .textClass{{ slide_num }} h2 {
+								#shopify-section-{{ section.id }} .bxslider .textClass{{ slide_num }} h1, .bxslider .textClass{{ slide_num }} h2 {
 									text-align:{{ block.settings.text_align }};
 								}
 								{% assign image_width = block.settings.image_width | plus: 0 %}
 								{% if image_width < 100 %}
-								.bxslider #slide{{ slide_num }} img {
+								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} img {
 									{% if block.settings.text_position == 'left' %}margin-left:{{ 100 | minus: image_width }}%;{% endif %}
 									width:{{ image_width }}%;
 								}
 								{% endif %}
-								.bxslider .textClass{{ slide_num }} * { 
+								#shopify-section-{{ section.id }} .bxslider .textClass{{ slide_num }} * { 
 									color:{{ block.settings.text_color }};
 								}
 								{% if block.settings.color_background != blank %}
-								.bxslider #slide{{ slide_num }} { 
+								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} { 
 									background-color:{{ block.settings.color_background }};
 								}
 								{% endif %}
@@ -656,12 +657,12 @@ ul.bxslider {
 								{%- endcapture %}
 
 								{% capture nonmobile_style %}		
-								.bxslider .textClass{{ slide_num }} { 
+								#shopify-section-{{ section.id }} .bxslider .textClass{{ slide_num }} { 
 								}
-								.bxslider .textClass{{ slide_num }} .text { 
+								#shopify-section-{{ section.id }} .bxslider .textClass{{ slide_num }} .text { 
 									/* border: solid 1px #000000; */
 								}
-								.bxslider #slide{{ slide_num }} .textWrapper { 
+								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .textWrapper { 
 									/* border: solid 1px green; */
 									{% if block.settings.text_background_style == 'gradient' %}
 									{% capture grad_orient -%}
@@ -686,18 +687,18 @@ ul.bxslider {
 
 
 								{% if section.settings.slideshow_bg_width == 'page' and block.settings.image != nil %}
-								.bxslider #slide{{ slide_num }} { 
+								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} { 
 									background-image: url('{{ block.settings.image | img_url: '2000x' }}');
 									background-position: center;
 									background-repeat: no-repeat;
 									background-size: cover;
 								}
-								.bxslider #slide{{ slide_num }} img { 
+								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} img { 
 									opacity: 0;
 								}
-								.bxslider #slide{{ slide_num }} .container,
-								.bxslider #slide{{ slide_num }} .textWrapper,
-								.bxslider #slide{{ slide_num }} .text { 
+								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .container,
+								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .textWrapper,
+								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .text { 
 									background: transparent !important;
 								}
 								{% endif %}
@@ -738,25 +739,25 @@ ul.bxslider {
 								/* And slideshow text is underneath */
 									
 									{% if block.settings.text_position == 'center' and text_width < 100 %}
-									.bxslider .textClass{{ slide_num }} { 
+									#shopify-section-{{ section.id }} .bxslider .textClass{{ slide_num }} { 
 										left: auto; margin-left: 0;
 									}
 									{% endif %}									
 
 									{% if block.settings.text_position != 'center' %}
-									.bxslider .textClass{{ slide_num }} { 
+									#shopify-section-{{ section.id }} .bxslider .textClass{{ slide_num }} { 
 										width: 100%;
 										text-align: center;
 									}
 									{% endif %}
 
 									{% if section.settings.slideshow_image_position_mobile %}
-									.bxslider #slide{{ slide_num }} { 
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} { 
 										/* border: solid 1px red !important; */
 										position: relative;
 										overflow: hidden;		 
 									}									
-									.bxslider #slide{{ slide_num }} img { 
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} img { 
 										{% if image_width < 100 %}
 										width: 100%;
 										max-width: 100% !important;
@@ -793,13 +794,13 @@ ul.bxslider {
 									{% endif %}
 									
 									{% if section.settings.slideshow_text_position_mobile %}
-									.bxslider #slide{{ slide_num }} { 
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} { 
 										float: none;
 										position: relative;
 										left: auto;
 										right: auto;
 									}
-									.bxslider #slide{{ slide_num }} .textWrapper { 
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .textWrapper { 
 										float: none;
 										position: relative;
 										left: auto;
@@ -810,7 +811,7 @@ ul.bxslider {
 									{% endif %}
 									
 									{% if section.settings.pagination_position == 'bottom' and section.settings.slideshow_type == 'slideshow' %}
-									.bxslider .textClass{{ slide_num }} .text { 
+									#shopify-section-{{ section.id }} .bxslider .textClass{{ slide_num }} .text { 
 											border-bottom: solid {{ section.settings.pagination_size | times: 2 }}px transparent !important;
 									}
 									{% endif %}
@@ -821,17 +822,17 @@ ul.bxslider {
 									/* TESTING */
 									{% if section.settings.slideshow_text_position_mobile %}
 									{% else %}
-									.bxslider #slide{{ slide_num }} img { 
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} img { 
 										display: none !important;
 									}
-									.bxslider #slide{{ slide_num }} .textWrapper { 
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .textWrapper { 
 										position: relative;
 										background-image: url('{{ block.settings.image | img_url: '2000x' }}');
 										background-position: center;
 										background-repeat: no-repeat;
 										background-size: cover;
 									}
-									.bxslider #slide{{ slide_num }} .textWrapper .text { 
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .textWrapper .text { 
 										background: transparent !important;
 									}									
 									{% endif %}
@@ -915,7 +916,7 @@ ul.bxslider {
 									{%- endif %}
 								{%- endif -%}
 									
-								{%- if overlay_link != blank %}{{ overlay_link }}{% endif -%}
+								{{ overlay_link }}
 
 								{%- if section.settings.slideshow_width == 'overflow' or section.settings.slideshow_width == 'container' or section.settings.slideshow_width == 'content' %}
 								</div>
@@ -1297,6 +1298,12 @@ $(window).resize(function(){
 			 "type": "checkbox",
 			 "id": "slideshow_searches",
 			 "label": "Show on searches",
+			 "default": true
+		},
+		{
+			 "type": "checkbox",
+			 "id": "slideshow_account",
+			 "label": "Show on account",
 			 "default": true
 		},
 		{

@@ -5,23 +5,23 @@
 
 {%- assign link_product = 'true' -%}
 {%- if template == 'collection.packaged' and section.settings.links == false -%}
-	{%- assign link_product = 'false' -%}
+  {%- assign link_product = 'false' -%}
 {%- endif -%}
 
 {%- assign product_price = 'true' -%}
 {%- if template == 'collection.packaged' and section.settings.price == false -%}
-	{%- assign product_price = 'false' -%}
+  {%- assign product_price = 'false' -%}
 {%- endif -%}
 
 {%- if demo_url %}{%- assign url = demo_url -%}{% endif -%}
 {%- if demo_title %}{%- assign title = demo_title -%}{% endif -%}
 {%- if demo_content %}{%- assign content = demo_content -%}{% endif -%}
 
-	{% capture readmore -%}
+  {% capture readmore -%}
          {%- if section.settings.read_more == 'link' -%}<span class="link read_more visually-shown"{{ more_visibility }}>{%- endif -%}
          {%- if section.settings.read_more == 'button' -%}<span class="btn read_more visually-shown"{{ more_visibility }}>{%- endif -%}<!-- {{ 'blogs.article.read_more' | t }} -->{%- if section.settings.read_more == 'button' -%}</span>{%- endif -%}
          {% if section.settings.read_more == 'link' %}</span>{% endif -%}
-	{%- endcapture %}
+  {%- endcapture %}
 
     <!-- TO DO: Needs to work with whole product linked -->
     {%- capture addnow -%}
@@ -33,10 +33,10 @@
              <input type="hidden" name="quantity" value="1" min="1" />
              {%- capture moreoptions -%}
              {%- if product.options.size > 1 -%}
-           		{% if section.settings.more_options %}
-           		{% assign showmoreoptions = 'yes' %}
+              {% if section.settings.more_options %}
+              {% assign showmoreoptions = 'yes' %}
                  <p class="small">{{ 'products.general.more_options' | t }}</p> 
-           		{% endif %}
+              {% endif %}
              {%- endif -%}
              {%- endcapture -%}
              {% if section.settings.read_more == 'link' %}{% assign more_visibility = ' style="opacity:0"' %}{% endif %}
@@ -65,30 +65,30 @@
 
            {% comment %}
              <button type="submit" class="btn add_to_cart"{%- unless product.available %} disabled="disabled"{% endunless -%} />
-           	 <span data-add-to-cart-text>{% if product.available %}{{ 'products.general.add_to_cart' | t }}{% else %}{{ 'products.general.sold_out' | t }}{% endif %}</span>
-           	 </button>
-			     {% endcomment %}
+             <span data-add-to-cart-text>{% if product.available %}{{ 'products.general.add_to_cart' | t }}{% else %}{{ 'products.general.sold_out' | t }}{% endif %}</span>
+             </button>
+           {% endcomment %}
 
              {%- if section.settings.read_more != 'hidden' -%}
              {{ readmore }}
              {%- endif -%}
 
          </form>
-		 {% else %}
+     {% else %}
 
-		 {%- if section.settings.read_more != 'hidden' -%}
-		 {{ readmore }}
-		 {%- endif -%}
+     {%- if section.settings.read_more != 'hidden' -%}
+     {{ readmore }}
+     {%- endif -%}
 
          {%- endif -%}
          {%- endif -%}
     {%- endcapture -%}
     {%- assign checkaddnow = addnow | strip_newlines -%}
 
-	{%- assign nobuttons = 'no' %}
-	{%- if section.settings.more_options and section.settings.read_more == 'hidden' %}{%- assign showmoreoptions = 'yes' -%}{% endif -%}
-	{%- if section.settings.more_options and section.settings.add_cart == 'hidden' %}{%- assign showmoreoptions = 'yes' -%}{% endif -%}
-	{%- if section.settings.read_more == 'hidden' and section.settings.add_cart == 'hidden' %}{%- assign nobuttons = 'yes' -%}{% endif -%}
+  {%- assign nobuttons = 'no' %}
+  {%- if section.settings.more_options and section.settings.read_more == 'hidden' %}{%- assign showmoreoptions = 'yes' -%}{% endif -%}
+  {%- if section.settings.more_options and section.settings.add_cart == 'hidden' %}{%- assign showmoreoptions = 'yes' -%}{% endif -%}
+  {%- if section.settings.read_more == 'hidden' and section.settings.add_cart == 'hidden' %}{%- assign nobuttons = 'yes' -%}{% endif -%}
 
 <!-- Force to hide read more and buttons on search results -->
 {% if search %}
@@ -99,11 +99,11 @@
 {%- assign addnow = '' -%}
 {% endif -%}
 
-	<div class="item product {% if section.settings.read_more != 'hidden' or showmoreoptions == 'yes' %}{% if section.settings.read_more == 'button' %} buttons{% endif %}{% unless nobuttons == 'yes' %} hasexcerpt{% endunless %}{% if checkaddnow contains '<button' %} andcart{% endif %}{% else %}{% if nobuttons == 'no' %} hasexcerpt{% endif %}{% endif %}{% if settings.products_border and link_product == 'true' %} hasborder{% endif %}{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' %} andmore{% endif %}">
+  <div class="item product {% if section.settings.read_more != 'hidden' or showmoreoptions == 'yes' %}{% if section.settings.read_more == 'button' %} buttons{% endif %}{% unless nobuttons == 'yes' %} hasexcerpt{% endunless %}{% if checkaddnow contains '<button' %} andcart{% endif %}{% else %}{% if nobuttons == 'no' %} hasexcerpt{% endif %}{% endif %}{% if settings.products_border and link_product == 'true' %} hasborder{% endif %}{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' %} andmore{% endif %}">
       
-      	{%- capture get_image -%}
+        {%- capture get_image -%}        
+        {%- if section.settings.image -%}
         <p class="image">
-      	{%- if section.settings.image -%}
 
           {%- capture img -%}
           {%- if product.featured_image.src -%}
@@ -118,15 +118,17 @@
 
           {%- if demo_img -%}{%- assign img = demo_img -%}{%- endif -%}
 
-          {{ img }}          
+          {{ img }}  
+
+        </p>        
           
-      	{%- else -%}
-      	
-    	  <img src="https:{{ settings.placeholder_image | img_url: '480x480' }}" alt="{{ title }}">
-      
-      	{%- endif -%}
-        </p>
-      	{%- endcapture -%}      
+        {%- else -%}
+        
+        {% comment %}<img src="https:{{ settings.placeholder_image | img_url: '480x480' }}" alt="{{ title }}">{% endcomment %}
+        
+        {%- endif -%}
+        
+        {%- endcapture -%}      
 
         {%- capture get_title -%}
           {%- if section.settings.product_title -%}
@@ -138,7 +140,7 @@
       
         {%- if section.settings.layout_grid_prominent_feature == 'image' %}
         <!-- Put image here -->{{ get_image }}
-    	{{ get_title }}
+      {{ get_title }}
         {% endif -%}
       
         {%- if section.settings.layout_grid_prominent_feature == 'title' %}
@@ -150,7 +152,7 @@
         <!-- Put image here -->{{ get_image }}
         {% endif -%}
 
-      	<div class="summary">
+        <div class="summary">
 
           {%- if section.settings.layout_grid_prominent_feature != 'title' and section.settings.layout_grid_prominent_feature == 'image_title' -%}
           {{ get_title }}
@@ -194,11 +196,11 @@
           {%- assign show_price_tax = '' -%}
           
           {%- if product.price == 0 -%}
-          		{%- assign showprice = 'false' -%}
+              {%- assign showprice = 'false' -%}
           {%- endif -%}
 
           {%- if showprice == 'false' -%}
-          		{%- assign show_tax = '<p></p>' -%}
+              {%- assign show_tax = '<p></p>' -%}
           {%- else -%}
           
             {%- if settings.tax_inc_and_exc -%}
@@ -209,11 +211,11 @@
               {%- if shop.taxes_included -%}
                 {%- comment %}Taxes included{% endcomment -%}          
                 {%- capture show_price_tax -%}
-          			{%- if product.price > 0 -%}
-          				<sup>{{ 'products.general.tax_inc' | t }}</sup>
-          			{%- endif -%}
-          		{%- endcapture -%}
-                {%- capture show_tax -%}          			
+                {%- if product.price > 0 -%}
+                  <sup>{{ 'products.general.tax_inc' | t }}</sup>
+                {%- endif -%}
+              {%- endcapture -%}
+                {%- capture show_tax -%}                
                       {%- if product.price > 0 -%}
                       <p class="taxprice"><span class="price">{{ product.price | times: tax_rate_exc | money }}</span> <sup>{{ 'products.general.tax_exc' | t }}</sup></p> 
                       {%- else -%}
@@ -224,22 +226,22 @@
               {%- else -%}
                 {%- comment %}Excluding taxes{% endcomment -%}          
                 {%- capture show_price_tax -%} 
-          			{%- if product.price > 0 -%}
-          			{%- unless product.template_suffix contains 'giftcard' -%}
-          				<sup>{{ 'products.general.tax_exc' | t }}</sup>
-          			{%- endunless -%}
-          			{%- endif -%}
-          		{%- endcapture -%}		
+                {%- if product.price > 0 -%}
+                {%- unless product.template_suffix contains 'giftcard' -%}
+                  <sup>{{ 'products.general.tax_exc' | t }}</sup>
+                {%- endunless -%}
+                {%- endif -%}
+              {%- endcapture -%}    
           
                 {%- capture show_tax -%}
-          			{%- unless product.template_suffix contains 'giftcard' -%} 
-          			{%- if product.price > 0 -%}
+                {%- unless product.template_suffix contains 'giftcard' -%} 
+                {%- if product.price > 0 -%}
                     <p class="taxprice"><span class="price">{{ product.price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></p> 
-					{%- else -%}
-          			<p></p>
-          			{%- endif -%}
-          			{%- endunless -%}
-          		{%- endcapture -%}
+          {%- else -%}
+                <p></p>
+                {%- endif -%}
+                {%- endunless -%}
+              {%- endcapture -%}
 
               {%- endif -%}
             {%- endif -%}
@@ -258,11 +260,11 @@
           <p class="productprice{% if showprice == 'false' -%} none{% endif %}">   
 
             {%- if showprice == 'false' -%}
-            	<span class="price">{{ 'products.general.price_none' | t }}</span>
+              <span class="price">{{ 'products.general.price_none' | t }}</span>
             {%- else -%}
 
                   {%- if product.price == 0 -%}
-            			<span class="price">{{ 'products.general.price_none' | t }}</span>
+                  <span class="price">{{ 'products.general.price_none' | t }}</span>
                   {%- else -%}
 
                       {%- assign showsale = 'no' -%}
@@ -273,8 +275,8 @@
                           {{ 'products.general.on_sale_from_html' | t: price: sale_price }}
                         {%- else -%}
                           {%- assign showsale = 'yes' -%}
-                          <span class="price">{{ product.price | money }}</span>            		           
-                          {%- assign saving = product.compare_at_price | minus: product.price -%}          		           
+                          <span class="price">{{ product.price | money }}</span>                           
+                          {%- assign saving = product.compare_at_price | minus: product.price -%}                        
                           {%- assign saving_percent = product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' -%}
                         {%- endif -%} 
 
@@ -298,7 +300,7 @@
 
                       {{ show_price_tax }}
             
-            	{%- endif -%}
+              {%- endif -%}
 
             {%- endif -%}
 
@@ -323,11 +325,20 @@
           
           {%- endif -%}
 
+          {% if section.settings.sku_as_summary %}
+          <p class="content">
+                  
+              {% assign current_variant = product.selected_or_first_available_variant %}
+              {{ current_variant.sku }}
+                  
+          </p>
+          {% endif %}
+
           {%- if section.settings.description -%}
           <p class="content">
-            {% comment %}{{ content | strip_html | truncatewords: 100 }}{% endcomment %}
-            {%- assign content = content | strip_html -%}            
+            {% comment %}{{ content | strip_html | truncatewords: 100 }}{% endcomment %}      
             {%- if section.settings.description_paragraph -%}
+              {%- assign content = content | strip_html -%}
                 {%- if content contains '.' -%}
                     {%- assign firstpara = content | split: '.' -%}
                     {{ firstpara[0] }}.
@@ -342,7 +353,7 @@
 
           {{ moreoptions }}             
     
-      	</div>  
+        </div>  
 
         {% capture vendorurl %}{{ collection.url }}{% endcapture %}  
         {% if vendorurl contains 'collections/vendors?q=' %}  
@@ -354,9 +365,9 @@
              
         <a href="{{ thisurl }}" title="{{ product.title }}"><span class="visually-hidden">{{ 'blogs.article.read_more' | t }}</span></a>
         <div class="more supports-cookies">          
-          	{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' -%}<form class="readmore">{%- endif %}          
+            {% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' -%}<form class="readmore">{%- endif %}          
             {{ addnow }}              
-          	{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' -%}</form>{%- endif %}              
+            {% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' -%}</form>{%- endif %}              
         </div> 
       
         {%- include 'new' %}

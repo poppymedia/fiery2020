@@ -32,6 +32,11 @@
 {%- endcapture -%}
 
 <style>
+#shopify-section-{{ section.id }} h2,
+#shopify-section-{{ section.id }} .rte {
+  text-align: {{ section.settings.products_alignment  }};
+}
+
 {%- if section.settings.section_line_size > 0 -%}
 #shopify-section-{{ section.id }} .divide {     
   position: relative;
@@ -49,26 +54,26 @@
 
 /* List */
 {% if template contains '.list' %}
-.products.grid {
+#shopify-section-{{ section.id }} .products.grid {
   display: block;
   padding-bottom: {{ section.settings.spacing }}px; 
 }
-.products.grid .item {
+#shopify-section-{{ section.id }} .products.grid .item {
   display: block;
   margin-bottom: {{ section.settings.spacing }}px; 
   width: 100%;
   padding-left: {{ picsize }}px;
 } 
-.products.grid .item .image {
+#shopify-section-{{ section.id }} .products.grid .item .image {
   width: {{ picsize }}px;
   display: inline;
   float: left;
 }  
-  .products.grid .item .image img {
+  #shopify-section-{{ section.id }} .products.grid .item .image img {
     float: left;
     width: 100%;
   }
-.products.grid .item .summary {
+#shopify-section-{{ section.id }} .products.grid .item .summary {
   /* display: inline-block; */
   display: inline-block;
   position: relative;
@@ -76,27 +81,27 @@
   margin-left: {{ section.settings.spacing }}px;
   width: calc(100% - {{ picsize }}px - {{ section.settings.spacing }}px);
 }   
-.products.grid .item .review-rating {
+#shopify-section-{{ section.id }} .products.grid .item .review-rating {
   position: absolute;
   top: 0;
   right: 0;
   display: none;
 }  
-.products.grid .item .btn {
+#shopify-section-{{ section.id }} .products.grid .item .btn {
   font-size: 80%;
 }  
-.products.grid .item h2,
-.products.grid .item p {
+#shopify-section-{{ section.id }} .products.grid .item h2,
+#shopify-section-{{ section.id }} .products.grid .item p {
   margin-bottom: 0.3em;
 }  
-.products.grid .item .price {
+#shopify-section-{{ section.id }} .products.grid .item .price {
   font-size: 100%;
 }  
-.products.grid .item .productprice,
-.products.grid .item .small {
+#shopify-section-{{ section.id }} .products.grid .item .productprice,
+#shopify-section-{{ section.id }} .products.grid .item .small {
   margin-top: 0;
 } 
-.products.grid .item .small {
+#shopify-section-{{ section.id }} .products.grid .item .small {
   display: none;
 }
   
@@ -126,7 +131,7 @@
 {% else %}
   
 /* Grid */
-.products.grid {  
+#shopify-section-{{ section.id }} .products.grid {  
   display: flex;
   flex-wrap: wrap; 
   
@@ -146,7 +151,7 @@
   margin-bottom: -{{ section.settings.spacing }}px;
 
 }
-.products.grid .item {
+#shopify-section-{{ section.id }} .products.grid .item {
   flex: 1 1 {{ section.settings.product }}px;
   margin: 0 0 {{ section.settings.spacing }}px {{ section.settings.spacing }}px; 
   
@@ -158,11 +163,11 @@
   {% endcomment %}  
   text-align: {{ section.settings.products_alignment  }};
 }
-.products.collection.grid .item .more form.readmore button.btn {
+#shopify-section-{{ section.id }} .products.collection.grid .item .more form.readmore button.btn {
   float: left !important;
   width: 48% !important;
 } 
-.products.collection.grid .item .more form.readmore span.btn {
+#shopify-section-{{ section.id }} .products.collection.grid .item .more form.readmore span.btn {
   float: right !important;
   width: 48% !important;
 } 
@@ -172,8 +177,8 @@
   
   
 /* TESTING */ 
-.products.collection.grid .item.hasexcerpt,
-.products.collection.grid .item.andcart {
+#shopify-section-{{ section.id }} .products.collection.grid .item.hasexcerpt,
+#shopify-section-{{ section.id }} .products.collection.grid .item.andcart {
   padding-bottom: 60px;
   padding-bottom: calc({{ section.settings.text_spacing | times: 2 }}px + {{ settings.button_base_size }} + 0.51em + 0.51em);
   padding-bottom: calc({{ section.settings.text_spacing | times: 2 }}px + {{ settings.button_base_size }} + {{ settings.button_padding | divided_by: 4 | times: 0.01 | times: 2 }}em);
@@ -181,11 +186,11 @@
   
   
 @media only screen and (max-width: {{ settings.width_max_mobile }}) {
-  .products.collection.grid .item.buttons {
+  #shopify-section-{{ section.id }} .products.collection.grid .item.buttons {
     padding-bottom: 100px;
   }
-  .products.collection.grid .item .more .btn,
-  .products.collection.grid .item .readmore .link {
+  #shopify-section-{{ section.id }} .products.collection.grid .item .more .btn,
+  #shopify-section-{{ section.id }} .products.collection.grid .item .readmore .link {
     margin-top: {{ section.settings.text_spacing }}px;
   }  
 }    
@@ -201,7 +206,7 @@
    
 
 /* Grid & List */
-.products.grid .item {
+#shopify-section-{{ section.id }} .products.grid .item {
   position: relative;
   background: {{ settings.color_collection_grid_bg }}; 
   padding: {{ section.settings.text_spacing }}px;
@@ -212,58 +217,53 @@
   transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
   {% endif %}
 } 
-.products.grid .item:hover {
+#shopify-section-{{ section.id }} .products.grid .item:hover {
   background: {{ settings.color_collection_grid_bg_hover }}; 
 } 
   
-.products.collection.grid .item .more {
+#shopify-section-{{ section.id }} .products.collection.grid .item .more {
   bottom: {{ section.settings.text_spacing }}px;
   left: {{ section.settings.text_spacing }}px;
   width: calc(100% - {{ section.settings.text_spacing | times: 2 }}px);
   height: auto;
 }
-.products.collection.grid .item .more form {
+#shopify-section-{{ section.id }} .products.collection.grid .item .more form {
   /* border: solid 1px green; */
   max-width: none;
 }
-.products.collection.grid .item .more .btn {
+#shopify-section-{{ section.id }} .products.collection.grid .item .more .btn {
   margin-right: {{ section.settings.text_spacing }}px;
   margin-right: 0;
 }
 
   
   
-.products.grid .item h2,
-.products.grid .item p,
-.products.grid .item p a {
+#shopify-section-{{ section.id }} .products.grid .item h2,
+#shopify-section-{{ section.id }} .products.grid .item p,
+#shopify-section-{{ section.id }} .products.grid .item p a {
   color: {{ settings.color_collection_grid_text }};
 }
-.products.grid .item.fillrow {
+#shopify-section-{{ section.id }} .products.grid .item.fillrow {
   background: transparent;
   margin-top: -50px;
 } 
-.products.grid .item .image {
-}
-.products.grid .item .image a {
-}
-.products.grid .item svg,
-.products.grid .item img {
+#shopify-section-{{ section.id }} .products.grid .item svg,
+#shopify-section-{{ section.id }} .products.grid .item img {
   width: 100%;
 } 
-.products.collection.grid .item .summary {
-}
 
-.products.collection.grid .item .small{
+
+#shopify-section-{{ section.id }} .products.collection.grid .item .small{
   	font-size: 80%;
 }
-.products.collection.grid .item .summary .title {
+#shopify-section-{{ section.id }} .products.collection.grid .item .title {
   font-size: {{ title_size }}px;
 }
 
   
   
 
-.products.grid .item .pricing {
+#shopify-section-{{ section.id }} .products.grid .item .pricing {
   /* margin-top: {{ section.settings.spacing }}px; */
   margin-top:  {{ section.settings.text_margin }}px;
   margin-bottom: {{ section.settings.spacing }}px; 
@@ -273,10 +273,10 @@
   
   
 @media only screen and (max-width: {{ settings.width_max_mobile }}) {
-  .products.collection.grid .item.buttons {
+  #shopify-section-{{ section.id }} .products.collection.grid .item.buttons {
     padding-bottom: 100px;
   }
-  .products.collection.grid .item .more .btn {
+  #shopify-section-{{ section.id }} .products.collection.grid .item .more .btn {
     margin-top: {{ section.settings.text_spacing }}px;
   }  
 }
@@ -287,7 +287,7 @@
   
   
 {% comment %}
-.products.collection.grid {
+#shopify-section-{{ section.id }} .products.collection.grid {
   display: flex;
   flex-wrap: wrap;
   position: relative;
@@ -334,9 +334,9 @@
   background: transparent;
   margin-top: -{{ section.settings.spacing }}px;
 }
-.products.collection.grid .item h2,
-.products.collection.grid .item p,
-.products.collection.grid .item p a {
+#shopify-section-{{ section.id }} .products.collection.grid .item h2,
+#shopify-section-{{ section.id }} .products.collection.grid .item p,
+#shopify-section-{{ section.id }} .products.collection.grid .item p a {
   color: {{ settings.color_collection_grid_text }};
 }
 {% assign class = 'grid' %}
@@ -350,15 +350,15 @@
   margin-bottom: -{{ section.settings.text_spacing }}%;
   {% endunless %}
 }
-.products.collection.grid .item .image a {
+#shopify-section-{{ section.id }} .products.collection.grid .item .image a {
   position: relative;
   overflow: hidden;
   margin: 0;
   float: left;
   width: 100%;
 }
-.products.collection.grid .item svg,
-.products.collection.grid .item img {
+#shopify-section-{{ section.id }} .products.collection.grid .item svg,
+#shopify-section-{{ section.id }} .products.collection.grid .item img {
   width: 100%;
 } 
 #shopify-section-{{ section.id }} .products.collection.grid .item .summary {
@@ -407,8 +407,8 @@
   
 {% comment %}
 @supports (display: grid) {
-  .products.collection > .item,
-  .products.collection.grid > .item {
+  #shopify-section-{{ section.id }} .products.collection > .item,
+  #shopify-section-{{ section.id }} .products.collection.grid > .item {
     float: none;
     width: auto;
   } 
@@ -495,6 +495,10 @@
 
 {% if section.settings.title != blank %}
   <h2>{{ section.settings.title | escape }}{{ expand }}</h2>
+{% endif %}
+
+{% if section.settings.show_description != blank %}
+  <div class="rte">{{ collection.description }}</div>
 {% endif %}
 
 <div class="products collection {{ class }}">
@@ -620,7 +624,13 @@ $(document).ready(function(){
         "type": "text",
         "id": "title",
         "label": "Heading",
-        "default": "List of collections"
+        "default": "List of products"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_description",
+        "label": "Show collection description",
+        "default": true
       },
       {
         "type": "range",
@@ -762,6 +772,18 @@ $(document).ready(function(){
         "id": "image",
         "label": "Show product image",
         "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "vendor",
+        "label": "Show vendor",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "sku_as_summary",
+        "label": "Show SKU as summary",
+        "default": false
       },
       {
         "type": "checkbox",

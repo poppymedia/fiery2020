@@ -601,7 +601,7 @@ main > div {
     {% if section.settings.show_vendor %}
           {% assign showvendor = 'true' %}{% if product.vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}
           {% if showvendor == 'true' %}
-          <p class="subtitle vendor">
+          <p class="vendor">
             
             {{ product.vendor }}
             
@@ -613,9 +613,22 @@ main > div {
     {% capture get_sku %}
     <!-- Vendor -->
     {% if section.settings.show_sku %}
-          <p class="subtitle vendor">
+        {% if section.settings.sku_as_summary %}
+        {% else %}
+          <p class="vendor">
             
-            {{ product.sku }}
+            {{ current_variant.sku }}
+            
+          </p>
+        {% endif %}
+    {% endif %}
+    {% endcapture %}
+
+    {% capture get_sku_summary %}
+    {% if section.settings.sku_as_summary %}
+          <p class="summary">
+            
+            {{ current_variant.sku }}
             
           </p>
     {% endif %}
@@ -671,6 +684,7 @@ main > div {
     {% endif %}
     {% endcapture %}
 
+
     {% capture get_variants %}
     <!-- Variants -->    
     <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
@@ -682,7 +696,7 @@ main > div {
       <form action="/cart/add" method="post" enctype="multipart/form-data" class="product_form">
       {% endif %}   
           
-<!-- TO DO: Enable inc and exc prices to be ordered -->
+      <!-- TO DO: Enable inc and exc prices to be ordered -->
           
           {% assign showprice = 'true' %}
           {% assign show_tax = '' %}
@@ -721,179 +735,144 @@ main > div {
         {% capture variant_groups %}
         {% unless product.has_only_default_variant %}
 
-        {% assign options_current = '' %}
+          {% assign options_current = '' %}
 
           {% assign opt_i = 0 %}
           {% assign tag_group_num = 0 %}
 
           {% capture variant_items %}
           {% unless section.settings.variant_style == 'hidden' %}
-          {% for option in product.options_with_values %}
-            <div class="selector-wrapper js">
-              
-              {% unless template contains 'giftcard' %} 
-              <label for="SingleOptionSelector-{{ forloop.index0 }}">
-                {{ option.name }}
-                {% assign tag_group_num = tag_group_num | plus: 1 %}
-              </label>
-              {% endunless %}
+            {% for option in product.options_with_values %}
+              <div class="selector-wrapper js">
+                
+                {% unless template contains 'giftcard' %} 
+                <label for="SingleOptionSelector-{{ forloop.index0 }}">
+                  {{ option.name }}
+                  {% assign tag_group_num = tag_group_num | plus: 1 %}
+                </label>
+                {% endunless %}
 
-              {% if section.settings.variant_style == 'dropdowns' %}
-              <select
-                id="SingleOptionSelector-{{ forloop.index0 }}"
-                data-single-option-selector
-                data-index="option{{ option.position }}">
-                {% for value in option.values %}
-                  <option
-                    value="{{ value | escape }}"
-                    {% if option.selected_value == value %}selected="selected"{% endif %}>
-                      {{ value }}
-                  </option>
-                {% endfor %}
-              </select>
-              {% endif %}
-
-              {% comment %}ID List: {{ variant_id_list }}<br />{% endcomment %}
-              {% if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' %} 
-                  {% assign option_name = option.name | downcase %}
-                  {% assign current_option = "option" | append: option.position %}
-                  {% assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " %}
+                {% if section.settings.variant_style == 'dropdowns' %}
+                <select
+                  id="SingleOptionSelector-{{ forloop.index0 }}"
+                  data-single-option-selector
+                  data-index="option{{ option.position }}">
                   {% for value in option.values %}
-
-                        {% assign available = false %}
-                        {% for variant in product.variants %}
-              				{% assign showthumb = false %}
-              				{% if section.settings.variant_style == 'thumbnails' %}
-                                {% comment %}
-                                <!-- NOTE: Color option needs to be positioned as first option -->
-                                {% endcomment %}                                
-              					{% if firstgroup contains 'colour' or firstgroup contains 'color' %}
-              						{% assign showthumb = true %}
-              					{% endif %}
-              				{% endif %}
-                            {% capture id %}{{ variant.id }}{% endcapture %}
-                            {% unless variant.available %}
-                              {% continue %}
-                            {% endunless %}
-                            {% unless variant[current_option] == value %}
-                              {% continue %}
-                            {% endunless %}
-                            {% unless variant[other_options[0]] == current_variant[other_options[0]] %}
-                              {% continue %}
-                            {% endunless %}
-                            {% unless variant[other_options[1]] == current_variant[other_options[1]] %}
-                              {% continue %}
-                            {% endunless %}
-                            {% assign available = true %}
-                            {% assign uri = variant.id %}
-                            {% capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture %} 
-             				
-              				{% unless option_name contains 'colour' or option_name contains 'color' %}
-                               {% comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment %}
-                               {% if section.settings.show_color_thumbnails %}
-                                    {% assign showthumb = false %}
-                               {% endif %}
-              				{% endunless %}			
-              
-                            {% capture text %}{% if showthumb == true %}<img src="{{ variant | img_url: '60x' }}" />{% else %}{{ value }}{% assign class=' class="btn"' %}{% endif %}{% endcapture %}              
-              				{% assign opt_i = opt_i | plus: 1 %}
-              				{% endfor %}
-                        {% assign checked = "" %}
-                        {% if current_variant[current_option] == value %}
-                          	{% assign checked = ' disabled' %}
-                        {% endif %}             
-
-                        <a href="{{ url }}"{{ class }}{{ checked }} />{{ text }}</a>
-
+                    <option
+                      value="{{ value | escape }}"
+                      {% if option.selected_value == value %}selected="selected"{% endif %}>
+                        {{ value }}
+                    </option>
                   {% endfor %}
-        
-        			{% if template contains 'giftcard' %}   			
-        			{% if shop.taxes_included %}
-        			{% else %}
-        			{% if settings.gift_card_redemption == 'single' %}<p class="notice">{{ 'gift_cards.general.gift_cards_priced' | t }} {{ 'products.general.tax_inc' | t }}</p>{% endif %}
-        			{% endif %}    
-                    {% endif %}
+                </select>
+                {% endif %}
 
-              {% endif %}
+                {% comment %}ID List: {{ variant_id_list }}<br />{% endcomment %}
+                {% if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' %} 
+                    {% assign option_name = option.name | downcase %}
+                    {% assign current_option = "option" | append: option.position %}
+                    {% assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " %}
+                    {% for value in option.values %}
 
-            </div>
-          {% endfor %}  
+                          {% assign available = false %}
+                          {% for variant in product.variants %}
+                				{% assign showthumb = false %}
+                				{% if section.settings.variant_style == 'thumbnails' %}
+                                  {% comment %}
+                                  <!-- NOTE: Color option needs to be positioned as first option -->
+                                  {% endcomment %}                                
+                					{% if firstgroup contains 'colour' or firstgroup contains 'color' %}
+                						{% assign showthumb = true %}
+                					{% endif %}
+                				{% endif %}
+                              {% capture id %}{{ variant.id }}{% endcapture %}
+                              {% unless variant.available %}
+                                {% continue %}
+                              {% endunless %}
+                              {% unless variant[current_option] == value %}
+                                {% continue %}
+                              {% endunless %}
+                              {% unless variant[other_options[0]] == current_variant[other_options[0]] %}
+                                {% continue %}
+                              {% endunless %}
+                              {% unless variant[other_options[1]] == current_variant[other_options[1]] %}
+                                {% continue %}
+                              {% endunless %}
+                              {% assign available = true %}
+                              {% assign uri = variant.id %}
+                              {% capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture %} 
+               				
+                				{% unless option_name contains 'colour' or option_name contains 'color' %}
+                                 {% comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment %}
+                                 {% if section.settings.show_color_thumbnails %}
+                                      {% assign showthumb = false %}
+                                 {% endif %}
+                				{% endunless %}			
+                
+                              {% capture text %}{% if showthumb == true %}<img src="{{ variant | img_url: '60x' }}" />{% else %}{{ value }}{% assign class=' class="btn"' %}{% endif %}{% endcapture %}              
+                				{% assign opt_i = opt_i | plus: 1 %}
+                				{% endfor %}
+                          {% assign checked = "" %}
+                          {% if current_variant[current_option] == value %}
+                            	{% assign checked = ' disabled' %}
+                          {% endif %}             
+
+                          <a href="{{ url }}"{{ class }}{{ checked }} />{{ text }}</a>
+
+                    {% endfor %}
+            
+            			{% if template contains 'giftcard' %}   			
+              			{% if shop.taxes_included %}
+              			{% else %}
+              			  {% if settings.gift_card_redemption == 'single' %}<p class="notice">{{ 'gift_cards.general.gift_cards_priced' | t }} {{ 'products.general.tax_inc' | t }}</p>{% endif %}
+              			{% endif %}    
+                  {% endif %}
+
+                {% endif %}
+
+              </div>
+            {% endfor %}  
           {% endunless %}
       	  {% endcapture %}
         
         {% endunless %}
 
+        {% comment %}<!-- Don't show variants if there is only one and label is displayed -->{% endcomment %}
+        {% if section.settings.first_variant and product.variants.size == 1 %}        
+        {% else %}
       	<div id="variations">{{ variant_items }}</div>
+        {% endif %}
 
       	{% if product.variants.size > 1 %}
-        {% unless section.settings.show_variant_always and product.options.size < 2 %}
-        {{ variants }} 
-      	{% endunless %}
+          {% unless section.settings.show_variant_always and product.options.size < 2 %}
+          {{ variants }}
+        	{% endunless %}
       	{% else %}
-      	<input type="hidden" name="id" value="{{ product.variants.first.id }}"/>
+          {% if section.settings.show_variant_always %}
+          {{ variants }}
+          {% else %}
+        	<input type="hidden" name="id" value="{{ product.variants.first.id }}"/>
+          {% endif %}
       	{% endif %}
 
       	{% comment %}
         {% unless section.settings.show_variant_always and product.options.size < 2 %}
         {{ variants }} 
       	{% endunless %}
-      	{% endcomment %}
+      	{% endcomment %} 
 
-      	{% if opt_i > 1%}
-        {% endif %}     
-      
-  {% if template == 'product.no.cart' %}
-  <!-- Product without add to cart -->
-      <div id="pricedata">
 
-        <div data-price-wrapper>
-          <span data-product-price>
-            {{ current_variant.price | money }}
-          </span>
-
-          {% if product.compare_at_price_max > product.price %}
-            <span class="visually-hidden" data-compare-text>{{ 'products.general.regular_price' | t }}</span>
-            <s data-compare-price>
-              {% if current_variant.compare_at_price > current_variant.price %}
-                {{ current_variant.compare_at_price | money }}
-              {% endif %}
-            </s>
-          {% endif %}
-          
-          {{ show_price_tax }}
-          
-        </div>
-      
-          {% if showprice != 'false' -%}
-          {{ show_tax }} 
-          {%- endif %}
-        
-      	</div>
-
-  {% else %}
-
-      {% capture get_price %}      	
-        <!-- Product with add to cart -->
-        {% unless template contains 'giftcard' %}
-      		{% unless product.template_suffix contains 'orderform' %}
+            
+        {% if template == 'product.no.cart' %}
+        <!-- Product without add to cart -->
             <div id="pricedata">
 
               <div data-price-wrapper>
                 <span data-product-price>
-
-                  {% if product.price == 0 -%}
-
-                  {{ 'products.general.price_none' | t }}
-
-                  {%- else -%}
-
                   {{ current_variant.price | money }}
-
-                  {%- endif %}
-
                 </span>
 
-                {% if product.compare_at_price_max > product.price and section.settings.show_compare_price %}
+                {% if product.compare_at_price_max > product.price %}
                   <span class="visually-hidden" data-compare-text>{{ 'products.general.regular_price' | t }}</span>
                   <s data-compare-price>
                     {% if current_variant.compare_at_price > current_variant.price %}
@@ -901,100 +880,143 @@ main > div {
                     {% endif %}
                   </s>
                 {% endif %}
-
+                
                 {{ show_price_tax }}
-
+                
               </div>
-
-              {% comment %}
-              <div data-price-wrapper>
-                <span data-product-inventory>
-                {% if product.variants.first.inventory_management == 'shopify' %}
-                    {% if product.variants.first.inventory_quantity > 0 %}
-                       {% assign stock = product.variants.first.inventory_quantity %}
-                       {% comment %}{{ product.variants.first.inventory_quantity }} in stock{% endcomment %}
-                       {{ 'products.general.in_stock' | t: stock }}
-                    {% else %}
-                       {% comment %}Out of stock{% endcomment %}
-                       {{ 'products.general.no_stock' | t }}
-                    {% endif %}
-                 {% else %}
-                    In stock
-                 {% endif %}
-                </span>
-              </div>  
-              {% endcomment %}
-
-              {% if section.settings.show_saving %}
-              {% if current_variant.compare_at_price > current_variant.price %}
-              <div data-price-wrapper>
-                 <span data-product-save>
-                 {% assign diff = current_variant.compare_at_price | minus: current_variant.price | money %}
-                 {{ 'products.general.save_html' | t: amount: diff }}
-                 </span>
-              </div>
-              {% endif %}      	
-              {% endif %}    
-
+            
                 {% if showprice != 'false' -%}
                 {{ show_tax }} 
-                {%- endif %} 
+                {%- endif %}
+              
+            	</div>
 
-            </div>  
-      		{% endunless %}
-        {% endunless %}
-      {% endcapture %}
+        {% else %}
 
-        {% if settings.cart_enable %}
-      
-          <div class="supports-no-cookies">
-            <p class="notice">{{ 'cart.general.cookies_required' | t }}</p>
-          </div>
+            {% capture get_price %}      	
+              <!-- Product with add to cart -->
+              {% unless template contains 'giftcard' %}
+            		{% unless product.template_suffix contains 'orderform' %}
+                  <div id="pricedata">
 
-          <!-- supports-cookies ensures only cookie enabled browsers can add to cart -->
-          {% if section.settings.show_qty %}
-          <div class="action quantity{% unless settings.quantity_style == 'minimal' %} buttons {{ settings.quantity_style }}{% endunless %} supports-cookies">
-          <span class="label visually-hidden">{{ 'products.general.quantity' | t }}</span>
-          <input type="number" id="Quantity" name="quantity" value="1" min="1">
-          </div>
-          {% endif %}      
+                    <div data-price-wrapper>
+                      <span data-product-price>
 
-          {% if section.settings.show_addtocart_button %}
+                        {% if product.price == 0 -%}
 
-              {% if settings.cart_action == 'update' %}
-                <input type="hidden" name="return_to" value="back" />
-              {% elsif settings.cart_action == 'checkout' %}
-                <input type="hidden" name="return_to" value="/checkout" />
-              {% endif %}
+                        {{ 'products.general.price_none' | t }}
 
-              {% capture add_to_cart %}
+                        {%- else -%}
+
+                        {{ current_variant.price | money }}
+
+                        {%- endif %}
+
+                      </span>
+
+                      {% if product.compare_at_price_max > product.price and section.settings.show_compare_price %}
+                        <span class="visually-hidden" data-compare-text>{{ 'products.general.regular_price' | t }}</span>
+                        <s data-compare-price>
+                          {% if current_variant.compare_at_price > current_variant.price %}
+                            {{ current_variant.compare_at_price | money }}
+                          {% endif %}
+                        </s>
+                      {% endif %}
+
+                      {{ show_price_tax }}
+
+                    </div>
+
+                    {% comment %}
+                    <div data-price-wrapper>
+                      <span data-product-inventory>
+                      {% if product.variants.first.inventory_management == 'shopify' %}
+                          {% if product.variants.first.inventory_quantity > 0 %}
+                             {% assign stock = product.variants.first.inventory_quantity %}
+                             {% comment %}{{ product.variants.first.inventory_quantity }} in stock{% endcomment %}
+                             {{ 'products.general.in_stock' | t: stock }}
+                          {% else %}
+                             {% comment %}Out of stock{% endcomment %}
+                             {{ 'products.general.no_stock' | t }}
+                          {% endif %}
+                       {% else %}
+                          In stock
+                       {% endif %}
+                      </span>
+                    </div>  
+                    {% endcomment %}
+
+                    {% if section.settings.show_saving %}
+                    {% if current_variant.compare_at_price > current_variant.price %}
+                    <div data-price-wrapper>
+                       <span data-product-save>
+                       {% assign diff = current_variant.compare_at_price | minus: current_variant.price | money %}
+                       {{ 'products.general.save_html' | t: amount: diff }}
+                       </span>
+                    </div>
+                    {% endif %}      	
+                    {% endif %}    
+
+                      {% if showprice != 'false' -%}
+                      {{ show_tax }} 
+                      {%- endif %} 
+
+                  </div>  
+            		{% endunless %}
+              {% endunless %}
+            {% endcapture %}
+
+              {% if settings.cart_enable %}
+            
+                <div class="supports-no-cookies">
+                  <p class="notice">{{ 'cart.general.cookies_required' | t }}</p>
+                </div>
 
                 <!-- supports-cookies ensures only cookie enabled browsers can add to cart -->
-                <div class="action supports-cookies">
-                <span class="label">&nbsp;</span>
-                <button
-                  type="submit"
-                  name="add"
-                  data-add-to-cart
-                  class="btn add_to_cart"
-                  {%- unless current_variant.available %}disabled="disabled"{% endunless -%}>        
-                    <span data-add-to-cart-text>
-                      {%- if current_variant.available -%}
-                        {{ 'products.general.add_to_cart' | t }}
-                      {%- else -%}
-                        {{ 'products.general.sold_out' | t }}
-                      {%- endif -%}
-                    </span>
-                </button>
+                {% if section.settings.show_qty %}
+                <div class="action quantity{% unless settings.quantity_style == 'minimal' %} buttons {{ settings.quantity_style }}{% endunless %} supports-cookies">
+                <span class="label visually-hidden">{{ 'products.general.quantity' | t }}</span>
+                <input type="number" id="Quantity" name="quantity" value="1" min="1">
                 </div>
-      
-      			{% endcapture %}  
+                {% endif %}      
 
-          {% endif %}
+                {% if section.settings.show_addtocart_button %}
+
+                    {% if settings.cart_action == 'update' %}
+                      <input type="hidden" name="return_to" value="back" />
+                    {% elsif settings.cart_action == 'checkout' %}
+                      <input type="hidden" name="return_to" value="/checkout" />
+                    {% endif %}
+
+                    {% capture add_to_cart %}
+
+                      <!-- supports-cookies ensures only cookie enabled browsers can add to cart -->
+                      <div class="action supports-cookies">
+                      <span class="label">&nbsp;</span>
+                      <button
+                        type="submit"
+                        name="add"
+                        data-add-to-cart
+                        class="btn add_to_cart"
+                        {%- unless current_variant.available %}disabled="disabled"{% endunless -%}>        
+                          <span data-add-to-cart-text>
+                            {%- if current_variant.available -%}
+                              {{ 'products.general.add_to_cart' | t }}
+                            {%- else -%}
+                              {{ 'products.general.sold_out' | t }}
+                            {%- endif -%}
+                          </span>
+                      </button>
+                      </div>
+            
+            			{% endcapture %}  
+
+                {% endif %}
+
+              {% endif %}
 
         {% endif %}
 
-  {% endif %}
  
         {% capture add_more_buttons %}
           {%- if section.settings.show_enquiry_button -%} 
@@ -1024,6 +1046,8 @@ main > div {
 
     </div>
     {% endcapture %}  
+
+
   
     {% capture get_description %}    
       {%- assign opentag = '<' | append: section.settings.content_grouping -%}  
@@ -1135,6 +1159,7 @@ main > div {
         	  {{ get_rating }}
           	{{ get_price }}
             {{ get_variants }}
+            {{ get_sku_summary }}
             {{ get_description }}
             {{ get_tags }}
             {{ get_reviews }}          
@@ -1142,24 +1167,48 @@ main > div {
       </div>  
     	{% endif %}
   
-    	{% if section.settings.layout_grid_prominent_feature == 'title_image' %} 
+      {% if section.settings.layout_grid_prominent_feature == 'title_image' %} 
+      {{ get_h1 }}
+      <div class="{{ imgcolwidth }}  img">
+            {{ get_images }}
+            {{ get_thumbs }}
+      </div>
       <div class="{{ descolwidth }} desc">
-            {{ get_h1 }}
             {{ get_first_variant }}
             {{ get_vendor }}
             {{ get_sku }}
-        	  {{ get_rating }}
-          	{{ get_price }}
+            {{ get_rating }}
+            {{ get_price }}
             {{ get_variants }}
+            {{ get_sku_summary }}
             {{ get_description }}
             {{ get_tags }}
             {{ get_reviews }}          
             {{ get_share }}
-      </div>   
+      </div>  
+      {% endif %}
+  
+    	{% if section.settings.layout_grid_prominent_feature == 'title_desc' %} 
+      <div class="intro">
+        {{ get_h1 }}
+        {{ get_first_variant }}
+        {{ get_vendor }}
+        {{ get_sku }}
+        {{ get_rating }}
+        {{ get_price }}
+        {{ get_sku_summary }}
+        {{ get_variants }}
+      </div>
   		<div class="{{ imgcolwidth }}  img">
         	  {{ get_images }}
           	{{ get_thumbs }}
   		</div>
+      <div class="{{ descolwidth }} desc">
+            {{ get_description }}
+            {{ get_tags }}
+            {{ get_reviews }}          
+            {{ get_share }}
+      </div>  
     	{% endif %}
 
         {% if section.settings.layout_grid_prominent_feature == 'title' %}
@@ -1177,6 +1226,7 @@ main > div {
         <div class="half desc">
           	{{ get_price }}
             {{ get_variants }}
+            {{ get_sku_summary }}
             {{ get_description }}
             {{ get_tags }}
             {{ get_reviews }}
@@ -1185,7 +1235,7 @@ main > div {
         {% endif %}
   
         {% if section.settings.layout_grid_prominent_feature == 'image' %}
-        <div>
+        <div class="intro">
             {{ get_images }}
         </div>
         <div class="half">
@@ -1198,6 +1248,7 @@ main > div {
         <div class="half desc">
           	{{ get_price }}
             {{ get_variants }}
+            {{ get_sku_summary }}
             {{ get_description }}
             {{ get_tags }}
             {{ get_reviews }}
@@ -1282,6 +1333,10 @@ main > div {
             "label": "Title & image"
           },
           {
+            "value": "title_desc",
+            "label": "Title & description"
+          },
+          {
             "value": "image_title",
             "label": "Image & title"
           }
@@ -1346,6 +1401,12 @@ main > div {
         "id": "show_sku",
         "label": "Show SKU",
         "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "sku_as_summary",
+        "label": "Use SKU as summary",
+        "default": false
       },
       {
         "type": "checkbox",

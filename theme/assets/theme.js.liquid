@@ -712,6 +712,7 @@
 
 
 
+
 /** @preserve
  *
  * slippry v1.4.0 - Responsive content slider for jQuery
@@ -751,7 +752,7 @@
 
 
 
-
+{% if settings.shipping_calculator == 'Enabled' %}
 /**
  * Module to add a shipping rates calculator to cart page.
  *
@@ -767,6 +768,7 @@ var hasCalculator = document.getElementById('shipping-calculator');
 if(hasCalculator){
 };
 */
+{% endif %}
 
 
 window.slate = window.slate || {};
@@ -1814,6 +1816,7 @@ $(document).ready(function() {
 
     });
 
+{% if settings.shipping_calculator == 'Enabled' %}
   {% comment %}
     Shopify.Cart.ShippingCalculator.show({
       submitButton: {{ 'cart.shipping_calculator.submit' | t | json }}, 
@@ -1829,6 +1832,7 @@ $(document).ready(function() {
       {%- if customer %}customerIsLoggedIn: theme.strings.shippingCalcCustomerIsLoggedIn,{% endif %}
       moneyFormat: theme.strings.shippingCalcMoneyFormat
     } );
+{% endif%}
 
     // Retain page position when hyperlinking variants
   	{% comment %}
@@ -1844,8 +1848,45 @@ $(document).ready(function() {
     };
   	{% endcomment %}
 
-  	//alert('hello');
+	 jQuery(function() {
+	 	/*
+	    $('.single-option-select').on('change', function(evt, obj){
+	        setTimeout(function(){ 
+	        	console.log('Active variant is ' + obj.sku);
+		        if($('[name="id"]').val() != "{{ product.selected_or_first_available_variant.id }}"){
+		        	location.reload();
+		        }
+	        }, 1);
+	        
+	    });
+	    */
+	    /*
+	    $('.single-option-select')
+		  .change(function () {
+		    var str = ''; var pid = ''; var pathname = window.location.pathname;
+		    $('select option:selected').each(function() {		      
+		      str += $(this).text() + " ";
+		      pid = $(this).val();
+		    });
+		    console.log("Selected is " + pathname + '?variant=' + pid);
+		    window.location = pathname + '?variant=' + pid;
+		    return false;
+		  })
+		  .change();
+		  */
+	      $('.single-option-select').on('change', function () {
+	      	pid = $(this).val();
+	        var url = window.location.pathname + '?variant=' + pid;
+	        if (url) {
+	        	window.location = url;
+	        }
+	        return false;
+	      });
 
+	  }); 	
+
+  	//alert('hello');
+  	if ($('#thumbnails').length){
   		// TO DO: Check if slideshow should be enabled
         var slipthumbs = jQuery('#thumbnails').slippry({
           // general elements & wrapper
@@ -1870,6 +1911,7 @@ $(document).ready(function() {
           slipthumbs.goToSlide($(this).data('slide'));
           return false;
         });
+    }
 
   	// Display cart
 	$('#cartbox').load('/cart #content form');

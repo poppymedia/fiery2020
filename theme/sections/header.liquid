@@ -511,7 +511,9 @@
 }
 {% assign svgdiff = settings.menu_icon_size | minus: settings.menu_font_size %}
 #{{ nav }} svg,
-#{{ nav }}-two svg {
+#{{ nav }}-two svg,
+#{{ nav }} img,
+#{{ nav }}-two img {
   width: {{ settings.menu_icon_size }}px;
   height: {{ settings.menu_icon_size }}px;
   
@@ -788,6 +790,13 @@
   padding-bottom: {{ section.settings.main_breadcrumb_spacing }};
   font-size: {{ settings.breadcrumb_font_size }}px;
 }  
+
+/* Fix for roll-out menu on mobile */
+#shopify-section-header {
+  z-index: 99999 !important;
+  overflow: visible !important;
+}
+
 #shopify-section-header .breadcrumb nav {
   pointer-events: auto;
 }
@@ -1325,7 +1334,14 @@
     }
 }
 {% endif %}  
-  
+/* SVG works, but img needs fix to display */
+body #shopify-section-header #header #cartmob #cart img {
+  margin: 0 !important;
+  padding: 0 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+} 
   
   
   
@@ -1708,9 +1724,12 @@
     display: block;  
     content: "";
     left: 0;
-    top: 0;    
-    width: 100%;
-    height: 100%;
+    top: 0; 
+
+    width: 100vw;
+    height: 100vh;
+    min-height: -webkit-fill-available;
+
     z-index: 998;
     background: #000;
     {% assign op = ', 0.7)' %}
@@ -3593,7 +3612,41 @@ header .tags {
   }
   </style>
   {% endif %}
+  {% if section.settings.logo_align_mobile == 'center' %}
+  <!-- TESTING -->
+  <style>
+  @media only screen and (max-width: {{ grid_large | remove: 'px' | append: 'px' }}) {
+    #header .container header .brand img {
+    min-width: {{ settings.logo_size_mobile }}px !important;
+    }
+  }
+  </style>
   {% endif %}
+  {% if section.settings.logo_align_mobile == 'right' %}
+  <!-- TESTING -->
+  <style>
+  @media only screen and (max-width: {{ grid_large | remove: 'px' | append: 'px' }}) {
+    #header .container header .brand img {
+    min-width: {{ settings.logo_size_mobile }}px !important;
+    }
+  }
+  </style>
+  {% endif %}
+  {% endif %}
+
+
+
+  {% unless section.settings.cart_mobile %}
+  <!-- TESTING -->
+  <style>
+  @media only screen and (max-width: {{ grid_large | remove: 'px' | append: 'px' }}) {
+    #carthold {
+    display: none !important;
+    }
+  }
+  </style>
+  {% endunless %}
+
 
 
 
@@ -3765,6 +3818,12 @@ function WidthChange(mq) {
         "type": "checkbox",
         "id": "header_overlay_pages",
         "label": "Overlay header on other pages",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "header_overlay_mobile",
+        "label": "Overlay header on mobile",
         "default": false
       },
       {
@@ -4718,6 +4777,13 @@ function WidthChange(mq) {
         ],
         "default": "center"
       },
+      {
+        "type": "checkbox",
+        "id": "cart_mobile",
+        "label": "Show on mobile",
+        "default": true
+      },
+
       {
         "type": "header",
         "content": "Phone number"

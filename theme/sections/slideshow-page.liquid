@@ -663,6 +663,11 @@ ul.bxslider {
 									/* border: solid 1px #000000; */
 								}
 								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .textWrapper { 
+
+                                  	{% if block.settings.title != blank or block.settings.subtitle != blank or block.settings.paragraph != blank or block.settings.button_1_label != blank or block.settings.button_2_label != blank %}
+                                    position: absolute !important;
+                                  	{% endif %}
+                                  	
 									/* border: solid 1px green; */
 									{% if block.settings.text_background_style == 'gradient' %}
 									{% capture grad_orient -%}

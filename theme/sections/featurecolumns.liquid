@@ -13,6 +13,87 @@
   }
   {% endif %}
 
+
+
+
+{% assign gridspace = '20px' %}
+
+#shopify-section-{{ section.id }} {
+}
+#shopify-section-{{ section.id }} .featurecolumn img {
+  width: 100%;
+}
+
+@media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
+
+
+  {% if section.settings.layout == 'image_top' %}
+  {% endif %}
+
+
+  {% if section.settings.layout == '1_column_1_image' %}
+  #shopify-section-{{ section.id }} .features {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: {{ gridspace }};
+    grid-row-start: 1;
+    grid-row-end: 3;
+  }
+  {% endif %}
+
+
+  {% if section.settings.layout == '1_image_1_column' %}
+  #shopify-section-{{ section.id }} .features {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: {{ gridspace }};
+    grid-row-start: 1;
+    grid-row-end: 3;
+  }
+    #shopify-section-{{ section.id }} .features .featurecolumn {
+      order: 1;
+    }
+  {% endif %}
+
+
+  {% if section.settings.layout == '1_column_1_image_1_column' %}
+  #shopify-section-{{ section.id }} .features .featurecolumn {
+    /* order: 2; */
+  }
+    #shopify-section-{{ section.id }} .features {
+      display: grid;
+      grid-template-columns: 25% auto 25%;
+      grid-gap: {{ gridspace }};
+      /* grid-gap: 0; */
+
+      margin: 0 !important;
+      position: relative !important;
+      box-sizing: border-box !important;       
+      overflow: hidden !important;
+    }
+    #shopify-section-{{ section.id }} .features > div {
+      box-sizing: border-box; 
+      border: solid 1px green;
+    }
+
+      #shopify-section-{{ section.id }} .features .featurecolumn {
+        grid-area: 1 / 2 / 4 / 3;
+      }
+
+  {% endif %}
+
+
+}
+
+
+
+
+
+
+/*
+
   {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
   @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
     #shopify-section-{{ section.id }} > h2,
@@ -25,7 +106,6 @@
     
   #shopify-section-{{ section.id }} {  
     overflow: hidden;  
-    /* border: solid 1px white; */
    
     {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
     {% if section.settings.image_position != 'hidden' and section.settings.image_bg != nil %}
@@ -76,10 +156,6 @@
   #shopify-section-{{ section.id }} > h2,
   #shopify-section-{{ section.id }} > .container > h2 {
     color: {{ section.settings.promotions_title }};
-    /*
-    padding-top:  0;
-    margin-top:  0;
-    */
     position: relative;
     z-index: 3;
   }
@@ -103,13 +179,10 @@
 
     
   #shopify-section-{{ section.id }} .container { 
-    overflow: hidden;   
-    /* border: solid 1px black; */   
-    
+    overflow: hidden;     
   }  
   #shopify-section-{{ section.id }} .container .promotions {  
     overflow: hidden;  
-    /* border: solid 1px red; */
   }   
 
   {% if section.settings.promotions_width == 'overflow' %}
@@ -120,7 +193,6 @@
   {% endif %}    
     
   #shopify-section-{{ section.id }} .promotions {
-    /* Default to same as settings.grid_spacing */
     grid-gap: {{ section.settings.promotions_spacing }}px;
     display: grid;
     grid-auto-flow: column;
@@ -263,7 +335,6 @@
       {% if section.settings.image_type == 'image' %}
       margin: 0 auto 0.5em auto;
       margin: 0 auto 0 auto !important;
-      /* float: left; */
       float: left;
       width: 100%;
       display: block;
@@ -338,6 +409,9 @@
     }
     
   }
+
+*/
+
     
   </style>
 
@@ -345,8 +419,48 @@
 
     {% if section.settings.title != empty %}<h2>{{ section.settings.title }}</h2>{% endif %}
 
-    <div class="promotions textcolumns{% if section.settings.image_parallax %} parallax{% endif %}">
+
+    
     {%- for block in section.blocks -%}
+
+        {% if block.type == 'feature' %}
+
+            {% capture feature_head %}
+            <!-- Main feature -->
+            <div>
+                <h2>{{ block.settings.title }}</h2>
+            </div>
+            {% endcapture %}
+
+            {% capture feature_image %}
+            <div class="featurecolumn{% if section.settings.image_parallax %} parallax{% endif %}" role="presentation">
+                
+                {% assign styles = styles | append: blockstyle %}
+              
+                {% assign imgsize = 1000 | append: 'x' %}
+
+                <img src="{{ block.settings.image | img_url: 'master' }}" />
+
+            </div>
+            {% endcapture %}
+
+            {% capture feature_desc %}    
+            <div class="desc">
+                  <p style="color:{{ block.settings.color_text }}">{{ block.settings.subheading }}</p>
+            </div>
+            {% endcapture %}
+
+        {% endif %} 
+
+    {% endfor %}
+    
+
+
+    {% capture promotions %}
+    {%- for block in section.blocks -%}
+
+        {% if block.type == 'promotion' %}
+          <!-- Pomotional details -->
 
         {% capture blockstyle %}
           {% if block.settings.image and section.settings.image_type != 'background' %}
@@ -361,22 +475,37 @@
       
         {% assign imgsize = 1000 | append: 'x' %}
 
-        <div class="promotion item" role="presentation" style="{% if block.settings.image and section.settings.image_type == 'background' %}background: url('{{ block.settings.image | img_url: imgsize }}') {{ block.settings.color_bg }} no-repeat center center;{% else %}background:{{ block.settings.color_bg }};{% endif %}border: {% if block.settings.border_thickness > 0 %}{{ block.settings.border_thickness }}px{% else %}0{% endif %} solid {{ block.settings.color_border }};">
+        <div>
 
           {% if block.settings.image and section.settings.image_type != 'background' %}
           <img src="{{ block.settings.image | img_url: imgsize }}" />
           {% endif %}
 
           <div class="desc">
-          <h2 style="color:{{ block.settings.color_text }}">{{ block.settings.title }}</h2>
+          <h3>{{ block.settings.title }}</h3>
           <p style="color:{{ block.settings.color_text }}">{{ block.settings.subheading }}</p>
           </div>
           
           {% if block.settings.url != blank %}<a href="{{ block.settings.url }}"></a>{% endif %}
 
         </div>
+
+        {% endif %} 
+
     {%- endfor %}
-    </div>
+    {% endcapture %}
+
+  {{ feature_head }}
+
+  <div class="features">
+
+    {{ feature_image }}
+
+    {{ promotions }}
+
+  </div>
+
+    {{ feature_desc }}
 
   {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}</div>{% endif %}
 
@@ -388,14 +517,14 @@
 
 {% schema %}
   {
-    "name": "Text Columns",
+    "name": "Feature Columns",
   "class": "parallax",
     "settings": [
       {
         "type": "text",
         "id": "title",
         "label": "Title",
-        "default": "Text Columns"
+        "default": "Feature columns"
       },
       {
         "type": "select",
@@ -469,6 +598,34 @@
          "unit": "px",
          "label": "Column padding",
          "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+            "type": "select",
+            "id": "layout",
+            "label": "Layout",
+            "options": [
+              {
+                "value": "image_top",
+                "label": "Image top"
+              },
+              {
+                "value": "1_column_1_image",
+                "label": "Column | Image"
+              },
+              {
+                "value": "1_image_1_column",
+                "label": "Image | Column"
+              },
+              {
+                "value": "1_column_1_image_1_column",
+                "label": "Column | Image | Column"
+              }
+            ],
+            "default": "image_top"
       },
       {
         "type": "header",
@@ -601,6 +758,28 @@
   ],
     "blocks": [
       {
+        "type": "feature",
+        "name": "Feature",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "subheading",
+            "label": "Text"
+          }
+        ]
+      },
+      {
         "type": "promotion",
         "name": "Column",
         "settings": [
@@ -618,46 +797,14 @@
             "type": "richtext",
             "id": "subheading",
             "label": "Text"
-          },
-          {
-            "type": "url",
-            "id": "url",
-            "label": "Link URL"
-          },  
-          {
-            "type": "range",
-            "id": "border_thickness",
-            "min": 0,
-            "max": 30,
-            "step": 1,
-            "label": "Border thickness",
-            "default": 1
-          }, 
-          {
-            "type": "color",
-            "id": "color_border",
-            "label": "Border color",
-            "default": "#9a9999"
-          }, 
-          {
-            "type": "color",
-            "id": "color_bg",
-            "label": "Background color",
-            "default": "#000000"
-          },
-          {
-            "type": "color",
-            "id": "color_text",
-            "label": "Text color",
-            "default": "#ffffff"
-          } 
+          }
         ]
       }
     ],
     "presets": [
       {
-        "name": "Text columns",
-        "category": "Content"
+        "name": "Feature columns",
+        "category": "Product"
       }
     ]
   }

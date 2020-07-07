@@ -161,8 +161,9 @@
   margin: 0 0 {{ section.settings.spacing }}px {{ section.settings.spacing }}px;  
   {% endif %}  
   {% endcomment %}  
-  text-align: {{ section.settings.products_alignment  }};
+  text-align: {{ section.settings.products_alignment }};
 }
+{% if section.settings.read_more != 'hidden' and section.settings.add_cart != 'hidden' %}
 #shopify-section-{{ section.id }} .products.collection.grid .item .more form.readmore button.btn {
   float: left !important;
   width: 48% !important;
@@ -171,7 +172,12 @@
   float: right !important;
   width: 48% !important;
 } 
-  
+{% else %}
+#shopify-section-{{ section.id }} .products.collection.grid .item .more form.readmore .btn {
+  float: none !important;
+  width: 48% !important;
+} 
+{% endif %}  
   
   
   
@@ -221,6 +227,8 @@
   background: {{ settings.color_collection_grid_bg_hover }}; 
 } 
   
+
+
 #shopify-section-{{ section.id }} .products.collection.grid .item .more {
   bottom: {{ section.settings.text_spacing }}px;
   left: {{ section.settings.text_spacing }}px;
@@ -235,6 +243,7 @@
   margin-right: {{ section.settings.text_spacing }}px;
   margin-right: 0;
 }
+
 
   
   
@@ -253,7 +262,7 @@
 } 
 
 
-#shopify-section-{{ section.id }} .products.collection.grid .item .small{
+#shopify-section-{{ section.id }} .products.collection.grid .item .small {
   	font-size: 80%;
 }
 #shopify-section-{{ section.id }} .products.collection.grid .item .title {

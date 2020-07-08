@@ -81,7 +81,7 @@
           
         {%- endif -%}
           
-        </p>    
+      </p>    
         {%- endif -%}
         {%- endcapture -%}      
 
@@ -118,7 +118,6 @@
       
         {% if section.settings.layout_grid_prominent_feature == 'image' -%}
         <!-- Put image here -->{{ get_image }}
-    	{{ get_title }}
         {%- endif %}
       
         {% if section.settings.layout_grid_prominent_feature == 'title' -%}
@@ -131,7 +130,11 @@
         {%- endif %}
 
 
-        <div class="summary{%- if section.settings.read_more == 'expand' %} expand{%- endif -%}">
+        <div class="summary{%- if section.settings.read_more == 'expand' %} expand{%- endif -%}">     
+      
+        {% if section.settings.layout_grid_prominent_feature == 'image' -%}
+        {{ get_title }}
+        {%- endif %}
 
           {% if section.settings.layout_grid_prominent_feature != 'title' and section.settings.layout_grid_prominent_feature == 'image_title' -%}
           {{ get_title }}
@@ -218,21 +221,21 @@
                 {{ content }}
             {% endif %}            
           </p>
-          {%- endif %}           
-          
-        </div>  
-             
-        {%- unless section.settings.read_more == 'expand' %}
-        <a href="{{ article.url }}"><span class="visually-hidden">{{ 'blogs.article.read_more' | t }}</span></a> 
-        {%- endunless -%}
+          {%- endif %}   
+               
+          {%- unless section.settings.read_more == 'expand' %}
+          <a href="{{ article.url }}"><span class="visually-hidden">{{ 'blogs.article.read_more' | t }}</span></a> 
+          {%- endunless -%}
 
-        <div class="more">
-          
-          	{% if section.settings.read_more != 'hidden' %}<form class="readmore">{% endif %}
-          
-            {{ addnow }}
-              
-          	{% if section.settings.read_more != 'hidden' %}</form>{% endif %}
+          <div class="more">
+            
+              {% if section.settings.read_more != 'hidden' %}<form class="readmore">{% endif %}
+            
+              {{ addnow }}
+                
+              {% if section.settings.read_more != 'hidden' %}</form>{% endif %}
+            
+          </div>          
           
         </div> 
       

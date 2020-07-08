@@ -3245,6 +3245,23 @@ body.template-password button {
     flex: 40% !important;
   }
   {% else %}
+  #content .products > .item,
+  #content .products.grid > .item,
+  #content .products.collection.grid > .item,
+  #content .products.collections.grid > .item {
+    flex: 100% !important;
+  }
+  {% endif %}
+
+  {% comment %}
+  {% if settings.mobile_2_columns %}
+  #content .products > .item,
+  #content .products.grid > .item,
+  #content .products.collection.grid > .item,
+  #content .products.collections.grid > .item {
+    flex: 40% !important;
+  }
+  {% else %}
   #content .products,
   #content .products.grid,
   #content .products.collection.grid,
@@ -3269,6 +3286,8 @@ body.template-password button {
     padding: 0;
   }
   {% endif %}
+  {% endcomment %}
+
   #content .products > .item.fillrow,
   #content .products.grid > .item.fillrow,
   #content .products.collection.grid > .item.fillrow,
@@ -3345,10 +3364,12 @@ body.template-password button {
   position: relative;
   z-index: 2;
 }
+  .feature .summary .subtitle,
   .products .summary .subtitle {
     font-size: {{ settings.article_date_font_size }}px;
   }
 
+  	#shopify-section-blog .feature .item.dated .subtitle,
     #shopify-section-blog .products.collection.grid .item.dated .subtitle {
       font-size: {{ settings.article_date_font_size }}px;
       margin-top: 0.25em;
@@ -3475,13 +3496,14 @@ body.template-password button {
     @media only screen and (max-width: $grid-mobile) { 
       .products.collection.grid .item.buttons .more .btn,
       .products.collection.grid .item.buttons .readmore .link {        
-        {% if settings.mobile_2_columns %}
+        
           width: 100%;
           max-width: 100%;
           min-width: 100%;
           display: block;
           clear: both;
           float: none;
+        {% if settings.mobile_2_columns %}
         {% endif %}
 
         {% comment %}
@@ -3894,6 +3916,7 @@ body:before {
   clear: both;
   display: block;
 }
+.feature .title,
 .grid .title,
 .grid .title a {
   color: {{ settings.color_collection_grid_title }} !important;

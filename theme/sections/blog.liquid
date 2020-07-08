@@ -223,6 +223,7 @@
 
 
 @media only screen and (min-width: {{ settings.width_min_tablet }}) {
+  .feature .item .more,
   .products.collection.grid.list .item.buttons .more {
     padding: {{ section.settings.spacing }}px !important;
     border: none;
@@ -267,6 +268,9 @@
   
 
 /* Grid */
+#shopify-section-{{ section.id }} #content .feature {
+  margin-bottom: {{ section.settings.spacing }}px;
+}
 .products.grid {  
   display: flex;
   flex-wrap: wrap; 
@@ -334,7 +338,6 @@
 }  
 
   
-
 .products.collection.grid .item.hasexcerpt,
 .products.collection.grid .item.andmore,
 .products.collection.grid .item.andcart {
@@ -357,8 +360,14 @@
   
   
 /* TO DO: TESTING FOLIO OVERRIDE */
+.feature .item .more {
+    padding-bottom: {{ section.settings.spacing }}px;
+}
 @media only screen and (min-width: {{ settings.width_min_tablet }}) {
-  
+  .feature .item .more {
+    margin-top: {{ section.settings.spacing }}px;
+  }
+    
   {% if section.settings.layout_grid_prominent_feature == 'image_title' %}
   
   .products.grid .item .image {
@@ -400,7 +409,6 @@
   position: relative;
   padding: {{ section.settings.text_spacing }}px;
 } 
-  
 .products.collection.grid .item .more {
   bottom: {{ section.settings.text_spacing }}px;
   left: {{ section.settings.text_spacing }}px;
@@ -416,6 +424,9 @@
   margin-right: 0;
 }
   
+#shopify-section-{{ section.id }} .feature .item h2,
+#shopify-section-{{ section.id }} .feature .item p,
+#shopify-section-{{ section.id }} .feature .item p a,
 .products.grid .item h2,
 .products.grid .item p,
 .products.grid .item p a {
@@ -435,10 +446,11 @@
 } 
 .products.collection.grid .item .summary {
 }
-
-.products.collection.grid .item .small{
+#shopify-section-{{ section.id }} .feature .item .small,
+.products.collection.grid .item .small {
     font-size: 80%;
 }
+#shopify-section-{{ section.id }} .feature .item .title,
 .products.collection.grid .item .title {
   font-size: {{ title_size }}px;
 }
@@ -875,11 +887,30 @@ aside div.tags div.group ul {
       {% endif %}
       {% endif %}
 
+      {% assign feature_first_article = 'no' %}
+      {% if section.settings.feature_first_article %}{% assign feature_first_article = 'yes' %}{% endif %}
+
+      {% if feature_first_article == 'yes' %}
+        {% for article in blog.articles %}
+            {% if forloop.first == true %}
+            <div class="feature">
+              {% include 'grid-article-feature' %} 
+            </div>
+            {% endif %}        
+        {% endfor %}
+      {% endif %}
+
       <div class="products collection grid{{ class }}{% if section.settings.tags_position contains 'TOP' or section.settings.tags_position contains 'BOTTOM' %} sidegap{% endif %}">
 
       {% for article in blog.articles %}
-
-          {% include 'grid-article' %}
+          {% if feature_first_article == 'yes' %}
+                {% if forloop.first == true %}
+                {% else %}                
+                  {% include 'grid-article' %} 
+                {% endif %}        
+          {% else %}
+            {% include 'grid-article' %}
+          {% endif %}
         
       {% else %}
         
@@ -1067,6 +1098,21 @@ jQuery('.tags .group h4').click(function() {
             "label": "Date"
           }
         ]
+      },
+      {
+        "type": "range",
+        "id": "feature_size",
+        "min": 0,
+        "max": 2000,
+        "step": 20,
+        "label": "Feature article image size",
+        "default": 1000
+      },
+      {
+        "type": "checkbox",
+        "id": "feature_first_article",
+        "label": "Feature first article",
+        "default": true
       },
       {
         "type": "checkbox",

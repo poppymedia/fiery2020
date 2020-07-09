@@ -3401,6 +3401,9 @@ body.template-password button {
   border: solid {{ settings.border_thickness }}px transparent; 
   border: solid {{ settings.border_thickness }}px white;
   border-color: {{ settings.color_collection_grid_border }};
+
+  {% if settings.products_border %}{% else %}border: none;{% endif %}
+
   {% if settings.products_hover %}
   -webkit-transition: border {{ settings.transition_duration | divided_by: 10.00 }}s ease; 
   -moz-transition: border {{ settings.transition_duration | divided_by: 10.00 }}s ease;
@@ -3648,6 +3651,9 @@ body.template-password button {
   border: solid {{ settings.border_thickness }}px transparent; 
   border: solid {{ settings.border_thickness }}px white;
   border-color: {{ settings.color_collections_grid_border }};
+
+  {% if settings.collections_border %}{% else %}border: none !important;{% endif %}
+
   {% if settings.collections_hover %}
   -webkit-transition: border {{ settings.transition_duration | divided_by: 10.00 }}s ease; 
   -moz-transition: border {{ settings.transition_duration | divided_by: 10.00 }}s ease;
@@ -3658,6 +3664,10 @@ body.template-password button {
 .products.collections.grid .item:hover > a,
 .products.collections.grid .item > a:hover {
   border-color: {{ settings.color_collections_grid_border_hover }};
+}
+{% else %}
+.products.collections.grid .item > a {
+  border: none !important;
 }
 {% endif %}
 .products.collections.grid.list .item.dated .subtitle {
@@ -3685,19 +3695,21 @@ body.template-password button {
 
 /* Blogs grid */
 {% if settings.articles_border %}
-.template-blog .products.grid .item {
+.template-blog #main .products.collection.grid .item {
 	box-sizing: border-box;
 }
-.template-blog .products.grid .item > a {
+.template-blog #main .products.collection.grid .item > a {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   z-index: 3;
+
   border: solid {{ settings.border_thickness }}px transparent; 
   border: solid {{ settings.border_thickness }}px white;
   border-color: {{ settings.color_blog_grid_border }};
+
   {% if settings.articles_hover %}
   -webkit-transition: border {{ settings.transition_duration | divided_by: 10.00 }}s ease; 
   -moz-transition: border {{ settings.transition_duration | divided_by: 10.00 }}s ease;
@@ -3705,12 +3717,16 @@ body.template-password button {
   transition: border {{ settings.transition_duration | divided_by: 10.00 }}s ease;
   {% endif %}
 }
-.template-blog .products.grid .item:hover > a,
-.template-blog .products.grid .item > a:hover {
+.template-blog #main .products.collection.grid .item:hover > a,
+.template-blog #main .products.collection.grid .item > a:hover {
   border-color: {{ settings.color_blog_grid_border_hover }};
 }
+{% else %}
+.template-blog #main .products.collection.grid .item > a {
+  border: none !important;
+}
 {% endif %}
-.template-blog .products.grid.list .item.dated .subtitle {
+.template-blog #main .products.collection.grid.list .item.dated .subtitle {
   border-right: solid 1px white;
   border-right: solid 1px {{ settings.color_blog_grid_border }};
   {% if settings.articles_hover %}
@@ -3720,7 +3736,7 @@ body.template-password button {
   transition: border {{ settings.transition_duration | divided_by: 10.00 }}s ease;
   {% endif %}
 } 
-.template-blog .products.grid.list .item.dated:hover .subtitle {
+.template-blog #main .products.collection.grid.list .item.dated:hover .subtitle {
   border-right: solid 1px {{ settings.color_blog_grid_border_hover }};
 }
 
@@ -3939,6 +3955,7 @@ body:before {
   text-transform: {{ settings.blog_h_styling }};
   font-weight: {{ settings.blog_h_weight }};
 }
+.feature .summary .more a,
 body .rte .grid .summary .more a,
 body #content .grid .item .summary .more a {
   color: {{ settings.color_body_link }};

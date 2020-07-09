@@ -314,8 +314,7 @@
   background: {{ settings.color_blog_grid_bg_hover }}; 
 } 
 
-
-
+.feature .summary .more a,
 .products.collection.grid .item .link.read_more {
   color: {{ settings.color_blog_grid_readmore_link }};
 }
@@ -894,7 +893,9 @@ aside div.tags div.group ul {
         {% for article in blog.articles %}
             {% if forloop.first == true %}
             <div class="feature">
-              {% include 'grid-article-feature' %} 
+              <div class="wrapper">
+                {% include 'grid-article-feature' %} 
+              </div>
             </div>
             {% endif %}        
         {% endfor %}

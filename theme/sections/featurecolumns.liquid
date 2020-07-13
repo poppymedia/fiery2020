@@ -33,35 +33,49 @@
 
   {% if section.settings.layout == '1_column_1_image' %}
   #shopify-section-{{ section.id }} .features {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-gap: {{ gridspace }};
-    grid-row-start: 1;
-    grid-row-end: 3;
+      display: grid;
+      grid-template-columns: 30% auto;
+      grid-gap: {{ gridspace }};
+      /* grid-gap: 0; */
+
+      margin: 0 !important;
+      position: relative !important;
+      box-sizing: border-box !important;       
+      overflow: hidden !important;
   }
+    #shopify-section-{{ section.id }} .features > div {
+      box-sizing: border-box; 
+      border: solid 1px green;
+    }
+    #shopify-section-{{ section.id }} .features .featurecolumn {
+        grid-area: 1 / 2 / 7 / 2;
+    }
   {% endif %}
 
 
   {% if section.settings.layout == '1_image_1_column' %}
   #shopify-section-{{ section.id }} .features {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-gap: {{ gridspace }};
-    grid-row-start: 1;
-    grid-row-end: 3;
+      display: grid;
+      grid-template-columns: auto 30%;
+      grid-gap: {{ gridspace }};
+      /* grid-gap: 0; */
+
+      margin: 0 !important;
+      position: relative !important;
+      box-sizing: border-box !important;       
+      overflow: hidden !important;
   }
+    #shopify-section-{{ section.id }} .features > div {
+      box-sizing: border-box; 
+      border: solid 1px green;
+    }
     #shopify-section-{{ section.id }} .features .featurecolumn {
-      order: 1;
+        grid-area: 1 / 1 / 7 / 1;
     }
   {% endif %}
 
 
   {% if section.settings.layout == '1_column_1_image_1_column' %}
-  #shopify-section-{{ section.id }} .features .featurecolumn {
-    /* order: 2; */
-  }
     #shopify-section-{{ section.id }} .features {
       display: grid;
       grid-template-columns: 25% auto 25%;
@@ -73,13 +87,12 @@
       box-sizing: border-box !important;       
       overflow: hidden !important;
     }
-    #shopify-section-{{ section.id }} .features > div {
-      box-sizing: border-box; 
-      border: solid 1px green;
-    }
-
+      #shopify-section-{{ section.id }} .features > div {
+        box-sizing: border-box; 
+        border: solid 1px green;
+      }
       #shopify-section-{{ section.id }} .features .featurecolumn {
-        grid-area: 1 / 2 / 4 / 3;
+        grid-area: 1 / 2 / 4;
       }
 
   {% endif %}

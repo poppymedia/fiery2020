@@ -1,11 +1,10 @@
 {% include 'settings' %}
-{% assign mobile_width = grid_mobile %}
 
-  {% if section.blocks.size > 0 %}
+{% if section.blocks.size > 0 %}
 
   <style>
   {% if section.settings.promotions_width == 'container' %}
-  @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
+  @media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
   #shopify-section-{{ section.id }} .container {
     padding: 0;
     background-color: {{ section.settings.promotions_bg }}; 
@@ -15,424 +14,471 @@
 
 
 
+  {% assign gridspace = '20px' %}
 
-{% assign gridspace = '20px' %}
-
-#shopify-section-{{ section.id }} {
-}
-#shopify-section-{{ section.id }} .featurecolumn img {
-  width: 100%;
-}
-
-@media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
-
-
-  {% if section.settings.layout == 'image_top' %}
-  {% endif %}
-
-
-  {% if section.settings.layout == '1_column_1_image' %}
-  #shopify-section-{{ section.id }} .features {
-      display: grid;
-      grid-template-columns: 30% auto;
-      grid-gap: {{ gridspace }};
-      /* grid-gap: 0; */
-
-      margin: 0 !important;
-      position: relative !important;
-      box-sizing: border-box !important;       
-      overflow: hidden !important;
+  #shopify-section-{{ section.id }} {
   }
-    #shopify-section-{{ section.id }} .features > div {
-      box-sizing: border-box; 
-      border: solid 1px green;
-    }
-    #shopify-section-{{ section.id }} .features .featurecolumn {
-        grid-area: 1 / 2 / 7 / 2;
-    }
-  {% endif %}
-
-
-  {% if section.settings.layout == '1_image_1_column' %}
-  #shopify-section-{{ section.id }} .features {
-      display: grid;
-      grid-template-columns: auto 30%;
-      grid-gap: {{ gridspace }};
-      /* grid-gap: 0; */
-
-      margin: 0 !important;
-      position: relative !important;
-      box-sizing: border-box !important;       
-      overflow: hidden !important;
+  #shopify-section-{{ section.id }} .featurecolumn img {
+    width: 100%;
   }
-    #shopify-section-{{ section.id }} .features > div {
-      box-sizing: border-box; 
-      border: solid 1px green;
-    }
-    #shopify-section-{{ section.id }} .features .featurecolumn {
-        grid-area: 1 / 1 / 7 / 1;
-    }
-  {% endif %}
+
+  @media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
 
 
-  {% if section.settings.layout == '1_column_1_image_1_column' %}
+    {% if section.settings.layout == 'image_top' %}
+    {% assign columns = 3 %}
+      #shopify-section-{{ section.id }} .features {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-gap: {{ gridspace }};
+        /* grid-gap: 0; */
+
+        margin: 0 !important;
+        position: relative !important;
+        box-sizing: border-box !important;       
+        overflow: hidden !important;
+      }
+        #shopify-section-{{ section.id }} .features > div {
+          box-sizing: border-box; 
+          border: solid 1px green;
+        }
+        #shopify-section-{{ section.id }} .features .featurecolumn {
+          grid-area: span 1 / span {{ columns }};
+        }
+    {% endif %}
+
+
+    {% if section.settings.layout == '1_column_1_image' %}
+    {% assign columns = 2 %}
+    {% assign rows = section.blocks.size %}
     #shopify-section-{{ section.id }} .features {
-      display: grid;
-      grid-template-columns: 25% auto 25%;
-      grid-gap: {{ gridspace }};
-      /* grid-gap: 0; */
+        display: grid;
+        grid-template-columns: 30% auto;
+        grid-gap: {{ gridspace }};
+        /* grid-gap: 0; */
 
-      margin: 0 !important;
-      position: relative !important;
-      box-sizing: border-box !important;       
-      overflow: hidden !important;
+        margin: 0 !important;
+        position: relative !important;
+        box-sizing: border-box !important;       
+        overflow: hidden !important;      
     }
       #shopify-section-{{ section.id }} .features > div {
         box-sizing: border-box; 
         border: solid 1px green;
       }
       #shopify-section-{{ section.id }} .features .featurecolumn {
-        grid-area: 1 / 2 / 4;
+          grid-area: 1 / 2 / {{ rows }} / 2;
       }
-
-  {% endif %}
-
-
-}
+    {% endif %}
 
 
+    {% if section.settings.layout == '1_image_1_column' %}
+    {% assign columns = 2 %}
+    {% assign rows = section.blocks.size %}
+    #shopify-section-{{ section.id }} .features {
+        display: grid;
+        grid-template-columns: auto 30%;
+        grid-gap: {{ gridspace }};
+        /* grid-gap: 0; */
+
+        margin: 0 !important;
+        position: relative !important;
+        box-sizing: border-box !important;       
+        overflow: hidden !important;
+    }
+      #shopify-section-{{ section.id }} .features > div {
+        box-sizing: border-box; 
+        border: solid 1px green;
+      }
+      #shopify-section-{{ section.id }} .features .featurecolumn {
+          grid-area: 1 / 1 / {{ rows }} / 1;
+      }
+    {% endif %}
+
+
+    {% if section.settings.layout == '1_column_1_image_1_column' %}
+    {% assign columns = 3 %}
+    /* Divided is always rounded down by Shopify, so add 2 for odd numbers */
+    {% assign rows = section.blocks.size | divided_by: columns | ceil | plus: 2 %}
+      #shopify-section-{{ section.id }} .features {
+        display: grid;
+        grid-template-columns: 25% auto 25%;
+        grid-gap: {{ gridspace }};
+        /* grid-gap: 0; */
+
+        margin: 0 !important;
+        position: relative !important;
+        box-sizing: border-box !important;       
+        overflow: hidden !important;
+      }
+        #shopify-section-{{ section.id }} .features > div {
+          box-sizing: border-box; 
+          border: solid 1px green;
+        }
+        #shopify-section-{{ section.id }} .features .featurecolumn {
+          grid-area: 1 / 2 / {{ rows }};
+        }
+
+    {% endif %}
+
+
+    {% if section.settings.layout == '1_row_1_image_1_row' %}
+    {% assign columns = 3 %}
+      #shopify-section-{{ section.id }} .features {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-gap: {{ gridspace }};
+        /* grid-gap: 0; */
+
+        margin: 0 !important;
+        position: relative !important;
+        box-sizing: border-box !important;       
+        overflow: hidden !important;
+      }
+        #shopify-section-{{ section.id }} .features > div {
+          box-sizing: border-box; 
+          border: solid 1px green;
+        }
+        #shopify-section-{{ section.id }} .features .featurecolumn {
+          grid-area: 2 / span {{ columns }};
+        }
+
+    {% endif %}
+
+
+  }
 
 
 
 
-/*
 
-  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
-  @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
+
+  /*
+
+    {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
+    @media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
+      #shopify-section-{{ section.id }} > h2,
+      #shopify-section-{{ section.id }} > .container > h2 {
+        padding-top:  0;
+        margin-top:  0;
+      }
+    }
+    {% endif %}
+      
+    #shopify-section-{{ section.id }} {  
+      overflow: hidden;  
+     
+      {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
+      {% if section.settings.image_position != 'hidden' and section.settings.image_bg != nil %}
+      {% assign bgsize = 1000 | append: 'x' %}
+      background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
+        
+        
+      {% if section.settings.image_parallax %}
+      background-position: center -1px; 
+        
+      {% if section.settings.image_position == 'center' %}    
+      background-repeat: no-repeat;
+      {% endif %}
+      {% if section.settings.image_position == 'tile' %}
+      background-repeat: repeat;
+      {% endif %}
+      {% if section.settings.image_position == 'fill' %}   
+      background-size: cover;
+      {% endif %}        
+        
+      {% else %}
+        
+      {% if section.settings.image_position == 'center' %}    
+      background-position: center center; 
+      background-repeat: no-repeat;
+      {% endif %}
+      {% if section.settings.image_position == 'tile' %}
+      background-position: center center; 
+      background-repeat: repeat;
+      {% endif %}
+      {% if section.settings.image_position == 'fill' %}   
+      background-position: center center; 
+      background-size: cover;
+      {% endif %}
+        
+      {% endif %}      
+        
+
+        
+      {% endif %}      
+      background-color: {{ section.settings.promotions_bg }};
+      {% endif %}
+
+
+
+    }  
+
     #shopify-section-{{ section.id }} > h2,
     #shopify-section-{{ section.id }} > .container > h2 {
-      padding-top:  0;
-      margin-top:  0;
+      color: {{ section.settings.promotions_title }};
+      position: relative;
+      z-index: 3;
     }
-  }
-  {% endif %}
-    
-  #shopify-section-{{ section.id }} {  
-    overflow: hidden;  
-   
-    {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
-    {% if section.settings.image_position != 'hidden' and section.settings.image_bg != nil %}
-    {% assign bgsize = 1000 | append: 'x' %}
-    background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
       
-      
-    {% if section.settings.image_parallax %}
-    background-position: center -1px; 
-      
-    {% if section.settings.image_position == 'center' %}    
-    background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
-    background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
-    background-size: cover;
-    {% endif %}        
-      
-    {% else %}
-      
-    {% if section.settings.image_position == 'center' %}    
-    background-position: center center; 
-    background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
-    background-position: center center; 
-    background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
-    background-position: center center; 
-    background-size: cover;
-    {% endif %}
-      
-    {% endif %}      
-      
-
-      
-    {% endif %}      
-    background-color: {{ section.settings.promotions_bg }};
-    {% endif %}
-
-
-
-  }  
-
-  #shopify-section-{{ section.id }} > h2,
-  #shopify-section-{{ section.id }} > .container > h2 {
-    color: {{ section.settings.promotions_title }};
-    position: relative;
-    z-index: 3;
-  }
-    
-  {% unless section.settings.image_position == 'hidden' %}
-  {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
-  #shopify-section-{{ section.id }}:before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;  
-      background-color: {{ section.settings.promotions_bg }};  
-      opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
-  }
-  {% endif %}
-  {% endunless %}
-  {% if section.settings.image_bg != nil %}
-  {% endif %}
-
-    
-  #shopify-section-{{ section.id }} .container { 
-    overflow: hidden;     
-  }  
-  #shopify-section-{{ section.id }} .container .promotions {  
-    overflow: hidden;  
-  }   
-
-  {% if section.settings.promotions_width == 'overflow' %}
-  #shopify-section-{{ section.id }} .container {    
-    background: transparent; 
-    padding: 0 !important;
-  }    
-  {% endif %}    
-    
-  #shopify-section-{{ section.id }} .promotions {
-    grid-gap: {{ section.settings.promotions_spacing }}px;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
-    {% unless section.settings.promotions_autoplay %}
-    {% endunless %}
-    font-size: {{ settings.promotions_font_size }}px;
-
-
-
-
-    {% if section.settings.image_bg != nil %}
     {% unless section.settings.image_position == 'hidden' %}
-
-        {% if section.settings.promotions_width != 'overflow' or section.settings.promotions_width == 'page' %}
-        {% if section.settings.image_type == 'background' %}
-        background-size: cover;
-        {% else %}    
-        background-color: {{ section.settings.promotions_bg }};
-        {% endif %}
-        {% endif %}
-        
-        
-        
-        {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
-        {% if section.settings.image_position != 'hidden' %}
-        {% assign bgsize = 1000 | append: 'x' %}
-        background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
-          
-          
-        {% if section.settings.image_parallax %}
-        background-position: center -1px; 
-          
-        {% if section.settings.image_position == 'center' %}    
-        background-repeat: no-repeat;
-        {% endif %}
-        {% if section.settings.image_position == 'tile' %}
-        background-repeat: repeat;
-        {% endif %}
-        {% if section.settings.image_position == 'fill' %}   
-        background-size: cover;
-        {% endif %}      
-          
-        {% else %}  
-          
-        {% if section.settings.image_position == 'center' %}    
-        background-position: center center; 
-        background-repeat: no-repeat;
-        {% endif %}
-        {% if section.settings.image_position == 'tile' %}
-        background-position: center center; 
-        background-repeat: repeat;
-        {% endif %}
-        {% if section.settings.image_position == 'fill' %}   
-        background-position: center center; 
-        background-size: cover;
-        {% endif %}
-          
-        {% endif %} 
-          
-          
-          
-        {% endif %}      
-        background-color: {{ section.settings.promotions_bg }};
-        {% endif %} 
-
-
+    {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
+    #shopify-section-{{ section.id }}:before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;  
+        background-color: {{ section.settings.promotions_bg }};  
+        opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
+    }
+    {% endif %}
     {% endunless %}
+    {% if section.settings.image_bg != nil %}
     {% endif %}
 
-    
-  }
+      
+    #shopify-section-{{ section.id }} .container { 
+      overflow: hidden;     
+    }  
+    #shopify-section-{{ section.id }} .container .promotions {  
+      overflow: hidden;  
+    }   
 
-  {% unless section.settings.image_position == 'hidden' %}
-  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
-  #shopify-section-{{ section.id }} .promotions:before {
-      content: '';
+    {% if section.settings.promotions_width == 'overflow' %}
+    #shopify-section-{{ section.id }} .container {    
+      background: transparent; 
+      padding: 0 !important;
+    }    
+    {% endif %}    
+      
+    #shopify-section-{{ section.id }} .promotions {
+      grid-gap: {{ section.settings.promotions_spacing }}px;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      {% unless section.settings.promotions_autoplay %}
+      {% endunless %}
+      font-size: {{ settings.promotions_font_size }}px;
+
+
+
+
+      {% if section.settings.image_bg != nil %}
+      {% unless section.settings.image_position == 'hidden' %}
+
+          {% if section.settings.promotions_width != 'overflow' or section.settings.promotions_width == 'page' %}
+          {% if section.settings.image_type == 'background' %}
+          background-size: cover;
+          {% else %}    
+          background-color: {{ section.settings.promotions_bg }};
+          {% endif %}
+          {% endif %}
+          
+          
+          
+          {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
+          {% if section.settings.image_position != 'hidden' %}
+          {% assign bgsize = 1000 | append: 'x' %}
+          background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
+            
+            
+          {% if section.settings.image_parallax %}
+          background-position: center -1px; 
+            
+          {% if section.settings.image_position == 'center' %}    
+          background-repeat: no-repeat;
+          {% endif %}
+          {% if section.settings.image_position == 'tile' %}
+          background-repeat: repeat;
+          {% endif %}
+          {% if section.settings.image_position == 'fill' %}   
+          background-size: cover;
+          {% endif %}      
+            
+          {% else %}  
+            
+          {% if section.settings.image_position == 'center' %}    
+          background-position: center center; 
+          background-repeat: no-repeat;
+          {% endif %}
+          {% if section.settings.image_position == 'tile' %}
+          background-position: center center; 
+          background-repeat: repeat;
+          {% endif %}
+          {% if section.settings.image_position == 'fill' %}   
+          background-position: center center; 
+          background-size: cover;
+          {% endif %}
+            
+          {% endif %} 
+            
+            
+            
+          {% endif %}      
+          background-color: {{ section.settings.promotions_bg }};
+          {% endif %} 
+
+
+      {% endunless %}
+      {% endif %}
+
+      
+    }
+
+    {% unless section.settings.image_position == 'hidden' %}
+    {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
+    #shopify-section-{{ section.id }} .promotions:before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;  
+        background-color: {{ section.settings.promotions_bg }};  
+        opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
+    }
+    {% endif %}
+    {% endunless %}
+    {% if section.settings.image_bg != nil %}
+    {% endif %}
+    
+      
+    #shopify-section-{{ section.id }} .promotion {
+      vertical-align: middle;
+      text-align: {{ section.settings.promotions_alignment }};
+      position: relative;
+      padding: {{ section.settings.promotions_padding }}px;
+      background: transparent;
+      
+    }
+    {% if section.settings.image_type != 'hidden' %}  
+    #shopify-section-{{ section.id }} .promotion > img {
+      display: block;
+    } 
+    {% endif %}
+    #shopify-section-{{ section.id }} .promotion > a {
       position: absolute;
+      z-index: 10;
+      left: 0;
+      top: 0;
       width: 100%;
       height: 100%;
-      top: 0;
-      left: 0;  
-      background-color: {{ section.settings.promotions_bg }};  
-      opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
-  }
-  {% endif %}
-  {% endunless %}
-  {% if section.settings.image_bg != nil %}
-  {% endif %}
-  
-    
-  #shopify-section-{{ section.id }} .promotion {
-    vertical-align: middle;
-    text-align: {{ section.settings.promotions_alignment }};
-    position: relative;
-    padding: {{ section.settings.promotions_padding }}px;
-    background: transparent;
-    
-  }
-  {% if section.settings.image_type != 'hidden' %}  
-  #shopify-section-{{ section.id }} .promotion > img {
-    display: block;
-  } 
-  {% endif %}
-  #shopify-section-{{ section.id }} .promotion > a {
-    position: absolute;
-    z-index: 10;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-  #shopify-section-{{ section.id }} h2 {
-    text-align: {{ section.settings.promotions_alignment }};
-  }
-  #shopify-section-{{ section.id }} .promotion h2,
-  #shopify-section-{{ section.id }} .promotion p {
-    text-align: {{ section.settings.promotions_alignment }};
-    color: {{ section.settings.promotions_text }};
-    padding: 0;
-    margin: 0;
-  }
-  #shopify-section-{{ section.id }} .promotions h2 {
-    font-size: {{ section.settings.promotions_heading_size }}px;
-  }
-  #shopify-section-{{ section.id }} .promotions p {
-    margin-top: 0.2em;
-    font-size: {{ section.settings.promotions_font_size }}px;
-  }
-  {% if section.settings.image_type != 'hidden' %}
-    #shopify-section-{{ section.id }} .promotion img,
-    #shopify-section-{{ section.id }} .promotion svg {
-      width: {{ section.settings.image_size }}%;
-      {% if section.settings.image_type == 'icon' %}
-      display: inline;
-      margin: auto 0.5em auto 0;
+    }
+    #shopify-section-{{ section.id }} h2 {
+      text-align: {{ section.settings.promotions_alignment }};
+    }
+    #shopify-section-{{ section.id }} .promotion h2,
+    #shopify-section-{{ section.id }} .promotion p {
+      text-align: {{ section.settings.promotions_alignment }};
+      color: {{ section.settings.promotions_text }};
       padding: 0;
-      vertical-align: middle;
-      {% endif %}
-      {% if section.settings.image_type == 'image' %}
-      margin: 0 auto 0.5em auto;
-      margin: 0 auto 0 auto !important;
-      float: left;
-      width: 100%;
-      display: block;
-      {% endif %}
+      margin: 0;
     }
-    {% if section.settings.image_type == 'image' %}
-    #shopify-section-{{ section.id }} .promotion img + *,
-    #shopify-section-{{ section.id }} .promotion svg + * {
-      margin-top: 0.5em;
+    #shopify-section-{{ section.id }} .promotions h2 {
+      font-size: {{ section.settings.promotions_heading_size }}px;
     }
-    {% endif %}
-  {% endif %}
-  #shopify-section-{{ section.id }} .promotion .desc {
-    {% if section.settings.image_type == 'icon' %}
-    display: inline-block;
-    vertical-align: middle;
-    {% endif %}
-  } 
-
-
-
-  @media only screen and (max-width: {{ mobile_width | remove: 'px' | minus: 1 | append: 'px' }}) {
-    {% if section.settings.image_type == 'image' %}
+    #shopify-section-{{ section.id }} .promotions p {
+      margin-top: 0.2em;
+      font-size: {{ section.settings.promotions_font_size }}px;
+    }
+    {% if section.settings.image_type != 'hidden' %}
       #shopify-section-{{ section.id }} .promotion img,
       #shopify-section-{{ section.id }} .promotion svg {
-        float: none;
-      }
-    {% endif %}
-    {% if section.settings.per_row_mobile == 0 %}
-    #shopify-section-{{ section.id }} .promotions {
-      display: none;
-    } 
-      #shopify-section-{{ section.id }} .container {
-        margin: 0 !important;
-        padding: 0 !important;
-      }   
-    {% endif %}
-    
-    {% unless section.settings.promotions_width == 'content' %}
-    #shopify-section-{{ section.id }} .container { 
-      padding: 0 !important;    
-    } 
-    {% endunless %}
- 
-
-    {% if section.settings.per_row_mobile > 0 %}
-      #shopify-section-{{ section.id }} .container {
-        margin-top: 0 !important;
-        padding-top: 0 !important;
-      }
-      {% if section.settings.per_row_mobile == 1 %}
-      #shopify-section-{{ section.id }} .promotions {
+        width: {{ section.settings.image_size }}%;
+        {% if section.settings.image_type == 'icon' %}
+        display: inline;
+        margin: auto 0.5em auto 0;
+        padding: 0;
+        vertical-align: middle;
+        {% endif %}
+        {% if section.settings.image_type == 'image' %}
+        margin: 0 auto 0.5em auto;
+        margin: 0 auto 0 auto !important;
+        float: left;
+        width: 100%;
         display: block;
-      } 
-        #shopify-section-{{ section.id }} .promotions .promotion {          
-          {%- if section.blocks.size > 1 -%}
-          margin-bottom: 0;
-          {% else %}
-          margin-bottom: {{ section.settings.promotions_spacing }}px;
-          {% endif %}            
-        } 
-      {%- if section.blocks.size > 1 -%}
-        #shopify-section-{{ section.id }} .promotions > div:last-of-type {
-          margin-bottom: {{ section.settings.promotions_spacing }}px; 
+        {% endif %}
+      }
+      {% if section.settings.image_type == 'image' %}
+      #shopify-section-{{ section.id }} .promotion img + *,
+      #shopify-section-{{ section.id }} .promotion svg + * {
+        margin-top: 0.5em;
+      }
+      {% endif %}
+    {% endif %}
+    #shopify-section-{{ section.id }} .promotion .desc {
+      {% if section.settings.image_type == 'icon' %}
+      display: inline-block;
+      vertical-align: middle;
+      {% endif %}
+    } 
+
+
+
+    @media only screen and (max-width: {{ grid_mobile | remove: 'px' | minus: 1 | append: 'px' }}) {
+      {% if section.settings.image_type == 'image' %}
+        #shopify-section-{{ section.id }} .promotion img,
+        #shopify-section-{{ section.id }} .promotion svg {
+          float: none;
         }
       {% endif %}
+      {% if section.settings.per_row_mobile == 0 %}
+      #shopify-section-{{ section.id }} .promotions {
+        display: none;
+      } 
+        #shopify-section-{{ section.id }} .container {
+          margin: 0 !important;
+          padding: 0 !important;
+        }   
       {% endif %}
-    {% endif %}
-    
-    #shopify-section-{{ section.id }} .promotions .promotion {  
-      margin-top: {{ section.settings.promotions_spacing }}px;
-    }
-    
-  }
+      
+      {% unless section.settings.promotions_width == 'content' %}
+      #shopify-section-{{ section.id }} .container { 
+        padding: 0 !important;    
+      } 
+      {% endunless %}
+   
 
-*/
+      {% if section.settings.per_row_mobile > 0 %}
+        #shopify-section-{{ section.id }} .container {
+          margin-top: 0 !important;
+          padding-top: 0 !important;
+        }
+        {% if section.settings.per_row_mobile == 1 %}
+        #shopify-section-{{ section.id }} .promotions {
+          display: block;
+        } 
+          #shopify-section-{{ section.id }} .promotions .promotion {          
+            {%- if section.blocks.size > 1 -%}
+            margin-bottom: 0;
+            {% else %}
+            margin-bottom: {{ section.settings.promotions_spacing }}px;
+            {% endif %}            
+          } 
+        {%- if section.blocks.size > 1 -%}
+          #shopify-section-{{ section.id }} .promotions > div:last-of-type {
+            margin-bottom: {{ section.settings.promotions_spacing }}px; 
+          }
+        {% endif %}
+        {% endif %}
+      {% endif %}
+      
+      #shopify-section-{{ section.id }} .promotions .promotion {  
+        margin-top: {{ section.settings.promotions_spacing }}px;
+      }
+      
+    }
+
+  */
 
     
   </style>
 
-  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
+    {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
 
     {% if section.settings.title != empty %}<h2>{{ section.settings.title }}</h2>{% endif %}
-
-
     
     {%- for block in section.blocks -%}
 
@@ -508,6 +554,14 @@
     {%- endfor %}
     {% endcapture %}
 
+
+
+<style>
+{{ styles }}
+</style>
+
+
+
   {{ feature_head }}
 
   <div class="features">
@@ -518,15 +572,13 @@
 
   </div>
 
-    {{ feature_desc }}
+  {{ feature_desc }}
 
   {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}</div>{% endif %}
 
-  {% endif %}
 
-<style>
-{{ styles }}
-</style>
+
+{% endif %}
 
 {% schema %}
   {
@@ -636,6 +688,10 @@
               {
                 "value": "1_column_1_image_1_column",
                 "label": "Column | Image | Column"
+              },
+              {
+                "value": "1_row_1_image_1_row",
+                "label": "Row | Image | Row"
               }
             ],
             "default": "image_top"

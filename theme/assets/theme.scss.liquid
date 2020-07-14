@@ -2150,12 +2150,12 @@ symbol {
 	label {
 		display: inline !important;
 	}
-	label a {
-		font-size: inherit !important;
-		text-transform: inherit !important;
-		padding: 0;
-		margin: 0;
-	}
+		label a {
+			font-size: inherit !important;
+			text-transform: inherit !important;
+			padding: 0;
+			margin: 0;
+		}
 }
 
 
@@ -2267,6 +2267,10 @@ symbol {
   #cartbox form > table a {
     padding: 0;
     margin: 0;
+  }
+  #cartbox form .title,
+  #cartbox form .title a {  	
+    text-transform: none !important;
   }
   #cartbox form .totals > p, 
   #cartbox form.empty p,

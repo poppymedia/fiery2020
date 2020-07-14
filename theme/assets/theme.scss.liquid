@@ -2142,6 +2142,21 @@ symbol {
     }
 }
 
+.agree {
+	font-size: 86%;
+	input {
+		display: inline !important;
+	}
+	label {
+		display: inline !important;
+	}
+	label a {
+		font-size: inherit !important;
+		text-transform: inherit !important;
+		padding: 0;
+		margin: 0;
+	}
+}
 
 
 /*================ Cart widget ================*/
@@ -2241,6 +2256,9 @@ symbol {
     padding-top: 55px;
   }
   #cartbox form > table {
+    margin: 0 $widget-padding $widget-padding/2 $widget-padding;
+  }
+  #cartbox form > p {
     margin: 0 $widget-padding $widget-padding/2 $widget-padding;
   }
   #cartbox form > table .widget-hidden * {

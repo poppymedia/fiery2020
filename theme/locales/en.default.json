@@ -278,15 +278,15 @@
         "other": "items"
       },
       "shop_ref": "cart",
-      "title": "Shopping Cart",
+      "title": "Shopping cart",
       "remove": "Remove",
       "note": "Special instructions for seller",
       "subtotal": "Sub total",
       "price": "Price",
       "shipping_at_checkout": "Shipping & taxes calculated at checkout",
       "view": "View Cart",
-      "update": "Update Cart",
-      "checkout": "Check Out",
+      "update": "Update cart",
+      "checkout": "Check out",
       "empty": "Your cart is currently empty.",
       "cookies_required": "Enable cookies to use the shopping cart",
       "continue_browsing_html": "Continue shopping",
@@ -308,7 +308,7 @@
       "from": "From",
       "country": "Country",
       "state": "Province",
-      "zip": "Zip \/ Postal Code",
+      "zip": "Zip \/ Postal code",
       "submit": "Get Rates",
       "calculate": "Calculate",
       "calculating": "Calculating...",
@@ -328,37 +328,37 @@
   },
   "customer": {
     "account": {
-      "title": "My Account",
-      "details": "Account Details",
-      "view_addresses": "View Addresses",
-      "return": "Return to Account Details"
+      "title": "My account",
+      "details": "Account details",
+      "view_addresses": "View addresses",
+      "return": "Return to account details"
     },
     "activate_account": {
-      "title": "Activate Account",
+      "title": "Activate account",
       "subtext": "Create your password to activate your account.",
       "password": "Password",
-      "password_confirm": "Confirm Password",
-      "submit": "Activate Account",
-      "cancel": "Decline Invitation"
+      "password_confirm": "Confirm password",
+      "submit": "Activate account",
+      "cancel": "Decline invitation"
     },
     "addresses": {
-      "title": "Your Addresses",
+      "title": "Your addresses",
       "default": "Default",
-      "add_new": "Add a New Address",
+      "add_new": "Add a new address",
       "edit_address": "Edit address",
-      "first_name": "First Name",
-      "last_name": "Last Name",
+      "first_name": "First name",
+      "last_name": "Last name",
       "company": "Company",
       "address1": "Address1",
       "address2": "Address2",
       "city": "City",
       "country": "Country",
       "province": "Province",
-      "zip": "Postal\/Zip Code",
+      "zip": "Postal\/zip code",
       "phone": "Phone",
       "set_default": "Set as default address",
-      "add": "Add Address",
-      "update": "Update Address",
+      "add": "Add address",
+      "update": "Update address",
       "cancel": "Cancel",
       "edit": "Edit",
       "delete": "Delete",
@@ -370,29 +370,29 @@
       "password": "Password",
       "forgot_password": "Forgot your password?",
       "sign_in": "Sign In",
-      "cancel": "Return to Store",
+      "cancel": "Return to store",
       "guest_title": "Continue as a guest",
       "guest_continue": "Continue"
     },
     "orders": {
-      "title": "Order History",
+      "title": "Order history",
       "order_number": "Order",
       "date": "Date",
       "time": "Time",
-      "payment_status": "Payment Status",
-      "fulfillment_status": "Fulfillment Status",
+      "payment_status": "Payment status",
+      "fulfillment_status": "Fulfillment status",
       "total": "Total",
       "none": "You have not placed any orders yet."
     },
     "order": {
       "title": "Order {{ name }}",
       "date": "Placed on {{ date }}",
-      "cancelled": "Order Cancelled on {{ date }}",
+      "cancelled": "Order cancelled on {{ date }}",
       "cancelled_reason": "Reason: {{ reason }}",
-      "billing_address": "Billing Address",
-      "payment_status": "Payment Status",
-      "shipping_address": "Shipping Address",
-      "fulfillment_status": "Fulfillment Status",
+      "billing_address": "Billing address",
+      "payment_status": "Payment status",
+      "shipping_address": "Shipping address",
+      "fulfillment_status": "Fulfillment status",
       "discount": "Discount",
       "shipping": "Shipping",
       "tax": "Tax",
@@ -402,8 +402,8 @@
       "quantity": "Quantity",
       "total": "Total",
       "fulfilled_at": "Fulfilled {{ date }}",
-      "subtotal": "Subtotal",
-      "reorder": "Reorder"
+      "subtotal": "Sub total",
+      "reorder": "Re order"
     },
     "recover_password": {
       "title": "Reset your password",
@@ -417,19 +417,19 @@
       "title": "Reset account password",
       "subtext": "Enter a new password for {{ email }}",
       "password": "Password",
-      "password_confirm": "Confirm Password",
-      "submit": "Reset Password"
+      "password_confirm": "Confirm password",
+      "submit": "Reset password"
     },
     "register": {
       "title": "New account",
       "description": "Create an account",
-      "first_name": "First Name",
-      "last_name": "Last Name",
+      "first_name": "First name",
+      "last_name": "Last name",
       "email": "Email",
       "password": "Password",
       "submit": "Create",
       "register": "Register",
-      "cancel": "Return to Store"
+      "cancel": "Return to store"
     }
   },
   "gift_cards": {
@@ -443,7 +443,7 @@
       "shop_link": "Start shopping",
       "print": "Print",
       "remaining_html": "{{ balance }} left",
-      "add_to_apple_wallet": "Add to Apple Wallet"
+      "add_to_apple_wallet": "Add to apple wallet"
     },
     "general": {
       "gift_cards_priced": "Gift cards are priced"

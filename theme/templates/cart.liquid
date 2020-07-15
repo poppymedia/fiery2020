@@ -160,11 +160,14 @@
                       <td data-label="{{ 'cart.label.price' | t }}">
                         {% if item.original_line_price != item.line_price %}
                           <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
-                          {{ item.price | money }}
+                          {% comment %}{{ item.price | money }}{% endcomment %}
+                          {{ item.price | times: item.quantity | money }}
                           <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
-                          <s>{{ item.original_price | money }}</s>
+                          {% comment %}<s>{{ item.original_price | money }}</s>{% endcomment %}
+                          <s>{{ item.original_price | times: item.quantity | money }}</s>
                         {% else %}
-                          {{ item.price | money }}
+                          {% comment %}{{ item.price | money }}{% endcomment %}
+                          {{ item.price | times: item.quantity | money }}
                         {% endif %}
                         {{ show_price_tax }}
                       </td>

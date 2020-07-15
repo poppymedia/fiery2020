@@ -3051,6 +3051,12 @@
       },
       {
         "type": "checkbox",
+        "id": "cart_update",
+        "label": "Show update button",
+        "default": true
+      },
+      {
+        "type": "checkbox",
         "id": "cart_agreement",
         "label": "Show agreement checkbox",
         "default": true

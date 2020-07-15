@@ -1941,10 +1941,10 @@ symbol {
 
 /*================ Cart page ================*/
 #shopify-section-cart .responsive-table {
-		width: 100%;
+	width: 100%;
 }
 #shopify-section-cart .total * {
-  vertical-align: top;
+	vertical-align: top;
 }
 #shopify-section-cart .responsive-table-row {
 		position: relative;
@@ -1980,10 +1980,9 @@ symbol {
 
   		@include media-query($medium-up) {  
                 td.title {
-                  width: 80em;
+                  width: 1000em !important;
                 }
                 td[data-label="{{ 'cart.label.quantity' | t }}"] {
-                    width: 8em;
                     text-align: right;
 
                     .quantity {
@@ -1994,13 +1993,12 @@ symbol {
                     .btn {
                       margin: 0 0 0 10px;
                     }  
-          			width: 8em !important;        	
+          			min-width: 7em !important;        	
                 }
 
                 td[data-label="{{ 'cart.label.price' | t }}"] {
-                    width: 8em;
                     text-align: right;  
-          			width: 8em !important;      	
+          			min-width: 8em !important;      	
                 }
         }
 

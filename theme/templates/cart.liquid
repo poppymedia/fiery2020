@@ -65,6 +65,8 @@
                   used for responsive-table labels
                   {% endcomment %}
 
+                  <!-- TO DO: Option to auto-add a product to cart, for promo etc -->
+
                     {% if item_c >= settings.cart_box_limit %}
                         {% assign widget = ' widget-hidden' %}{% assign diff = cart.item_count | minus: settings.cart_box_limit %}
                       {% capture widgetoverflow %}<p class="overflow" style="display:none"><small>{{ 'cart.widget.more_products_html' | t: number: settings.cart_box_limit, total: cart.item_count }}</small></p>{% endcapture %}
@@ -244,7 +246,7 @@
 
               <span class="actions">
               <a class="btn view" href="/cart" style="display:none">{{ 'cart.general.view' | t }}</a>
-              <input type="submit" name="update" class="btn" value="{{ 'cart.general.update' | t }}">
+              {% if settings.cart_update %}<input type="submit" name="update" class="btn" value="{{ 'cart.general.update' | t }}">{% endif %}
               <input type="submit" name="checkout" class="btn" value="{{ 'cart.general.checkout' | t }}"{% unless showcheckout == true %} disabled{% endunless %}>
               </span>
 

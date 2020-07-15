@@ -100,11 +100,18 @@
                       <td class="title">
                         <a href="{{ item.url }}">{{ item.product.title }}</a>
 
+
+                        {% if settings.cart_item_options %}
                         {% for option_title in item.product.options %}
                         <div class="option">{{ option_title }} : <strong>{{item.variant.options[forloop.index0] }}</strong></div>
-                        {% endfor %}  
+                        {% endfor %} 
+                        {% endif %} 
 
+
+                        {% if settings.cart_item_vendor %}
                         <p class="vendor">{{ item.vendor }}</p>
+                        {% endif %}
+
 
                         {%- assign property_size = item.properties | size -%}
                                             

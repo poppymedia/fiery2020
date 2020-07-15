@@ -3046,8 +3046,20 @@
       {
         "type": "checkbox",
         "id": "cart_remove",
-        "label": "Show remove buttons",
+        "label": "Show item remove button",
         "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_item_options",
+        "label": "Show item options",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_item_vendor",
+        "label": "Show item vendor",
+        "default": false
       },
       {
         "type": "checkbox",

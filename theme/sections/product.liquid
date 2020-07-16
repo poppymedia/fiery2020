@@ -416,6 +416,9 @@ main > div {
 .metadesc h2, .metadesc h3, .metadesc h4 {
   margin-top:  0;
 }
+{% unless section.settings.enable_slides_distance %}
+#content .sy-controls { display: none; }
+{% endunless %}
 </style>
 
 
@@ -1478,6 +1481,12 @@ main > div {
         "type": "checkbox",
         "id": "enable_slides",
         "label": "Enable gallery slides",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_slides_distance",
+        "label": "Enable gallery Prev/Next",
         "default": true
       },
       {

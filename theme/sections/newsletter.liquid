@@ -330,6 +330,12 @@
   margin-bottom: 0 !important;
 }
 
+{% if section.settings.heading_color != empty %}
+#shopify-section-{{ section.id }} h2 {
+  color: {{ section.settings.heading_color }} !important;
+}
+{% endif %}
+
 </style>
 {% endcapture %}
 {{ newsletter | strip_newlines | remove: '	' | replace: '  ', ' ' }}
@@ -490,6 +496,11 @@
          "type": "color",
          "id": "line_color",
          "label": "Divide line color"
+      },
+      {
+         "type": "color",
+         "id": "heading_color",
+         "label": "heading color"
       },
       {
          "type": "color",

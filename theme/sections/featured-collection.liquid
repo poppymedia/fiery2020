@@ -216,6 +216,7 @@
   position: relative;
   background: {{ settings.color_collection_grid_bg }}; 
   padding: {{ section.settings.text_spacing }}px;
+  padding-bottom: {{ section.settings.text_bottom }}px;
   {% if settings.products_hover %}
   -webkit-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease; 
   -moz-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
@@ -647,7 +648,7 @@ $(document).ready(function(){
         "min": 1,
         "max": 100,
         "step": 1,
-        "label": "Products to show",
+        "label": "Products to show",G
         "default": 12
       },
       {
@@ -675,6 +676,15 @@ $(document).ready(function(){
         "max": 20,
         "step": 1,
         "label": "Products text spacing",
+        "default": 5
+      },
+      {
+        "type": "range",
+        "id": "text_bottom",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "label": "Products bottom spacing",
         "default": 5
       },
       {

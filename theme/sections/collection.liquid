@@ -321,7 +321,7 @@
 .products.collection.grid .item.andcart {
   padding-bottom: 60px;
   padding-bottom: calc({{ section.settings.text_spacing | times: 2 }}px + {{ settings.button_base_size }} + 0.51em + 0.51em);
-  padding-bottom: calc({{ section.settings.text_spacing | times: 2 }}px + {{ settings.button_base_size }} + {{ settings.button_padding | divided_by: 4 | times: 0.01 | times: 2 }}em);
+  padding-bottom: calc({{ section.settings.text_spacing | times: 2 }}px + {{ section.settings.text_bottom }}px + {{ settings.button_base_size }} + {{ settings.button_padding | divided_by: 4 | times: 0.01 | times: 2 }}em);
 }
   
   
@@ -381,6 +381,7 @@
   position: relative;
   background: {{ settings.color_collection_grid_bg }}; 
   padding: {{ section.settings.text_spacing }}px;
+  padding-bottom: {{ section.settings.text_bottom }}px;
   {% if settings.products_hover %}
   -webkit-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease; 
   -moz-transition: background-color {{ settings.transition_duration | divided_by: 10.00 }}s ease;
@@ -433,7 +434,7 @@
     font-size: 80%;
 }
 .products.collection.grid .item .summary .title {
-	font-size: {{ title_size }}px;
+  font-size: {{ title_size }}px;
 }
  
   
@@ -849,7 +850,7 @@
                     {% endif %}
                 
                 {% endfor %}       
-              </ul>    	
+              </ul>     
               </div>   
               {% assign tagsinblock = tagsinblock | plus: 1 %}
               {% assign groupid = groupid | plus: 1 %}
@@ -909,7 +910,7 @@
         {% else %}    
           {% if section.settings.tags %}
           {% if collection.all_tags.size > 0 %}
-          	<div class="group">
+            <div class="group">
             <ul>
               {% for tag in collection.all_tags %}
                 {% assign tag_x = '+' | append: tag %}
@@ -975,7 +976,7 @@
 
       {% if section.settings.pagination_top %}
       {% if paginate.pages > 1 %}
-          		{% assign position = 'top' %}
+              {% assign position = 'top' %}
                 {% include 'pagination' with position %}
       {% endif %}
       {% endif %}
@@ -1004,7 +1005,7 @@
               </p>
             {% endfor %}
           {% else %}
-        	{% assign noproducts = true %}
+          {% assign noproducts = true %}
           {% endif %}
 
       {% endfor %}
@@ -1014,7 +1015,7 @@
       </div>
 
       {% if noproducts %}
-    	 {% if tagsactive > 0 %}
+       {% if tagsactive > 0 %}
             <p>{{ 'collections.general.no_tag_matches' | t }}</p>
          {% else %}
             <p>{{ 'collections.general.no_matches' | t }}</p>
@@ -1023,8 +1024,8 @@
         
       {% if section.settings.pagination_bottom %}
       {% if paginate.pages > 1 %}
-          		{% assign position = 'bottom' %}
-      			<div style="clear:both;overflow:hidden;height:0;padding:0;"></div>
+              {% assign position = 'bottom' %}
+            <div style="clear:both;overflow:hidden;height:0;padding:0;"></div>
                 {% include 'pagination' with position %}
       {% endif %}
       {% endif %}
@@ -1138,7 +1139,7 @@ jQuery('.tags .group h4').click(function() {
         "type": "select",
         "id": "title_size",
         "label": "Product title size",
-		    "default": "h4",
+        "default": "h4",
         "options": [
           {
             "value": "h2",
@@ -1182,7 +1183,7 @@ jQuery('.tags .group h4').click(function() {
         "type": "select",
         "id": "layout_grid_list",
         "label": "Layout grid / list",
-		    "default": "buttons",
+        "default": "buttons",
         "options": [
           {
             "value": "hidden",
@@ -1206,7 +1207,7 @@ jQuery('.tags .group h4').click(function() {
         "type": "select",
         "id": "layout_grid_prominent_feature",
         "label": "Prominent feature",
-  		"default": "image",
+      "default": "image",
         "options": [
           {
             "value": "title",
@@ -1316,7 +1317,7 @@ jQuery('.tags .group h4').click(function() {
            "type": "text",
            "id": "new_days",
            "label": "New for x days",
-			     "default": "30"
+           "default": "30"
       },
       {
         "type": "select",
@@ -1437,10 +1438,10 @@ jQuery('.tags .group h4').click(function() {
          "id": "section_line_color",
          "label": "Divide line color"
       },
-	{
+  {
         "type": "header",
         "content": "Reviews"
-	},
+  },
       {
          "type": "paragraph",
          "content": "Available if [app](https:\/\/apps.shopify.com\/product-reviews) is intalled. [Check](\/admin\/apps\/product-reviews)"
@@ -1451,7 +1452,7 @@ jQuery('.tags .group h4').click(function() {
         "label": "Show review rating",
         "default": true
       },
-	{
+  {
       "type": "header",
       "content": "Filter tags"
     },

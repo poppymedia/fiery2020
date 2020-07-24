@@ -790,31 +790,68 @@
 										max-width: {{ adj }}% !important;
 										{% endif %}
 
-
-
-									
-										<!-- TO FIX: If first slide has no text, slideshow disappears completely on mobile -->
-										<!-- TESTING CROPPING CENTER ON MOBILE -->
-										{% if block.settings.text_position == 'center' and text_width < 100 %}
-										margin-left: 0;
-										{% assign adj = text_width | times: 2 %} 
-										{% assign adj_cut = text_width  %}
-										{% assign adj_rem = 100 | minus: adj_cut  %}
-										{% assign adj_per = 100.00 | divided_by: adj_rem  %}
-										{% assign adj = 100.00 | times: adj_per %}		
-										margin-right: 0;
-										width: {{ adj }}%;
-										max-width: {{ adj }}% !important;
-										{% endif %}
-										{% comment %}
-										{% endcomment %}
-
-
-
-
 										{% endif %}
 									}									
 									{% endif %}
+
+
+
+
+
+
+
+
+									<!-- TESTING: If first slide has no text, slide needs to crop on mobile (cropping to text width, not 'minus' the text width) -->
+									<!-- if block.settings.text_position == 'center' and text_width < 100 -->
+									{% if block.settings.text_position == 'center' and text_width < 100 %}	
+									body .hack {
+										display: none;
+									}
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} img,						
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} > .container,
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} > .container img {
+										position: relative !important;
+										display: block !important;
+										opacity: 1 !important;
+										margin: 0;
+										padding: 0;
+										width: auto;
+										height: auto;
+									}									
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} {
+										/* border: solid 1px orange !important; */
+									}									
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} * {
+										padding: 0 !important;
+									}									
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} > .container img {
+										{% assign adj_cut = text_width | times: 2  %}
+										{% assign adj_rem = 100 | minus: text_width  %}
+										{% assign adj_per = 100.00 | divided_by: adj_rem  %}
+										{% assign adj = 100.00 | times: adj_per %}	
+										{% assign adj = adj_cut %}
+										width: {{ adj }}%;
+										max-width: {{ adj }}% !important;
+										margin-left: -{{ adj_rem | divided_by: 2 }}% !important;
+										/*
+										margin-left: 0;	
+										margin-right: 0;
+										height: 200px !important;
+										border: solid 1px green !important;
+										*/
+									}
+
+									{% endif %}
+										
+									
+
+
+
+
+
+
+
+
 									
 									{% if section.settings.slideshow_text_position_mobile %}
 									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} { 
@@ -945,6 +982,10 @@
 
 											</div></div></div>
 									{%- endif %}
+								{% else %}
+									<!-- TESTING FIRST SLIDE ON MOBILE WITH NO TEXT -->
+									<div class="textWrapper textClass{{ slide_num }}">{{ shape }}<div class="container"><div class="text">
+									</div></div></div>	
 								{%- endif -%}
 									
 								{{ overlay_link }}

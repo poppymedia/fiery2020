@@ -67,6 +67,9 @@
   {% if template contains 'article' %}
   {% assign footer_page = 'footer-' | append: blog.handle %}
   {% endif %}
+  {% if template contains 'product' %}
+  {% assign footer_page = 'footer-' | append: product.handle %}
+  {% endif %}
   {% if template contains 'cart' %}
   {% assign cart_foot_handle = 'cart.general.title' | t | handle %}
   {% assign footer_page = 'footer-' | append: cart_foot_handle %}

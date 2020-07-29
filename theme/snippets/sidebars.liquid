@@ -59,6 +59,9 @@
   {% if template contains 'article' %}
   {% assign sidebar_page = 'sidebar-' | append: blog.handle %}
   {% endif %}
+  {% if template contains 'product' %}
+  {% assign sidebar_page = 'sidebar-' | append: product.handle %}
+  {% endif %}
   {% if template contains 'cart' %}
   {% assign cart_side_handle = 'cart.general.title' | t | handle %}
   {% assign sidebar_page = 'sidebar-' | append: cart_side_handle %}

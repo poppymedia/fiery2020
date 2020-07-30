@@ -116,6 +116,7 @@
   {% capture filters %}
 
     {% assign tagsactive = 0 %}
+    {% if section.settings.tags %}
     <div class="tags">
       
     <!-- TO DO: Add collection 'all' handle to URL when in all collection -->
@@ -130,6 +131,7 @@
     {% endif %}
       
     </div>
+    {% endif %}
 
   {% comment %}
   {% if article.tags.size > 0 %}

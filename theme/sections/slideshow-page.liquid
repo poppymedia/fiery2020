@@ -800,6 +800,70 @@
 										{% endif %}
 									}						
 									{% endif %}
+
+
+
+
+
+
+
+
+									<!-- TESTING: If first slide has no text, slide needs to crop on mobile (cropping to text width, not 'minus' the text width) -->
+									<!-- if block.settings.text_position == 'center' and text_width < 100 -->
+									{% if block.settings.text_position == 'center' and text_width < 100 %}	
+									body .hack {
+										display: none;
+									}
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} img,						
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} > .container,
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} > .container img {
+										position: relative !important;
+										display: block !important;
+										opacity: 1 !important;
+										margin: 0;
+										padding: 0;
+										width: auto;
+										height: auto;
+									}									
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} {
+										/* border: solid 1px orange !important; */
+									}									
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} * {
+										padding: 0 !important;
+									}
+									{% comment %}
+									/* Use text width space */						
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} > .container img {
+										{% assign adj_cut = text_width | times: 2  %}
+										{% assign adj_rem = 100 | minus: text_width  %}
+										{% assign adj_per = 100.00 | divided_by: adj_rem  %}
+										{% assign adj = 100.00 | times: adj_per %}	
+										{% assign adj = adj_cut %}
+										width: {{ adj }}%;
+										max-width: {{ adj }}% !important;
+										margin-left: -{{ adj_rem | divided_by: 2 }}% !important;
+									}
+									{% endcomment %}
+									/* Use text-remainder width space */	
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} img {								
+										{% assign adj_cut = text_width | times: 2 %}									
+										{% assign adj = 100 | plus: adj_cut %}
+										width: {{ adj }}%;
+										max-width: {{ adj }}% !important;
+										margin-left: -{{ text_width }}% !important;
+									}
+
+									{% endif %}
+										
+									
+
+
+
+
+
+
+
+
 									
 									{% if section.settings.slideshow_text_position_mobile %}
 									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} { 
@@ -876,7 +940,7 @@
 								{%- if block.settings.button_2_link != blank %}{% capture overlay_link -%}<a href="{{ slide_button_2_link }}" class="linkwrap"></a>{%- endcapture %}{% endif -%}
 								{%- endif %}
 
-								{%- if block.settings.title != blank or block.settings.subtitle != blank or block.settings.paragraph != blank -%}
+								{%- if block.settings.title != blank or block.settings.subtitle != blank or block.settings.paragraph != blank or block.settings.button_1_label != blank or block.settings.button_2_label != blank -%}
 									{% if section.settings.slideshow_text_to_content -%}					
 											<div class="textWrapper textClass{{ slide_num }}">{{ shape }}<div class="container"><div class="text">
 												{% if block.settings.title != blank %}<h1>{{ slide_text }}</h1>{% endif %}
@@ -922,6 +986,10 @@
 
 											</div></div></div>
 									{%- endif %}
+								{% else %}
+									<!-- TESTING FIRST SLIDE ON MOBILE WITH NO TEXT -->
+									<div class="textWrapper textClass{{ slide_num }}">{{ shape }}<div class="container"><div class="text">
+									</div></div></div>	
 								{%- endif -%}
 									
 								{{ overlay_link }}

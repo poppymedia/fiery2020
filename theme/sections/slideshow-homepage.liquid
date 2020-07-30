@@ -823,7 +823,9 @@
 									}									
 									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} * {
 										padding: 0 !important;
-									}									
+									}
+									{% comment %}
+									/* Use text width space */						
 									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} > .container img {
 										{% assign adj_cut = text_width | times: 2  %}
 										{% assign adj_rem = 100 | minus: text_width  %}
@@ -833,12 +835,15 @@
 										width: {{ adj }}%;
 										max-width: {{ adj }}% !important;
 										margin-left: -{{ adj_rem | divided_by: 2 }}% !important;
-										/*
-										margin-left: 0;	
-										margin-right: 0;
-										height: 200px !important;
-										border: solid 1px green !important;
-										*/
+									}
+									{% endcomment %}
+									/* Use text-remainder width space */	
+									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} > .container img {								
+										{% assign adj_cut = text_width | times: 2 %}									
+										{% assign adj = 100 | plus: adj_cut %}
+										width: {{ adj }}%;
+										max-width: {{ adj }}% !important;
+										margin-left: -{{ text_width }}% !important;
 									}
 
 									{% endif %}

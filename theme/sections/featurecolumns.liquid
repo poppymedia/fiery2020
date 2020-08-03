@@ -24,6 +24,9 @@
 
   @media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
 
+    #shopify-section-{{ section.id }} .features {
+      text-align: {{ section.settings.promotions_alignment }};
+    }
 
     {% if section.settings.layout == 'image_top' %}
     {% assign columns = 3 %}
@@ -40,7 +43,7 @@
       }
         #shopify-section-{{ section.id }} .features > div {
           box-sizing: border-box; 
-          border: solid 1px green;
+          /* border: solid 1px green; */
         }
         #shopify-section-{{ section.id }} .features .featurecolumn {
           grid-area: span 1 / span {{ columns }};
@@ -64,7 +67,7 @@
     }
       #shopify-section-{{ section.id }} .features > div {
         box-sizing: border-box; 
-        border: solid 1px green;
+        /* border: solid 1px green; */
       }
       #shopify-section-{{ section.id }} .features .featurecolumn {
           grid-area: 1 / 2 / {{ rows }} / 2;
@@ -88,7 +91,7 @@
     }
       #shopify-section-{{ section.id }} .features > div {
         box-sizing: border-box; 
-        border: solid 1px green;
+        /* border: solid 1px green; */
       }
       #shopify-section-{{ section.id }} .features .featurecolumn {
           grid-area: 1 / 1 / {{ rows }} / 1;
@@ -113,7 +116,7 @@
       }
         #shopify-section-{{ section.id }} .features > div {
           box-sizing: border-box; 
-          border: solid 1px green;
+          /* border: solid 1px green; */
         }
         #shopify-section-{{ section.id }} .features .featurecolumn {
           grid-area: 1 / 2 / {{ rows }};
@@ -137,7 +140,7 @@
       }
         #shopify-section-{{ section.id }} .features > div {
           box-sizing: border-box; 
-          border: solid 1px green;
+          /* border: solid 1px green; */
         }
         #shopify-section-{{ section.id }} .features .featurecolumn {
           grid-area: 2 / span {{ columns }};
@@ -675,7 +678,7 @@
             "options": [
               {
                 "value": "image_top",
-                "label": "Image top"
+                "label": "Image | Columns"
               },
               {
                 "value": "1_column_1_image",

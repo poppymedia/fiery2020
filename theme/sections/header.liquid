@@ -1332,6 +1332,20 @@
       right: 60px !important;
       /* margin-top:  -5px !important; */
     }
+
+
+    /*
+    #main-menu-toggle {
+        {% if section.settings.main_linklist_position_align_mobile == 'middle' %}
+        margin-top: -0.75em;
+        {% endif %}
+        {% if section.settings.main_linklist_position_align_mobile == 'bottom' %}
+        margin-top: 0.25em;
+        {% endif %}
+    }
+    */
+
+
 }
 {% endif %}  
 /* SVG works, but img needs fix to display */
@@ -1435,13 +1449,16 @@ body #shopify-section-header #header #cartmob #cart img {
     {% if section.settings.main_linklist_position_align_mobile == 'top' %}
     top: {{ grid_gutter }}px;
     margin-top: 0;
+    margin-top: -0.2em;
     {% endif %}
     {% if section.settings.main_linklist_position_align_mobile == 'middle' %}
     top: 50%;
     margin-top: -{{ settings.menu_icon_size | divided_by: 2 }}px;
+    margin-top: -0.75em;
     {% endif %}
     {% if section.settings.main_linklist_position_align_mobile == 'bottom' %}
     bottom: {{ grid_gutter }}px;
+    bottom: calc({{ grid_gutter }}px - 0.15em) !important;
     {% endif %}
     {% if section.settings.main_linklist_align_mobile == 'left' %}
     right: auto;

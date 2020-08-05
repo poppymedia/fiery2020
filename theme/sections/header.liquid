@@ -974,13 +974,7 @@
   }
 }
 {% endif %}  
-{% if section.settings.logo_align_mobile == 'right' %}
-@media only screen and (max-width: {{ grid_mobile | remove: 'px' | minus: 1 | append: 'px' }}) {
-  .brand {
-    float: right;
-  }
-}
-{% endif %} 
+
   
  
   
@@ -1415,10 +1409,24 @@ body #shopify-section-header #header #cartmob #cart img {
   
   
   
-  
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {% if section.settings.main_linklist != blank %}
 {% if section.settings.main_linklist_hamburger_type != 'disabled' %}
 {% unless section.settings.main_linklist_hamburger_force %}
@@ -1449,7 +1457,7 @@ body #shopify-section-header #header #cartmob #cart img {
     {% if section.settings.main_linklist_position_align_mobile == 'top' %}
     top: {{ grid_gutter }}px;
     margin-top: 0;
-    margin-top: -0.2em;
+    margin-top: -0.25;
     {% endif %}
     {% if section.settings.main_linklist_position_align_mobile == 'middle' %}
     top: 50%;
@@ -2155,9 +2163,7 @@ li.cart a span {
     {% if section.settings.logo_align == 'left' or section.settings.phone_position contains 'right' %}  
   	right: {{ grid_gutter }}px;
   	{% endif %}
-    {% if section.settings.logo_align == 'right' or section.settings.phone_position contains 'left' %}
-    left: {{ grid_gutter }}px;
-  	{% endif %} 
+ 
 } 
 
 {% unless section.settings.main_linklist_hamburger_force %} 
@@ -3305,7 +3311,7 @@ header .tags {
 
   	{%- capture head_part %}
 
-  		<header role="banner">
+  		<!-- <header role="banner"> -->
   
         {%- comment %}
         Treat home page logo as per all other pages
@@ -3340,7 +3346,7 @@ header .tags {
         {% endif %} 
         {% endcapture -%}
 
-      </header>
+      <!-- </header> -->
   	{% endcapture -%}
 
 
@@ -3460,29 +3466,12 @@ header .tags {
 	
 	{%- if settings.currency_position == 'header' -%}{% include 'currency_switcher', position: 'header' %}{%- endif -%}
 
-    {% if section.settings.logo_align == 'right' and section.settings.main_linklist_align == 'left' %}
-
-      {{ menu_part }}
-  
-      {{ head_part }}
-  
-      <span></span>
-  
-    {% elsif section.settings.logo_align == 'right' and section.settings.main_linklist_align == 'center' %}
-  
-      <span></span>
-
-      {{ menu_part }}
-  
-      {{ head_part }}
-  
-    {% else %}
+    
   
       {{ head_part }}
 
       {{ menu_part }}
 
-    {% endif %}
   
   
   	{% if section.settings.phone_position contains 'menu' %}{{ phone }}{% endif %}
@@ -3521,28 +3510,6 @@ header .tags {
 
 
 
-  {% if section.settings.main_linklist_align == 'center' or section.settings.main_linklist_align == 'left' or section.settings.main_linklist_align == 'right' or section.settings.main_linklist_align == 'below' %}
-  {% if section.settings.logo_align == 'right' %}
-  {%- if settings.currency_position == 'header' -%}
-  <style>
-  @media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
-    .currencymenu {
-        top: {{ grid_gutter }}px;
-        left: {{ grid_gutter }}px;
-        /*
-        right: {{ grid_gutter }}px;
-        margin-right: -5px;
-        margin-top: -5px;
-        */
-    }
-    .phone {
-        margin-left: 3em;
-    }
-  }
-  </style>
-  {% endif %}
-  {%- endif -%}
-  {% endif %}
 
 
 
@@ -3570,50 +3537,10 @@ header .tags {
 
 
 
-  {% if section.settings.logo_align == 'right' and section.settings.main_linklist_align == 'left' %}
-  <style>
-  @media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
-    #header .container {
-    overflow: hidden;
-    }
-    #header .container .brand {
-    float: right;
-    }
-  }
-  </style>
-  {% endif %}
 
 
 
-  {% if settings.cart_enable %}
-  {% else %}
-  {% if section.settings.logo_align_mobile == 'right' %}
-  <!-- TESTING -->
-  <style>
-  @media only screen and (max-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
-    #header {
-    overflow: hidden;
-    width: 100%;
-    margin-right: 0;
-    padding-right: 0;
-    }
-    #header .container {
-    overflow: visible;
-    display: block !important;
-    }
-    #header .container header {
-    overflow: visible;
-    padding-right: 0;
-    display: block !important;
-    }
-    #header .container header .brand {
-    float: right !important;
-    margin-right: 0 !important;
-    }
-  }
-  </style>
-  {% endif %}
-  {% endif %}
+
 
 
 
@@ -3630,16 +3557,6 @@ header .tags {
   </style>
   {% endif %}
   {% if section.settings.logo_align_mobile == 'center' %}
-  <!-- TESTING -->
-  <style>
-  @media only screen and (max-width: {{ grid_large | remove: 'px' | append: 'px' }}) {
-    #header .container header .brand img {
-    min-width: {{ settings.logo_size_mobile }}px !important;
-    }
-  }
-  </style>
-  {% endif %}
-  {% if section.settings.logo_align_mobile == 'right' %}
   <!-- TESTING -->
   <style>
   @media only screen and (max-width: {{ grid_large | remove: 'px' | append: 'px' }}) {
@@ -3968,10 +3885,6 @@ function WidthChange(mq) {
           {
             "value": "center",
             "label": "Center"
-          },
-          {
-            "value": "right",
-            "label": "Right"
           }
         ]
       },
@@ -3988,10 +3901,6 @@ function WidthChange(mq) {
           {
             "value": "center",
             "label": "Center"
-          },
-          {
-            "value": "right",
-            "label": "Right"
           }
         ]
       },

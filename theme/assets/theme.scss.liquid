@@ -3133,6 +3133,8 @@ body.template-password:before {
   .site-logo img,
   .site-logo svg {
     width: {{ settings.logo_size_mobile }}px !important;
+    /* Force min width on mobile */
+    min-width: {{ settings.logo_size_mobile }}px !important;
   }
 }
 

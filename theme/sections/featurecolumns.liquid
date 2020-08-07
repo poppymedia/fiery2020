@@ -10,6 +10,10 @@
     background-color: {{ section.settings.promotions_bg }}; 
   }
   }
+  {% else %}
+  #shopify-section-{{ section.id }} .container  {
+    background-color: {{ section.settings.promotions_bg }}; 
+  }
   {% endif %}
 
 
@@ -17,6 +21,11 @@
   {% assign gridspace = '20px' %}
 
   #shopify-section-{{ section.id }} {
+    color: {{ section.settings.promotions_text }};
+  }
+  #shopify-section-{{ section.id }} h2,
+  #shopify-section-{{ section.id }} h3 {
+    color: {{ section.settings.promotions_title }};
   }
   #shopify-section-{{ section.id }} .featurecolumn img {
     width: 100%;

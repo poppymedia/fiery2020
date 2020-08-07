@@ -84,15 +84,14 @@
 
   
 <!-- TO DO: CHECK CONTENT SETTING IS ENABLED AND CONTENT IS NOT EMPTY -->
+{% assign footer_content = footer_content | strip %}
+{% assign footer_page = footer_page | strip %}
   {% if footer_content.size > 3 or footer_page.size > 3 %}
   <div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %} clearfix">
   <aside class="content-footer">
-
     {{ footer_content }}
-    {{ footer_page }}
-    
+    {{ footer_page }}    
     <!-- BOTTOM -->
-
   </aside>
   </div>
   {% endif %}

@@ -48,6 +48,13 @@
   width: {{ picsize }}px;
   display: inline;
   float: left;
+
+  {% unless section.settings.image_margin %}
+  margin-top:  -{{ section.settings.text_spacing }}px;
+  margin-left:  -{{ section.settings.text_spacing }}px;
+  margin-right:  -{{ section.settings.text_spacing }}px;
+  {% endunless %}
+
 }  
   .products.grid .item .image img {
     float: left;
@@ -167,6 +174,12 @@
   width: {{ picsize }}px;
   display: inline;
   float: left;
+
+  {% unless section.settings.image_margin %}
+  margin-top:  -{{ section.settings.text_spacing }}px;
+  margin-left:  -{{ section.settings.text_spacing }}px;
+  margin-right:  -{{ section.settings.text_spacing }}px;
+  {% endunless %}
 }  
   .products.grid .item .image img {
     float: left;
@@ -314,7 +327,14 @@
   margin-bottom: {{ section.settings.spacing }}px; 
 }  
 
-  
+
+.products.collection.grid .item .image {
+  {% unless section.settings.image_margin %}
+  margin-top:  -{{ section.settings.text_spacing }}px;
+  margin-left:  -{{ section.settings.text_spacing }}px;
+  margin-right:  -{{ section.settings.text_spacing }}px;
+  {% endunless %}
+}    
 
 .products.collection.grid .item.hasexcerpt,
 .products.collection.grid .item.andmore,
@@ -1112,7 +1132,7 @@ jQuery('.tags .group h4').click(function() {
         "type": "range",
         "id": "text_spacing",
         "min": 0,
-        "max": 20,
+        "max": 40,
         "step": 1,
         "label": "Products text spacing",
         "default": 5
@@ -1305,6 +1325,12 @@ jQuery('.tags .group h4').click(function() {
         "type": "checkbox",
         "id": "image",
         "label": "Show product image",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "image_margin",
+        "label": "Show product image margin",
         "default": true
       },
       {

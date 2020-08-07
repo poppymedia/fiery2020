@@ -68,6 +68,11 @@
   width: {{ picsize }}px;
   display: inline;
   float: left;
+  {% unless section.settings.image_margin %}
+  margin-top:  -{{ section.settings.text_spacing }}px;
+  margin-left:  -{{ section.settings.text_spacing }}px;
+  margin-right:  -{{ section.settings.text_spacing }}px;
+  {% endunless %}
 }  
   #shopify-section-{{ section.id }} .products.grid .item .image img {
     float: left;
@@ -183,6 +188,13 @@
   
   
 /* TESTING */ 
+#shopify-section-{{ section.id }} .products.collection.grid .item .image {
+  {% unless section.settings.image_margin %}
+  margin-top:  -{{ section.settings.text_spacing }}px;
+  margin-left:  -{{ section.settings.text_spacing }}px;
+  margin-right:  -{{ section.settings.text_spacing }}px;
+  {% endunless %}
+}  
 #shopify-section-{{ section.id }} .products.collection.grid .item.hasexcerpt,
 #shopify-section-{{ section.id }} .products.collection.grid .item.andcart {
   padding-bottom: 60px;
@@ -358,6 +370,11 @@
   overflow: hidden;
   {% unless section.settings.image_divide %}
   margin-bottom: -{{ section.settings.text_spacing }}%;
+  {% endunless %}
+  {% unless section.settings.image_margin %}
+  margin-top:  -{{ section.settings.text_spacing }}px;
+  margin-left:  -{{ section.settings.text_spacing }}px;
+  margin-right:  -{{ section.settings.text_spacing }}px;
   {% endunless %}
 }
 #shopify-section-{{ section.id }} .products.collection.grid .item .image a {
@@ -673,7 +690,7 @@ $(document).ready(function(){
         "type": "range",
         "id": "text_spacing",
         "min": 0,
-        "max": 20,
+        "max": 40,
         "step": 1,
         "label": "Products text spacing",
         "default": 5
@@ -790,6 +807,12 @@ $(document).ready(function(){
         "type": "checkbox",
         "id": "image",
         "label": "Show product image",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "image_margin",
+        "label": "Show product image margin",
         "default": true
       },
       {

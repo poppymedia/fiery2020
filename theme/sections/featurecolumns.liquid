@@ -3,6 +3,24 @@
 {% if section.blocks.size > 0 %}
 
   <style>
+
+  @media only screen and (max-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
+    .meta {
+      margin-left: 1em;
+      position: relative;
+      display: list-item;
+      list-style-type: disc;
+      list-style-position: inside;
+    }
+    /*
+    .meta:before {
+      content: '•';
+      position: absolute;
+      left:  0;
+    }
+    */
+  }
+
   {% if section.settings.promotions_width == 'container' %}
   @media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
   #shopify-section-{{ section.id }} .container {
@@ -546,7 +564,7 @@
       
         {% assign imgsize = 1000 | append: 'x' %}
 
-        <div>
+        <div class="meta">
 
           {% if block.settings.image and section.settings.image_type != 'background' %}
           <img src="{{ block.settings.image | img_url: imgsize }}" />

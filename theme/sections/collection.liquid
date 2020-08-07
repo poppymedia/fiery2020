@@ -176,9 +176,9 @@
   float: left;
 
   {% unless section.settings.image_margin %}
-  margin-top:  -{{ section.settings.text_spacing }}px;
-  margin-left:  -{{ section.settings.text_spacing }}px;
-  margin-right:  -{{ section.settings.text_spacing }}px;
+  margin-top: -{{ section.settings.text_spacing }}px;
+  margin-left: -{{ section.settings.text_spacing }}px;
+  margin-right: -{{ section.settings.text_spacing }}px;
   {% endunless %}
 }  
   .products.grid .item .image img {
@@ -302,6 +302,11 @@
   {% endif %}  
   {% endcomment %}  
   text-align: {{ section.settings.products_alignment  }};
+
+  {% if section.settings.read_more == 'hidden' and section.settings.add_cart == 'hidden' %}
+  padding-bottom: {{ section.settings.text_spacing | times: 2 }}px !important;
+  {% endif %}
+
 }
 {% if section.settings.read_more != 'hidden' and section.settings.add_cart != 'hidden' %}
 .products.collection.grid .item .more form.readmore button.btn,

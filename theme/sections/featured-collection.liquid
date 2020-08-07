@@ -167,6 +167,10 @@
   {% endif %}  
   {% endcomment %}  
   text-align: {{ section.settings.products_alignment }};
+
+  {% if section.settings.read_more == 'hidden' and section.settings.add_cart == 'hidden' %}
+  padding-bottom: {{ section.settings.text_spacing | times: 2 }}px !important;
+  {% endif %}
 }
 {% if section.settings.read_more != 'hidden' and section.settings.add_cart != 'hidden' %}
 #shopify-section-{{ section.id }} .products.collection.grid .item .more form.readmore button.btn {

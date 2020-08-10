@@ -6,20 +6,37 @@
 
   @media only screen and (max-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {
     .meta {
-      margin-left: 1em;
+      margin: 0 0 0.5em 0;
       position: relative;
-      display: list-item;
-      list-style-type: disc;
-      list-style-position: inside;
+      vertical-align: top;
     }
-    /*
-    .meta:before {
-      content: '•';
-      position: absolute;
-      left:  0;
-    }
-    */
-  }
+      .meta:before {
+        content: '\2022';
+        font-size: 2em;
+        line-height: 1em;
+        position: relative;
+        display: inline;
+        padding: 0;
+        margin: 0;
+        vertical-align: top;
+      }
+        .meta .desc {
+          position: relative;
+          overflow: hidden;
+          display: inline-block;
+          margin: 0 0 0 0.5em;
+        }
+          .meta .desc > h3  {
+            position: relative;
+            margin: 0;
+            padding: 0;
+          }
+          .meta .desc > p  {
+            position: relative;
+            margin: 0;
+            padding: 0;
+          }
+   }
 
   {% if section.settings.promotions_width == 'container' %}
   @media only screen and (min-width: {{ grid_mobile | remove: 'px' | append: 'px' }}) {

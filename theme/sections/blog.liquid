@@ -16,6 +16,12 @@
 
 <style>
 
+{% if section.settings.image_fullwidth %}
+#shopify-section-blog img {
+  width: 100%; 
+}
+{% endif %}
+
 /* List */
 {% if template contains '.list' %}
 .products.grid {
@@ -1173,6 +1179,12 @@ jQuery('.tags .group h4').click(function() {
         "type": "checkbox",
         "id": "image",
         "label": "Show article image",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "image_fullwidth",
+        "label": "Show all images full width",
         "default": true
       },
       {

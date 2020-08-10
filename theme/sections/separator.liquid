@@ -18,6 +18,9 @@
     
     
   {% if section.settings.separator_width == 'overflow' or section.settings.separator_width == 'page' %}
+  #shopify-section-{{ section.id }} {
+      background-color: {{ section.settings.separator_bg }};   
+  }
   #shopify-section-{{ section.id }}:before {
       content: '';
       position: absolute;

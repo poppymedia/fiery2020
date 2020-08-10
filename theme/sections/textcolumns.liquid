@@ -86,6 +86,9 @@
     
   {% unless section.settings.image_position == 'hidden' %}
   {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
+  #shopify-section-{{ section.id }} {
+      background-color: {{ section.settings.promotions_bg }};
+  }
   #shopify-section-{{ section.id }}:before {
       content: '';
       position: absolute;

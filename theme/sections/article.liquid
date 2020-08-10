@@ -4,6 +4,14 @@
 {% assign pagination = 'below' %}
 
 {% capture stylesheet %}
+
+{% if section.settings.image_fullwidth %}
+#main #shopify-section-article #content main img {
+  width: 100%; 
+  margin-bottom: 1em;
+}
+{% endif %}
+
 {% if pagination == 'below' %}
 #main .container {
   padding-bottom: {{ font_gutter | times: 2 | plus: section.settings.controls_size }}px !important;
@@ -573,6 +581,12 @@
           }
         ],
         "default": "1200"
+      },
+      {
+        "type": "checkbox",
+        "id": "image_fullwidth",
+        "label": "Show images full width",
+        "default": true
       },
       {
         "type": "checkbox",

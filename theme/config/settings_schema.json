@@ -2071,6 +2071,16 @@
         "default": 18
       },
       {
+        "type": "range",
+        "id": "product_button_size",
+        "min": 7,
+        "max": 60,
+        "step": 1,
+        "unit": "px",
+        "label": "Button text size",
+        "default": 14
+      },
+      {
         "type": "header",
         "content": "Blogs"
       },

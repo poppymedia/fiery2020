@@ -2480,6 +2480,10 @@ li.search #searchbox {
     border-radius: 0;
     {% unless settings.button_min_override %}{% if settings.button_min != empty %}min-width: {{ settings.button_min }};{% endif %}{% endunless %}
 }
+.products .readmore .btn {
+	font-size: {{ settings.product_button_size }}px;
+}
+
 .sy-controls li a:after,
 .featherlight-content .featherlight-close-icon.btn.featherlight-close,
 .bxslider .textWrapper .btn,

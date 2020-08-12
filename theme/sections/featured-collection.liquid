@@ -542,47 +542,71 @@
 
 
 {% if section.settings.type == 'scrollbar' %}
+{% assign itemw = section.settings.product %}
 
-
-/* The emerging W3C standard
-   that is currently Firefox-only */
-#shopify-section-{{ section.id }} * {
-  scrollbar-width: thin;
-  scrollbar-color: {{ settings.color_collection_grid_text }} transparent;
-}
-/* Works on Chrome/Edge/Safari */
-#shopify-section-{{ section.id }} *::-webkit-scrollbar {
-  width: 12px;
-}
-#shopify-section-{{ section.id }} *::-webkit-scrollbar-track {
-  background: transparent;
-}
-#shopify-section-{{ section.id }} *::-webkit-scrollbar-thumb {
-  background-color: {{ settings.color_collection_grid_text }};
-  border-radius: 20px;
-  border: 3px solid transparent;
+@media only screen and (min-width: {{ settings.width_min_tablet }}) {
 }
 
+  /* The emerging W3C standard
+     that is currently Firefox-only */
+  #shopify-section-{{ section.id }} * {
+    scrollbar-width: thin;
+    scrollbar-color: {{ settings.color_collection_grid_text }} transparent;
+  }
+  /* Works on Chrome/Edge/Safari */
+  #shopify-section-{{ section.id }} *::-webkit-scrollbar {
+    width: 12px;
+  }
+  #shopify-section-{{ section.id }} *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  #shopify-section-{{ section.id }} *::-webkit-scrollbar-thumb {
+    background-color: {{ settings.color_collection_grid_text }};
+    {% if settings.button_shape == 'curved' %}
+    border-radius: 5px;
+    {% endif %}
+    {% if settings.button_shape == 'rounded' %}
+    border-radius: {{ settings.button_base_size | times: 2 }}px;
+    {% endif %}  
+    border: 5px solid transparent;
+  }
 
-{% assign productw = section.settings.product | plus: section.settings.spacing | plus: section.settings.spacing %}
-#shopify-section-{{ section.id }}.shopify-section.collection {
-  /* TESTING IF BOTTOM SNAPS */
-  margin-bottom: 0;
-}
-#shopify-section-{{ section.id }} .container .scroller {
-  overflow-x: auto;
-  //-webkit-overflow-scrolling: touch;
-  /* overflow: visible; */
-  overflow-y: none;
-}
-#shopify-section-{{ section.id }} .container .scroller .products {
-  width: {{ productw | times: productsn }}px;
-  margin-bottom: 0;
-  /* padding-right: {{ gutter }}; */
-}
-{% endif %}
+
+  {% assign productw = itemw | plus: section.settings.spacing | plus: section.settings.spacing %}
+  #shopify-section-{{ section.id }}.shopify-section.collection {
+    /* TESTING IF BOTTOM SNAPS */
+    margin-bottom: 0;
+  }
+  #shopify-section-{{ section.id }} .container .scroller {
+    overflow-x: auto;
+    //-webkit-overflow-scrolling: touch;
+    /* overflow: visible; */
+    overflow-y: none;
+  }
+  #shopify-section-{{ section.id }} .container .scroller .products {
+    width: {{ productw | times: productsn }}px;
+    margin-bottom: 0;
+    /* padding-right: {{ gutter }}; */
+  }
+  {% endif %}
 
 
+@media only screen and (max-width: {{ settings.width_max_mobile }}) {
+  {% assign productm = itemw | plus: section.settings.spacing %}
+  {% if settings.mobile_2_columns %}{% assign productm = settings.width_min_tablet | remove: 'px' | divided_by: 2 %}{% endif %}
+  #shopify-section-{{ section.id }} .container .scroller .products {    
+    {% if settings.mobile_2_columns %}
+    width: {{ productm | divided_by: 2 | plus: section.settings.spacing | times: productsn }}px !important;
+    {% else %}
+    width: {{ productm | times: productsn }}px !important;
+    {% endif %}
+    margin-bottom: 0 !important;
+  }
+  #shopify-section-{{ section.id }} .container .scroller .products .item {
+    width: {{ productm | divided_by: 2 }}px !important;
+    max-width: {{ productm | divided_by: 2 }}px !important;
+  }
+}
 
 
 

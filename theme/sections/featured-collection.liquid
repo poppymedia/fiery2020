@@ -31,6 +31,38 @@
 {%- if size == 'p' %}{{ settings.type_base_size }}{% endif -%}
 {%- endcapture -%}
 
+
+
+
+
+
+{%- assign collection = collections[section.settings.collection] -%}{%- assign productsn = 0 -%}
+
+{% capture productitems %}
+
+{% for product in collection.products limit: section.settings.products %}
+  
+  {% include 'grid-product' %}{%- assign productsn = productsn | plus: 1 -%}
+
+{% else %}
+
+  {% for i in (1..6) %} 
+  
+  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+  {% assign demo_title = 'homepage.onboarding.product_title' | t %}
+  {% assign demo_content = 'homepage.onboarding.no_content' | t %}
+  {% assign demo_img = 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' %}
+  {% include 'grid-product', demo_title: demo_title, demo_content: demo_content, demo_img: demo_img %}
+
+  {% endfor %}
+{% endfor %}
+
+{% endcapture %}
+
+
+
+
+
 <style>
 #shopify-section-{{ section.id }} h2,
 #shopify-section-{{ section.id }} .rte {
@@ -505,18 +537,64 @@
 {% comment %}
 {% endcomment %}
 
-  
 
-  
+
+
+
+{% if section.settings.type == 'scrollbar' %}
+
+
+/* The emerging W3C standard
+   that is currently Firefox-only */
+#shopify-section-{{ section.id }} * {
+  scrollbar-width: thin;
+  scrollbar-color: {{ settings.color_collection_grid_text }} transparent;
+}
+/* Works on Chrome/Edge/Safari */
+#shopify-section-{{ section.id }} *::-webkit-scrollbar {
+  width: 12px;
+}
+#shopify-section-{{ section.id }} *::-webkit-scrollbar-track {
+  background: transparent;
+}
+#shopify-section-{{ section.id }} *::-webkit-scrollbar-thumb {
+  background-color: {{ settings.color_collection_grid_text }};
+  border-radius: 20px;
+  border: 3px solid transparent;
+}
+
+
+{% assign productw = section.settings.product | plus: section.settings.spacing | plus: section.settings.spacing %}
+#shopify-section-{{ section.id }}.shopify-section.collection {
+  /* TESTING IF BOTTOM SNAPS */
+  margin-bottom: 0;
+}
+#shopify-section-{{ section.id }} .container .scroller {
+  overflow-x: auto;
+  //-webkit-overflow-scrolling: touch;
+  /* overflow: visible; */
+  overflow-y: none;
+}
+#shopify-section-{{ section.id }} .container .scroller .products {
+  width: {{ productw | times: productsn }}px;
+  margin-bottom: 0;
+  /* padding-right: {{ gutter }}; */
+}
+{% endif %}
+
+
+
+
+
+
 </style>
 
-{%- assign collection = collections[section.settings.collection] -%}
-
 {% capture expand %}
-{% if section.settings.type != 'hidden' %}
+{% if section.settings.type != 'hidden' and section.settings.type != 'scrollbar' %}
 <span class="expand" data-url="/collections/{{ collection.handle }}"></span>
 {% endif %}
 {% endcapture %}
+
 
 {% if section.settings.feature_width == 'container' or section.settings.feature_width == 'content' %}
 <div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">
@@ -524,38 +602,27 @@
 <div class="fullwidth">
 {% endif %}
 
+
 {% if section.settings.title != blank %}
   <h2>{{ section.settings.title | escape }}{{ expand }}</h2>
 {% endif %}
+
 
 {% if section.settings.show_description != blank %}
   <div class="rte">{{ collection.description }}</div>
 {% endif %}
 
+{% if section.settings.type == 'scrollbar' %}<div class="scroller">{% endif %}
+
 <div class="products collection {{ class }}">
 
-{% for product in collection.products limit: section.settings.products %}
-  
-  {% include 'grid-product' %}
-
-{% else %}
-
-  {% for i in (1..6) %} 
-  
-  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-  {% assign demo_title = 'homepage.onboarding.product_title' | t %}
-  {% assign demo_content = 'homepage.onboarding.no_content' | t %}
-  {% assign demo_img = 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' %}
-  {% include 'grid-product', demo_title: demo_title, demo_content: demo_content, demo_img: demo_img %}
-
-  {% endfor %}
-{% endfor %}
+{{ productitems }}
 
 {{ fillrow }}
 
 </div>
 
-
+{% if section.settings.type == 'scrollbar' %}</div>{% endif %}
 
 {%- if section.settings.section_line_size > 0 -%}
 <div class="divide"></div>
@@ -984,6 +1051,10 @@ $(document).ready(function(){
            {
              "value": "expand",
              "label": "Expand"
+           },
+           {
+             "value": "scrollbar",
+             "label": "Scrollbar"
            },
            {
              "value": "collection",

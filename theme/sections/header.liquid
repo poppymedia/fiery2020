@@ -193,7 +193,7 @@
                 </span>
             {%- endif -%}
             {% endunless %}
-          
+
           {%- endif -%}
         </a>
         {% assign icons_in_menu = icons_in_menu | plus: 1 %}
@@ -208,12 +208,11 @@
         {% if section.settings.account_icon == 'bust' %}{% assign user_icon = 'icon-user' %}{% endif %}
         {% if section.settings.account_icon == 'padlock' %}{% assign user_icon = 'icon-padlock' %}{% endif %}
 
-        {% if section.settings.account_icon != 'hidden' %} 
         {% capture link %}{% if customer %}/account{% else %}/account/login{% endif %}{% endcapture %}
         <a href="{{ link }}">
           {%- if section.settings.main_linklist_type == 'text' -%}          
-            {%- if section.settings.cart_text_show -%}{{ 'layout.customer.account' | t }}{%- endif -%}
-            {%- if section.settings.cart_icon_show -%}
+            {%- if section.settings.account_text_show -%}{{ 'layout.customer.account' | t }}{%- endif -%}
+            {%- if section.settings.account_icon_show -%}
                 {%- include user_icon -%}        
             {%- endif -%}
           {%- else -%}
@@ -226,6 +225,7 @@
           {%- endif -%}
         </a>
         {% assign icons_in_menu = icons_in_menu | plus: 1 %}
+        {% if section.settings.account_icon != 'hidden' %} 
         {% endif %}
 
       {% endif %}
@@ -3220,7 +3220,8 @@ header .tags {
       {% unless showing_user_icon %}
         {%- capture accountlink %}{{ user_setting | strip_newlines | replace: '<a href', '<a class="site-nav__link" id="account" href' }}{% endcapture -%}
         {%- capture accountdata -%}
-        {{ accountlink }}
+        <!-- {{ accountlink }} -->
+        {% if customer %}{{ 'layout.customer.log_out' | t | customer_logout_link }}{% endif %}
         {% endcapture %}
         {% assign li_count = li_count | plus: 1 %}
         <li data-p="{{ li_count }}" class="{% if template == 'account' %}site-nav--active {% endif %}account" id="accounthold">{{ accountdata }}</li>

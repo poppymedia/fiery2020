@@ -44,7 +44,8 @@
 
 
 
-  {% assign gridspace = '20px' %}
+  {% assign gridspace = section.settings.promotions_spacing | append: 'px' %}
+  {% assign gridpadding = section.settings.promotions_padding | append: 'px' %}
 
   #shopify-section-{{ section.id }} {
     color: {{ section.settings.promotions_text }};
@@ -229,6 +230,15 @@
 
 
 
+
+  /*
+  #shopify-section-{{ section.id }} .features .meta {
+    background: black;
+  }
+  */
+
+
+
     
   </style>
 
@@ -254,7 +264,7 @@
               
                 {% assign imgsize = 1000 | append: 'x' %}
 
-                <img src="{{ block.settings.image | img_url: 'master' }}" />
+                <img src="{{ block.settings.image | img_url: 'master' }}" /><!-- IMGSIZE: {{ imgsize }} -->
 
             </div>
             {% endcapture %}
@@ -390,15 +400,6 @@
           }
         ],
         "default": "center"
-      },
-      {
-        "type": "range",
-        "id": "per_row_mobile",
-        "min": 0,
-        "max": 2,
-        "step": 1,
-        "label": "Columns on mobile",
-        "default": 1
       },
       {
          "type": "range",

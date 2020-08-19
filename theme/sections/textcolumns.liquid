@@ -341,7 +341,7 @@
     }
     
   }
-    
+
   </style>
 
   {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
@@ -367,7 +367,7 @@
         <div class="promotion item" role="presentation" style="{% if block.settings.image and section.settings.image_type == 'background' %}background: url('{{ block.settings.image | img_url: imgsize }}') {{ block.settings.color_bg }} no-repeat center center;{% else %}background:{{ block.settings.color_bg }};{% endif %}border: {% if block.settings.border_thickness > 0 %}{{ block.settings.border_thickness }}px{% else %}0{% endif %} solid {{ block.settings.color_border }};">
 
           {% if block.settings.image and section.settings.image_type != 'background' %}
-          <img src="{{ block.settings.image | img_url: imgsize }}" />
+          <img src="{{ block.settings.image | img_url: imgsize }}" /><!-- IMGSIZE: {{ imgsize }} -->
           {% endif %}
 
           <div class="desc">

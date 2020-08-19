@@ -351,6 +351,7 @@
                           {% endif %}
                       {% endfor %}
 
+                      <!-- TO DO: Check the vendor_default setting works -->
                       {% assign showvendor = 'true' %}{% if product_vendor == shop.name %}{% unless settings.vendor_default %}{% assign showvendor = 'false' %}{% endunless %}{% endif %}
 
                       {% if showvendor == 'true' %}

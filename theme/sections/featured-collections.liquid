@@ -28,6 +28,37 @@
 {%- endcapture -%}
 
 
+
+
+
+
+{% capture productitems %}
+
+{% for block in section.blocks %}
+
+  {% assign collection = collections[block.settings.feature_collection] %}
+  {% include 'grid-collection' %}{%- assign productsn = productsn | plus: 1 -%}
+  
+{% else %}
+
+  {% for i in (1..6) %}
+  
+  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+  {% assign demo_title = 'homepage.onboarding.collection_title' | t %}
+  {% assign demo_description = 'homepage.onboarding.collection_description' | t %}
+  {% assign demo_img = 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' %}
+  {% include 'grid-collection', demo_title: demo_title, demo_description: demo_description, demo_img: demo_img %}
+  
+  {% endfor %}
+
+{% endfor %}
+
+{% endcapture %}
+
+
+
+
+
 <style>
 {%- if section.settings.section_line_size > 0 -%}
 #shopify-section-{{ section.id }} .divide {     
@@ -259,11 +290,92 @@
   
 }
 {% endcomment %}  
+
+
+
+
+
+
+{% if section.settings.type == 'scrollbar' %}
+{% assign itemw = section.settings.product %}
+
+@media only screen and (min-width: {{ settings.width_min_tablet }}) {
+}
+
+  /* The emerging W3C standard
+     that is currently Firefox-only */
+  #shopify-section-{{ section.id }} * {
+    scrollbar-width: thin;
+    scrollbar-color: {{ settings.color_collection_grid_text }} transparent;
+  }
+  /* Works on Chrome/Edge/Safari */
+  #shopify-section-{{ section.id }} *::-webkit-scrollbar {
+    width: 12px;
+  }
+  #shopify-section-{{ section.id }} *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  #shopify-section-{{ section.id }} *::-webkit-scrollbar-thumb {
+    background-color: {{ settings.color_collection_grid_text }};
+    {% if settings.button_shape == 'curved' %}
+    border-radius: 5px;
+    {% endif %}
+    {% if settings.button_shape == 'rounded' %}
+    border-radius: {{ settings.button_base_size | times: 2 }}px;
+    {% endif %}  
+    border: 5px solid transparent;
+  }
+
+
+  {% assign productw = itemw | plus: section.settings.spacing | plus: section.settings.spacing %}
+  #shopify-section-{{ section.id }}.shopify-section.collection {
+    /* TESTING IF BOTTOM SNAPS */
+    margin-bottom: 0;
+  }
+  #shopify-section-{{ section.id }} .container .scroller {
+    overflow-x: auto;
+    //-webkit-overflow-scrolling: touch;
+    /* overflow: visible; */
+    overflow-y: none;
+
+
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+
+
+  }
+  #shopify-section-{{ section.id }} .container .scroller .products {
+    width: {{ productw | times: productsn }}px;
+    margin-bottom: 0;
+    /* padding-right: {{ gutter }}; */
+  }
+  {% endif %}
+
+
+@media only screen and (max-width: {{ settings.width_max_mobile }}) {
+  {% assign productm = itemw | plus: section.settings.spacing %}
+  {% if settings.mobile_2_columns %}{% assign productm = settings.width_min_tablet | remove: 'px' | divided_by: 2 %}{% endif %}
+  #shopify-section-{{ section.id }} .container .scroller .products {    
+    {% if settings.mobile_2_columns %}
+    width: {{ productm | divided_by: 2 | plus: section.settings.spacing | times: productsn }}px !important;
+    {% else %}
+    width: {{ productm | times: productsn }}px !important;
+    {% endif %}
+    margin-bottom: 0 !important;
+  }
+  #shopify-section-{{ section.id }} .container .scroller .products .item {
+    width: {{ productm | divided_by: 2 }}px !important;
+    max-width: {{ productm | divided_by: 2 }}px !important;
+  }
+}
+
+
+
   
 </style>
 
 {% capture expand %}
-{% if section.settings.type != 'hidden' %}
+{% if section.settings.type != 'hidden' and section.settings.type != 'scrollbar' %}
 <span class="expand" data-url="/collections"></span>
 {% endif %}
 {% endcapture %}
@@ -282,30 +394,18 @@
 
 {% comment %}{% if section.settings.onerow %}<div class="singlerow">{% endif %}{% endcomment %}
 
+{% if section.settings.type == 'scrollbar' %}<div class="scroller">{% endif %}
+
 <div class="products collections {{ class }}">
 
-{% for block in section.blocks %}
-
-  {% assign collection = collections[block.settings.feature_collection] %}
-  {% include 'grid-collection' %}
-  
-{% else %}
-
-  {% for i in (1..6) %}
-  
-  {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
-  {% assign demo_title = 'homepage.onboarding.collection_title' | t %}
-  {% assign demo_description = 'homepage.onboarding.collection_description' | t %}
-  {% assign demo_img = 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' %}
-  {% include 'grid-collection', demo_title: demo_title, demo_description: demo_description, demo_img: demo_img %}
-  
-  {% endfor %}
-
-{% endfor %}
+{{ productitems }}
   
 {{ fillrow }}
   
 </div> 
+
+
+{% if section.settings.type == 'scrollbar' %}</div>{% endif %}
 
 
 
@@ -603,6 +703,10 @@ $(document).ready(function(){
            {
              "value": "expand",
              "label": "Expand"
+           },
+           {
+             "value": "scrollbar",
+             "label": "Scrollbar"
            },
            {
              "value": "collection",

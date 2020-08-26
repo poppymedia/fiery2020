@@ -627,22 +627,26 @@ main > div {
     {% if section.settings.show_sku %}
         {% if section.settings.sku_as_summary %}
         {% else %}
+          {% unless product.template_suffix contains 'orderform' %}
           <p class="vendor">
             
             {{ current_variant.sku }}
             
           </p>
+          {% endunless %}
         {% endif %}
     {% endif %}
     {% endcapture %}
 
     {% capture get_sku_summary %}
     {% if section.settings.sku_as_summary %}
+          {% unless product.template_suffix contains 'orderform' %}
           <p class="summary">
             
             {{ current_variant.sku }}
             
           </p>
+          {% endunless %}
     {% endif %}
     {% endcapture %}
         
@@ -753,6 +757,14 @@ main > div {
           {% capture variant_items %}
           {% unless section.settings.variant_style == 'hidden' %}
           {% for option in product.options_with_values %}
+
+            {% assign optcheck = option.name | downcase %}
+            <!-- TO DO: Checking for colour styling -->
+            {% assign current_style = '' %}
+            {% if optcheck contains 'color' or optcheck contains 'colour' %}
+              {% assign current_style = section.settings.color_style %}
+            {% endif %}
+
             <div class="selector-wrapper js">
               
               {% unless template contains 'giftcard' %} 
@@ -762,40 +774,10 @@ main > div {
               </label>
               {% endunless %}
 
-              {% if section.settings.variant_style == 'dropdown' %}
-              <select name="id" id="productSelect" class="single-option-select">
-                {% for variant in product.variants %}      
-                  {% if variant.available %}>
-                    {% assign option_value = variant.title %}
-                    <option value="{{ variant.id }}"{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %}>
-                      {{ option_value }}{% comment %} - {{ variant.price | money_with_currency }}{% endcomment %}
-                    </option>
-                  {% else %}
-                    <option disabled="disabled">
-                      {{ variant.title }}{% comment %} - sold out{% endcomment %}
-                    </option>
-                  {% endif %}
-                {% endfor %}
-               </select>
-              {% endif %}
 
-              {% if section.settings.variant_style == 'dropdowns' %}
-              <select
-                id="SingleOptionSelector-{{ forloop.index0 }}"
-                data-single-option-selector
-                data-index="option{{ option.position }}"{% if option.values.size == 1 %} style="display:none;"{% endif %}>
-                {% for value in option.values %}
-                  <option
-                    value="{{ value | escape }}"
-                    {% if option.selected_value == value %}selected="selected"{% endif %}>
-                      {{ value }}
-                  </option>
-                {% endfor %}
-              </select>
-              {% endif %}
 
               {% comment %}ID List: {{ variant_id_list }}<br />{% endcomment %}
-              {% if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' %} 
+              {% if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' or current_style == 'buttons' or current_style == 'swatches' %} 
                   {% assign option_name = option.name | downcase %}
                   {% assign current_option = "option" | append: option.position %}
                   {% assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " %}
@@ -848,14 +830,57 @@ main > div {
 
                   {% endfor %}
         
-              {% if template contains 'giftcard' %}         
-              {% if shop.taxes_included %}
+                  {% if template contains 'giftcard' %}         
+                    {% if shop.taxes_included %}
+                    {% else %}
+                      {% if settings.gift_card_redemption == 'single' %}<p class="notice">{{ 'gift_cards.general.gift_cards_priced' | t }} {{ 'products.general.tax_inc' | t }}</p>{% endif %}
+                    {% endif %}    
+                  {% endif %}
+
+
               {% else %}
-              {% if settings.gift_card_redemption == 'single' %}<p class="notice">{{ 'gift_cards.general.gift_cards_priced' | t }} {{ 'products.general.tax_inc' | t }}</p>{% endif %}
-              {% endif %}    
-                    {% endif %}
+
+
+                  {% if section.settings.variant_style == 'dropdown' or current_style == 'dropdown' %}
+                  <select name="id" id="productSelect" class="single-option-select">
+                    {% for variant in product.variants %}      
+                      {% if variant.available %}>
+                        {% assign option_value = variant.title %}
+                        <option value="{{ variant.id }}"{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %}>
+                          {{ option_value }}{% comment %} - {{ variant.price | money_with_currency }}{% endcomment %}
+                        </option>
+                      {% else %}
+                        <option disabled="disabled">
+                          {{ variant.title }}{% comment %} - sold out{% endcomment %}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+                   </select>
+                  {% endif %}
+
+                  {% if section.settings.variant_style == 'dropdowns' or current_style == 'dropdowns' %}
+                  <select
+                    id="SingleOptionSelector-{{ forloop.index0 }}"
+                    data-single-option-selector
+                    data-index="option{{ option.position }}"{% if option.values.size == 1 %} style="display:none;"{% endif %}>
+                    {% for value in option.values %}
+                      <option
+                        value="{{ value | escape }}"
+                        {% if option.selected_value == value %}selected="selected"{% endif %}>
+                          {{ value }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                  {% endif %}
+
 
               {% endif %}
+
+
+
+
+
+
 
             </div>
           {% endfor %}  
@@ -1118,12 +1143,16 @@ main > div {
     {% endcapture %}
 
     {% capture get_first_variant %}
+    <!-- TO DO: Check if variant is selected, if so, must show chosen varaint -->
     {%- if section.settings.first_variant -%}
     <div class="first-variant">
       {% assign count = 0 %}  
       {% for variant in product.variants %}
-          {% if count == 0 %}              
-              {% unless product.template_suffix contains 'giftcard' or variant.title == 'Default Title' %}{{ variant.title }}{% endunless %}
+          {% if count == 0 %}    
+              {% assign current_title = variant.title %}   
+              {% assign current = product.selected_or_first_available_variant %}  
+              {% assign current_title = current.title %}          
+              {% unless product.template_suffix contains 'giftcard' or product.template_suffix contains 'orderform' or variant.title == 'Default Title' %}{{ current_title }}{% endunless %}
           {% assign count = 1 %} 
       {% endif %}   
       {% endfor %}
@@ -1546,6 +1575,38 @@ main > div {
           }
         ],
         "default": "dropdowns"
+      },
+      {
+        "type": "select",
+        "id": "color_style",
+        "label": "Color style",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          },
+          {
+            "value": "swatches",
+            "label": "Swatches"
+          },
+          {
+            "value": "dropdown",
+            "label": "Single Dropdown"
+          },
+          {
+            "value": "dropdowns",
+            "label": "Multi Dropdowns"
+          },
+          {
+            "value": "thumbnails",
+            "label": "Thumbnails"
+          }
+        ],
+        "default": "swatches"
       },
       {
         "type": "select",

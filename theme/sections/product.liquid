@@ -824,9 +824,10 @@ main > div {
                         {% assign checked = "" %}
                         {% if current_variant[current_option] == value %}
                             {% assign checked = ' disabled' %}
-                        {% endif %}             
+                        {% endif %}
 
-                        <a href="{{ url }}"{{ class }}{{ checked }} />{{ text }}</a>
+                        {% if current_style == 'swatches' %}{% capture alt %} title="{{ text }}"{% endcapture %}{% endif %}
+                        <a href="{{ url }}"{{ class }}{{ checked }}{{ alt }} />{{ text }}</a>
 
                   {% endfor %}
         

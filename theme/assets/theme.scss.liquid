@@ -2654,13 +2654,18 @@ textarea {
 }
 
 /*================ Form elements & Buttons ================*/
+a.col,
+input,
+textarea,
+select {
+	border: {% if settings.input_border_thickness > 0 %}{{ settings.input_border_thickness }}px{% else %}0{% endif %} solid $color-form-border;
+}
 input,
 textarea,
 select {
 	padding: 0.4em 0.7em;
 	background-color: $color-form-bg;
 	/* border-color: $color-form-border; */
-	border: {% if settings.input_border_thickness > 0 %}{{ settings.input_border_thickness }}px{% else %}0{% endif %} solid $color-form-border;
 	/* border: solid 1px red !important; */
 	color: $color-form-text;
 	/*
@@ -5689,4 +5694,8 @@ headings/titles
 */
 
 
-
+a.col {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+}

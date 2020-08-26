@@ -1956,6 +1956,31 @@
       {
         "type": "header",
         "content": "Promotions"
+      },
+
+      {
+        "type": "header",
+        "content": "Swatches"
+      },
+      {
+        "id": "swatch_style",
+        "label": "Swatch style",
+        "type": "select",
+        "options": [
+          {
+            "value": "palette",
+            "label": "Palette"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          },
+          {
+            "value": "circle",
+            "label": "Circle"
+          }
+        ],
+        "default": "square"
       }
     ]
   },

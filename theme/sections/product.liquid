@@ -765,7 +765,7 @@ main > div {
               {% assign current_style = section.settings.color_style %}
             {% endif %}
 
-            {% if section.settings.variant_style == 'dropdown' or current_style == 'dropdown' %}
+            {% if section.settings.variant_style == 'dropdowns' or section.settings.variant_style == 'dropdown' and current_style != 'swatches' %}
             <div class="selector-wrapper js">
             {% endif %}
               
@@ -787,43 +787,49 @@ main > div {
                       {% for value in option.values %}
 
                             {% assign available = false %}
+
                             {% for variant in product.variants %}
-                          {% assign showthumb = false %}
-                          {% if section.settings.variant_style == 'thumbnails' %}
-                                    {% comment %}
-                                    <!-- NOTE: Color option needs to be positioned as first option -->
-                                    {% endcomment %}                                
-                            {% if firstgroup contains 'colour' or firstgroup contains 'color' %}
-                              {% assign showthumb = true %}
-                            {% endif %}
-                          {% endif %}
-                                {% capture id %}{{ variant.id }}{% endcapture %}
-                                {% unless variant.available %}
-                                  {% continue %}
-                                {% endunless %}
-                                {% unless variant[current_option] == value %}
-                                  {% continue %}
-                                {% endunless %}
-                                {% unless variant[other_options[0]] == current_variant[other_options[0]] %}
-                                  {% continue %}
-                                {% endunless %}
-                                {% unless variant[other_options[1]] == current_variant[other_options[1]] %}
-                                  {% continue %}
-                                {% endunless %}
-                                {% assign available = true %}
-                                {% assign uri = variant.id %}
-                                {% capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture %} 
+
+                                  {% assign showthumb = false %}
+
+                                  {% if section.settings.variant_style == 'thumbnails' %}
+                                      {% comment %}
+                                      <!-- NOTE: Color option needs to be positioned as first option -->
+                                      {% endcomment %}                                
+                                      {% if firstgroup contains 'colour' or firstgroup contains 'color' %}
+                                          {% assign showthumb = true %}
+                                      {% endif %}
+                                  {% endif %}
+
+                                  {% capture id %}{{ variant.id }}{% endcapture %}
+                                  {% unless variant.available %}
+                                    {% continue %}
+                                  {% endunless %}
+                                  {% unless variant[current_option] == value %}
+                                    {% continue %}
+                                  {% endunless %}
+                                  {% unless variant[other_options[0]] == current_variant[other_options[0]] %}
+                                    {% continue %}
+                                  {% endunless %}
+                                  {% unless variant[other_options[1]] == current_variant[other_options[1]] %}
+                                    {% continue %}
+                                  {% endunless %}
+                                  {% assign available = true %}
+                                  {% assign uri = variant.id %}
+                                  {% capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture %} 
                         
-                          {% unless option_name contains 'colour' or option_name contains 'color' %}
-                                   {% comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment %}
-                                   {% if section.settings.show_color_thumbnails %}
-                                        {% assign showthumb = false %}
-                                   {% endif %}
-                          {% endunless %}     
+                                  {% unless option_name contains 'colour' or option_name contains 'color' %}
+                                      {% comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment %}
+                                      {% if section.settings.show_color_thumbnails %}
+                                          {% assign showthumb = false %}
+                                      {% endif %}
+                                  {% endunless %}     
                   
                                 {% capture text %}{% if showthumb == true %}<img src="{{ variant | img_url: '60x' }}" />{% else %}{{ value }}{% assign class=' class="btn"' %}{% endif %}{% endcapture %}              
-                          {% assign opt_i = opt_i | plus: 1 %}
-                          {% endfor %}
+                                {% assign opt_i = opt_i | plus: 1 %}
+
+                            {% endfor %}
+
                             {% assign checked = "" %}
                             {% assign selected = "" %}
                             {% if current_variant[current_option] == value %}
@@ -883,7 +889,7 @@ main > div {
               {% endif %}
 
 
-            {% if section.settings.variant_style == 'dropdown' or current_style == 'dropdown' %}
+            {% if section.settings.variant_style == 'dropdowns' or section.settings.variant_style == 'dropdown' and current_style != 'swatches' %}
             </div>
             {% endif %}
 

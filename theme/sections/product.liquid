@@ -765,7 +765,9 @@ main > div {
               {% assign current_style = section.settings.color_style %}
             {% endif %}
 
+            {% if section.settings.variant_style == 'dropdown' or current_style == 'dropdown' %}
             <div class="selector-wrapper js">
+            {% endif %}
               
               {% unless template contains 'giftcard' %} 
               <label for="SingleOptionSelector-{{ forloop.index0 }}">
@@ -775,70 +777,72 @@ main > div {
               {% endunless %}
 
 
+              {% if current_style == 'swatches' %}<div class="colors">{% endif %}
 
-              {% comment %}ID List: {{ variant_id_list }}<br />{% endcomment %}
-              {% if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' or current_style == 'buttons' or current_style == 'swatches' %} 
-                  {% assign option_name = option.name | downcase %}
-                  {% assign current_option = "option" | append: option.position %}
-                  {% assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " %}
-                  {% for value in option.values %}
+                  {% comment %}ID List: {{ variant_id_list }}<br />{% endcomment %}
+                  {% if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' or current_style == 'buttons' or current_style == 'swatches' %} 
+                      {% assign option_name = option.name | downcase %}
+                      {% assign current_option = "option" | append: option.position %}
+                      {% assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " %}
+                      {% for value in option.values %}
 
-                        {% assign available = false %}
-                        {% for variant in product.variants %}
-                      {% assign showthumb = false %}
-                      {% if section.settings.variant_style == 'thumbnails' %}
-                                {% comment %}
-                                <!-- NOTE: Color option needs to be positioned as first option -->
-                                {% endcomment %}                                
-                        {% if firstgroup contains 'colour' or firstgroup contains 'color' %}
-                          {% assign showthumb = true %}
-                        {% endif %}
-                      {% endif %}
-                            {% capture id %}{{ variant.id }}{% endcapture %}
-                            {% unless variant.available %}
-                              {% continue %}
-                            {% endunless %}
-                            {% unless variant[current_option] == value %}
-                              {% continue %}
-                            {% endunless %}
-                            {% unless variant[other_options[0]] == current_variant[other_options[0]] %}
-                              {% continue %}
-                            {% endunless %}
-                            {% unless variant[other_options[1]] == current_variant[other_options[1]] %}
-                              {% continue %}
-                            {% endunless %}
-                            {% assign available = true %}
-                            {% assign uri = variant.id %}
-                            {% capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture %} 
-                    
-                      {% unless option_name contains 'colour' or option_name contains 'color' %}
-                               {% comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment %}
-                               {% if section.settings.show_color_thumbnails %}
-                                    {% assign showthumb = false %}
-                               {% endif %}
-                      {% endunless %}     
-              
-                            {% capture text %}{% if showthumb == true %}<img src="{{ variant | img_url: '60x' }}" />{% else %}{{ value }}{% assign class=' class="btn"' %}{% endif %}{% endcapture %}              
-                      {% assign opt_i = opt_i | plus: 1 %}
+                            {% assign available = false %}
+                            {% for variant in product.variants %}
+                          {% assign showthumb = false %}
+                          {% if section.settings.variant_style == 'thumbnails' %}
+                                    {% comment %}
+                                    <!-- NOTE: Color option needs to be positioned as first option -->
+                                    {% endcomment %}                                
+                            {% if firstgroup contains 'colour' or firstgroup contains 'color' %}
+                              {% assign showthumb = true %}
+                            {% endif %}
+                          {% endif %}
+                                {% capture id %}{{ variant.id }}{% endcapture %}
+                                {% unless variant.available %}
+                                  {% continue %}
+                                {% endunless %}
+                                {% unless variant[current_option] == value %}
+                                  {% continue %}
+                                {% endunless %}
+                                {% unless variant[other_options[0]] == current_variant[other_options[0]] %}
+                                  {% continue %}
+                                {% endunless %}
+                                {% unless variant[other_options[1]] == current_variant[other_options[1]] %}
+                                  {% continue %}
+                                {% endunless %}
+                                {% assign available = true %}
+                                {% assign uri = variant.id %}
+                                {% capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture %} 
+                        
+                          {% unless option_name contains 'colour' or option_name contains 'color' %}
+                                   {% comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment %}
+                                   {% if section.settings.show_color_thumbnails %}
+                                        {% assign showthumb = false %}
+                                   {% endif %}
+                          {% endunless %}     
+                  
+                                {% capture text %}{% if showthumb == true %}<img src="{{ variant | img_url: '60x' }}" />{% else %}{{ value }}{% assign class=' class="btn"' %}{% endif %}{% endcapture %}              
+                          {% assign opt_i = opt_i | plus: 1 %}
+                          {% endfor %}
+                            {% assign checked = "" %}
+                            {% assign selected = "" %}
+                            {% if current_variant[current_option] == value %}
+                                {% assign checked = ' disabled' %}{% assign selected = ' selected' %}
+                            {% endif %}
+
+                            {% if current_style == 'swatches' %}{% assign bgurl = text | append: '.png' | file_img_url: '50x50' %}{% capture alt %} title="{{ text }}"{% endcapture %}{% capture class %} class="col{{ selected }}" style="background-color:{{ text | strip | remove: ' ' | downcase }};{% unless bgurl contains 'no-image' %}background-url('{{ bgurl }}'){% endunless %}"{% endcapture %}{% assign text = '' %}{% endif %}
+                            <a href="{{ url }}"{{ class }}{{ checked }}{{ alt }} />{{ text }}</a>
+
                       {% endfor %}
-                        {% assign checked = "" %}
-                        {% assign selected = "" %}
-                        {% if current_variant[current_option] == value %}
-                            {% assign checked = ' disabled' %}{% assign selected = ' selected' %}
-                        {% endif %}
+            
+                      {% if template contains 'giftcard' %}         
+                        {% if shop.taxes_included %}
+                        {% else %}
+                          {% if settings.gift_card_redemption == 'single' %}<p class="notice">{{ 'gift_cards.general.gift_cards_priced' | t }} {{ 'products.general.tax_inc' | t }}</p>{% endif %}
+                        {% endif %}    
+                      {% endif %}
 
-                        {% if current_style == 'swatches' %}{% assign bgurl = text | append: '.png' | file_img_url: '50x50' %}{% capture alt %} title="{{ text }}"{% endcapture %}{% capture class %} class="col{{ selected }}" style="background-color:{{ text | strip | remove: ' ' | downcase }};{% unless bgurl contains 'no-image' %}background-url('{{ bgurl }}'){% endunless %}"{% endcapture %}{% assign text = '' %}{% endif %}
-                        <a href="{{ url }}"{{ class }}{{ checked }}{{ alt }} />{{ text }}</a>
-
-                  {% endfor %}
-        
-                  {% if template contains 'giftcard' %}         
-                    {% if shop.taxes_included %}
-                    {% else %}
-                      {% if settings.gift_card_redemption == 'single' %}<p class="notice">{{ 'gift_cards.general.gift_cards_priced' | t }} {{ 'products.general.tax_inc' | t }}</p>{% endif %}
-                    {% endif %}    
-                  {% endif %}
-
+                  {% if current_style == 'swatches' %}</div>{% endif %}
 
               {% else %}
 
@@ -879,12 +883,12 @@ main > div {
               {% endif %}
 
 
-
-
-
-
-
+            {% if section.settings.variant_style == 'dropdown' or current_style == 'dropdown' %}
             </div>
+            {% endif %}
+
+
+
           {% endfor %}  
           {% endunless %}
           {% endcapture %}

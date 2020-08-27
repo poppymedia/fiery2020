@@ -5694,12 +5694,27 @@ headings/titles
 */
 
 
-a.col {
-	display: inline-block;
+.colors {
 	position: relative;
-	width: 30px;
-	height: 30px;
+	overflow: hidden;
 }
-a.col.selected {
-	border-color: transparent;
+	.colors a.col {
+		display: inline-block;
+		position: relative;
+		overflow: hidden;
+		float: left;
+		width: 30px;
+		height: 30px;
+		padding: 0;
+		margin: 0 0.25em 0.25em 0 !important;
+	}
+	.colors a.col.selected {
+		border-color: transparent;
+	}
+
+
+.variations select,
+.variations textarea,
+.variations input {
+	margin-bottom: 0.25em !important;
 }

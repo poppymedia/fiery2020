@@ -115,6 +115,19 @@
       #shopify-section-{{ section.id }} .features .featurecolumn {
           grid-area: 1 / 2 / {{ rows }} / 2;
       }
+
+        {% if section.settings.promotions_alignment == 'expand' %}      
+        #shopify-section-{{ section.id }} .features > div {
+          text-align: left;
+        } 
+        {% endif %}
+
+        {% if section.settings.promotions_alignment == 'pinch' %}      
+        #shopify-section-{{ section.id }} .features > div {
+          text-align: right;
+        } 
+        {% endif %}
+
     {% endif %}
 
 
@@ -142,6 +155,19 @@
       #shopify-section-{{ section.id }} .features .featurecolumn {
           grid-area: 1 / 1 / {{ rows }} / 1;
       }
+
+        {% if section.settings.promotions_alignment == 'expand' %}      
+        #shopify-section-{{ section.id }} .features > div {
+          text-align: right;
+        } 
+        {% endif %}
+
+        {% if section.settings.promotions_alignment == 'pinch' %}      
+        #shopify-section-{{ section.id }} .features > div {
+          text-align: left;
+        } 
+        {% endif %}
+
     {% endif %}
 
 

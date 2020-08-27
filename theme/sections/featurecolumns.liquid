@@ -171,6 +171,25 @@
           grid-area: 1 / 2 / {{ rows }};
         }
 
+        {% if section.settings.promotions_alignment == 'expand' %}      
+        #shopify-section-{{ section.id }} .features > div {
+          text-align: right;
+        }      
+        #shopify-section-{{ section.id }} .features > div:nth-child(even) {
+          text-align: left;
+        } 
+        {% endif %}
+
+        {% if section.settings.promotions_alignment == 'pinch' %}      
+        #shopify-section-{{ section.id }} .features > div {
+          text-align: left;
+        }      
+        #shopify-section-{{ section.id }} .features > div:nth-child(even) {
+          text-align: right;
+        } 
+        {% endif %}
+
+
     {% endif %}
 
 
@@ -391,8 +410,16 @@
             "label": "Left"
           },
           {
+            "value": "expand",
+            "label": "Expand"
+          },
+          {
             "value": "center",
             "label": "Center"
+          },
+          {
+            "value": "pinch",
+            "label": "Pinch"
           },
           {
             "value": "right",

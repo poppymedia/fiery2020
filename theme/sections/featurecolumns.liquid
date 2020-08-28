@@ -458,7 +458,7 @@
          "type": "range",
          "id": "promotions_spacing",
          "min": 0,
-         "max": 50,
+         "max": 100,
          "step": 10,
          "unit": "px",
          "label": "Column spacing",
@@ -468,7 +468,7 @@
          "type": "range",
          "id": "promotions_padding",
          "min": 0,
-         "max": 50,
+         "max": 100,
          "step": 5,
          "unit": "px",
          "label": "Column padding",
@@ -633,6 +633,30 @@
          "id": "image_parallax",
          "label": "Show parallax",
          "default": true
+      },
+      {
+        "type": "header",
+        "content": "Key"
+      },
+      {
+            "type": "select",
+            "id": "key_style",
+            "label": "Key style",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "bullet",
+                "label": "Bullet"
+              },
+              {
+                "value": "number",
+                "label": "Number"
+              }
+            ],
+            "default": "bullet"
       }
   ],
     "blocks": [

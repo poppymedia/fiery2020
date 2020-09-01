@@ -1184,7 +1184,7 @@ main > div {
       {% assign producturl = product.url | within: collection %}
       {% include 'social-sharing', share_title: product.title, share_permalink: producturl, share_image: product, share_status: section.settings.share_buttons %}
     {% endif %}
-    {% endcapture %} 
+    {% endcapture %}
   
     {% if product.template_suffix contains 'orderform' %}
     {% capture get_variants %}{% include 'variants-list' %}{% endcapture %}
@@ -1202,19 +1202,19 @@ main > div {
     {% endif %}
     {% if section.settings.gallery_size == 'twothirds' %}
       {% assign descolwidth = 'third' %}
-    {% endif %}  
+    {% endif %}
   
-      {% if section.settings.layout_grid_prominent_feature == 'image_title' %}  
+      {% if section.settings.layout_grid_prominent_feature == 'image_title' %}
       <div class="{{ imgcolwidth }} img">
             {{ get_images }}
-              {{ get_thumbs }}
+            {{ get_thumbs }}
       </div>
         <div class="{{ descolwidth }} desc">
               {{ get_h1 }}
               {{ get_first_variant }}
               {{ get_vendor }}
               {{ get_sku }}
-                {{ get_rating }}
+              {{ get_rating }}
               {{ get_price }}
               {{ get_variants }}
               {{ get_sku_summary }}

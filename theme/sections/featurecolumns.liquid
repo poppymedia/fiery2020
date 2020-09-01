@@ -339,7 +339,7 @@
             {% endcapture %}
 
         {% else %}
-        {% assign key = '<i>&#8226;</i>' %}
+        {% assign key = '<i style="left:{{ block.settings.pos_x }}%;top:{{ block.settings.pos_y }}%">&#8226;</i>' %}
         {% assign keys = keys | append: key %}
         {% endif %} 
 

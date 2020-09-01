@@ -25,24 +25,20 @@
                   
                   {{ show_price_tax }}
                   
-                </td>
-                
-                {% if settings.cart_enable %}
-                
+                </td>                
+                {% if settings.cart_enable %}                
                 {% if section.settings.show_qty %}
-                <td style="text-align:right;">
+                <td class="qty" style="text-align:right;">
                 <div class="action quantity{% unless settings.quantity_style == 'minimal' %} buttons {{ settings.quantity_style }}{% endunless %} supports-cookies">
                 <input title="{{ 'products.general.quantity' | t }}" type="number" id="Quantity" name="updates[{{ variant.id }}]" value="0" min="0" {% unless variant.inventory_management == blank or variant.inventory_policy == 'continue' %} max="{{ variant.inventory_quantity }}"{% endunless %} onfocus="this.select()">
                 </div>
                 </td>
-                {% endif %} 
-                
+                {% endif %}                 
                 {% comment %}
                 <td style="text-align:right;">
                   <input name="updates[{{ variant.id }}]" onfocus="this.select()" class="quantity field" min="0" {% unless variant.inventory_management == blank or variant.inventory_policy == 'continue' %} max="{{ variant.inventory_quantity }}" {% endunless %} type="text" value="0" tabindex="1" />
                 </td>
-                {% endcomment %}
-                
+                {% endcomment %}                
                 {% endif %}
                 
               </tr>

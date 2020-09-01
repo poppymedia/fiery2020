@@ -54,6 +54,25 @@
   #shopify-section-{{ section.id }} h3 {
     color: {{ section.settings.promotions_title }};
   }
+  {% if section.settings.key_style != 'none' %}
+  #shopify-section-{{ section.id }} .featurecolumn {
+    position: relative;
+  }
+    #shopify-section-{{ section.id }} .featurecolumn .keys {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+    #shopify-section-{{ section.id }} .featurecolumn i {
+      position: absolute;
+      font-style: normal;
+      font-size: 60px;
+      color: white;
+    }
+  {% endif %}
   #shopify-section-{{ section.id }} .featurecolumn img {
     width: 100%;
   }
@@ -290,7 +309,9 @@
     {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
 
     {% if section.settings.title != empty %}<h2>{{ section.settings.title }}</h2>{% endif %}
-    
+
+    {% assign keys  = '' %}
+
     {%- for block in section.blocks -%}
 
         {% if block.type == 'feature' %}
@@ -303,15 +324,12 @@
             {% endcapture %}
 
             {% capture feature_image %}
-            <div class="featurecolumn{% if section.settings.image_parallax %} parallax{% endif %}" role="presentation">
                 
-                {% assign styles = styles | append: blockstyle %}
-              
+                {% assign styles = styles | append: blockstyle %}              
                 {% assign imgsize = 1000 | append: 'x' %}
 
                 <img src="{{ block.settings.image | img_url: 'master' }}" /><!-- IMGSIZE: {{ imgsize }} -->
 
-            </div>
             {% endcapture %}
 
             {% capture feature_desc %}    
@@ -320,10 +338,29 @@
             </div>
             {% endcapture %}
 
+        {% else %}
+        {% assign key = '<i>&#8226;</i>' %}
+        {% assign keys = keys | append: key %}
         {% endif %} 
 
     {% endfor %}
-    
+
+
+
+    {% capture feature_image_with_keys %}
+            <div class="featurecolumn{% if section.settings.image_parallax %} parallax{% endif %}" role="presentation">
+                
+                {{ feature_image }}
+
+                {% if section.settings.key_style != 'none' %}
+                <div class="keys">
+                  {{ keys }}
+                </div>
+                {% endif %}
+
+            </div>
+    {% endcapture %}
+
 
 
     {% capture promotions %}
@@ -377,7 +414,7 @@
 
   <div class="features">
 
-    {{ feature_image }}
+    {{ feature_image_with_keys }}
 
     {{ promotions }}
 
@@ -700,6 +737,26 @@
             "type": "richtext",
             "id": "subheading",
             "label": "Text"
+          },
+          {
+             "type": "range",
+             "id": "pos_x",
+             "min": 0,
+             "max": 100,
+             "step": 1,
+             "unit": "%",
+             "label": "Horizontal",
+             "default": 0
+          },
+          {
+             "type": "range",
+             "id": "pos_y",
+             "min": 0,
+             "max": 100,
+             "step": 1,
+             "unit": "%",
+             "label": "Vertical",
+             "default": 0
           }
         ]
       }

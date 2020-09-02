@@ -55,6 +55,40 @@
     color: {{ section.settings.promotions_title }};
   }
   {% if section.settings.key_style != 'none' %}
+  /*
+  @keyframes fadein {
+      from {
+          opacity:0;
+      }
+      to {
+          opacity:1;
+      }
+  }
+  @-moz-keyframes fadein {
+      from {
+          opacity:0;
+      }
+      to {
+          opacity:1;
+      }
+  }
+  @-webkit-keyframes fadein {
+      from {
+          opacity:0;
+      }
+      to {
+          opacity:1;
+      }
+  }
+  @-o-keyframes fadein {
+      from {
+          opacity:0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  */
   #shopify-section-{{ section.id }} .featurecolumn {
     position: relative;
   }
@@ -66,17 +100,43 @@
       height: 100%;
       z-index: 2;
     }
+    #shopify-section-{{ section.id }} .meta {
+      position: relative;
+    }
+    #shopify-section-{{ section.id }} .meta i,
     #shopify-section-{{ section.id }} .featurecolumn i {
       position: absolute;
       font-style: normal;
-      display: grid;
+      display: inline-block;
       vertical-align: middle;
       text-align: center;
-      font-size: 9px;
-      width: 20px;
-      height: 20px;
+      line-height: {{ settings.marker_font_size | times: 1.5 }}px;
+      width: {{ settings.marker_font_size | times: 1.5 }}px;
+      height: {{ settings.marker_font_size | times: 1.5 }}px;
       border-radius: 50%;
+      font-size: {{ settings.marker_font_size }}px;
+      font-weight: bold;
       background: white;
+      color: black;
+      pointer-events: none;
+    }
+    /*
+    #shopify-section-{{ section.id }} .featurecolumn i,
+    #shopify-section-{{ section.id }} .features .meta {
+      animation: fadein 1s;
+      -moz-animation: fadein 1s;
+      -webkit-animation: fadein 1s;
+      -o-animation: fadein 1s;
+    }
+    */
+    #shopify-section-{{ section.id }} .meta i {
+      top: 0;
+      {% assign adj = settings.marker_font_size | times: 1.5 | minus: settings.marker_font_size | divided_by: 2 %}
+      margin-top: {{ settings.type_h3_size | minus: settings.marker_font_size | minus: adj }}px;
+    }
+    #shopify-section-{{ section.id }} .meta i:before,
+    #shopify-section-{{ section.id }} .featurecolumn i:before {
+      content: attr(data-n);;
     }
   {% endif %}
   #shopify-section-{{ section.id }} .featurecolumn img {
@@ -222,7 +282,22 @@
           grid-area: 1 / 2 / {{ rows }};
         }
 
-        {% if section.settings.promotions_alignment == 'expand' %}      
+        {% if section.settings.promotions_alignment == 'expand' %}   
+        #shopify-section-{{ section.id }} .features > div {
+          padding-right: {{ settings.marker_font_size | times: 2 }}px;
+        } 
+        #shopify-section-{{ section.id }} .features > div:nth-child(even) {
+          padding-left: {{ settings.marker_font_size | times: 2 }}px;
+        } 
+        #shopify-section-{{ section.id }} .features > div i {
+          left: auto;
+          right: 0;
+        }
+        #shopify-section-{{ section.id }} .features > div:nth-child(even) i {
+          right: auto;
+          left: 0;
+        }
+
         #shopify-section-{{ section.id }} .features > div {
           text-align: right;
         }      
@@ -231,7 +306,19 @@
         } 
         {% endif %}
 
-        {% if section.settings.promotions_alignment == 'pinch' %}      
+        {% if section.settings.promotions_alignment == 'pinch' %}   
+
+        #shopify-section-{{ section.id }} .features > div i {
+          right: auto;
+          left: 0;
+          margin-left: -{{ settings.marker_font_size | times: 2 }}px;
+        }
+        #shopify-section-{{ section.id }} .features > div:nth-child(even) i {
+          left: auto;
+          right: 0;
+          margin-right: -{{ settings.marker_font_size | times: 2 }}px;
+        }
+
         #shopify-section-{{ section.id }} .features > div {
           text-align: left;
         }      
@@ -316,7 +403,7 @@
 
     {% if section.settings.title != empty %}<h2>{{ section.settings.title }}</h2>{% endif %}
 
-    {% assign keys  = '' %}
+    {% assign keys  = '' %}{% assign key_n  = 0 %}
 
     {%- for block in section.blocks -%}
 
@@ -345,7 +432,8 @@
             {% endcapture %}
 
         {% else %}
-        {% assign key = '<i style="left:' | append: block.settings.pos_x | append: '%;top:' | append: block.settings.pos_y | append: '%"></i>' %}
+        {% assign key_n  = key_n | plus: 1 %}
+        {% assign key = '<i style="left:' | append: block.settings.pos_x | append: '%;top:' | append: block.settings.pos_y | append: '%" data-n="' | append: key_n | append: '"></i>' %}
         {% assign keys = keys | append: key %}
         {% endif %} 
 
@@ -370,6 +458,7 @@
 
 
     {% capture promotions %}
+    {% assign key_n  = 0 %}
     {%- for block in section.blocks -%}
 
         {% if block.type == 'promotion' %}
@@ -390,6 +479,9 @@
 
         <div class="meta">
 
+          {% assign key_n  = key_n | plus: 1 %}
+          {% assign key = '<i data-n="' | append: key_n | append: '"></i>' %}
+
           {% if block.settings.image and section.settings.image_type != 'background' %}
           <img src="{{ block.settings.image | img_url: imgsize }}" />
           {% endif %}
@@ -400,6 +492,8 @@
           </div>
           
           {% if block.settings.url != blank %}<a href="{{ block.settings.url }}"></a>{% endif %}
+
+          {{ key }}
 
         </div>
 
@@ -684,7 +778,7 @@
       {
             "type": "select",
             "id": "key_style",
-            "label": "Key style",
+            "label": "Marker style",
             "options": [
               {
                 "value": "none",
@@ -692,11 +786,11 @@
               },
               {
                 "value": "bullet",
-                "label": "Bullet"
+                "label": "Colour bullet"
               },
               {
                 "value": "number",
-                "label": "Number"
+                "label": "Number bullet"
               }
             ],
             "default": "bullet"
@@ -751,7 +845,7 @@
              "max": 100,
              "step": 1,
              "unit": "%",
-             "label": "Horizontal",
+             "label": "Marker horizontal",
              "default": 0
           },
           {
@@ -761,7 +855,7 @@
              "max": 100,
              "step": 1,
              "unit": "%",
-             "label": "Vertical",
+             "label": "Marker vertical",
              "default": 0
           }
         ]

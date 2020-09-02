@@ -2680,6 +2680,20 @@
       },
       {
         "type": "header",
+        "content": "Markers"
+      },
+      {
+        "type": "range",
+        "id": "marker_font_size",
+        "min": 7,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Marker font size",
+        "default": 13
+      },
+      {
+        "type": "header",
         "content": "Cookie policy"
       },
       {

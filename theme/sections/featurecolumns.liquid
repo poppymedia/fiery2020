@@ -69,8 +69,14 @@
     #shopify-section-{{ section.id }} .featurecolumn i {
       position: absolute;
       font-style: normal;
-      font-size: 60px;
-      color: white;
+      display: grid;
+      vertical-align: middle;
+      text-align: center;
+      font-size: 9px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
     }
   {% endif %}
   #shopify-section-{{ section.id }} .featurecolumn img {
@@ -339,7 +345,7 @@
             {% endcapture %}
 
         {% else %}
-        {% assign key = '<i style="left:{{ block.settings.pos_x }}%;top:{{ block.settings.pos_y }}%">&#8226;</i>' %}
+        {% assign key = '<i style="left:' | append: block.settings.pos_x | append: '%;top:' | append: block.settings.pos_y | append: '%"></i>' %}
         {% assign keys = keys | append: key %}
         {% endif %} 
 

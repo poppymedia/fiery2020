@@ -18,16 +18,46 @@
             padding: 0;
           }
 
+  {% unless section.settings.image_position == 'hidden' %}
+  {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
+  #shopify-section-{{ section.id }} {
+      position: relative;
+  }
+  #shopify-section-{{ section.id }}:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;  
+      background-color: {{ section.settings.promotions_bg }};  
+      opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
+  }
+  {% endif %}
+  {% endunless %}
 
   {% if section.settings.promotions_width == 'page' %}
   #shopify-section-{{ section.id }} {
-    background-color: {{ section.settings.promotions_bg }}; 
+    background-color: {{ section.settings.promotions_bg }};
   }
   {% endif %}
 
   {% if section.settings.promotions_width == 'overflow' %}
   #shopify-section-{{ section.id }} {
     background-color: {{ section.settings.promotions_bg }}; 
+    {% if section.settings.image_bg %}
+    background-image: url('{{ section.settings.image_bg | img_url: bg_image_x }}');
+
+    {% if section.settings.image_position == 'center' %}
+    background-position: center center; 
+    background-repeat: no-repeat;
+    {% endif %}
+
+    {% if section.settings.image_position == 'fill' %}
+    background-size: cover;
+    {% endif %}
+
+    {% endif %}
   }
   {% endif %}
 
@@ -91,6 +121,7 @@
   */
   #shopify-section-{{ section.id }} .featurecolumn {
     position: relative;
+    overflow: visible;
   }
     #shopify-section-{{ section.id }} .featurecolumn .keys {
       position: absolute;
@@ -116,8 +147,8 @@
       border-radius: 50%;
       font-size: {{ settings.marker_font_size }}px;
       font-weight: bold;
-      background: white;
-      color: black;
+      background: {{ section.settings.promotions_title }};
+      color: {{ section.settings.promotions_bg }};
       pointer-events: none;
     }
     /*
@@ -138,6 +169,10 @@
     #shopify-section-{{ section.id }} .featurecolumn i:before {
       content: attr(data-n);;
     }
+    #shopify-section-{{ section.id }} .featurecolumn i {
+      margin-top: -{{ adj }}px;
+      margin-left: -{{ adj }}px;
+    }
   {% endif %}
   #shopify-section-{{ section.id }} .featurecolumn img {
     width: 100%;
@@ -157,14 +192,14 @@
     }
       #shopify-section-{{ section.id }} .features {
         display: grid;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: auto auto auto;        
         grid-gap: {{ gridspace }};
         /* grid-gap: 0; */
 
         margin: 0 !important;
         position: relative !important;
         box-sizing: border-box !important;       
-        overflow: hidden !important;
+        overflow: visible !important;
       }
         #shopify-section-{{ section.id }} .features > div {
           box-sizing: border-box; 
@@ -173,7 +208,20 @@
         #shopify-section-{{ section.id }} .features .featurecolumn {
           grid-area: span 1 / span {{ columns }};
         }
+
     {% endif %}
+
+        {% if section.settings.promotions_alignment == 'right' %}
+        #shopify-section-{{ section.id }} .meta .desc  {
+          padding-right: {{ settings.marker_font_size }}px !important;
+        }
+        {% endif %}
+
+        {% if section.settings.promotions_alignment == 'left' %}
+        #shopify-section-{{ section.id }} .meta .desc  {
+          padding-left: {{ settings.marker_font_size | times: 2 }}px !important;
+        }
+        {% endif %}
 
 
     {% if section.settings.layout == '1_column_1_image' %}
@@ -189,7 +237,7 @@
         margin: 0 !important;
         position: relative !important;
         box-sizing: border-box !important;       
-        overflow: hidden !important;      
+        overflow: visible !important;      
     }
       #shopify-section-{{ section.id }} .features > div {
         box-sizing: border-box; 
@@ -229,7 +277,7 @@
         margin: 0 !important;
         position: relative !important;
         box-sizing: border-box !important;       
-        overflow: hidden !important;
+        overflow: visible !important;
     }
       #shopify-section-{{ section.id }} .features > div {
         box-sizing: border-box; 
@@ -270,7 +318,7 @@
         margin: 0 !important;
         position: relative !important;
         box-sizing: border-box !important;       
-        overflow: hidden !important;
+        overflow: visible !important;
       }
         #shopify-section-{{ section.id }} .features > div {
           box-sizing: border-box; 
@@ -326,6 +374,12 @@
         } 
         {% endif %}
 
+        {% if section.settings.promotions_alignment == 'center' %}
+        #shopify-section-{{ section.id }} .features > div:not(.featurecolumn) i {
+          position: relative;
+        }
+        {% endif %}
+
 
     {% endif %}
 
@@ -344,7 +398,7 @@
         margin: 0 !important;
         position: relative !important;
         box-sizing: border-box !important;       
-        overflow: hidden !important;
+        overflow: visible !important;
       }
         #shopify-section-{{ section.id }} .features > div {
           box-sizing: border-box; 
@@ -382,6 +436,17 @@
           display: inline-block;
           margin: 0 0 0 0.5em;
         }
+    {% if section.settings.key_style != 'none' %}
+    #shopify-section-{{ section.id }} .meta .desc {
+      padding-left: {{ settings.marker_font_size }}px;
+    }
+    #shopify-section-{{ section.id }} .meta i {
+      left: 0 !important;
+    }
+    #shopify-section-{{ section.id }} .meta i {
+      left: 0 !important;
+    }
+    {% endif %}
    }
 
 
@@ -425,9 +490,11 @@
             {% endcapture %}
 
             {% capture feature_desc %}    
+            {% if block.settings.subheading.size > 0 %}
             <div class="desc">
                   <p style="color:{{ block.settings.color_text }}">{{ block.settings.subheading }}</p>
             </div>
+            {% endif %}
             {% endcapture %}
 
         {% else %}
@@ -481,18 +548,18 @@
           {% assign key_n  = key_n | plus: 1 %}
           {% assign key = '<i data-n="' | append: key_n | append: '"></i>' %}
 
+          {{ key }}
+
           {% if block.settings.image and section.settings.image_type != 'background' %}
           <img src="{{ block.settings.image | img_url: imgsize }}" />
           {% endif %}
 
           <div class="desc">
           <h3>{{ block.settings.title }}</h3>
-          {% if block.settings.subheading != blank %}<p style="color:{{ block.settings.color_text }}">{{ block.settings.subheading }}</p>{% endif %}
+          {% if block.settings.subheading.size > 0 %}<p style="color:{{ block.settings.color_text }}">{{ block.settings.subheading }}</p>{% endif %}
           </div>
           
           {% if block.settings.url != blank %}<a href="{{ block.settings.url }}"></a>{% endif %}
-
-          {{ key }}
 
         </div>
 
@@ -644,68 +711,6 @@
       },
       {
         "type": "header",
-        "content": "Fonts"
-      },
-      {
-        "type": "range",
-        "id": "promotions_heading_size",
-        "min": 7,
-        "max": 60,
-        "step": 1,
-        "unit": "px",
-        "label": "Heading size",
-        "default": 16
-      },
-      {
-        "type": "range",
-        "id": "promotions_font_size",
-        "min": 7,
-        "max": 60,
-        "step": 1,
-        "unit": "px",
-        "label": "Text size",
-        "default": 14
-      },
-      {
-        "type": "header",
-        "content": "Images"
-      },
-      {
-            "type": "select",
-            "id": "image_type",
-            "label": "Image type",
-            "options": [
-              {
-                "value": "hidden",
-                "label": "Hidden"
-              },
-              {
-                "value": "icon",
-                "label": "Icon"
-              },
-              {
-                "value": "image",
-                "label": "Image"
-              },
-              {
-                "value": "background",
-                "label": "Background"
-              }
-            ],
-            "default": "icon"
-      },
-      {
-             "type": "range",
-             "id": "image_size",
-             "min": 0,
-             "max": 100,
-             "step": 2,
-             "unit": "%",
-             "label": "Image size",
-             "default": 10
-      },
-      {
-        "type": "header",
         "content": "Colors"
       },
       {
@@ -765,12 +770,6 @@
         "default": 50
       },
       {
-         "type": "checkbox",
-         "id": "image_parallax",
-         "label": "Show parallax",
-         "default": true
-      },
-      {
         "type": "header",
         "content": "Key"
       },
@@ -822,11 +821,6 @@
         "type": "promotion",
         "name": "Column",
         "settings": [
-          {
-            "type": "image_picker",
-            "id": "image",
-            "label": "Image"
-          },
           {
             "type": "text",
             "id": "title",

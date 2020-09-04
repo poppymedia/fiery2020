@@ -590,7 +590,7 @@
 
 								{% else %}
 									{% if block.settings.image != nil %}
-										<img src="{{ block.settings.image | img_url: '2000x' }}" alt="" title="{{ block.settings.image.alt | escape }}" role="presentation" />
+										<img src="{{ block.settings.image | img_url: full_image_x }}" alt="" title="{{ block.settings.image.alt | escape }}" role="presentation" />
 									{% endif %}
 								{% endif %}
 

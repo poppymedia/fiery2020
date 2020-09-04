@@ -173,7 +173,7 @@
 	  
 </head>
 
-<body id="page-{{ request.path | handle }}" class="template-{{ template.name | handle }}{% if sidebars %} sidebars{% endif %}">
+<body id="page-{% if template == 'index' %}index{% else %}{{ request.path | handle }}{% endif %}" class="template-{{ template.name | handle }}{% if sidebars %} sidebars{% endif %}">
 
 	{% comment %}
 	<p>

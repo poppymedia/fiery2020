@@ -685,7 +685,7 @@
 
 								{% if section.settings.slideshow_bg_width == 'page' and block.settings.image != nil %}
 								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} { 
-									background-image: url('{{ block.settings.image | img_url: '2000x' }}');
+									background-image: url('{{ block.settings.image | img_url: bg_image_x }}');
 									background-position: center;
 									background-repeat: no-repeat;
 									background-size: cover;
@@ -907,7 +907,7 @@
 									}
 									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .textWrapper { 
 										position: relative;
-										background-image: url('{{ block.settings.image | img_url: '2000x' }}');
+										background-image: url('{{ block.settings.image | img_url: bg_image_x }}');
 										background-position: center;
 										background-repeat: no-repeat;
 										background-size: cover;

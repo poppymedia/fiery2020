@@ -3267,7 +3267,7 @@ body.template-password button {
 		width: 30px;
 		height: 30px;
 		padding: 0 !important;
-		margin: 0 0.25em 0.25em 0 !important;
+		margin: 0 0.5em 0.5em 0 !important;
 	}
 	{% if settings.swatch_type == 'subtle' %}
 	.colors a.col:before, 
@@ -3286,11 +3286,31 @@ body.template-password button {
 	.colors a.col:after {		
 		background: linear-gradient(180deg, rgba(0,0,0,0) 25%, rgba(0,0,0,0.05) 100%);
 	}
-
 	{% endif %}
+
+
+	{% if settings.swatch_type == 'outlined' %}
+	.colors a.col:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 3;
+		border: solid 3px {{ settings.color_section_bg }};
+	}
+	.colors a.col.selected:before {
+		display: none;
+	}
+	{% endif %}
+
+
 	.colors a.col.selected {
 		border-color: transparent;
 	}
+	{% if settings.swatch_type == 'minimal' %}
+	{% endif %}
 #variations select,
 #variations textarea,
 #variations input {

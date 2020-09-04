@@ -347,6 +347,30 @@
       },
       {
         "type": "header",
+        "content": "Swtaches"
+      },
+      {
+        "type": "select",
+        "id": "swatch_type",
+        "label": "Swatch type",
+        "options": [
+          {
+            "value": "minimal",
+            "label": "Minimal"
+          },
+          {
+            "value": "subtle",
+            "label": "Subtle"
+          },
+          {
+            "value": "outlined",
+            "label": "Outlined"
+          }
+        ],
+        "default": "subtle"
+      },
+      {
+        "type": "header",
         "content": "Sidebar"
       },
       {

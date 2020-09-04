@@ -579,7 +579,7 @@
 
 											{%- if block.settings.video_url contains '.mp4' -%}
 													{%- capture video_src -%}{{ block.settings.video_url }}{%- endcapture -%}
-													<video{% if section.settings.slideshow_video_controls %} controls{% endif %}{% if section.settings.slideshow_video_auto %} autoplay muted{% endif %}{% if section.settings.slideshow_video_loop %} loop{% endif %}{% if block.settings.image != nil %} poster="{{ block.settings.image | img_url: '2000x' }}"{% endif %} width="{{ video_width }}" height="{{ video_height }}">
+													<video{% if section.settings.slideshow_video_controls %} controls{% endif %}{% if section.settings.slideshow_video_auto %} autoplay muted{% endif %}{% if section.settings.slideshow_video_loop %} loop{% endif %}{% if block.settings.image != nil %} poster="{{ block.settings.image | img_url: bg_image_x }}"{% endif %} width="{{ video_width }}" height="{{ video_height }}">
 														<source src="{{ video_src }}" type="video/mp4">
 														{{ 'general.meta.no_video' | t }}
 													</video>

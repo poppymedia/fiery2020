@@ -370,6 +370,22 @@
         "default": "subtle"
       },
       {
+        "type": "select",
+        "id": "swatch_shape",
+        "label": "Swatch shape",
+        "options": [
+          {
+            "value": "circle",
+            "label": "Circle"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          }
+        ],
+        "default": "square"
+      },
+      {
         "type": "header",
         "content": "Sidebar"
       },

@@ -3308,7 +3308,6 @@ body.template-password button {
 	.colors a.col {
 		border-color: {{ settings.color_body_text | color_modify: 'alpha', 0.4 }};
 		border-color: {{ settings.color_body_text | color_lighten: 30 }};
-		border-color: {{ settings.color_body_text | color_lighten: 30 }};
 		overflow: visible;
 		border: none;
 	}
@@ -3345,6 +3344,7 @@ body.template-password button {
 		border-radius: 50%;
 		{% endif %}
 	}
+	/* .colors a.col.selected:before, */
 	.colors a.col.selected:after {
 		border-color: transparent;
 		border-color: {{ settings.color_body_text }};

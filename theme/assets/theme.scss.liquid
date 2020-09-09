@@ -3274,6 +3274,7 @@ body.template-password button {
 		border-radius: 50%;
 		{% endif %}
 		border-width: none;
+		background-color: {{ settings.color_body_text | color_lighten: 30 }};
 	}
 	{% if settings.swatch_type == 'subtle' %}
 	.colors a.col:before, 

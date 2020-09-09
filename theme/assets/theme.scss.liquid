@@ -3259,13 +3259,14 @@ body.template-password button {
 	overflow: hidden;
 	margin-bottom: 0.25em !important;
 }
+	{% assign swatch_size = 30 %}
 	.colors a.col {
 		display: inline-block;
 		position: relative;
 		overflow: hidden;
 		float: left;
-		width: 30px;
-		height: 30px;
+		width: {{ swatch_size }}px;
+		height: {{ swatch_size }}px;
 		padding: 0 !important;
 		margin: 0 0.5em 0.5em 0 !important;
 		{% if settings.swatch_shape == 'circle' %}

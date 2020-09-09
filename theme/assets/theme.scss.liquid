@@ -3350,6 +3350,52 @@ body.template-password button {
 		border-color: transparent;
 		border-color: {{ settings.color_body_text }};
 	}
+	{% else %}
+	.colors {
+		padding: 1px;
+	}
+	.colors a.col {
+		border-color: {{ settings.color_section_bg }};
+		overflow: visible;
+		border: none;
+		margin: 0 0.2em 0.2em 0 !important;
+	}
+	.colors a.col:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: calc(100%);
+		height: calc(100%);
+		z-index: 2;
+		margin: 0;
+		border: solid 5px {{ settings.color_section_bg }};
+		/* border: solid 3px white; */
+		{% if settings.swatch_shape == 'circle' %}
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		{% endif %}
+	}
+	.colors a.col:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: calc(100% + 2px);
+		height: calc(100% + 2px);
+		z-index: 3;
+		margin: -1px;
+		border: solid 2px {{ settings.color_section_bg }};
+		{% if settings.swatch_shape == 'circle' %}
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		{% endif %}
+	}
+	.colors a.col.selected:after {
+		border-color: {{ settings.color_body_text }};
+	}
 	{% endif %}
 
 

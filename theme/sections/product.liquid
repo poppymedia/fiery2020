@@ -836,6 +836,8 @@ main > div {
                                 {% assign checked = ' disabled' %}{% assign selected = ' selected' %}
                             {% endif %}
 
+                            <!-- TO FIX: If product variant is disabled/out-of-stock, swatch does not display -->
+
                             {% if current_style == 'swatches' %}{% assign bgurl = text | append: '.png' | file_img_url: '50x50' %}{% capture alt %} title="{{ text }}"{% endcapture %}{% capture class %} class="col{{ selected }}" style="background-color:{{ text | strip | remove: ' ' | downcase }};{% unless bgurl contains 'no-image' %}background-url('{{ bgurl }}'){% endunless %}"{% endcapture %}{% assign text = '' %}{% endif %}
                             <a href="{{ url }}"{{ class }}{{ checked }}{{ alt }} />{{ text }}</a>
 

@@ -192,6 +192,7 @@ $color-border: #f6f6f6;
 $color-form-bg: {{ settings.color_input_bg }};
 $color-form-border: {{ settings.color_input_border }};
 $color-form-text: {{ settings.color_input_text }};
+$color-form-text-dsiabled: {{ settings.color_input_text | color_lighten: 30 }};
 /*
 $color-form-bg-hover: yellow;
 $color-form-border-hover: yellow;
@@ -2640,6 +2641,8 @@ select {
 	}
 }
 
+
+
 .action.supports-no-cookies {
   	clear: none;
   	display: inline-block;
@@ -3253,6 +3256,9 @@ body.template-password button {
 #variations input {
   margin-right: 0.25em;
   margin-bottom: 0.5em;
+}
+#variations option[disabled] {
+	color: $color-form-text-dsiabled;
 }
 .colors {
 	position: relative;

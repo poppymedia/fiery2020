@@ -23,12 +23,14 @@
          {% if section.settings.read_more == 'link' %}</span>{% endif -%}
   {%- endcapture %}
 
+    <!-- TO DO: Invalid post if no id value, need to disable form 'not just button' -->
+    <!-- TO DO: If has variants or order form, need to disable form 'not just button' -->
     <!-- TO DO: Needs to work with whole product linked -->
     {%- capture addnow -%}
          {%- if template == 'product.no.cart' -%}
          {%- else -%}
          {%- if section.settings.add_cart != 'hidden' -%}  
-         <form action="/cart/add" method="post" enctype="multipart/form-data" class="{%- if section.settings.read_more != 'hidden' -%}readmore{%- endif -%}">
+         <form action="/cart/add" method="post" enctype="multipart/form-data" class="{%- if section.settings.read_more != 'hidden' -%}readmore{%- endif -%}"{%- unless product.available %} aria-disabled="true"{% endunless -%}>
              <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
              <input type="hidden" name="quantity" value="1" min="1" />
              {%- capture moreoptions -%}

@@ -63,6 +63,12 @@
         "default": true
       },
       {
+        "type": "checkbox",
+        "id": "deviceformatting",
+        "label": "Enable device formatting",
+        "default": true
+      },    
+      {
         "type": "header",
         "content": "Background"
       },

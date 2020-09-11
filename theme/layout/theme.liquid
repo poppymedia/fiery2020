@@ -5,6 +5,22 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
+	{%- unless settings.deviceformatting %}
+	<meta name="format-detection" content="telephone=no">
+	<meta name="format-detection" content="date=no">
+	<meta name="format-detection" content="address=no">
+	<meta name="format-detection" content="email=no">
+    <style type="text/css">
+        a[href^=date],a[href^=telephone],a[href^=address],a[href^=email] {
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
+    </style>
+    {% endunless %}
 	<meta name="theme-color" content="{{ settings.color_primary }}">
 	<link rel="canonical" href="{{ canonical_url }}">
 	  

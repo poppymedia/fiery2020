@@ -30,17 +30,22 @@
          {%- if template == 'product.no.cart' -%}
          {%- else -%}
          {%- if section.settings.add_cart != 'hidden' -%}  
-         <form action="/cart/add" method="post" enctype="multipart/form-data" class="{%- if section.settings.read_more != 'hidden' -%}readmore{%- endif -%}"{%- unless product.available %} aria-disabled="true"{% endunless -%}>
-             <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
-             <input type="hidden" name="quantity" value="1" min="1" />
-             {%- capture moreoptions -%}
+         {%- unless product.available %}{% assign nocart = true %}{% endunless %}
+
+         <!-- TO DO: TEST order form product disables 'add to cart'-->
+         {% if product.template_suffix contains 'orderform' %}{% assign nocart = true %}{% endif %}
+
+         {%- capture moreoptions -%}
              {%- if product.options.size > 1 -%}
               {% if section.settings.more_options %}
               {% assign showmoreoptions = 'yes' %}
                  <p class="small">{{ 'products.general.more_options' | t }}</p> 
               {% endif %}
              {%- endif -%}
-             {%- endcapture -%}
+         {%- endcapture -%}
+         <form action="/cart/add" method="post" enctype="multipart/form-data" class="{%- if section.settings.read_more != 'hidden' -%}readmore{%- endif -%}"{%- if nocart %} aria-disabled="true"{% endif -%}>
+             <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+             <input type="hidden" name="quantity" value="1" min="1" />
              {% if section.settings.read_more == 'link' %}{% assign more_visibility = ' style="opacity:0"' %}{% endif %}
 
               {% if settings.cart_action == 'update' %}
@@ -55,7 +60,7 @@
                 name="add"
                 data-add-to-cart
                 class="btn add_to_cart"
-                {%- unless product.available %} disabled="disabled"{% endunless -%}>        
+                {%- if nocart %} disabled="disabled"{% endif -%}>        
                 <span data-add-to-cart-text>
                     {% if product.available %}{{ 'products.general.add_to_cart' | t }}
                     {% else %}

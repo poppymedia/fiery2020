@@ -53,7 +53,7 @@
                 name="add"
                 data-add-to-cart
                 class="btn add_to_cart"
-                {%- unless product.available %}disabled="disabled"{% endunless -%}>        
+                {%- unless product.available %} disabled="disabled"{% endunless -%}>        
                 <span data-add-to-cart-text>
                     {% if product.available %}{{ 'products.general.add_to_cart' | t }}
                     {% else %}

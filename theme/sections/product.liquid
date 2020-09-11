@@ -730,13 +730,13 @@ main > div {
                   {%- assign tax_rate_add = "1." | append: taxes_rate | plus: 0 -%}
                   {%- assign tax_rate_exc = "0." | append: tax_diff | plus: 0 -%}          
                   {% if shop.taxes_included -%}
-                    {% comment %}Taxes included{% endcomment %}
+                    {%- comment %}Taxes included{% endcomment -%}
                     {% capture show_price_tax %} <sup>{{ 'products.general.tax_inc' | t }}</sup>{% endcapture %}
                     {% capture show_tax -%}
                         <p class="taxprice"><small><span class="price">{{ product.price | times: tax_rate_exc | money }}</span> <sup>{{ 'products.general.tax_exc' | t }}</sup></small></p> 
                     {%- endcapture %}
                   {% else %}
-                    {% comment %}Excluding taxes{% endcomment %}
+                    {%- comment %}Excluding taxes{% endcomment -%}
                     {% capture show_price_tax %} <sup>{{ 'products.general.tax_exc' | t }}</sup>{% endcapture %}
                     {% capture show_tax -%}
                         <p class="taxprice"><small><span class="price">{{ product.price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></small></p> 
@@ -746,133 +746,134 @@ main > div {
         
           {% endif %}
          
-        {% capture variant_groups %}
-        {% unless product.has_only_default_variant %}
+        {%- capture variant_groups %}
+        {%- unless product.has_only_default_variant %}
 
-        {% assign options_current = '' %}
+        {%- assign options_current = '' -%}
 
-          {% assign opt_i = 0 %}
-          {% assign tag_group_num = 0 %}
+          {%- assign opt_i = 0 -%}
+          {%- assign tag_group_num = 0 -%}
 
-          {% capture variant_items %}
-          {% unless section.settings.variant_style == 'hidden' %}
-          {% for option in product.options_with_values %}
+          {%- capture variant_items %}
+          {%- unless section.settings.variant_style == 'hidden' %}
+          {% for option in product.options_with_values -%}
 
-            {% assign optcheck = option.name | downcase %}
+            {%- assign optcheck = option.name | downcase -%}
             <!-- TO DO: Checking for colour styling -->
-            {% assign current_style = '' %}
-            {% if optcheck contains 'color' or optcheck contains 'colour' %}
-              {% assign current_style = section.settings.color_style %}
-            {% endif %}
+            {%- assign current_style = '' -%}
+            {%- if optcheck contains 'color' or optcheck contains 'colour' %}
+              {%- assign current_style = section.settings.color_style -%}
+            {% endif -%}
 
-            {% if section.settings.variant_style == 'dropdowns' or section.settings.variant_style == 'dropdown' and current_style != 'swatches' %}
-            <div class="selector-wrapper js">
-            {% endif %}
+            {% if section.settings.variant_style == 'dropdowns' or section.settings.variant_style == 'dropdown' and current_style != 'swatches' %}<div class="selector-wrapper js">{% endif -%}
               
-              {% unless template contains 'giftcard' %} 
+              {%- unless template contains 'giftcard' %} 
               <label for="SingleOptionSelector-{{ forloop.index0 }}">
                 {{ option.name }}
-                {% assign tag_group_num = tag_group_num | plus: 1 %}
+                {%- assign tag_group_num = tag_group_num | plus: 1 -%}
               </label>
-              {% endunless %}
+              {% endunless -%}
+              
+              {%- assign checkAvailable = 'yes' -%}
 
+              {% if current_style == 'swatches' %}<div class="colors">{%- assign checkAvailable = 'no' -%}{% endif -%}
 
-              {% if current_style == 'swatches' %}<div class="colors">{% endif %}
+                  {%- comment %}ID List: {{ variant_id_list }}<br />{% endcomment -%}
+                  {%- if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' or current_style == 'buttons' or current_style == 'swatches' %} 
+                      {%- assign option_name = option.name | downcase -%}
+                      {%- assign current_option = "option" | append: option.position -%}
+                      {%- assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " -%}
+                      {%- for value in option.values %}
 
-                  {% comment %}ID List: {{ variant_id_list }}<br />{% endcomment %}
-                  {% if section.settings.variant_style == 'buttons' or section.settings.variant_style == 'thumbnails' or current_style == 'buttons' or current_style == 'swatches' %} 
-                      {% assign option_name = option.name | downcase %}
-                      {% assign current_option = "option" | append: option.position %}
-                      {% assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " %}
-                      {% for value in option.values %}
+                            {%- assign available = false -%}
 
-                            {% assign available = false %}
+                            {%- for variant in product.variants %}
 
-                            {% for variant in product.variants %}
+                                <!-- {{ firstgroup }} from {{ variant.title }} -->
 
-                                  {% assign showthumb = false %}
+                                  {%- assign showthumb = false -%}
 
-                                  {% if section.settings.variant_style == 'thumbnails' %}
-                                      {% comment %}
+                                  {%- if section.settings.variant_style == 'thumbnails' %}
+                                      {%- comment %}
                                       <!-- NOTE: Color option needs to be positioned as first option -->
-                                      {% endcomment %}                                
-                                      {% if firstgroup contains 'colour' or firstgroup contains 'color' %}
-                                          {% assign showthumb = true %}
-                                      {% endif %}
-                                  {% endif %}
+                                      {% endcomment -%}                                
+                                      {%- if firstgroup contains 'colour' or firstgroup contains 'color' %}
+                                          {%- assign showthumb = true -%}
+                                      {% endif -%}
+                                  {% endif -%}
 
-                                  {% capture id %}{{ variant.id }}{% endcapture %}
-                                  {% unless variant.available %}
-                                    {% continue %}
-                                  {% endunless %}
-                                  {% unless variant[current_option] == value %}
-                                    {% continue %}
-                                  {% endunless %}
-                                  {% unless variant[other_options[0]] == current_variant[other_options[0]] %}
-                                    {% continue %}
-                                  {% endunless %}
-                                  {% unless variant[other_options[1]] == current_variant[other_options[1]] %}
-                                    {% continue %}
-                                  {% endunless %}
-                                  {% assign available = true %}
-                                  {% assign uri = variant.id %}
-                                  {% capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture %} 
+                                  {%- capture id %}{{ variant.id }}{% endcapture -%}
+                                  {%- unless variant.available %}
+                                    {%- if checkAvailable == 'yes' -%}
+                                    {%- continue -%}
+                                    {% endif %}
+                                  {% endunless -%}
+                                  {%- unless variant[current_option] == value %}
+                                    {%- continue -%}
+                                  {% endunless -%}
+                                  {%- unless variant[other_options[0]] == current_variant[other_options[0]] %}
+                                    {%- continue -%}
+                                  {% endunless -%}
+                                  {%- unless variant[other_options[1]] == current_variant[other_options[1]] %}
+                                    {%- continue -%}
+                                  {% endunless -%}
+                                  {%- assign available = true -%}
+                                  {%- assign uri = variant.id -%}
+                                  {%- capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture -%} 
                         
-                                  {% unless option_name contains 'colour' or option_name contains 'color' %}
-                                      {% comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment %}
-                                      {% if section.settings.show_color_thumbnails %}
-                                          {% assign showthumb = false %}
-                                      {% endif %}
-                                  {% endunless %}     
+                                  {%- unless option_name contains 'colour' or option_name contains 'color' %}
+                                      {%- comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment -%}
+                                      {%- if section.settings.show_color_thumbnails %}
+                                          {%- assign showthumb = false -%}
+                                      {% endif -%}
+                                  {% endunless -%}     
                   
-                                {% capture text %}{% if showthumb == true %}<img src="{{ variant | img_url: '60x' }}" />{% else %}{{ value }}{% assign class=' class="btn"' %}{% endif %}{% endcapture %}              
-                                {% assign opt_i = opt_i | plus: 1 %}
+                                {%- capture text %}{%- if showthumb == true %}<img src="{{ variant | img_url: '60x' }}" />{%- else -%}{{ value }}{%- assign class=' class="btn"' -%}{% endif -%}{% endcapture -%}              
+                                {%- assign opt_i = opt_i | plus: 1 -%}
 
-                            {% endfor %}
+                            {% endfor -%}
 
-                            {% assign checked = "" %}
-                            {% assign selected = "" %}
-                            {% if current_variant[current_option] == value %}
-                                {% assign checked = ' disabled' %}{% assign selected = ' selected' %}
+                            {%- assign checked = "" -%}
+                            {%- assign selected = "" -%}
+                            {%- if current_variant[current_option] == value %}
+                                {%- assign checked = ' disabled' %}{% assign selected = ' selected' -%}
                             {% endif %}
 
                             <!-- TO FIX: If product variant is disabled/out-of-stock, swatch does not display -->
-
-                            {% if current_style == 'swatches' %}{% assign bgurl = text | append: '.png' | file_img_url: '50x50' %}{% capture alt %} title="{{ text }}"{% endcapture %}{% capture class %} class="col{{ selected }}" style="background-color:{{ text | strip | remove: ' ' | downcase }};{% unless bgurl contains 'no-image' %}background-url('{{ bgurl }}'){% endunless %}"{% endcapture %}{% assign text = '' %}{% endif %}
+                            {% if current_style == 'swatches' %}{% assign bgurl = text | append: '.png' | file_img_url: '50x50' %}{%- capture alt %} title="{{ text }}"{% endcapture -%}{%- capture class %} class="col{{ selected }}" style="background-color:{{ text | strip | remove: ' ' | downcase }};{%- unless bgurl contains 'no-image' %}background-url('{{ bgurl }}'){% endunless -%}"{% endcapture -%}{%- assign text = '' -%}{% endif -%}
                             <a href="{{ url }}"{{ class }}{{ checked }}{{ alt }} />{{ text }}</a>
 
-                      {% endfor %}
+                      {% endfor -%}
             
-                      {% if template contains 'giftcard' %}         
-                        {% if shop.taxes_included %}
-                        {% else %}
+                      {%- if template contains 'giftcard' %}         
+                        {%- if shop.taxes_included %}
+                        {%- else -%}
                           {% if settings.gift_card_redemption == 'single' %}<p class="notice">{{ 'gift_cards.general.gift_cards_priced' | t }} {{ 'products.general.tax_inc' | t }}</p>{% endif %}
-                        {% endif %}    
-                      {% endif %}
+                        {% endif -%}    
+                      {% endif -%}
 
                   {% if current_style == 'swatches' %}</div>{% endif %}
 
-              {% else %}
+              {%- else -%}
 
-
-                  {% if section.settings.variant_style == 'dropdown' or current_style == 'dropdown' %}
+                  {%- if section.settings.variant_style == 'dropdown' or current_style == 'dropdown' %}
                   <select name="id" id="productSelect" class="single-option-select">
-                    {% for variant in product.variants %}      
+                    {%- for variant in product.variants %}      
                       {% if variant.available %}>
                         {% assign option_value = variant.title %}
                         <option value="{{ variant.id }}"{% if variant == product.selected_or_first_available_variant %} selected="selected"{% endif %}>
-                          {{ option_value }}{% comment %} - {{ variant.price | money_with_currency }}{% endcomment %}
+                          {{ option_value }}{%- comment %} - {{ variant.price | money_with_currency }}{% endcomment -%}
                         </option>
                       {% else %}
                         <option disabled="disabled">
-                          {{ variant.title }}{% comment %} - sold out{% endcomment %}
+                          {{ variant.title }}{%- comment %} - sold out{% endcomment -%}
                         </option>
                       {% endif %}
-                    {% endfor %}
+                    {% endfor -%}
                    </select>
                   {% endif %}
 
-                  {% if section.settings.variant_style == 'dropdowns' or current_style == 'dropdowns' %}
+                  {%- if section.settings.variant_style == 'dropdowns' or current_style == 'dropdowns' %}
                   <select
                     id="SingleOptionSelector-{{ forloop.index0 }}"
                     data-single-option-selector
@@ -887,23 +888,17 @@ main > div {
                   </select>
                   {% endif %}
 
+              {% endif -%}
 
-              {% endif %}
+            {% if section.settings.variant_style == 'dropdowns' or section.settings.variant_style == 'dropdown' and current_style != 'swatches' %}</div>{% endif -%}
 
-
-            {% if section.settings.variant_style == 'dropdowns' or section.settings.variant_style == 'dropdown' and current_style != 'swatches' %}
-            </div>
-            {% endif %}
-
-
-
-          {% endfor %}  
-          {% endunless %}
-          {% endcapture %}
+          {% endfor -%}  
+          {% endunless -%}
+          {% endcapture -%}
         
-        {% endunless %}
+        {% endunless -%}
       
-        {% comment %}<!-- Don't show variants if there is only one and label is displayed -->{% endcomment %}
+        {%- comment %}<!-- Don't show variants if there is only one and label is displayed -->{% endcomment -%}
         {% if section.settings.first_variant and product.variants.size == 1 %}        
         {% else %}
         <div id="variations">{{ variant_items }}</div>
@@ -921,11 +916,11 @@ main > div {
           {% endif %}
         {% endif %}
 
-        {% comment %}
-        {% unless section.settings.show_variant_always and product.options.size < 2 %}
+        {%- comment %}
+        {%- unless section.settings.show_variant_always and product.options.size < 2 %}
         {{ variants }} 
-        {% endunless %}
-        {% endcomment %}
+        {% endunless -%}
+        {% endcomment -%}
 
         {% if opt_i > 1%}
         {% endif %}     

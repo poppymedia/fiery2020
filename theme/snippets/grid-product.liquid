@@ -32,8 +32,10 @@
          {%- if section.settings.add_cart != 'hidden' -%}  
          {%- unless product.available %}{% assign nocart = true %}{% endunless %}
 
-         <!-- TO DO: TEST order form product disables 'add to cart'-->
+         <!-- TO DO: TEST order form product disables 'add to cart' -->
+         {% assign nocart = false %}
          {% if product.template_suffix contains 'orderform' %}{% assign nocart = true %}{% endif %}
+         {% if product.available %}{% else %}{% assign nocart = true %}{% endif %}
 
          {%- capture moreoptions -%}
              {%- if product.options.size > 1 -%}
@@ -62,7 +64,8 @@
                 class="btn add_to_cart"
                 {%- if nocart %} disabled="disabled"{% endif -%}>        
                 <span data-add-to-cart-text>
-                    {% if product.available %}{{ 'products.general.add_to_cart' | t }}
+                    {% if product.available %}
+                    {{ 'products.general.add_to_cart' | t }}
                     {% else %}
                     {{ 'products.general.sold_out' | t }}
                     {% endif %}

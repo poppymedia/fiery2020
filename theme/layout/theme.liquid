@@ -42,8 +42,10 @@
 	{% endcapture -%}
 
 	{%- capture check_header_content %}
-	{{ header_content | strip_newlines }}	  
+	{% comment %}{{ header_content | strip_newlines }}{% endcomment %}	  
 	{% endcapture -%}
+
+	{{ header_content }}
 	  
 	{% if settings.nav_font contains 'Google' or settings.type_font contains 'Google' or settings.type_h1_font contains 'Google' or settings.type_h2_font contains 'Google' or settings.slideshow_subtitle_font contains 'Google' %}
 	<!-- Custom Fonts -->

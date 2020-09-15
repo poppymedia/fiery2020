@@ -149,6 +149,8 @@
   },
   "products": {
     "general": {
+      "quantity_max_alert_pref": "We only have",
+      "quantity_max_alert_suff": "of this item in stock",
       "product_title": "Product",
       "products_title": "Products",
       "vendors_title": "Vendors",

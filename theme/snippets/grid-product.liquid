@@ -21,15 +21,47 @@
 {%- if demo_content %}{%- assign content = demo_content -%}{% endif -%}
 
 
+
+
+
 {% capture listvariants -%}
+
   <br />
-  {% if show_variant_colors == 'yes' %}
-    <div>TESTING VARIANT COLORS</div>
-  {% endif %}
-  {% if show_variant_sizes == 'yes' %}
-    <div>TESTING VARIANT SIZES</div>
-  {% endif %}
+
+  {% for option in product.options_with_values -%}
+
+      {%- assign optcheck = option.name | downcase -%}
+      <!-- TO DO: Checking for colour styling -->
+      {%- assign current_style = '' -%}
+
+      {%- if optcheck contains 'color' or optcheck contains 'colour' %}
+
+          {% if show_variant_colors == 'yes' %}
+
+              <div>TESTING VARIANT COLORS</div>
+
+              {%- assign current_style = section.settings.color_style -%}
+
+          {% endif %}       
+
+      {% endif -%}
+
+      {%- if optcheck contains 'size' %}
+
+          {% if show_variant_sizes == 'yes' %}
+
+              <div>TESTING VARIANT SIZES</div>
+
+          {% endif %}
+
+      {%- endif -%}
+
+  {% endfor %}
+
 {%- endcapture %}
+
+
+
 
 
   {% capture readmore -%}

@@ -3,6 +3,8 @@
 {%- assign url = product.url -%}
 {%- assign more_visibility = '' -%}
 {%- if section.settings.first_variant_to_cart -%}{%- else -%}{%- assign buy_displayed_variant = 'no' -%}{%- endif -%}
+{%- assign show_variant_colors = 'yes' -%}
+{%- assign show_variant_sizes = 'yes' -%}
 
 {%- assign link_product = 'true' -%}
 {%- if template == 'collection.packaged' and section.settings.links == false -%}
@@ -17,6 +19,18 @@
 {%- if demo_url %}{%- assign url = demo_url -%}{% endif -%}
 {%- if demo_title %}{%- assign title = demo_title -%}{% endif -%}
 {%- if demo_content %}{%- assign content = demo_content -%}{% endif -%}
+
+
+{% capture listvariants -%}
+  <br />
+  {% if show_variant_colors == 'yes' %}
+    <div>TESTING VARIANT COLORS</div>
+  {% endif %}
+  {% if show_variant_sizes == 'yes' %}
+    <div>TESTING VARIANT SIZES</div>
+  {% endif %}
+{%- endcapture %}
+
 
   {% capture readmore -%}
          {%- if section.settings.read_more == 'link' -%}<span class="link read_more visually-shown"{{ more_visibility }}>{%- endif -%}
@@ -110,6 +124,8 @@
 {%- assign readmore = '' -%}
 {%- assign addnow = '' -%}
 {% endif -%}
+
+
 
   <div class="item product {% if section.settings.read_more != 'hidden' or showmoreoptions == 'yes' %}{% if section.settings.read_more == 'button' %} buttons{% endif %}{% unless nobuttons == 'yes' %} hasexcerpt{% endunless %}{% if checkaddnow contains '<button' %} andcart{% endif %}{% else %}{% if nobuttons == 'no' %} hasexcerpt{% endif %}{% endif %}{% if settings.products_border and link_product == 'true' %} hasborder{% endif %}{% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' %} andmore{% endif %}">
       
@@ -212,7 +228,7 @@
           {%- endif -%}
 
           {%- if showprice == 'false' -%}
-              {%- assign show_tax = '<p></p>' -%}
+              {%- assign show_tax = '<!-- <p></p> -->' -%}
           {%- else -%}
           
             {%- if settings.tax_inc_and_exc -%}
@@ -221,12 +237,14 @@
               {%- assign tax_rate_add = "1." | append: taxes_rate | plus: 0 -%}
               {%- assign tax_rate_exc = "0." | append: tax_diff | plus: 0 -%}          
               {%- if shop.taxes_included -%}
+
                 {%- comment %}Taxes included{% endcomment -%}          
                 {%- capture show_price_tax -%}
-                {%- if product.price > 0 -%}
-                  <sup>{{ 'products.general.tax_inc' | t }}</sup>
-                {%- endif -%}
-              {%- endcapture -%}
+                  {%- if product.price > 0 -%}
+                    <sup>{{ 'products.general.tax_inc' | t }}</sup>
+                  {%- endif -%}
+                {%- endcapture -%}
+
                 {%- capture show_tax -%}                
                       {%- if product.price > 0 -%}
                       <p class="taxprice"><span class="price">{{ product.price | times: tax_rate_exc | money }}</span> <sup>{{ 'products.general.tax_exc' | t }}</sup></p> 
@@ -236,21 +254,22 @@
                 {%- endcapture -%}
 
               {%- else -%}
+
                 {%- comment %}Excluding taxes{% endcomment -%}          
                 {%- capture show_price_tax -%} 
-                {%- if product.price > 0 -%}
-                {%- unless product.template_suffix contains 'giftcard' -%}
-                  <sup>{{ 'products.general.tax_exc' | t }}</sup>
-                {%- endunless -%}
-                {%- endif -%}
-              {%- endcapture -%}    
+                  {%- if product.price > 0 -%}
+                  {%- unless product.template_suffix contains 'giftcard' -%}
+                    <sup>{{ 'products.general.tax_exc' | t }}</sup>
+                  {%- endunless -%}
+                  {%- endif -%}
+                {%- endcapture -%}    
           
                 {%- capture show_tax -%}
                 {%- unless product.template_suffix contains 'giftcard' -%} 
                 {%- if product.price > 0 -%}
                     <p class="taxprice"><span class="price">{{ product.price | times: tax_rate_add | money }}</span> <sup>{{ 'products.general.tax_inc' | t }}</sup></p> 
-          {%- else -%}
-                <p></p>
+                {%- else -%}
+                    <p></p>
                 {%- endif -%}
                 {%- endunless -%}
               {%- endcapture -%}
@@ -272,11 +291,11 @@
           <p class="productprice{% if showprice == 'false' -%} none{% endif %}">   
 
             {%- if showprice == 'false' -%}
-              <span class="price">{{ 'products.general.price_none' | t }}</span>
+              <span class="price free">{{ 'products.general.price_none' | t }}</span>
             {%- else -%}
 
                   {%- if product.price == 0 -%}
-                  <span class="price">{{ 'products.general.price_none' | t }}</span>
+                  <span class="price free">{{ 'products.general.price_none' | t }}</span>
                   {%- else -%}
 
                       {%- assign showsale = 'no' -%}
@@ -302,7 +321,6 @@
                         {%- endif -%}
 
                       {%- endif -%}
-
                       <!-- 
                       {%- if product.compare_at_price > product.price -%}
                           <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
@@ -311,7 +329,6 @@
                           {%- assign saving_percent = product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' -%}
                       {%- endif -%} 
                       -->
-
                       {{ show_price_tax }}
             
               {%- endif -%}
@@ -330,8 +347,8 @@
             {{ show_price }}
             {%- endif -%}
           {%- else -%}
-          {{ show_price }}
-          {{ show_tax }} 
+          {{ show_price }} <!-- SHOW PRICE -->
+          {{ show_tax }} <!-- TO FIX: Do not show if price is FREE -->
           {%- endif -%}       
             
           {%- endif -%}
@@ -341,10 +358,10 @@
 
           {% if section.settings.sku_as_summary %}
           <p class="content">
-                  
+
               {% assign current_variant = product.selected_or_first_available_variant %}
               {{ current_variant.sku }}
-                  
+
           </p>
           {% endif %}
 
@@ -365,9 +382,16 @@
           </p>
           {%- endif -%}
 
-          {{ moreoptions }}             
-    
-        </div>  
+          {{ moreoptions }}   
+
+
+        </div>
+
+
+
+        {{ listvariants }} <!--  -->
+
+
 
         {% capture vendorurl %}{{ collection.url }}{% endcapture %}  
         {% if vendorurl contains 'collections/vendors?q=' %}  

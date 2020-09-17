@@ -27,33 +27,21 @@
 {%- capture listvariants -%}
 
   <br />
-
   {% for option in product.options_with_values -%}
-
       {%- assign optcheck = option.name | downcase -%}
-      <!-- TO DO: Checking for colour styling -->
       {%- assign current_style = '' -%}
-
       {%- if optcheck contains 'color' or optcheck contains 'colour' %}
-          {% if show_variant_colors == 'yes' %}
-
+          {% if show_variant_colors == 'yes' -%}
               <div>TESTING VARIANT COLORS</div>
-
               {%- assign current_style = section.settings.color_style -%}
-
-          {% endif -%}
+          {%- endif -%}
       {% endif -%}
-
       {%- if optcheck contains 'size' %}
-          {% if show_variant_sizes == 'yes' %}
-
+          {% if show_variant_sizes == 'yes' -%}
               <div>TESTING VARIANT SIZES</div>
-
-          {% endif -%}
+          {%- endif -%}
       {%- endif -%}
-
   {%- endfor %}
-
 {%- endcapture -%}
 
 
@@ -66,16 +54,18 @@
          {% if section.settings.read_more == 'link' %}</span>{% endif -%}
   {%- endcapture %}
 
+    {%- comment %}
     <!-- TO DO: Invalid post if no id value, need to disable form 'not just button' -->
     <!-- TO DO: If has variants or order form, need to disable form 'not just button' -->
     <!-- TO DO: Needs to work with whole product linked -->
+    {% endcomment -%}
     {%- capture addnow -%}
          {%- if template == 'product.no.cart' -%}
          {%- else -%}
          {%- if section.settings.add_cart != 'hidden' -%}  
          {%- unless product.available %}{% assign nocart = true %}{% endunless %}
 
-         <!-- TO DO: TEST order form product disables 'add to cart' -->
+         {%- comment %}<!-- TO DO: TEST order form product disables 'add to cart' -->{% endcomment -%}
          {%- assign nocart = false -%}
          {%- if product.template_suffix contains 'orderform' %}{% assign nocart = true %}{% endif -%}
          {%- if product.available %}{% else %}{% assign nocart = true %}{% endif -%}
@@ -92,36 +82,31 @@
          <form action="/cart/add" method="post" enctype="multipart/form-data" class="{%- if section.settings.read_more != 'hidden' -%}readmore{%- endif -%}"{%- if nocart %} aria-disabled="true"{% endif -%}>
              <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
              <input type="hidden" name="quantity" value="1" min="1" />
-             {% if section.settings.read_more == 'link' %}{% assign more_visibility = ' style="opacity:0"' %}{% endif %}
+             {%- if section.settings.read_more == 'link' %}{%- assign more_visibility = ' style="opacity:0"' -%}{% endif -%}
 
-              {% if settings.cart_action == 'update' %}
+              {% if settings.cart_action == 'update' -%}
                 <input type="hidden" name="return_to" value="back" />
-              {% elsif settings.cart_action  == 'checkout' %}
+              {%- elsif settings.cart_action  == 'checkout' -%}
                 <input type="hidden" name="return_to" value="/checkout" />
-              {% endif %}           
-           
+              {%- endif -%}
+
               <div class="supports-cookies">
-              <button
-                type="submit"
-                name="add"
-                data-add-to-cart
-                class="btn add_to_cart"
-                {%- if nocart %} disabled="disabled"{% endif -%}>        
+              <button type="submit" name="add" data-add-to-cart class="btn add_to_cart"{%- if nocart %} disabled="disabled"{% endif -%}>
                 <span data-add-to-cart-text>
-                    {% if product.available %}
-                    {{ 'products.general.add_to_cart' | t }}
-                    {% else %}
-                    {{ 'products.general.sold_out' | t }}
-                    {% endif %}
+                    {%- if product.available -%}
+                    {{- 'products.general.add_to_cart' | t -}}
+                    {%- else -%}
+                    {{- 'products.general.sold_out' | t -}}
+                    {%- endif -%}
                 </span>
               </button>
               </div>
 
-           {% comment %}
+           {%- comment %}
              <button type="submit" class="btn add_to_cart"{%- unless product.available %} disabled="disabled"{% endunless -%} />
              <span data-add-to-cart-text>{% if product.available %}{{ 'products.general.add_to_cart' | t }}{% else %}{{ 'products.general.sold_out' | t }}{% endif %}</span>
              </button>
-           {% endcomment %}
+           {% endcomment -%}
 
              {%- if section.settings.read_more != 'hidden' -%}
              {{ readmore }}
@@ -144,7 +129,7 @@
   {%- if section.settings.more_options and section.settings.add_cart == 'hidden' %}{%- assign showmoreoptions = 'yes' -%}{% endif -%}
   {%- if section.settings.read_more == 'hidden' and section.settings.add_cart == 'hidden' %}{%- assign nobuttons = 'yes' -%}{% endif -%}
 
-<!-- Force to hide read more and buttons on search results -->
+{%- comment %}<!-- Force to hide read more and buttons on search results -->{% endcomment -%}
 {% if search %}
 {%- assign showmoreoptions = 'yes' %}
 {%- assign nobuttons = 'yes' -%}
@@ -162,25 +147,22 @@
         <p class="image">
 
           {%- capture img -%}
-          {%- if product.featured_image.src -%}
-       
+          {%- if product.featured_image.src -%}       
           <img src="{{ product.featured_image.src | img_url: '480x480' }}" alt="{{ product.featured_image.alt | escape }}">
-
           {%- else -%}
           {{ title }}
           {%- endif -%}
-
           {%- endcapture -%} 
 
           {%- if demo_img -%}{%- assign img = demo_img -%}{%- endif -%}
 
-          {{ img }}  
+          {{- img -}}  
 
         </p>        
           
         {%- else -%}
         
-        {% comment %}<img src="https:{{ settings.placeholder_image | img_url: '480x480' }}" alt="{{ title }}">{% endcomment %}
+        {%- comment %}<img src="https:{{ settings.placeholder_image | img_url: '480x480' }}" alt="{{ title }}">{% endcomment -%}
         
         {%- endif -%}
         
@@ -188,42 +170,38 @@
 
         {%- capture get_title -%}
           {%- if section.settings.product_title -%}
-          <span class="title">
-              {{ title }}
-          </span>
+          <span class="title">{{ title }}</span>
           {%- endif -%} 
         {%- endcapture -%}        
       
         {%- if section.settings.layout_grid_prominent_feature == 'image' %}
-        <!-- Put image here -->{{ get_image }}
-      {{ get_title }}
+        {{ get_image }}
+        {{ get_title }}
         {% endif -%}
       
         {%- if section.settings.layout_grid_prominent_feature == 'title' %}
         {{ get_title }}
-        <!-- Put image here -->{{ get_image }}
+        {{ get_image }}
         {% endif -%}
       
         {%- if section.settings.layout_grid_prominent_feature == 'image_title' %}
-        <!-- Put image here -->{{ get_image }}
+        {{ get_image }}
         {% endif -%}
 
         <div class="summary">
-
-          {%- if section.settings.layout_grid_prominent_feature != 'title' and section.settings.layout_grid_prominent_feature == 'image_title' -%}
-          {{ get_title }}
+          {% if section.settings.layout_grid_prominent_feature != 'title' and section.settings.layout_grid_prominent_feature == 'image_title' -%}
+          {{- get_title -}}
           {%- endif -%}
-
           
           {%- if section.settings.first_variant -%}
           <p class="first-variant">
-              {% assign count = 0 %}  
-              {% for variant in product.variants %}
-              {% if count == 0 %}              
-                {% unless product.template_suffix contains 'giftcard' or variant.title == 'Default Title' %}{{ variant.title }}{% endunless %}
-                {% assign count = 1 %} 
-              {% endif %}   
-              {% endfor %}
+              {%- assign count = 0 -%}  
+              {%- for variant in product.variants -%}
+              {%- if count == 0 -%}              
+                {%- unless product.template_suffix contains 'giftcard' or variant.title == 'Default Title' -%}{{ variant.title }}{%- endunless -%}
+                {%- assign count = 1 -%} 
+              {%- endif -%}   
+              {%- endfor -%}
           </p>
           {%- endif -%}
 
@@ -238,14 +216,14 @@
           {%- endif -%}
           
 
-          <!-- Product Reviews App -->
+          {%- comment %}<!-- Product Reviews App -->{% endcomment -%}
           {%- if section.settings.show_review_rating -%}
           <div class="review-rating">
           <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span> 
           </div>
           {%- endif -%}
           
-<!-- TO DO: Enable inc and exc prices to be ordered -->
+          {%- comment %}<!-- TO DO: Enable inc and exc prices to be ordered -->{% endcomment -%}
           
           {%- assign showprice = 'true' -%}
           {%- assign show_tax = '' -%}
@@ -306,97 +284,97 @@
             {%- endif -%}
           {%- endif -%}
           
-          {%- assign saving = 0 -%}
-          
-          {%- if section.settings.pricing %}{%- assign showprice = 'true' -%}{% else %}{%- assign showprice = 'false' -%}{% endif -%}
-          
+          {%- assign saving = 0 -%}          
+          {%- if section.settings.pricing %}{%- assign showprice = 'true' -%}{% else %}{%- assign showprice = 'false' -%}{% endif -%}          
           {%- if showprice == 'true' -%}
           
           <div class="pricing">
 
-          {%- if product_price == 'true' -%}
-          {%- capture show_price -%}
-          <p class="productprice{% if showprice == 'false' -%} none{% endif %}">   
+            {%- if product_price == 'true' -%}
+            {%- capture show_price -%}
+            <p class="productprice{% if showprice == 'false' -%} none{% endif %}">   
 
-            {%- if showprice == 'false' -%}
-              <span class="price free">{{ 'products.general.price_none' | t }}</span>
-            {%- else -%}
+              {%- if showprice == 'false' -%}
+                <span class="price free">{{ 'products.general.price_none' | t }}</span>
+              {%- else -%}
 
-                  {%- if product.price == 0 -%}
-                  <span class="price free">{{ 'products.general.price_none' | t }}</span>
-                  {%- else -%}
+                    {%- if product.price == 0 -%}
+                    <span class="price free">{{ 'products.general.price_none' | t }}</span>
+                    {%- else -%}
 
-                      {%- assign showsale = 'no' -%}
-                      {%- if product.compare_at_price > product.price -%}
-                        {%- if product.price_varies -%}
-                          {%- assign showsale = 'yes' -%}
-                          {%- assign sale_price = product.price | money -%}
-                          {{ 'products.general.on_sale_from_html' | t: price: sale_price }}
+                        {%- assign showsale = 'no' -%}
+                        {%- if product.compare_at_price > product.price -%}
+                          {%- if product.price_varies -%}
+                            {%- assign showsale = 'yes' -%}
+                            {%- assign sale_price = product.price | money -%}
+                            {{ 'products.general.on_sale_from_html' | t: price: sale_price }}
+                          {%- else -%}
+                            {%- assign showsale = 'yes' -%}
+                            <span class="price">{{ product.price | money }}</span>                           
+                            {%- assign saving = product.compare_at_price | minus: product.price -%}                        
+                            {%- assign saving_percent = product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' -%}
+                          {%- endif -%} 
+
                         {%- else -%}
-                          {%- assign showsale = 'yes' -%}
-                          <span class="price">{{ product.price | money }}</span>                           
-                          {%- assign saving = product.compare_at_price | minus: product.price -%}                        
-                          {%- assign saving_percent = product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' -%}
-                        {%- endif -%} 
 
-                      {%- else -%}
+                          {%- if product.price_varies -%}
+                            {%- assign price = product.price | money -%}
+                            {{ 'products.general.from_text_html' | t: price: price }}
+                          {%- else -%}
+                            <span class="price">{{ product.price | money }}</span>
+                          {%- endif -%}
 
-                        {%- if product.price_varies -%}
-                          {%- assign price = product.price | money -%}
-                          {{ 'products.general.from_text_html' | t: price: price }}
-                        {%- else -%}
-                          <span class="price">{{ product.price | money }}</span>
                         {%- endif -%}
+                        {%- comment %}
+                        <!-- 
+                        {%- if product.compare_at_price > product.price -%}
+                            <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
+                            <s><span class="price">{{ product.compare_at_price | money }}</span></s>
+                            {%- assign saving = product.compare_at_price | minus: product.price -%}
+                            {%- assign saving_percent = product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' -%}
+                        {%- endif -%} 
+                        -->
+                        {% endcomment -%}
+                        {{ show_price_tax }}
+              
+                {%- endif -%}
 
-                      {%- endif -%}
-                      <!-- 
-                      {%- if product.compare_at_price > product.price -%}
-                          <span class="visually-hidden">{{ 'products.general.regular_price' | t }}</span>
-                          <s><span class="price">{{ product.compare_at_price | money }}</span></s>
-                          {%- assign saving = product.compare_at_price | minus: product.price -%}
-                          {%- assign saving_percent = product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0' -%}
-                      {%- endif -%} 
-                      -->
-                      {{ show_price_tax }}
-            
               {%- endif -%}
 
-            {%- endif -%}
+            </p>
+            {%- endcapture -%}
 
-          </p>
-          {%- endcapture -%}
-
-          {%- if shop.taxes_included -%}
-            {%- if showprice == 'false' -%}
-            {{ show_price }}
-            {{ show_tax }} 
+            {%- if shop.taxes_included -%}
+              {%- if showprice == 'false' -%}
+              {{ show_price }}
+              {{ show_tax }} 
+              {%- else -%}
+              {{ show_tax }} 
+              {{ show_price }}
+              {%- endif -%}
             {%- else -%}
-            {{ show_tax }} 
-            {{ show_price }}
+            {{ show_price }} {%- comment %}<!-- SHOW PRICE -->{% endcomment -%}
+            {{ show_tax }} {%- comment %}<!-- TO FIX: Do not show if price is FREE -->{% endcomment -%}
+            {%- endif -%}       
+              
             {%- endif -%}
-          {%- else -%}
-          {{ show_price }} <!-- SHOW PRICE -->
-          {{ show_tax }} <!-- TO FIX: Do not show if price is FREE -->
-          {%- endif -%}       
-            
-          {%- endif -%}
           </div>
           
           {%- endif -%}
 
-          {% if section.settings.sku_as_summary %}
+          {%- if section.settings.sku_as_summary %}
           <p class="content">
 
-              {% assign current_variant = product.selected_or_first_available_variant %}
+              {%- assign current_variant = product.selected_or_first_available_variant -%}
               {{ current_variant.sku }}
 
           </p>
-          {% endif %}
+          {% endif -%}
 
           {%- if section.settings.description -%}
           <p class="content">
-            {% comment %}{{ content | strip_html | truncatewords: 100 }}{% endcomment %}      
-            {%- if section.settings.description_paragraph -%}
+            {%- comment %}{{ content | strip_html | truncatewords: 100 }}{% endcomment -%}      
+            {% if section.settings.description_paragraph -%}
               {%- assign content = content | strip_html -%}
                 {%- if content contains '.' -%}
                     {%- assign firstpara = content | split: '.' -%}
@@ -415,24 +393,19 @@
 
         </div>
 
+        {{ listvariants }}
 
-
-        {{ listvariants }} <!--  -->
-
-
-
-        {% capture vendorurl %}{{ collection.url }}{% endcapture %}  
-        {% if vendorurl contains 'collections/vendors?q=' %}  
-        {% assign thisurl = url %}
-        {% else %}
-        {% assign thisurl = url | within: collection %}
-        {% endif %}
-
+        {%- capture vendorurl %}{{ collection.url }}{% endcapture -%}  
+        {%- if vendorurl contains 'collections/vendors?q=' -%}  
+        {%- assign thisurl = url -%}
+        {%- else -%}
+        {%- assign thisurl = url | within: collection -%}
+        {%- endif %}
              
         <a href="{{ thisurl }}" title="{{ product.title }}"><span class="visually-hidden">{{ 'blogs.article.read_more' | t }}</span></a>
         <div class="more supports-cookies">          
             {% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' -%}<form class="readmore">{%- endif %}          
-            {{ addnow }}              
+            {{- addnow -}}              
             {% if section.settings.read_more != 'hidden' and section.settings.add_cart == 'hidden' -%}</form>{%- endif %}              
         </div> 
       

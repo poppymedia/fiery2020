@@ -32,8 +32,73 @@
       {%- assign current_style = '' -%}
       {%- if optcheck contains 'color' or optcheck contains 'colour' %}
           {% if show_variant_colors == 'yes' -%}
+              
+
               <div>TESTING VARIANT COLORS</div>
-              {%- assign current_style = section.settings.color_style -%}
+                  {%- assign current_style = section.settings.color_style -%}
+                  {% if current_style == 'swatches' %}<div class="colors">{%- assign checkAvailable = 'no' -%}{% endif -%}
+
+                  {%- if current_style == 'swatches' %} 
+                      {%- assign option_name = option.name | downcase -%}
+                      {%- assign current_option = "option" | append: option.position -%}
+                      {%- assign other_options = "option1 option2 option3" | remove: current_option | strip | split: " " -%}
+                      {%- for value in option.values %}
+
+                            {%- assign available = false -%}
+
+                            {%- for variant in product.variants %}
+
+                                  {%- comment %}<!-- {{ firstgroup }} from {{ variant.title }} -->{% endcomment -%}
+
+                                  {%- assign showthumb = false -%}
+
+                                  {%- capture id %}{{ variant.id }}{% endcapture -%}
+                                  {%- unless variant.available %}
+                                    {%- if checkAvailable == 'yes' -%}
+                                    {%- continue -%}
+                                    {% endif %}
+                                  {% endunless -%}
+                                  {%- unless variant[current_option] == value %}
+                                    {%- continue -%}
+                                  {% endunless -%}
+                                  {%- unless variant[other_options[0]] == current_variant[other_options[0]] %}
+                                    {%- continue -%}
+                                  {% endunless -%}
+                                  {%- unless variant[other_options[1]] == current_variant[other_options[1]] %}
+                                    {%- continue -%}
+                                  {% endunless -%}
+                                  {%- assign available = true -%}
+                                  {%- assign uri = variant.id -%}
+                                  {%- capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture -%} 
+                        
+                                  {%- unless option_name contains 'colour' or option_name contains 'color' %}
+                                      {%- comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment -%}
+                                      {%- if section.settings.show_color_thumbnails %}
+                                          {%- assign showthumb = false -%}
+                                      {% endif -%}
+                                  {% endunless -%}     
+                  
+                                {%- capture text %}{%- if showthumb == true %}<img src="{{ variant | img_url: '60x' }}" />{%- else -%}{{ value }}{%- assign class=' class="btn"' -%}{% endif -%}{% endcapture -%}              
+                                {%- assign opt_i = opt_i | plus: 1 -%}
+
+                            {% endfor -%}
+
+                            {%- assign checked = "" -%}
+                            {%- assign selected = "" -%}
+                            {%- if current_variant[current_option] == value %}
+                                {%- assign checked = ' disabled' %}{% assign selected = ' selected' -%}
+                            {% endif %}
+
+                            {%- comment %}<!-- TO FIX: If product variant is disabled/out-of-stock, swatch does not display -->{% endcomment -%}
+                            {% if current_style == 'swatches' %}{% assign bgurl = text | append: '.png' | file_img_url: '50x50' %}{%- capture alt %} title="{{ text }}"{% endcapture -%}{%- capture class %} class="col{{ selected }}" style="background-color:{{ text | strip | remove: ' ' | downcase }};{%- unless bgurl contains 'no-image' %}background-url('{{ bgurl }}'){% endunless -%}"{% endcapture -%}{%- assign text = '' -%}{% endif -%}
+                            <i{{ class }}{{ checked }}{{ alt }} />{{ text }}</i>
+
+                      {% endfor -%}
+
+                  {% endif %}
+
+
+              {% if current_style == 'swatches' %}</div>{% endif %}
           {%- endif -%}
       {% endif -%}
       {%- if optcheck contains 'size' %}

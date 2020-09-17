@@ -3253,6 +3253,7 @@ body.template-password button {
 
 /* Variants */
 #variations a,
+#variations .col,
 #variations input {
   margin-right: 0.25em;
   margin-bottom: 0.5em;
@@ -3266,7 +3267,7 @@ body.template-password button {
 	margin-bottom: 0.25em !important;
 }
 	{% assign swatch_size = 40 %}
-	.colors a.col {
+	.colors .col {
 		display: inline-block;
 		position: relative;
 		overflow: hidden;
@@ -3284,8 +3285,8 @@ body.template-password button {
 		background-color: {{ settings.color_body_text | color_lighten: 30 }};
 	}
 	{% if settings.swatch_type == 'subtle' %}
-	.colors a.col:before, 
-	.colors a.col:after {
+	.colors .col:before, 
+	.colors .col:after {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -3300,10 +3301,10 @@ body.template-password button {
 		border-radius: 50%;
 		{% endif %}
 	}
-	.colors a.col:before {		
+	.colors .col:before {		
 		background: linear-gradient(180deg, rgba(255,255,255,0.2) 2%, rgba(255,255,255,0) 75%);
 	}
-	.colors a.col:after {
+	.colors .col:after {
 		background: linear-gradient(180deg, rgba(0,0,0,0) 25%, rgba(0,0,0,0.05) 100%);
 	}
 	{% endif %}
@@ -3313,13 +3314,13 @@ body.template-password button {
 	.colors {
 		padding: 1px;
 	}
-	.colors a.col {
+	.colors .col {
 		border-color: {{ settings.color_body_text | color_modify: 'alpha', 0.4 }};
 		border-color: {{ settings.color_body_text | color_lighten: 30 }};
 		overflow: visible;
 		border: none;
 	}
-	.colors a.col:before {
+	.colors .col:before {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -3336,7 +3337,7 @@ body.template-password button {
 		border-radius: 50%;
 		{% endif %}
 	}
-	.colors a.col:after {
+	.colors .col:after {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -3353,7 +3354,7 @@ body.template-password button {
 		{% endif %}
 	}
 	/* .colors a.col.selected:before, */
-	.colors a.col.selected:after {
+	.colors .col.selected:after {
 		border-color: transparent;
 		border-color: {{ settings.color_body_text }};
 	}
@@ -3361,13 +3362,13 @@ body.template-password button {
 	.colors {
 		padding: 1px;
 	}
-	.colors a.col {
+	.colors .col {
 		border-color: {{ settings.color_section_bg }};
 		overflow: visible;
 		border: none;
 		margin: 0 0.2em 0.2em 0 !important;
 	}
-	.colors a.col:before {
+	.colors .col:before {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -3384,7 +3385,7 @@ body.template-password button {
 		border-radius: 50%;
 		{% endif %}
 	}
-	.colors a.col:after {
+	.colors .col:after {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -3400,13 +3401,13 @@ body.template-password button {
 		border-radius: 50%;
 		{% endif %}
 	}
-	.colors a.col.selected:after {
+	.colors .col.selected:after {
 		border-color: {{ settings.color_body_text }};
 	}
 	{% endif %}
 
 
-	.colors a.col.selected {
+	.colors .col.selected {
 		border-color: transparent;
 		border-color: {{ settings.color_body_text }};
 	}

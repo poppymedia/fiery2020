@@ -911,6 +911,38 @@ $(document).ready(function(){
         "default": true
       },
       {
+        "type": "select",
+        "id": "color_style",
+        "label": "Swatch style",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          },
+          {
+            "value": "swatches",
+            "label": "Swatches"
+          },
+          {
+            "value": "dropdown",
+            "label": "Single Dropdown"
+          },
+          {
+            "value": "dropdowns",
+            "label": "Multi Dropdowns"
+          },
+          {
+            "value": "thumbnails",
+            "label": "Thumbnails"
+          }
+        ],
+        "default": "swatches"
+      },
+      {
         "type": "checkbox",
         "id": "show_swatches",
         "label": "Show swatches",

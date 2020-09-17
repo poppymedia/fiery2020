@@ -3,8 +3,8 @@
 {%- assign url = product.url -%}
 {%- assign more_visibility = '' -%}
 {%- if section.settings.first_variant_to_cart -%}{%- else -%}{%- assign buy_displayed_variant = 'no' -%}{%- endif -%}
-{%- assign show_variant_colors = 'yes' -%}
-{%- assign show_variant_sizes = 'yes' -%}
+{%- if section.settings.show_swatches -%}{%- assign show_variant_colors = 'yes' -%}{%- endif -%}
+{%- if section.settings.show_sizes -%}{%- assign show_variant_sizes = 'yes' -%}{%- endif -%}
 
 {%- assign link_product = 'true' -%}
 {%- if template == 'collection.packaged' and section.settings.links == false -%}
@@ -24,7 +24,7 @@
 
 
 
-{% capture listvariants -%}
+{%- capture listvariants -%}
 
   <br />
 
@@ -35,30 +35,26 @@
       {%- assign current_style = '' -%}
 
       {%- if optcheck contains 'color' or optcheck contains 'colour' %}
-
           {% if show_variant_colors == 'yes' %}
 
               <div>TESTING VARIANT COLORS</div>
 
               {%- assign current_style = section.settings.color_style -%}
 
-          {% endif %}       
-
+          {% endif -%}
       {% endif -%}
 
       {%- if optcheck contains 'size' %}
-
           {% if show_variant_sizes == 'yes' %}
 
               <div>TESTING VARIANT SIZES</div>
 
-          {% endif %}
-
+          {% endif -%}
       {%- endif -%}
 
-  {% endfor %}
+  {%- endfor %}
 
-{%- endcapture %}
+{%- endcapture -%}
 
 
 

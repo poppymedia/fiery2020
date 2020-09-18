@@ -182,6 +182,10 @@
       "notify_error_html": "Please provide a valid email address.",
       "notify_success_html": "Please notify me when <strong>{{ title }}<\/strong> becomes available.",
       "notify_button": "Send"
+    },
+    "options": {
+      "color": "Color",
+      "size": "Size"
     }
   },
   "contact": {

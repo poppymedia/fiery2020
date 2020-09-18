@@ -4,6 +4,9 @@
 {% assign bg_image_x = "2000x" %}
 {% assign full_image_x = "2000x" %}
 
+{% assign color_name = 'products.options.color' | t | downcase %}
+{% assign size_name = 'products.options.size' | t | downcase %}
+
 {% assign current_url = '' %}
 {% case template %}
 {% when 'index' %}

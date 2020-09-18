@@ -3,12 +3,12 @@
 <!-- TO DO: If vendor equal to store name (as Shopify does by default) then allow vendor to be hidden -->
 
 {% include 'settings' %}
-{% assign mobile_width = grid_mobile %}
-{% assign bgsize = 1000 | append: 'x' %}
-{% assign separatorid = 0 %}
+{%- assign mobile_width = grid_mobile -%}
+{%- assign bgsize = 1000 | append: 'x' -%}
+{%- assign separatorid = 0 -%}
 
-{% assign font_gutter = 30 %}
-{% assign pagination = 'below' %}
+{%- assign font_gutter = 30 -%}
+{%- assign pagination = 'below' -%}
 
 {% capture stylesheet %}
 {% if pagination == 'below' %}
@@ -511,7 +511,7 @@ main > div {
             {%- assign check_img = check_img[0] -%}  
           {%- assign slide_src = image.src | img_url: imagesize -%} 
 
-            {% if firstgroup contains 'colour' or firstgroup contains 'color' %}
+            {% if firstgroup contains color_name %}
               {% if section.settings.show_variant_duplicates %}           
                     {% if check_imgs contains check_img or main_src contains check_img or variant_imgs contains check_img %}                  
                         {% assign showimg = 'no' %}
@@ -558,7 +558,7 @@ main > div {
           {%- assign check_img = check_img[0] -%}  
         {%- assign thumb_src = image.src | img_url: thumbsize -%}
 
-          {%- if firstgroup contains 'colour' or firstgroup contains 'color' %}
+          {%- if firstgroup contains color_name %}
             {% if section.settings.show_variant_duplicates %}           
                   {% if check_imgs contains check_img or main_src contains check_img or variant_imgs contains check_img %}                  
                       {%- assign showimg = 'no' -%}
@@ -761,7 +761,7 @@ main > div {
             {%- assign optcheck = option.name | downcase -%}
             <!-- TO DO: Checking for colour styling -->
             {%- assign current_style = '' -%}
-            {%- if optcheck contains 'color' or optcheck contains 'colour' %}
+            {%- if optcheck contains color_name %}
               {%- assign current_style = section.settings.color_style -%}
             {% endif -%}
 
@@ -797,7 +797,7 @@ main > div {
                                       {%- comment %}
                                       <!-- NOTE: Color option needs to be positioned as first option -->
                                       {% endcomment -%}                                
-                                      {%- if firstgroup contains 'colour' or firstgroup contains 'color' %}
+                                      {%- if firstgroup contains color_name %}
                                           {%- assign showthumb = true -%}
                                       {% endif -%}
                                   {% endif -%}
@@ -821,7 +821,7 @@ main > div {
                                   {%- assign uri = variant.id -%}
                                   {%- capture url %}{{ product.url | within: collection }}?variant={{ uri }}{% endcapture -%} 
                         
-                                  {%- unless option_name contains 'colour' or option_name contains 'color' %}
+                                  {%- unless option_name contains color_name %}
                                       {%- comment %}<!-- Restrict variant thumbnails to colours -->{% endcomment -%}
                                       {%- if section.settings.show_color_thumbnails %}
                                           {%- assign showthumb = false -%}

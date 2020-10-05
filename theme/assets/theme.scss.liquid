@@ -3271,7 +3271,7 @@ body.template-password button {
 		display: inline-block;
 		position: relative;
 		overflow: hidden;
-		float: left;
+		/* float: left; */
 		width: {{ swatch_size }}px;
 		height: {{ swatch_size }}px;
 		padding: 0 !important;
@@ -3283,6 +3283,9 @@ body.template-password button {
 		{% endif %}
 		border-width: none;
 		background-color: {{ settings.color_body_text | color_lighten: 30 }};
+	}
+	.item .colors .col {
+		margin: 0 0.25em 0.25em 0 !important;
 	}
 	{% if settings.swatch_type == 'subtle' %}
 	.colors .col:before, 
@@ -3367,6 +3370,9 @@ body.template-password button {
 		overflow: visible;
 		border: none;
 		margin: 0 0.2em 0.2em 0 !important;
+	}
+	.item .colors .col {
+		margin: 0 0.1em 0.1em 0 !important;
 	}
 	.colors .col:before {
 		content: '';

@@ -1097,7 +1097,7 @@ main > div {
 
       {% endcapture %}
       
-      {{ variant_groups }}
+      {{ variant_groups | strip_newlines | strip }}
 
       {% if productavailable == 'true' %}
       </form>

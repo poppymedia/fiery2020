@@ -3266,6 +3266,10 @@ body.template-password button {
 	overflow: hidden;
 	margin-bottom: 0.25em !important;
 }
+	.item .colors b {
+		display: block !important;
+		clear: both !important;
+	}
 	{% assign swatch_size = 40 %}
 	.colors .col {
 		display: inline-block;
@@ -3285,7 +3289,7 @@ body.template-password button {
 		background-color: {{ settings.color_body_text | color_lighten: 30 }};
 	}
 	.item .colors .col {
-		margin: 0 0.25em 0.25em 0 !important;
+		margin: 0 0.2em 0.2em 0 !important;
 	}
 	{% if settings.swatch_type == 'subtle' %}
 	.colors .col:before, 
@@ -3421,6 +3425,43 @@ body.template-password button {
 
 	{% if settings.swatch_type == 'minimal' %}
 	{% endif %}
+
+
+.sizes {
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 0.25em !important;
+}
+	.sizes b {
+		display: block !important;
+		clear: both !important;
+	}
+	.sizes span {
+		display: inline-block;
+		position: relative;
+		overflow: hidden;
+		/* float: left; */
+		padding: 0 0.5em !important;
+		margin: 0 0.1em 0.2em 0.1em !important;
+		border-width: none;
+
+		{% assign bg_color = settings.color_body_text | color_to_rgb %}       
+		{% assign opacity = 0.1 %}       
+		{% assign opacityWithEndBracket = ', ' | append: opacity | append: ')' %}       
+		{% assign rgba = bg_color | replace: 'rgb', 'rgba' | replace:')', opacityWithEndBracket %} 
+		background-color: {{ rgba }};
+
+		vertical-align: middle;
+	}
+	.sizes.circle span {
+		padding: 0 !important;
+		width: {{ swatch_size }}px;
+		height: {{ swatch_size }}px;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+	}
+
 #variations select,
 #variations textarea,
 #variations input {

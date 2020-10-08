@@ -1359,16 +1359,24 @@ jQuery('.tags .group h4').click(function() {
         "default": "swatches"
       },
       {
-        "type": "checkbox",
-        "id": "show_swatches",
-        "label": "Show swatches",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_sizes",
-        "label": "Show sizes",
-        "default": true
+        "type": "select",
+        "id": "size_style",
+        "label": "Size style",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          },
+          {
+            "value": "circles",
+            "label": "Circles"
+          }
+        ],
+        "default": "circles"
       },
       {
         "type": "checkbox",

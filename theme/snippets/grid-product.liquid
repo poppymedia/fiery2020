@@ -78,7 +78,7 @@
                           {% assign variant_avialable = false %}
                         {% endunless %}
                       {% endif %}                      
-                      <span{% unless variant_avialable %} class="soldout"{% endunless %}>{% if section.settings.size_style == 'circles' %}{% assign parts = value | escape | split: ' ' %}{{ parts[0] | slice: 0 }}{% else %}{{ value | escape }}{% endif %}</span>
+                      <span{% unless variant_avialable %} class="soldout"{% endunless %}>{{ value | escape }}{% comment %}{% if section.settings.size_style == 'circles' %}{% assign parts = value | escape | split: ' ' %}{{ parts[0] | slice: 0 }}{% else %}{% endif %}{% endcomment %}</span>
                     {% endfor %}      
                   {% endif %}
               {% endfor %}

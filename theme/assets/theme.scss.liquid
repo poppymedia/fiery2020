@@ -3441,7 +3441,7 @@ body.template-password button {
 		position: relative;
 		overflow: hidden;
 		/* float: left; */
-		padding: 0 0.5em !important;
+		padding: 0.2em 0.5em !important;
 		margin: 0 0.1em 0.2em 0.1em !important;
 		border-width: none;
 
@@ -3452,11 +3452,17 @@ body.template-password button {
 		background-color: {{ rgba }};
 
 		vertical-align: middle;
+		font-size: 0.8em;
 	}
 	.sizes.circles span {
-		padding: 0 !important;
+		display: inline-block;
+		/*
 		width: {{ swatch_size }}px;
 		height: {{ swatch_size }}px;
+		*/
+		width: 2em;
+		height: 2em;
+		padding: 0.2em 0 0 0 !important;
 		-webkit-border-radius: 50%;
 		-moz-border-radius: 50%;
 		border-radius: 50%;

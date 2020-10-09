@@ -3271,11 +3271,65 @@ body.template-password button {
 		clear: both !important;
 	}
 	{% assign swatch_size = 40 %}
+
 	.colors .col {
 		display: inline-block;
 		position: relative;
 		overflow: hidden;
-		/* float: left; */
+		width: {{ swatch_size }}px;
+		height: {{ swatch_size }}px;
+		padding: 0 !important;
+		margin: 0 0.15em 0.3em 0.15 !important;
+		{% if settings.swatch_shape == 'circle' %}
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		{% endif %}
+		border-width: none;
+		background-color: {{ settings.color_body_text | color_lighten: 30 }};
+		border: solid 1px transparent;
+	}
+	.grid .colors .col {
+		width: 1.4em;
+		height: 1.4em;
+	}
+	.item .colors .col {
+		margin: 0 0.12em 0.24em 0.12em !important;
+	}
+	{% if settings.swatch_type == 'subtle' %}
+	.colors .col:before, 
+	.colors .col:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 2;
+
+		{% if settings.swatch_shape == 'circle' %}
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		border-radius: 50%;
+		{% endif %}
+	}
+	.colors .col:before {		
+		background: linear-gradient(180deg, rgba(255,255,255,0.2) 2%, rgba(255,255,255,0) 75%);
+	}
+	.colors .col:after {
+		background: linear-gradient(180deg, rgba(0,0,0,0) 25%, rgba(0,0,0,0.05) 100%);
+	}
+	{% endif %}
+
+	.colors .col.selected {
+		border-color: {{ settings.color_body_text }};
+	}
+
+	/*
+	.colors .col {
+		display: inline-block;
+		position: relative;
+		overflow: hidden;
 		width: {{ swatch_size }}px;
 		height: {{ swatch_size }}px;
 		padding: 0 !important;
@@ -3337,7 +3391,6 @@ body.template-password button {
 		z-index: 2;
 		margin: 0;
 		border: solid 5px {{ settings.color_section_bg }};
-		/* border: solid 3px white; */
 		{% if settings.swatch_shape == 'circle' %}
 		-webkit-border-radius: 50%;
 		-moz-border-radius: 50%;
@@ -3360,7 +3413,6 @@ body.template-password button {
 		border-radius: 50%;
 		{% endif %}
 	}
-	/* .colors a.col.selected:before, */
 	.colors .col.selected:after {
 		border-color: transparent;
 		border-color: {{ settings.color_body_text }};
@@ -3388,7 +3440,6 @@ body.template-password button {
 		z-index: 2;
 		margin: 0;
 		border: solid 5px {{ settings.color_section_bg }};
-		/* border: solid 3px white; */
 		{% if settings.swatch_shape == 'circle' %}
 		-webkit-border-radius: 50%;
 		-moz-border-radius: 50%;
@@ -3425,6 +3476,8 @@ body.template-password button {
 
 	{% if settings.swatch_type == 'minimal' %}
 	{% endif %}
+	*/
+
 
 
 .sizes {
@@ -3442,7 +3495,7 @@ body.template-password button {
 		overflow: hidden;
 		/* float: left; */
 		padding: 0.2em 0.5em !important;
-		margin: 0 0.1em 0.2em 0.1em !important;
+		margin: 0 0.12em 0.24em 0.12em !important;
 		border-width: none;
 
 		{% assign bg_color = settings.color_body_text | color_to_rgb %}       

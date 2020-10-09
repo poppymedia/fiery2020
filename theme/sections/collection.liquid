@@ -1327,9 +1327,15 @@ jQuery('.tags .group h4').click(function() {
         "default": true
       },
       {
+        "type": "checkbox",
+        "id": "show_variant_heading",
+        "label": "Show variant headings",
+        "default": false
+      },
+      {
         "type": "select",
         "id": "color_style",
-        "label": "Swatch style",
+        "label": "Variant swatch style",
         "options": [
           {
             "value": "hidden",
@@ -1361,7 +1367,7 @@ jQuery('.tags .group h4').click(function() {
       {
         "type": "select",
         "id": "size_style",
-        "label": "Size style",
+        "label": "Variant size style",
         "options": [
           {
             "value": "hidden",

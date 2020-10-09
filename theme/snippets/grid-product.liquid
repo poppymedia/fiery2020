@@ -33,10 +33,8 @@
       {%- if optcheck contains 'color' or optcheck contains 'colour' %}
           {% if show_variant_sizes == 'yes' -%}
               <div class="colors">
-
-              <b>{{ option.name }}</b>
-
-              {% for option in product.options_with_values %}
+              {% if section.settings.show_variant_heading %}<b>{{ option.name }}</b>{% endif %}
+              {% for option in product.options_with_values -%}
                 {% assign downcased_option = option.name | downcase %}
                   {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
                     {% assign is_size = true %}
@@ -48,26 +46,20 @@
                           {% assign variant_avialable = false %}
                         {% endunless %}
                       {% endif %}
-
                       {%- assign current_style = section.settings.color_style -%}
                       {% if current_style == 'swatches' %}{% assign bgurl = text | append: '.png' | file_img_url: '50x50' %}{%- capture class %} class="col{{ selected }}" style="background-color:{{ text | strip | remove: ' ' | downcase }};{%- unless bgurl contains 'no-image' %}background-url('{{ bgurl }}'){% endunless -%}"{% endcapture -%}{%- assign text = '' -%}{% endif -%}
-
                       <span{{ class }}{{ checked }}></span>
                     {% endfor %}      
                   {% endif %}
-              {% endfor %}
-
+              {%- endfor %}
               </div>
-
           {%- endif -%}
       {%- endif -%}
       {%- if optcheck contains 'size' %}
           {% if show_variant_sizes == 'yes' -%}
               <div class="sizes{% if section.settings.size_style != 'hidden' %} {{ section.settings.size_style }}{% endif %}">
-
-              <b>{{ option.name }}</b>
-
-              {% for option in product.options_with_values %}
+              {% if section.settings.show_variant_heading %}<b>{{ option.name }}</b>{% endif %}
+              {% for option in product.options_with_values -%}
                 {% assign downcased_option = option.name | downcase %}
                   {% if downcased_option contains 'size' %}
                     {% assign is_size = true %}
@@ -81,16 +73,12 @@
                       <span{% unless variant_avialable %} class="soldout"{% endunless %}>{{ value | escape }}{% comment %}{% if section.settings.size_style == 'circles' %}{% assign parts = value | escape | split: ' ' %}{{ parts[0] | slice: 0 }}{% else %}{% endif %}{% endcomment %}</span>
                     {% endfor %}      
                   {% endif %}
-              {% endfor %}
-
+              {%- endfor %}
               </div>
-
           {%- endif -%}
       {%- endif -%}
   {%- endfor %}
 {%- endcapture -%}
-
-
 
 
 

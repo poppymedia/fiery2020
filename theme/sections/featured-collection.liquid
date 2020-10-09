@@ -911,9 +911,15 @@ $(document).ready(function(){
         "default": true
       },
       {
+        "type": "checkbox",
+        "id": "show_variant_heading",
+        "label": "Show variant headings",
+        "default": false
+      },
+      {
         "type": "select",
         "id": "color_style",
-        "label": "Swatch style",
+        "label": "Variant swatch style",
         "options": [
           {
             "value": "hidden",
@@ -943,21 +949,29 @@ $(document).ready(function(){
         "default": "swatches"
       },
       {
-        "type": "checkbox",
-        "id": "show_swatches",
-        "label": "Show swatches",
-        "default": true
-      },
-      {
-        "type": "checkbox",
-        "id": "show_sizes",
-        "label": "Show sizes",
-        "default": true
+        "type": "select",
+        "id": "size_style",
+        "label": "Variant size style",
+        "options": [
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          },
+          {
+            "value": "buttons",
+            "label": "Buttons"
+          },
+          {
+            "value": "circles",
+            "label": "Circles"
+          }
+        ],
+        "default": "buttons"
       },
       {
         "type": "checkbox",
         "id": "vendor",
-        "label": "Show vendor",
+        "label": "Show product vendor",
         "default": true
       },
       {

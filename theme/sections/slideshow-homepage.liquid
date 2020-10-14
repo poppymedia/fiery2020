@@ -942,6 +942,7 @@
 								{%- endif %}
 
 								{%- if block.settings.title != blank or block.settings.subtitle != blank or block.settings.paragraph != blank or block.settings.button_1_label != blank or block.settings.button_2_label != blank -%}
+
 									{% if section.settings.slideshow_text_to_content -%}					
 											<div class="textWrapper textClass{{ slide_num }}">{{ shape }}<div class="container"><div class="text">
 												{% if block.settings.title != blank %}<h1>{{ slide_text }}</h1>{% endif %}
@@ -987,10 +988,15 @@
 
 											</div></div></div>
 									{%- endif %}
+
 								{% else %}
-									<!-- TESTING FIRST SLIDE ON MOBILE WITH NO TEXT -->
+
+									{% if type == 'video' %}{% else %}
+									{% comment %}<!-- TESTING FIRST SLIDE ON MOBILE WITH NO TEXT -->{% endcomment %}
 									<div class="textWrapper textClass{{ slide_num }}">{{ shape }}<div class="container"><div class="text">
-									</div></div></div>	
+									</div></div></div>
+									{% endif %}
+
 								{%- endif -%}
 									
 								{{ overlay_link }}

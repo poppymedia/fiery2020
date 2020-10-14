@@ -987,9 +987,11 @@
 											</div></div></div>
 									{%- endif %}
 								{% else %}
+									{% if type == 'video' %}{% else %}
 									<!-- TESTING FIRST SLIDE ON MOBILE WITH NO TEXT -->
 									<div class="textWrapper textClass{{ slide_num }}">{{ shape }}<div class="container"><div class="text">
 									</div></div></div>	
+									{% endif %}
 								{%- endif -%}
 									
 								{{ overlay_link }}

@@ -1,6 +1,6 @@
-{% include 'settings' %}
+{%- include 'settings' -%}
 
-{% if section.blocks.size > 0 %}
+{%- if section.blocks.size > 0 -%}
 
   <style>
         .meta .desc {
@@ -18,8 +18,8 @@
             padding: 0;
           }
 
-  {% unless section.settings.image_position == 'hidden' %}
-  {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
+  {%- unless section.settings.image_position == 'hidden' -%}
+  {%- if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' -%}
   #shopify-section-{{ section.id }} {
       position: relative;
   }
@@ -33,49 +33,49 @@
       background-color: {{ section.settings.promotions_bg }};  
       opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
   }
-  {% endif %}
-  {% endunless %}
+  {%- endif -%}
+  {%- endunless -%}
 
-  {% if section.settings.promotions_width == 'page' %}
+  {%- if section.settings.promotions_width == 'page' -%}
   #shopify-section-{{ section.id }} {
     background-color: {{ section.settings.promotions_bg }};
   }
-  {% endif %}
+  {%- endif -%}
 
-  {% if section.settings.promotions_width == 'overflow' %}
+  {%- if section.settings.promotions_width == 'overflow' -%}
   #shopify-section-{{ section.id }} {
     background-color: {{ section.settings.promotions_bg }}; 
-    {% if section.settings.image_bg %}
+    {%- if section.settings.image_bg -%}
     background-image: url('{{ section.settings.image_bg | img_url: bg_image_x }}');
 
-    {% if section.settings.image_position == 'center' %}
+    {%- if section.settings.image_position == 'center' -%}
     background-position: center center; 
     background-repeat: no-repeat;
-    {% endif %}
+    {%- endif -%}
 
-    {% if section.settings.image_position == 'fill' %}
+    {%- if section.settings.image_position == 'fill' -%}
     background-size: cover;
-    {% endif %}
+    {%- endif -%}
 
-    {% endif %}
+    {%- endif -%}
   }
-  {% endif %}
+  {%- endif -%}
 
-  {% if section.settings.promotions_width == 'container' %}
+  {%- if section.settings.promotions_width == 'container' -%}
   #shopify-section-{{ section.id }} .container {
     padding: 0;
     background-color: {{ section.settings.promotions_bg }}; 
   }
-  {% else %}
+  {%- else -%}
   #shopify-section-{{ section.id }} .container  {
     background-color: transparent; 
   }
-  {% endif %}
+  {%- endif -%}
 
 
 
-  {% assign gridspace = section.settings.promotions_spacing | append: 'px' %}
-  {% assign gridpadding = section.settings.promotions_padding | append: 'px' %}
+  {%- assign gridspace = section.settings.promotions_spacing | append: 'px' -%}
+  {%- assign gridpadding = section.settings.promotions_padding | append: 'px' -%}
 
   #shopify-section-{{ section.id }} {
     color: {{ section.settings.promotions_text }};
@@ -84,7 +84,7 @@
   #shopify-section-{{ section.id }} h3 {
     color: {{ section.settings.promotions_title }};
   }
-  {% if section.settings.key_style != 'none' %}
+  {%- if section.settings.key_style != 'none' -%}
   /*
   @keyframes fadein {
       from {
@@ -162,7 +162,7 @@
     */
     #shopify-section-{{ section.id }} .meta i {
       top: 0;
-      {% assign adj = settings.marker_font_size | times: 1.5 | minus: settings.marker_font_size | divided_by: 2 %}
+      {%- assign adj = settings.marker_font_size | times: 1.5 | minus: settings.marker_font_size | divided_by: 2 -%}
       margin-top: {{ settings.type_h3_size | minus: settings.marker_font_size | minus: adj }}px;
     }
     #shopify-section-{{ section.id }} .meta i:before,
@@ -173,7 +173,7 @@
       margin-top: -{{ adj }}px;
       margin-left: -{{ adj }}px;
     }
-  {% endif %}
+  {%- endif -%}
   #shopify-section-{{ section.id }} .featurecolumn img {
     width: 100%;
   }
@@ -184,8 +184,8 @@
       text-align: {{ section.settings.promotions_alignment }};
     }
 
-    {% if section.settings.layout == 'image_top' %}
-    {% assign columns = 3 %}
+    {%- if section.settings.layout == 'image_top' -%}
+    {%- assign columns = 3 -%}
 
     .meta .desc {
       margin: 0.5em 0;
@@ -209,23 +209,23 @@
           grid-area: span 1 / span {{ columns }};
         }
 
-    {% endif %}
+    {%- endif -%}
 
-        {% if section.settings.promotions_alignment == 'right' %}
+        {%- if section.settings.promotions_alignment == 'right' -%}
         #shopify-section-{{ section.id }} .meta .desc  {
           padding-right: {{ settings.marker_font_size }}px !important;
         }
-        {% endif %}
+        {%- endif -%}
 
-        {% if section.settings.promotions_alignment == 'left' %}
+        {%- if section.settings.promotions_alignment == 'left' -%}
         #shopify-section-{{ section.id }} .meta .desc  {
           padding-left: {{ settings.marker_font_size | times: 2 }}px !important;
         }
-        {% endif %}
+        {%- endif -%}
 
-    {% if section.settings.layout == '1_column_1_image' %}
-    {% assign columns = 2 %}
-    {% assign rows = section.blocks.size %}
+    {%- if section.settings.layout == '1_column_1_image' -%}
+    {%- assign columns = 2 -%}
+    {%- assign rows = section.blocks.size -%}
 
     #shopify-section-{{ section.id }} .features {
         display: grid;
@@ -248,23 +248,23 @@
           grid-area: 1 / 2 / {{ rows }} / 2;
       }
 
-        {% if section.settings.promotions_alignment == 'expand' %}      
+        {%- if section.settings.promotions_alignment == 'expand' -%}      
         #shopify-section-{{ section.id }} .features > div {
           text-align: left;
         } 
-        {% endif %}
+        {%- endif -%}
 
-        {% if section.settings.promotions_alignment == 'pinch' %}      
+        {%- if section.settings.promotions_alignment == 'pinch' -%}      
         #shopify-section-{{ section.id }} .features > div {
           text-align: right;
         } 
-        {% endif %}
+        {%- endif -%}
 
-    {% endif %}
+    {%- endif -%}
 
-    {% if section.settings.layout == '1_image_1_column' %}
-    {% assign columns = 2 %}
-    {% assign rows = section.blocks.size %}
+    {%- if section.settings.layout == '1_image_1_column' -%}
+    {%- assign columns = 2 -%}
+    {%- assign rows = section.blocks.size -%}
 
     #shopify-section-{{ section.id }} .features {
         display: grid;
@@ -287,24 +287,24 @@
           grid-area: 1 / 1 / {{ rows }} / 1;
       }
 
-        {% if section.settings.promotions_alignment == 'expand' %}      
+        {%- if section.settings.promotions_alignment == 'expand' -%}      
         #shopify-section-{{ section.id }} .features > div {
           text-align: right;
         } 
-        {% endif %}
+        {%- endif -%}
 
-        {% if section.settings.promotions_alignment == 'pinch' %}      
+        {%- if section.settings.promotions_alignment == 'pinch' -%}      
         #shopify-section-{{ section.id }} .features > div {
           text-align: left;
         } 
-        {% endif %}
+        {%- endif -%}
 
-    {% endif %}
+    {%- endif -%}
 
-    {% if section.settings.layout == '1_column_1_image_1_column' %}
-    {% assign columns = 3 %}
+    {%- if section.settings.layout == '1_column_1_image_1_column' -%}
+    {%- assign columns = 3 -%}
     /* Divided is always rounded down by Shopify, so add 2 for odd numbers */
-    {% assign rows = section.blocks.size | divided_by: columns | ceil | plus: 2 %}
+    {%- assign rows = section.blocks.size | divided_by: columns | ceil | plus: 2 -%}
 
       #shopify-section-{{ section.id }} .features {
         display: grid;
@@ -327,7 +327,7 @@
           grid-area: 1 / 2 / {{ rows }};
         }
 
-        {% if section.settings.promotions_alignment == 'expand' %}   
+        {%- if section.settings.promotions_alignment == 'expand' -%}   
         #shopify-section-{{ section.id }} .features > div:not(.featurecolumn) {
           padding-right: {{ settings.marker_font_size | times: 2 }}px;
         } 
@@ -349,9 +349,9 @@
         #shopify-section-{{ section.id }} .features > div:nth-child(even) {
           text-align: left;
         } 
-        {% endif %}
+        {%- endif -%}
 
-        {% if section.settings.promotions_alignment == 'pinch' %}
+        {%- if section.settings.promotions_alignment == 'pinch' -%}
         #shopify-section-{{ section.id }} .features > div:not(.featurecolumn) i {
           right: auto;
           left: 0;
@@ -369,19 +369,19 @@
         #shopify-section-{{ section.id }} .features > div:nth-child(even) {
           text-align: right;
         } 
-        {% endif %}
+        {%- endif -%}
 
-        {% if section.settings.promotions_alignment == 'center' %}
+        {%- if section.settings.promotions_alignment == 'center' -%}
         #shopify-section-{{ section.id }} .features > div:not(.featurecolumn) i {
           position: relative;
         }
-        {% endif %}
+        {%- endif -%}
 
 
-    {% endif %}
+    {%- endif -%}
 
-    {% if section.settings.layout == '1_row_1_image_1_row' %}
-    {% assign columns = 3 %}
+    {%- if section.settings.layout == '1_row_1_image_1_row' -%}
+    {%- assign columns = 3 -%}
       .meta .desc {
         margin: 0.5em 0;
       }
@@ -404,7 +404,7 @@
           grid-area: 2 / span {{ columns }};
         }
 
-    {% endif %}
+    {%- endif -%}
 
 
   }
@@ -432,7 +432,7 @@
           display: inline-block;
           margin: 0 0 0 1em;
         }
-    {% if section.settings.key_style != 'none' %}
+    {%- if section.settings.key_style != 'none' -%}
     #shopify-section-{{ section.id }} .meta .desc {
       padding-left: {{ settings.marker_font_size }}px;
     }
@@ -442,7 +442,7 @@
     #shopify-section-{{ section.id }} .meta i {
       left: 0 !important;
     }
-    {% endif %}
+    {%- endif -%}
    }
 
 
@@ -459,110 +459,110 @@
     
   </style>
 
-    {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
+    {%- if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' -%}<div class="container{%- if settings.width_bleed_to_edge -%} bleed{%- endif -%}">{%- endif -%}
 
-    {% if section.settings.title != empty %}<h2>{{ section.settings.title }}</h2>{% endif %}
+    {%- if section.settings.title != empty -%}<h2>{{ section.settings.title }}</h2>{%- endif -%}
 
-    {% assign keys  = '' %}{% assign key_n  = 0 %}
+    {%- assign keys  = '' -%}{%- assign key_n  = 0 -%}
 
     {%- for block in section.blocks -%}
 
-        {% if block.type == 'feature' %}
+        {%- if block.type == 'feature' -%}
 
-            {% capture feature_head %}
+            {%- capture feature_head -%}
             <!-- Main feature -->
             <div>
                 <h2>{{ block.settings.title }}</h2>
             </div>
-            {% endcapture %}
+            {%- endcapture -%}
 
-            {% capture feature_image %}
+            {%- capture feature_image -%}
                 
-                {% assign styles = styles | append: blockstyle %}              
-                {% assign imgsize = 1000 | append: 'x' %}
+                {%- assign styles = styles | append: blockstyle -%}              
+                {%- assign imgsize = 1000 | append: 'x' -%}
 
                 <img src="{{ block.settings.image | img_url: 'master' }}" /><!-- IMGSIZE: {{ imgsize }} -->
 
-            {% endcapture %}
+            {%- endcapture -%}
 
-            {% capture feature_desc %}    
-            {% if block.settings.subheading.size > 0 %}
+            {%- capture feature_desc -%}    
+            {%- if block.settings.subheading.size > 0 -%}
             <div class="desc">
                   <p style="color:{{ block.settings.color_text }}">{{ block.settings.subheading }}</p>
             </div>
-            {% endif %}
-            {% endcapture %}
+            {%- endif -%}
+            {%- endcapture -%}
 
-        {% else %}
-        {% assign key_n  = key_n | plus: 1 %}
-        {% assign key = '<i style="left:' | append: block.settings.pos_x | append: '%;top:' | append: block.settings.pos_y | append: '%" data-n="' | append: key_n | append: '"></i>' %}
-        {% assign keys = keys | append: key %}
-        {% endif %} 
+        {%- else -%}
+        {%- assign key_n  = key_n | plus: 1 -%}
+        {%- assign key = '<i style="left:' | append: block.settings.pos_x | append: '%;top:' | append: block.settings.pos_y | append: '%" data-n="' | append: key_n | append: '"></i>' -%}
+        {%- assign keys = keys | append: key -%}
+        {%- endif -%} 
 
-    {% endfor %}
+    {%- endfor -%}
 
 
 
-    {% capture feature_image_with_keys %}
-            <div class="featurecolumn{% if section.settings.image_parallax %} parallax{% endif %}" role="presentation">
+    {%- capture feature_image_with_keys -%}
+            <div class="featurecolumn{%- if section.settings.image_parallax -%} parallax{%- endif -%}" role="presentation">
                 
                 {{ feature_image }}
 
-                {% if section.settings.key_style != 'none' %}
+                {%- if section.settings.key_style != 'none' -%}
                 <div class="keys">
                   {{ keys }}
                 </div>
-                {% endif %}
+                {%- endif -%}
 
             </div>
-    {% endcapture %}
+    {%- endcapture -%}
 
 
 
-    {% capture promotions %}
-    {% assign key_n  = 0 %}
+    {%- capture promotions -%}
+    {%- assign key_n  = 0 -%}
     {%- for block in section.blocks -%}
 
-        {% if block.type == 'promotion' %}
+        {%- if block.type == 'promotion' -%}
           <!-- Pomotional details -->
 
-        {% capture blockstyle %}
-          {% if block.settings.image and section.settings.image_type != 'background' %}
+        {%- capture blockstyle -%}
+          {%- if block.settings.image and section.settings.image_type != 'background' -%}
           #shopify-section-{{ section.id }} .promotion img {
             margin: 0 !important;
             padding: 0 !important;
           } 
-          {% endif %}
-        {% endcapture %}
+          {%- endif -%}
+        {%- endcapture -%}
         
-        {% assign styles = styles | append: blockstyle %}
+        {%- assign styles = styles | append: blockstyle -%}
       
-        {% assign imgsize = 1000 | append: 'x' %}
+        {%- assign imgsize = 1000 | append: 'x' -%}
 
         <div class="meta">
 
-          {% assign key_n  = key_n | plus: 1 %}
-          {% assign key = '<i data-n="' | append: key_n | append: '"></i>' %}
+          {%- assign key_n  = key_n | plus: 1 -%}
+          {%- assign key = '<i data-n="' | append: key_n | append: '"></i>' -%}
 
           {{ key }}
 
-          {% if block.settings.image and section.settings.image_type != 'background' %}
+          {%- if block.settings.image and section.settings.image_type != 'background' -%}
           <img src="{{ block.settings.image | img_url: imgsize }}" />
-          {% endif %}
+          {%- endif -%}
 
           <div class="desc">
           <h3>{{ block.settings.title }}</h3>
-          {% if block.settings.subheading.size > 0 %}<p style="color:{{ block.settings.color_text }}">{{ block.settings.subheading }}</p>{% endif %}
+          {%- if block.settings.subheading.size > 0 -%}<p style="color:{{ block.settings.color_text }}">{{ block.settings.subheading }}</p>{%- endif -%}
           </div>
           
-          {% if block.settings.url != blank %}<a href="{{ block.settings.url }}"></a>{% endif %}
+          {%- if block.settings.url != blank -%}<a href="{{ block.settings.url }}"></a>{%- endif -%}
 
         </div>
 
-        {% endif %} 
+        {%- endif -%} 
 
-    {%- endfor %}
-    {% endcapture %}
+    {%- endfor -%}
+    {%- endcapture -%}
 
 
 
@@ -584,11 +584,11 @@
 
   {{ feature_desc }}
 
-  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}</div>{% endif %}
+  {%- if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' -%}</div>{%- endif -%}
 
 
 
-{% endif %}
+{%- endif -%}
 
 {% schema %}
   {
@@ -859,8 +859,8 @@
   }
 {% endschema %}
 
-{% stylesheet %}
-{% endstylesheet %}
+{%- stylesheet -%}
+{%- endstylesheet -%}
 
-{% javascript %}
-{% endjavascript %}
+{%- javascript -%}
+{%- endjavascript -%}

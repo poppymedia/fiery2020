@@ -1,19 +1,19 @@
-{% include 'settings' %}
-{% assign mobile_width = grid_mobile %}
+{%- include 'settings' -%}
+{%- assign mobile_width = grid_mobile -%}
 
-  {% if section.blocks.size > 0 %}
+  {%- if section.blocks.size > 0 -%}
 
   <style>
-  {% if section.settings.promotions_width == 'container' %}
+  {%- if section.settings.promotions_width == 'container' -%}
   @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
   #shopify-section-{{ section.id }} .container {
     padding: 0;
     background-color: {{ section.settings.promotions_bg }}; 
   }
   }
-  {% endif %}
+  {%- endif -%}
 
-  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
+  {%- if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' -%}
   @media only screen and (min-width: {{ mobile_width | remove: 'px' | append: 'px' }}) {
     #shopify-section-{{ section.id }} > h2,
     #shopify-section-{{ section.id }} > .container > h2 {
@@ -21,53 +21,53 @@
       margin-top:  0;
     }
   }
-  {% endif %}
+  {%- endif -%}
     
   #shopify-section-{{ section.id }} {  
     overflow: hidden;  
     /* border: solid 1px white; */
    
-    {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
-    {% if section.settings.image_position != 'hidden' and section.settings.image_bg != nil %}
-    {% assign bgsize = 1000 | append: 'x' %}
+    {%- if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' -%}
+    {%- if section.settings.image_position != 'hidden' and section.settings.image_bg != nil -%}
+    {%- assign bgsize = 1000 | append: 'x' -%}
     background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
       
       
-    {% if section.settings.image_parallax %}
+    {%- if section.settings.image_parallax -%}
     background-position: center -1px; 
       
-    {% if section.settings.image_position == 'center' %}    
+    {%- if section.settings.image_position == 'center' -%}    
     background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
+    {%- endif -%}
+    {%- if section.settings.image_position == 'tile' -%}
     background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
+    {%- endif -%}
+    {%- if section.settings.image_position == 'fill' -%}   
     background-size: cover;
-    {% endif %}        
+    {%- endif -%}        
       
-    {% else %}
+    {%- else -%}
       
-    {% if section.settings.image_position == 'center' %}    
+    {%- if section.settings.image_position == 'center' -%}    
     background-position: center center; 
     background-repeat: no-repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'tile' %}
+    {%- endif -%}
+    {%- if section.settings.image_position == 'tile' -%}
     background-position: center center; 
     background-repeat: repeat;
-    {% endif %}
-    {% if section.settings.image_position == 'fill' %}   
+    {%- endif -%}
+    {%- if section.settings.image_position == 'fill' -%}   
     background-position: center center; 
     background-size: cover;
-    {% endif %}
+    {%- endif -%}
       
-    {% endif %}      
+    {%- endif -%}      
       
 
       
-    {% endif %}      
+    {%- endif -%}      
     background-color: {{ section.settings.promotions_bg }};
-    {% endif %}
+    {%- endif -%}
 
 
 
@@ -84,8 +84,8 @@
     z-index: 3;
   }
     
-  {% unless section.settings.image_position == 'hidden' %}
-  {% if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' %}
+  {%- unless section.settings.image_position == 'hidden' -%}
+  {%- if section.settings.promotions_width == 'overflow' or section.settings.promotions_width == 'page' -%}
   #shopify-section-{{ section.id }} {
       background-color: {{ section.settings.promotions_bg }};
   }
@@ -99,10 +99,10 @@
       background-color: {{ section.settings.promotions_bg }};  
       opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
   }
-  {% endif %}
-  {% endunless %}
-  {% if section.settings.image_bg != nil %}
-  {% endif %}
+  {%- endif -%}
+  {%- endunless -%}
+  {%- if section.settings.image_bg != nil -%}
+  {%- endif -%}
 
     
   #shopify-section-{{ section.id }} .container { 
@@ -115,12 +115,12 @@
     /* border: solid 1px red; */
   }   
 
-  {% if section.settings.promotions_width == 'overflow' %}
+  {%- if section.settings.promotions_width == 'overflow' -%}
   #shopify-section-{{ section.id }} .container {    
     background: transparent; 
     padding: 0 !important;
   }    
-  {% endif %}    
+  {%- endif -%}    
     
   #shopify-section-{{ section.id }} .promotions {
     /* Default to same as settings.grid_spacing */
@@ -128,77 +128,77 @@
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
-    {% unless section.settings.promotions_autoplay %}
-    {% endunless %}
+    {%- unless section.settings.promotions_autoplay -%}
+    {%- endunless -%}
     font-size: {{ settings.promotions_font_size }}px;
 
 
 
 
-    {% if section.settings.image_bg != nil %}
-    {% unless section.settings.image_position == 'hidden' %}
+    {%- if section.settings.image_bg != nil -%}
+    {%- unless section.settings.image_position == 'hidden' -%}
 
-        {% if section.settings.promotions_width != 'overflow' or section.settings.promotions_width == 'page' %}
-        {% if section.settings.image_type == 'background' %}
+        {%- if section.settings.promotions_width != 'overflow' or section.settings.promotions_width == 'page' -%}
+        {%- if section.settings.image_type == 'background' -%}
         background-size: cover;
-        {% else %}    
+        {%- else -%}    
         background-color: {{ section.settings.promotions_bg }};
-        {% endif %}
-        {% endif %}
+        {%- endif -%}
+        {%- endif -%}
         
         
         
-        {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
-        {% if section.settings.image_position != 'hidden' %}
-        {% assign bgsize = 1000 | append: 'x' %}
+        {%- if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' -%}
+        {%- if section.settings.image_position != 'hidden' -%}
+        {%- assign bgsize = 1000 | append: 'x' -%}
         background-image: url('{{ section.settings.image_bg | img_url: bgsize }}');
           
           
-        {% if section.settings.image_parallax %}
+        {%- if section.settings.image_parallax -%}
         background-position: center -1px; 
           
-        {% if section.settings.image_position == 'center' %}    
+        {%- if section.settings.image_position == 'center' -%}    
         background-repeat: no-repeat;
-        {% endif %}
-        {% if section.settings.image_position == 'tile' %}
+        {%- endif -%}
+        {%- if section.settings.image_position == 'tile' -%}
         background-repeat: repeat;
-        {% endif %}
-        {% if section.settings.image_position == 'fill' %}   
+        {%- endif -%}
+        {%- if section.settings.image_position == 'fill' -%}   
         background-size: cover;
-        {% endif %}      
+        {%- endif -%}      
           
-        {% else %}  
+        {%- else -%}  
           
-        {% if section.settings.image_position == 'center' %}    
+        {%- if section.settings.image_position == 'center' -%}    
         background-position: center center; 
         background-repeat: no-repeat;
-        {% endif %}
-        {% if section.settings.image_position == 'tile' %}
+        {%- endif -%}
+        {%- if section.settings.image_position == 'tile' -%}
         background-position: center center; 
         background-repeat: repeat;
-        {% endif %}
-        {% if section.settings.image_position == 'fill' %}   
+        {%- endif -%}
+        {%- if section.settings.image_position == 'fill' -%}   
         background-position: center center; 
         background-size: cover;
-        {% endif %}
+        {%- endif -%}
           
-        {% endif %} 
+        {%- endif -%} 
           
           
           
-        {% endif %}      
+        {%- endif -%}      
         background-color: {{ section.settings.promotions_bg }};
-        {% endif %} 
+        {%- endif -%} 
 
 
-    {% endunless %}
-    {% endif %}
+    {%- endunless -%}
+    {%- endif -%}
 
     
   }
 
-  {% unless section.settings.image_position == 'hidden' %}
-  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' %}
+  {%- unless section.settings.image_position == 'hidden' -%}
+  {%- if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'page' -%}
   #shopify-section-{{ section.id }} .promotions:before {
       content: '';
       position: absolute;
@@ -209,10 +209,10 @@
       background-color: {{ section.settings.promotions_bg }};  
       opacity: {{ section.settings.image_opacity | divided_by: 100.00 }};
   }
-  {% endif %}
-  {% endunless %}
-  {% if section.settings.image_bg != nil %}
-  {% endif %}
+  {%- endif -%}
+  {%- endunless -%}
+  {%- if section.settings.image_bg != nil -%}
+  {%- endif -%}
   
     
   #shopify-section-{{ section.id }} .promotion {
@@ -223,11 +223,11 @@
     background: transparent;
     
   }
-  {% if section.settings.image_type != 'hidden' %}  
+  {%- if section.settings.image_type != 'hidden' -%}  
   #shopify-section-{{ section.id }} .promotion > img {
     display: block;
   } 
-  {% endif %}
+  {%- endif -%}
   #shopify-section-{{ section.id }} .promotion > a {
     position: absolute;
     z-index: 10;
@@ -253,49 +253,49 @@
     margin-top: 0.2em;
     font-size: {{ section.settings.promotions_font_size }}px;
   }
-  {% if section.settings.image_type != 'hidden' %}
+  {%- if section.settings.image_type != 'hidden' -%}
     #shopify-section-{{ section.id }} .promotion img,
     #shopify-section-{{ section.id }} .promotion svg {
       width: {{ section.settings.image_size }}%;
-      {% if section.settings.image_type == 'icon' %}
+      {%- if section.settings.image_type == 'icon' -%}
       display: inline;
       margin: auto 0.5em auto 0;
       padding: 0;
       vertical-align: middle;
-      {% endif %}
-      {% if section.settings.image_type == 'image' %}
+      {%- endif -%}
+      {%- if section.settings.image_type == 'image' -%}
       margin: 0 auto 0.5em auto;
       margin: 0 auto 0 auto !important;
       /* float: left; */
       float: left;
       width: 100%;
       display: block;
-      {% endif %}
+      {%- endif -%}
     }
-    {% if section.settings.image_type == 'image' %}
+    {%- if section.settings.image_type == 'image' -%}
     #shopify-section-{{ section.id }} .promotion img + *,
     #shopify-section-{{ section.id }} .promotion svg + * {
       margin-top: 0.5em;
     }
-    {% endif %}
-  {% endif %}
+    {%- endif -%}
+  {%- endif -%}
   #shopify-section-{{ section.id }} .promotion .desc {
-    {% if section.settings.image_type == 'icon' %}
+    {%- if section.settings.image_type == 'icon' -%}
     display: inline-block;
     vertical-align: middle;
-    {% endif %}
+    {%- endif -%}
   } 
 
 
 
   @media only screen and (max-width: {{ mobile_width | remove: 'px' | minus: 1 | append: 'px' }}) {
-    {% if section.settings.image_type == 'image' %}
+    {%- if section.settings.image_type == 'image' -%}
       #shopify-section-{{ section.id }} .promotion img,
       #shopify-section-{{ section.id }} .promotion svg {
         float: none;
       }
-    {% endif %}
-    {% if section.settings.per_row_mobile == 0 %}
+    {%- endif -%}
+    {%- if section.settings.per_row_mobile == 0 -%}
     #shopify-section-{{ section.id }} .promotions {
       display: none;
     } 
@@ -303,38 +303,38 @@
         margin: 0 !important;
         padding: 0 !important;
       }   
-    {% endif %}
+    {%- endif -%}
     
-    {% unless section.settings.promotions_width == 'content' %}
+    {%- unless section.settings.promotions_width == 'content' -%}
     #shopify-section-{{ section.id }} .container { 
       padding: 0 !important;    
     } 
-    {% endunless %}
+    {%- endunless -%}
  
 
-    {% if section.settings.per_row_mobile > 0 %}
+    {%- if section.settings.per_row_mobile > 0 -%}
       #shopify-section-{{ section.id }} .container {
         margin-top: 0 !important;
         padding-top: 0 !important;
       }
-      {% if section.settings.per_row_mobile == 1 %}
+      {%- if section.settings.per_row_mobile == 1 -%}
       #shopify-section-{{ section.id }} .promotions {
         display: block;
       } 
         #shopify-section-{{ section.id }} .promotions .promotion {          
           {%- if section.blocks.size > 1 -%}
           margin-bottom: 0;
-          {% else %}
+          {%- else -%}
           margin-bottom: {{ section.settings.promotions_spacing }}px;
-          {% endif %}            
+          {%- endif -%}            
         } 
       {%- if section.blocks.size > 1 -%}
         #shopify-section-{{ section.id }} .promotions > div:last-of-type {
           margin-bottom: {{ section.settings.promotions_spacing }}px; 
         }
-      {% endif %}
-      {% endif %}
-    {% endif %}
+      {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
     
     #shopify-section-{{ section.id }} .promotions .promotion {  
       margin-top: {{ section.settings.promotions_spacing }}px;
@@ -344,46 +344,46 @@
 
   </style>
 
-  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}<div class="container{% if settings.width_bleed_to_edge %} bleed{% endif %}">{% endif %}
+  {%- if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' -%}<div class="container{%- if settings.width_bleed_to_edge -%} bleed{%- endif -%}">{%- endif -%}
 
-    {% if section.settings.title != empty %}<h2>{{ section.settings.title }}</h2>{% endif %}
+    {%- if section.settings.title != empty -%}<h2>{{ section.settings.title }}</h2>{%- endif -%}
 
-    <div class="promotions textcolumns{% if section.settings.image_parallax %} parallax{% endif %}">
+    <div class="promotions textcolumns{%- if section.settings.image_parallax -%} parallax{%- endif -%}">
     {%- for block in section.blocks -%}
 
-        {% capture blockstyle %}
-          {% if block.settings.image and section.settings.image_type != 'background' %}
+        {%- capture blockstyle -%}
+          {%- if block.settings.image and section.settings.image_type != 'background' -%}
           #shopify-section-{{ section.id }} .promotion img {
             margin: 0 !important;
             padding: 0 !important;
           } 
-          {% endif %}
-        {% endcapture %}
+          {%- endif -%}
+        {%- endcapture -%}
         
-        {% assign styles = styles | append: blockstyle %}
+        {%- assign styles = styles | append: blockstyle -%}
       
-        {% assign imgsize = 1000 | append: 'x' %}
+        {%- assign imgsize = 1000 | append: 'x' -%}
 
-        <div class="promotion item" role="presentation" style="{% if block.settings.image and section.settings.image_type == 'background' %}background: url('{{ block.settings.image | img_url: imgsize }}') {{ block.settings.color_bg }} no-repeat center center;{% else %}background:{{ block.settings.color_bg }};{% endif %}border: {% if block.settings.border_thickness > 0 %}{{ block.settings.border_thickness }}px{% else %}0{% endif %} solid {{ block.settings.color_border }};">
+        <div class="promotion item" role="presentation" style="{%- if block.settings.image and section.settings.image_type == 'background' -%}background: url('{{ block.settings.image | img_url: imgsize }}') {{ block.settings.color_bg }} no-repeat center center;{%- else -%}background:{{ block.settings.color_bg }};{%- endif -%}border: {%- if block.settings.border_thickness > 0 -%}{{ block.settings.border_thickness }}px{%- else -%}0{%- endif -%} solid {{ block.settings.color_border }};">
 
-          {% if block.settings.image and section.settings.image_type != 'background' %}
+          {%- if block.settings.image and section.settings.image_type != 'background' -%}
           <img src="{{ block.settings.image | img_url: imgsize }}" /><!-- IMGSIZE: {{ imgsize }} -->
-          {% endif %}
+          {%- endif -%}
 
           <div class="desc">
           <h2 style="color:{{ block.settings.color_text }}">{{ block.settings.title }}</h2>
           <p style="color:{{ block.settings.color_text }}">{{ block.settings.subheading }}</p>
           </div>
           
-          {% if block.settings.url != blank %}<a href="{{ block.settings.url }}"></a>{% endif %}
+          {%- if block.settings.url != blank -%}<a href="{{ block.settings.url }}"></a>{%- endif -%}
 
         </div>
-    {%- endfor %}
+    {%- endfor -%}
     </div>
 
-  {% if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' %}</div>{% endif %}
+  {%- if section.settings.promotions_width == 'container' or section.settings.promotions_width == 'content' or section.settings.promotions_width == 'overflow' -%}</div>{%- endif -%}
 
-  {% endif %}
+  {%- endif -%}
 
 <style>
 {{ styles }}
@@ -666,8 +666,8 @@
   }
 {% endschema %}
 
-{% stylesheet %}
-{% endstylesheet %}
+{%- stylesheet -%}
+{%- endstylesheet -%}
 
-{% javascript %}
-{% endjavascript %}
+{%- javascript -%}
+{%- endjavascript -%}

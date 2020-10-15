@@ -900,7 +900,7 @@
 									}
 									#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .textWrapper { 
 										position: relative;
-										background-image: url('{{ block.settings.image | img_url: bg_image_x }}');
+										{% if type == 'video' or type == 'image' %}background-image: url('{{ block.settings.image | img_url: bg_image_x }}');{% endif %}
 										background-position: center;
 										background-repeat: no-repeat;
 										background-size: cover;

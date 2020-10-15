@@ -542,6 +542,7 @@
 
 				{% if showslide == true -%}
 
+						{% if block.settings.image != nil %}{% assign type = 'image' %}{% else %}{% assign type = '' %}{% endif %}
 						{% if block.settings.video_url contains 'youtube' or block.settings.video_url contains 'vimeo' or block.settings.video_url contains '.mp4' %}{% assign type = 'video' %}{% else %}{% assign type = '' %}{% endif %}
 						<li{% if type != '' %} class="{{ type }}"{% endif %} id="slide{{ slide_num }}">
 
@@ -668,7 +669,7 @@
 								#shopify-section-{{ section.id }} .bxslider #slide{{ slide_num }} .textWrapper { 
 
                                   	{% if block.settings.title != blank or block.settings.subtitle != blank or block.settings.paragraph != blank or block.settings.button_1_label != blank or block.settings.button_2_label != blank %}
-                                    position: absolute !important;
+                                    {% if type == 'video' or type == 'image' %}position: absolute !important;{% else %}position: relative !important;{% endif %}
                                   	{% endif %}
                                   	
 									/* border: solid 1px green; */
@@ -940,6 +941,7 @@
 								{%- if block.settings.button_2_link != blank %}{% capture overlay_link -%}<a href="{{ slide_button_2_link }}" class="linkwrap"></a>{%- endcapture %}{% endif -%}
 								{%- endif %}
 
+								{% if block.settings.image != nil %}{% assign type = 'image' %}{% else %}{% assign type = '' %}{% endif %}
 								{%- if block.settings.title != blank or block.settings.subtitle != blank or block.settings.paragraph != blank or block.settings.button_1_label != blank or block.settings.button_2_label != blank -%}
 									{% if section.settings.slideshow_text_to_content -%}					
 											<div class="textWrapper textClass{{ slide_num }}">{{ shape }}<div class="container"><div class="text">
